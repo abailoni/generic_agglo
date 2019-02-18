@@ -19,6 +19,19 @@
 \def\iccvPaperID{****} % *** Enter the ICCV Paper ID here
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\usepackage{mathrsfs}
+\newcommand{\RED}[1]{#1}
+
+\newcommand\TODO[1]{{\color{red}{TODO: #1}}}
+\newcommand\UPDATE[1]{{\color{blue}{#1}}}
+\newcommand\SOURCE[1]{{\color{green}{(from: #1)}}}
+% \newcommand\CHANGED[2]{{{\color{blue}{#1}}\color{green}{#2}}}
+
+
+
 % Pages are numbered in submission mode, and unnumbered in camera-ready
 \ificcvfinal\pagestyle{empty}\fi
 \begin{document}
@@ -60,13 +73,80 @@ First line of institution2 address\\
 %%%%%%%%% BODY TEXT
 \section{Introduction}
 
-Please follow the steps outlined below when submitting your manuscript to
-the IEEE Computer Society Press.  This style guide now has several
-important modifications (for example, you are no longer warned against the
-use of sticky tape to attach your artwork to the paper), so all authors
-should read this new version.
+\begin{itemize}
+\item \textbf{Intro about CNN:} \textit{The successes of deep convolutional neural nets (CNNs) at image classiﬁcation has spawned a ﬂurry of work in computer vision on adapting these models to pixel-level image understanding tasks, such as boundary detection [1, 90, 64], semantic segmentation [60, 10, 46], optical ﬂow [87, 20], and pose estimation [85, 7].} \SOURCE{Rec. embeddings}
+\item Intro about instance segmentation
+\item \textbf{Mask R-CNN:} why we do not like it 
+\begin{itemize}
+\item \textit{most recent successful approaches to instance segmentation have adopted more heuristic approaches that first use an object detector to enumerate candidate instances and then perform pixel-level segmentation of each instance [57, 17, 55, 56, 2]. Alternately one can generate generic proposal segments and then label each one with a semantic detector [31, 12, 32, 16, 82, 34]. In either case the detection and segmentation steps can both be mapped to standard binary classiﬁcation losses. While effective, these approaches are somewhat unsatisfying since: (1) they rely on the object detector and non-maximum suppression heuristics to accurately “count” the number of instances, (2) they are difﬁcult to train in an end-to-end manner since the interface between instance segmentation and detection is non-differentiable, and (3) they underperform in cluttered scenes as the assignment of pixels to detections is carried out independently for each detection 1.} \SOURCE{Rec. embeddings}
+\item elongated segments
+\item \textit{There are three fundamental flaws in a proposal-based instance segmentation architecture. First, two objects may share the same bounding box, or a very similar boxes. In this case, the mask head, has no way of telling which object to pick in the box. This is a serious problem with stringy like object that have low fill rate in their bounding box (e.g. bicycles and chairs). Second, there is nothing in the architecture preventing a pixel to be shared between two instance. Third, the number of instances is limited by the number of proposals processed by the network (usually hundreds). More over, the architecture is complex and hard to tune and “debug”. In object detection, a precursor to this problem, there are already successes being made to use a simpler, single-stage, architectures e.g. RetinaNet.}
+\end{itemize}
+\item More intro about proposal-free instance segmentation? Perhaps not needed
+
+\item One common method: \textbf{predict pixel embedding vectors.} For each pixel in the image, a CNN predicts an embedding vector, such that pixels in the same instance are represented by the same vector. (\textit{by training a model that labels pixels with unit-length vectors that live in some ﬁxed dimension embedding space} \SOURCE{Rec. embeddings} ). \textit{With instance embedding, each object is assigned a “color” in a n-dimensional space. The network processes the image and produces a dense output, same size as the input image. Each pixel in the output of the network is a point in the embedding space. Pixels that belong to the same object are close in the embedding space while pixels that belong to different objects are distant in the embedding space. Parsing the image embedding space involves some sort of clustering algorithm.} \SOURCE{online} 
+\item use clustering algorithms like DBSCAN, mean-shift or similar ones working directly in the embedding space. \UPDATE{More clustering options..?}
+\item Other methods directly \textbf{Predict short and long-range affinities}: for each pixel we fix a set of neighboring pixels (not necessarily limited to the direct neighbors);  a CNN predicts then affinities, that represent how likely it is for each pair of neighboring pixels to be in the same instance.
+\item Even with pixel embedding vectors we can deduce affinities or signed costs
+\item It was shown that it is good to describe the problem in terms of a signed graph, or better: pixel-grid graph with short- and long-range connections; segmentation given by (signed) graph partitioning algorithm  
+\item makes sense to use repulsion/attraction; directly predicted by CNN; no need to fix threshold/number of seeds/etc...
+\item \textit{Multicut has the great advantage that a “natural” partitioning of a graph can be found, without needing to specify a desired number of clusters, or a termination criterion, or one seed per region. Its great drawback is that its optimization is NP-hard.} \SOURCE{MWS}. (too big even for multicut approximations)
+\item Efficient alternatives proposed independently: local-search approximations, MWS, graph-merge with average \TODO{Expand this part (add more items to the list) and highlight the fact that so far a clear comparison was missing and everyone was using something kind of random}
+\item To summarize our contributions:
+\begin{itemize}
+\item we propose a unified and simple formalization of Signed Graph Edge Contraction Clustering and show how many of the recently proposed methods can be seen as special cases
+\item we compare different types of agglomeration clustering on a pixel grid graph with short and long-range connections, focusing on aspects like efficieny, robustness (and energy) 
+\item we propose a new a constrained version of average agglomerative clustering that proved to be quite robust in most of our experiments
+\end{itemize}
+\end{itemize}
+
+
+\section{Related work}
+\begin{itemize}
+\item \textbf{Pixel embedding vectors:} unsupervised or supervised; different types of loss \TODO{Find good summary}
+\item clustering algorithms like DBSCAN, mean-shift orsimilar ones working directly in the embedding space  \TODO{Add refs, discuss with Roman}
+\item \textbf{Predicting affinities (and long-range):} superhuman, MWS, graph-merge on cityscapes, holistically edge detection (see MWS paper for a good review) \TODO{Add more}
+\item \textbf{Pipelines in connectomics (or better: merge trees):} \textit{Similar to the boundary detection/region segmentation pipeline for natural image segmentation [6,7,8,9], most recent EM image segmentation methods use a membrane detection/cell segmentation pipeline. First, a membrane detector generates pixel-wise conﬁdence maps of membrane predictions using local image cues [10,11,12]. Next, region-based methods are applied to transforming the membrane conﬁdence maps into cell segments. It has been shown that region-based methods are necessary for improving the segmentation accuracy from membrane detections for EM images [13]. A common approach to region-based segmentation is to transform a membrane conﬁdence map into over-segmenting superpixels and use them as “building blocks” for ﬁnal segmentation. To correctly combine superpixels, greedy region agglomeration based on certain boundary saliency has been shown to work [14]. Meanwhile, structures, such as loopy graphs [15,16] or trees [17,18,19], are more often imposed to represent the region merging hierarchy and help transform the superpixel combination search into graph labeling problems. To this end, local [17,16] or structured [18,19] learning based methods are developed.} \SOURCE{SSHMT}
+\item \textbf{Cannot-link constraints:} initially introduced as hard-contraints, then relaxed (MWS, Greedy Fixation)
+\item \textbf{Unsigned clustering methods:} Felzenszwalb Efficient Graph-based Image segmentation
+\end{itemize}
+
+
+\section{Grand Unified Edge Contraction Algorithm}
+\begin{itemize}
+\item Rows in the table:
+\begin{itemize}
+\item Mutex Watershed (MWS), [proof of equivalence included in Appendix]
+\item Greedy Additive Edge Contraction (GAEC), 
+\item Greedy Fixation (GF), 
+\item Hierarchical Agglomerative Clustering with single, complete, average (UPGMA) and weighted average (WPGMA) linkage criteria
+\item GALA (learned update rule)
+\item (Felzenszwalb Efficient Graph-based Image segmentation: can be included, but probably better to just mention it in the related work)
+\end{itemize}
+\end{itemize}
+
+
+\section{Experiments}
+\begin{itemize}
+\item Nevertheless, in both approaches we can define a grid graph (each vertex representing a pixel) with signed weights and find the final instance segmentation by using a graph partitioning algorithm:
+\begin{itemize}
+\item In Method 1, the graph is complete and the edge weights represent similarities between pairs of pixel embedding vectors. In most proposed approaches, embedding vectors representing distinct instances should be "distant enough" in the embedding space (a minimum distance is usually used during the training of the CNN). Thus, this threshold distance can be used to define signed affinities, representing attraction or repulsion between pairs of pixels;
+\item  In Method 2, the short- and long-range affinities predicted by the CNN are directly used as signed edge weights in the grid graph
+\end{itemize}
+\end{itemize}
+
+\subsection{Results summary}
+\begin{itemize}
+\item in the proposed simple formalism for Signed Graph Edge Contraction Clustering, we also include a modified version of Hierarchical agglomerative clustering with cannot-link constraints that was not mentioned in literature so far and in our experiments proved to be quite robust to noise and outliers
+\item we compare different types of Signed Graph Edge Contraction Clustering, showing in which situations is preferable to use one or the other and which one can make a better use of the long-range CNN predictions; 
+\item we focus our comparison on efficiency and robustness to mistakes in the CNN predictions 
+\item in general, our experiments show that long-range predictions should be used not only during the CNN training, but also as an input of the clustering algorithm
+
+\end{itemize}
+
 
 %-------------------------------------------------------------------------
+\section{ICCV stuff}
 \subsection{Language}
 
 All manuscripts must be in English.
