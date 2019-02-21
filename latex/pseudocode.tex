@@ -1,0 +1,125 @@
+\documentclass{article}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithm
+\PassOptionsToPackage{noend}{algpseudocode}% comment out if want end's to show
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+\usepackage[top=1in, bottom=1in, left=1.1in, right=1.1in]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\DeclareMathOperator*{\sort}{sort}
+\DeclareMathOperator*{\argsort}{argsort}
+% \DeclareMathOperator*{\argsort}{arg\,sort}
+\usepackage{soul}
+% \usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
+
+\errorcontextlines\maxdimen
+
+% begin vertical rule patch for algorithmicx (http://tex.stackexchange.com/questions/144840/vertical-loop-block-lines-in-algorithmicx-with-noend-option)
+\makeatletter
+% start with some helper code
+% This is the vertical rule that is inserted
+\newcommand*{\algrule}[1][\algorithmicindent]{\makebox[#1][l]{\hspace*{.5em}\vrule height .75\baselineskip depth .25\baselineskip}}%
+
+\newcount\ALG@printindent@tempcnta
+\def\ALG@printindent{%
+    \ifnum \theALG@nested>0% is there anything to print
+        \ifx\ALG@text\ALG@x@notext% is this an end group without any text?
+            % do nothing
+            \addvspace{-3pt}% FUDGE for cases where no text is shown, to make the rules line up
+        \else
+            \unskip
+            % draw a rule for each indent level
+            \ALG@printindent@tempcnta=1
+            \loop
+                \algrule[\csname ALG@ind@\the\ALG@printindent@tempcnta\endcsname]%
+                \advance \ALG@printindent@tempcnta 1
+            \ifnum \ALG@printindent@tempcnta<\numexpr\theALG@nested+1\relax% can't do <=, so add one to RHS and use < instead
+            \repeat
+        \fi
+    \fi
+    }%
+\usepackage{etoolbox}
+% the following line injects our new indent handling code in place of the default spacing
+\patchcmd{\ALG@doentity}{\noindent\hskip\ALG@tlm}{\ALG@printindent}{}{\errmessage{failed to patch}}
+\makeatother
+% end vertical rule patch for algorithmicx
+
+
+\begin{document}
+% \begin{algorithm}[H]
+%   \caption{Generalized greedy edge contraction}
+%    \hspace*{\algorithmicindent} \textbf{Inputs:} $\mathcal{G}(V,E)$ with signed costs $W:\,E\rightarrow\mathbb{R}$.  \\
+%   \hspace*{\algorithmicindent} \textbf{Outputs:} Contracted graph $\mathcal{G}'$ representing final clustering\\
+%   \hspace*{\algorithmicindent} 
+%   \begin{algorithmic}[1]
+
+
+%     \Procedure{GeneralizedGreedyEdgeContraction()}{}
+%       % \State $\mathcal{G}'\gets \mathcal{G}(V,E^+ \cup E^-)$ \Comment{Initialize the contracted graph}
+%       \State $\mathcal{G}' \gets \mathcal{G}$ 
+%       \For{$e  \in E$ in descending order of cost}
+%         \If{({\color{ForestGreen}\textbf{$W(e) > 0$}})}
+%           \State {\color{ForestGreen}Contract edge $e$ in the graph $\mathcal{G}'$;}
+%           \State {\color{ForestGreen}Update costs of double edges and delete them;}
+%           % \For{every new double edge}
+%           %   \State Delete double edges
+%           %   \State Insert new one with updated cost
+%           % \EndFor
+%         \EndIf
+%         \If{({\color{red}\textbf{$W(e) \leq 0$}})}
+%           \State {\color{red}\Return $\mathcal{G}'$}
+%         \EndIf
+%       \EndFor
+%       \State
+
+
+%     \EndProcedure
+
+%   \end{algorithmic}
+% \end{algorithm}
+
+
+\begin{algorithm}[H]
+  \caption{Signed Graph Edge Contraction Clustering}
+   \hspace*{\algorithmicindent} \textbf{Inputs:} $\mathcal{G}(V,E)$ with signed costs $w:\,E\rightarrow\mathbb{R}$.  \\
+  \hspace*{\algorithmicindent} \textbf{Outputs:} Contracted graph $\mathcal{G}'$ representing final clustering\\
+  \hspace*{\algorithmicindent} 
+  \begin{algorithmic}[1]
+
+
+    \Procedure{SignedGraphEdgeContr}{{\color{blue}bool \emph{addConstraints}}}
+      % \State $\mathcal{G}'\gets \mathcal{G}(V,E^+ \cup E^-)$ \Comment{Initialize the contracted graph}
+      \State $\mathcal{G}' \gets \mathcal{G}$ 
+      \State PQ $\gets$ Priority queue with edges sorted by abs. weight
+      \State PQ.push$(e, |w_e| ) \quad \forall e \in E $  \Comment{Sort edges by abs. weight}
+      \For{$e  \in E$ in descending order of absolute costs $|W(e)|$}
+        \If{({\color{ForestGreen}\textbf{$W(e) > 0$}}) \textbf{AND} (edge is not constrained)}
+          \State Contract edge $e$ in the graph $\mathcal{G}'$;
+          \State Update costs of double edges;
+          \State Propagate constrained flags of double edges;
+          % \For{every new double edge}
+          %   \State Delete double edges
+          %   \State Insert new one with updated cost
+          % \EndFor
+        \EndIf
+        \If{({\color{red}\textbf{$W(e) \leq 0$}}) \textbf{AND} ({\color{blue}\emph{addConstraints}})}
+          \State Flag edge $e$ as constrained
+        \EndIf
+      \EndFor
+      \State
+      \State
+      \Return $\mathcal{G}'$
+      % \State
+
+
+    \EndProcedure
+
+  \end{algorithmic}
+\end{algorithm}
+
+
+
+
+
+\end{document}
