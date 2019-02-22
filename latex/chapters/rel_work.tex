@@ -1,0 +1,39 @@
+\section{Related work}
+\begin{itemize}
+\item \textit{Optional:} more about \textbf{Mask R-CNN}? (we actually already explain in the introduction why we do not care about it)
+\item \textbf{Proposal-free instance segmentation} methods:
+\begin{itemize}
+\item \textbf{Predict pixel embedding vectors:} 
+\begin{itemize}
+\item For each pixel in the image, a CNN predicts an embedding vector, such that pixels in the same instance are represented by the same vector. (\textit{by training a model that labels pixels with unit-length vectors that live in some ﬁxed dimension embedding space} \SOURCE{Rec. embeddings} ). \textit{With instance embedding, each object is assigned a “color” in a n-dimensional space. The network processes the image and produces a dense output, same size as the input image. Each pixel in the output of the network is a point in the embedding space. Pixels that belong to the same object are close in the embedding space while pixels that belong to different objects are distant in the embedding space. Parsing the image embedding space involves some sort of clustering algorithm.} \SOURCE{online} 
+\item unsupervised or supervised; different types of loss \TODO{Find good summary}
+\item clustering algorithms like DBSCAN, mean-shift or similar ones working directly in the embedding space  \TODO{Add refs, discuss with Roman}
+\item \textit{Side comment}: Even with pixel embedding vectors we can deduce affinities or signed costs
+\end{itemize}
+\item \textbf{Other methods}: recurrent CNN, deep watershed, InstanceCut, Deep Coloring 2018 \TODO{Add more, discuss with Roman}
+\item \textbf{Predicting long-range affinities:} superhuman, MWS, graph-merge on cityscapes, holistically edge detection (see MWS paper for a good review) \TODO{Add more}
+\end{itemize}
+
+\item So we need a \textbf{graph clustering algorithm}:
+\begin{itemize}
+\item Mention some seeded method?
+\item \textit{Unsigned clustering methods:} Felzenszwalb Efficient Graph-based Image segmentation, (spectral clustering, graph cuts, not sure...)  \TODO{Here I need some input about recent stuff}
+\item \textit{Merge-tree methods:} 
+\begin{itemize}
+\item Hierarchical clustering, ultra-metric contour map...? \TODO{This needs more research}
+\item Only one from pixels I know: GMIS, hierarchical-Felzenszwalb (??) 
+\item most of the others from superpixels
+\item In connectomics: GALA, merge-mistakes (another section for splitting option?)
+\item \textit{Similar to the boundary detection/region segmentation pipeline for natural image segmentation [6,7,8,9], most recent EM image segmentation methods use a membrane detection/cell segmentation pipeline. First, a membrane detector generates pixel-wise conﬁdence maps of membrane predictions using local image cues [10,11,12]. Next, region-based methods are applied to transforming the membrane conﬁdence maps into cell segments. It has been shown that region-based methods are necessary for improving the segmentation accuracy from membrane detections for EM images [13]. A common approach to region-based segmentation is to transform a membrane conﬁdence map into over-segmenting superpixels and use them as “building blocks” for ﬁnal segmentation. To correctly combine superpixels, greedy region agglomeration based on certain boundary saliency has been shown to work [14]. Meanwhile, structures, such as loopy graphs [15,16] or trees [17,18,19], are more often imposed to represent the region merging hierarchy and help transform the superpixel combination search into graph labeling problems. To this end, local [17,16] or structured [18,19] learning based methods are developed.} \SOURCE{SSHMT} \SOURCE{Jan Funke Multicut proposals}
+\end{itemize}
+\item \textbf{Signed graph}
+\begin{itemize}
+\item Multicut pipiline and heuristics
+\item Jan Funke proposals
+\item \textit{Cannot-link constraints:} initially introduced as hard-contraints, then relaxed (MWS, Greedy Fixation)
+\item Local-search approximations of MC: GAEC, GreedyFixation
+\end{itemize}
+\end{itemize}
+
+\end{itemize}
+
