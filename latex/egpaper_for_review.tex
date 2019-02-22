@@ -284,10 +284,11 @@ First line of institution2 address\\
 
 
 
-\section{Grand Unified Edge Contraction Algorithm}
+\section{Grand Unified Whatever Clustering}
 \begin{itemize}
-\item Define graph formalism
-\item Rows in the table:
+\item Define graph formalism and clustering $\Pi$
+\item \TODO{Description of the algorithm}
+\item Linkage criteria and table:
 \begin{itemize}
 \item Mutex Watershed (MWS), [proof of equivalence included in Appendix]
 \item Greedy Additive Edge Contraction (GAEC), 
@@ -296,6 +297,9 @@ First line of institution2 address\\
 \item GALA (learned update rule)
 \item Something depending on the node size...?
 \end{itemize}
+\item Pseudocode does not (exactly) include more general options: size of the nodes, features for CNN, histogram for median \TODO{But I think I should keep it simple}
+\item Comment about must-not-link relations: they give high proprity to the most confident repulsive edges \item I don't think I need to mention the merge tree (although it could be easily deduced from the code, as a sequence of clustering)
+\item Define multicut energy (or move to following section)
 \end{itemize}
 
 
