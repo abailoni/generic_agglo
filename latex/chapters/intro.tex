@@ -1,34 +1,33 @@
+% !TEX root = ../agglo_clust_review.tex
+
 \section{Introduction}
 
 \begin{itemize}
-\item \textbf{Intro about CNN:} \textit{The successes of deep convolutional neural nets (CNNs) at image classiﬁcation has spawned a ﬂurry of work in computer vision on adapting these models to pixel-level image understanding tasks, such as boundary detection [1, 90, 64], semantic segmentation [60, 10, 46], optical ﬂow [87, 20], and pose estimation [85, 7].} \SOURCE{Rec. embeddings}
-\item Intro about instance segmentation
-\item \textbf{Mask R-CNN:} why we do not like it 
+\item \textbf{General intro about CNN:} big success in pixel-level image understanding tasks: boundary detection \cite{arbelaez2011contour,xie2015holistically,maninis2018convolutional}, semantic segmentation \cite{long2015fully,chen2018deeplab,kong2018recurrent}, optical flow \cite{weinzaepfel2013deepflow,dosovitskiy2015flownet}, and pose estimation \cite{wei2016convolutional,cao2017realtime}
+% \SOURCE{\cite{kong2018recurrent}}
+\item Many recent successful methods generate \textbf{region proposals} and classify the objects in the bounding box \cite{yang2012layered,ladicky2010and,hariharan2014simultaneous,chen2015multi,dai2016instance,liang2016reversible,he2017mask}
+\item \emph{Why we do not like them}:
 \begin{itemize}
-\item \textit{most recent successful approaches to instance segmentation have adopted more heuristic approaches that first use an object detector to enumerate candidate instances and then perform pixel-level segmentation of each instance [57, 17, 55, 56, 2]. Alternately one can generate generic proposal segments and then label each one with a semantic detector [31, 12, 32, 16, 82, 34]. In either case the detection and segmentation steps can both be mapped to standard binary classiﬁcation losses. While effective, these approaches are somewhat unsatisfying since: (1) they rely on the object detector and non-maximum suppression heuristics to accurately “count” the number of instances, (2) they are difﬁcult to train in an end-to-end manner since the interface between instance segmentation and detection is non-differentiable, and (3) they underperform in cluttered scenes as the assignment of pixels to detections is carried out independently for each detection 1.} \SOURCE{Rec. embeddings}
-\item elongated segments
-\item \textit{There are three fundamental flaws in a proposal-based instance segmentation architecture. First, two objects may share the same bounding box, or a very similar boxes. In this case, the mask head, has no way of telling which object to pick in the box. This is a serious problem with stringy like object that have low fill rate in their bounding box (e.g. bicycles and chairs). Second, there is nothing in the architecture preventing a pixel to be shared between two instance. Third, the number of instances is limited by the number of proposals processed by the network (usually hundreds). More over, the architecture is complex and hard to tune and “debug”. In object detection, a precursor to this problem, there are already successes being made to use a simpler, single-stage, architectures e.g. RetinaNet.}
+\item rely on the object detector and non-maximum suppression heuristics to accurately “count” nb. of instances, 
+\item difficult to train in an end-to-end manner: interface between instance segmentation and detection is non-differentiable
+\item underperform in cluttered scenes (assignment carried out independently for each detection) 
+\item not usable for wiry or articulated segments/objects 
+\item nothing in the architecture preventing a pixel to be shared between two instances
+\item number of instances is limited by nb. proposals processed by CNN (usually hundreds). 
+% \item (architecture is complex and hard to tune and “debug”...?)
 \end{itemize}
 
-\item Briefly mention methods for proposal free (pixel embedding vectors, recurrent, more in related work)
+\item Among successful \textbf{proposal-free methods} there are: predict pixel embedding vectors \cite{kong2018recurrent,fathi2017semantic,newell2017associative,de2017semantic}; predict short- and long-range affinities \cite{liu2018affinity,wolf2018mutex,xie2015holistically}
 
-\item Among successful methods: \textbf{predict short and long-range affinities}
-\begin{itemize}
-\item for each pixel we fix a set of neighboring pixels (not necessarily limited to the direct neighbors);  a CNN predicts then affinities, that represent how likely it is for each pair of neighboring pixels to be in the same instance.
-\item The final segmentation is obtained by using some kind of graph clustering algorithm
-\item \textbf{Motivation to use this method:} GMIS achieved comparable results to methods based on object proposal like Mask-R-CNN on natural images (Cityscapes);  MWS achieved SOA results on a biological images (ISBI)
-\end{itemize}
-\item It was shown that it is good to describe the problem in terms of a signed graph clustering problem (see MWS and others): directly train CNN to predict \textbf{repulsion and attraction}; no need to define seeds or to fix a threshold given an hierarchy of clusters, etc...
-
-
-\item \textit{\textbf{Multicut} has the great advantage that a “natural” partitioning of a graph can be found, without needing to specify a desired number of clusters, or a termination criterion, or one seed per region. Its great drawback is that its optimization is NP-hard.} \SOURCE{MWS}.
-\item Problem: this specific application is too expensive even for recently proposed multicut heuristics/ approximations
-\item Efficient alternatives proposed independently (leave details to the related work), but: missing comparison on this type of problem/graph
+\item In both approaches we can obtain the final segmentation by using a \textbf{graph clustering algorithm}
+\item Recent work (\cite{wolf2018mutex}, more?) shows that it is better to use \textbf{repulsion and attraction} (directly predict it with the classifier, no need to define seeds or to fix a threshold given an hierarchy of clusters)
+\item solving correlation clustering problem (multicut) is too expensive for this application (even using recently proposed heuristics)
 \item our contributions:
 \begin{itemize}
-\item we propose a unified and simple formalization of Signed Graph Edge Contraction Clustering and show how many of the recently proposed methods can be seen as special cases
+\item we propose a unified and simple formalization of Agglomerative Clustering and show how many of the recently proposed methods can be seen as special cases
+\item we propose several new clustering algorithms, among which one proved to be robust in our experiments (average linkage with must-not-link-edges)
 \item we compare different types of agglomeration clustering on a pixel grid graph with short and long-range connections, focusing on aspects like efficieny, robustness (and energy) 
-\item we propose a new a constrained version of average agglomerative clustering that proved to be quite robust in most of our experiments
+
 \end{itemize}
 \item on other datasets (connectomics) many methods are based on multi-step pipelines first predicting superpixels
 \item \textit{if we get decent scores on CREMI}: we show that also on neuro-data it is worth to skip the hand-crafted superpixel step and compute the final segmentation directly from the CNN predictions (MWS already showed it on ISBI)
