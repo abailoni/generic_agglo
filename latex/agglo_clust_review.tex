@@ -200,42 +200,41 @@ First line of institution2 address\\
 
 
 
+% \section{Algorithm}
 \section{Grand Unified Whatever Clustering}
 \begin{itemize}
 \item Define graph formalism and clustering $\Pi$
-\item \TODO{Description of the algorithm}
-\item Linkage criteria and table:
+\item Description and pseudo-code
+\item Linkage criteria in the table:
 \begin{itemize}
-\item Mutex Watershed (MWS), [proof of equivalence included in Appendix]
-\item Greedy Additive Edge Contraction (GAEC), 
-\item Greedy Fixation (GF), 
-\item Hierarchical Agglomerative Clustering with single, complete, average (UPGMA) and weighted average (WPGMA) linkage criteria
-\item GALA (learned update rule)
-\item Something depending on the node size...?
+\item Mutex Watershed \cite{wolf2018mutex}, [proof of equivalence included in Appendix]
+\item Greedy Additive Edge Contraction \cite{levinkov2017comparative}, 
+\item Greedy Fixation \cite{levinkov2017comparative}, 
+\item Hierarchical Agglomerative Clustering with single, complete, average (UPGMA) linkage criteria
 \end{itemize}
-\item Pseudocode does not (exactly) include more general options: size of the nodes, features for CNN, histogram for median \TODO{But I think I should keep it simple}
-\item Comment about must-not-link relations: they give high proprity to the most confident repulsive edges \item I don't think I need to mention the merge tree (although it could be easily deduced from the code, as a sequence of clustering)
-\item Define multicut energy (or move to following section)
+\item Easily generalizable for: learned linkage criteria \cite{nunez2013machine}, something depending on node size \cite{felzenszwalb2004efficient}, quantiles, weighted average (WPGMA) and weighted sum
+
+\item Comment about must-not-link relations: they give high priority to the most confident repulsive edges 
+\item I don't think I need to mention the merge tree (although it could be easily deduced from the code, as a sequence of clustering)
+\item comment about complexity (depends on the linkage criteria) and how dense is the graph (check PQ update)
 \end{itemize}
 
 
 \section{Experiments}
 \begin{itemize}
-\item Nevertheless, in both approaches we can define a grid graph (each vertex representing a pixel) with signed weights and find the final instance segmentation by using a graph partitioning algorithm:
+\item define pixel grid graph and long range connections
+\item probability of long-range connections
+\end{itemize}
+\subsection{Qualitative comparison}
 \begin{itemize}
-\item In Method 1, the graph is complete and the edge weights represent similarities between pairs of pixel embedding vectors. In most proposed approaches, embedding vectors representing distinct instances should be "distant enough" in the embedding space (a minimum distance is usually used during the training of the CNN). Thus, this threshold distance can be used to define signed affinities, representing attraction or repulsion between pairs of pixels;
-\item  In Method 2, the short- and long-range affinities predicted by the CNN are directly used as signed edge weights in the grid graph
+\item find good way to represent agglomeration order
+\item can we display the must-not-link edges...?
 \end{itemize}
-\end{itemize}
+\subsection{Noise experiments}
 
-\subsection{Results summary}
-\begin{itemize}
-\item in the proposed simple formalism for Signed Graph Edge Contraction Clustering, we also include a modified version of Hierarchical agglomerative clustering with cannot-link constraints that was not mentioned in literature so far and in our experiments proved to be quite robust to noise and outliers
-\item we compare different types of Signed Graph Edge Contraction Clustering, showing in which situations is preferable to use one or the other and which one can make a better use of the long-range CNN predictions; 
-\item we focus our comparison on efficiency and robustness to mistakes in the CNN predictions 
-\item in general, our experiments show that long-range predictions should be used not only during the CNN training, but also as an input of the clustering algorithm
+\subsection{Comparison on CREMI and cityscapes}
 
-\end{itemize}
+\section{Conclusions}
 
 {\small
 \bibliographystyle{ieee}

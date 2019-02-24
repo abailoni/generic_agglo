@@ -9,16 +9,31 @@
 % \SOURCE{\cite{kong2018recurrent}
 \end{itemize}
 
-\item \textbf{Other proposal-free methods:} 
+\item \textbf{Proposal-free methods:} 
 \begin{itemize}
-\item box-free \cite{pinheiro2015learning,pinheiro2016learning,liang2018proposal,hu2017fastmask}; joint segmentation and instance labeling jointly in a combinatorial framework \cite{kirillov2017instancecut}; recurrent models \cite{romera2016recurrent,ren2017end}
-\item \textbf{Pixel embedding vectors}: supervised vectors \cite{bai2017deep,liu2017sgn}, unsupervised vectors  \cite{fathi2017semantic,newell2017associative,de2017semantic}, end-to-end training \cite{kong2018recurrent}, embedding depending on scene depth \cite{uhrig2016pixel}, TO CHECK: \cite{sironi2014multiscale}; \TODO{more on pose estimation, vector distance transform, deep coloring?, ECCV semi-convolutions}
+\item box-free \cite{pinheiro2015learning,pinheiro2016learning,hu2017fastmask}; joint segmentation and instance labeling in a combinatorial framework \cite{kirillov2017instancecut}; recurrent models \cite{romera2016recurrent,ren2017end}; encode instance relationships to classes and exploit the boundary information  \cite{jin2016object}; sequential framework to gradually group from points to lines and then instances \cite{liu2017sgn}
+\item \textbf{Pixel embedding vectors}: 
+\begin{itemize}
+\item supervised vectors \cite{bai2017deep}, unsupervised vectors  \cite{kong2018recurrent,fathi2017semantic,newell2017associative,de2017semantic} of which \cite{kong2018recurrent} is trained end-to-end;  using scene depth information \cite{uhrig2016pixel}, \TODO{check \cite{sironi2014multiscale}} 
+%    \TODO{more on pose estimation, vector distance transform, deep coloring?, ECCV semi-convolutions}
+
 % different types of loss
 % \item For each pixel in the image, a CNN predicts an embedding vector, such that pixels in the same instance are represented by the same vector. (\textit{by training a model that labels pixels with unit-length vectors that live in some ﬁxed dimension embedding space} \SOURCE{Rec. embeddings} ). \textit{With instance embedding, each object is assigned a “color” in a n-dimensional space. The network processes the image and produces a dense output, same size as the input image. Each pixel in the output of the network is a point in the embedding space. Pixels that belong to the same object are close in the embedding space while pixels that belong to different objects are distant in the embedding space. Parsing the image embedding space involves some sort of clustering algorithm.} \SOURCE{online} 
 
 % \item Clustering methods: DBSCAN, more
 
-\item \textbf{Most related: predict short- and long-range affinities}. For each pixel we fix a set of neighboring pixels (not necessarily limited to the direct neighbors) and CNN predicts how likely it is for each pixel pair to be in the same instance \cite{liu2018affinity,wolf2018mutex,lee2017superhuman,xie2015holistically,Maire_2016_CVPR} 
+\item \emph{Division by used clustering methods}: spectral clustering \cite{liang2018proposal}; mean-shift \cite{kong2018recurrent}; HDBSCAN \cite{}; seeds \cite{fathi2017semantic} \TODO{incomplete}
+\end{itemize}
+
+% \item Nevertheless, in both approaches we can define a grid graph (each vertex representing a pixel) with signed weights and find the final instance segmentation by using a graph partitioning algorithm:
+% \begin{itemize}
+% \item In Method 1, the graph is complete and the edge weights represent similarities between pairs of pixel embedding vectors. In most proposed approaches, embedding vectors representing distinct instances should be "distant enough" in the embedding space (a minimum distance is usually used during the training of the CNN). Thus, this threshold distance can be used to define signed affinities, representing attraction or repulsion between pairs of pixels;
+% \item  In Method 2, the short- and long-range affinities predicted by the CNN are directly used as signed edge weights in the grid graph
+% \end{itemize}
+
+
+
+\item \textbf{Most related: predict short- and long-range affinities}. For each pixel we fix a set of neighboring pixels (not necessarily limited to the direct neighbors) and CNN predicts how likely it is for each pixel pair to be in the same instance \cite{liu2018affinity,wolf2018mutex,lee2017superhuman,xie2015holistically,Maire_2016_CVPR}. Mention that  \cite{liu2018affinity} is SoA on cityscapes for proposal-free methods and \cite{wolf2018mutex} is SoA on ISBI
 % \item \cite{liu2018affinity} achieved comparable results to methods based on object proposal like Mask-R-CNN on natural images (Cityscapes); \cite{wolf2018mutex} achieved SOA results on a biological images (ISBI)
 % \item Side comment: Even with pixel embedding vectors we can deduce affinities or signed costs
 % (see MWS paper for a good review)
@@ -29,24 +44,35 @@
 
 \item \textbf{Graph clustering related work}:
 \begin{itemize}
-\item Some seeded methods?
-\item \textit{Unsigned clustering methods:} Efficient Graph-based Image segmentation \cite{felzenszwalb2004efficient}, old graph cut stuff: \cite{shi2000normalized} \TODO{More} 
- % (spectral clustering, graph cuts...)} 
-\item \textit{Merge-tree methods:} 
-\begin{itemize}
-\item Hierarchical clustering, ultra-metric contour map \TODO{more}
-\item Methods starting from pixels: \cite{liu2018affinity}, % check HIerarchical Felzenswalb
-\item most of the others from superpixels
-\item In connectomics: GALA, merge-mistakes (another section for splitting option?)
-\item \textit{Similar to the boundary detection/region segmentation pipeline for natural image segmentation [6,7,8,9], most recent EM image segmentation methods use a membrane detection/cell segmentation pipeline. First, a membrane detector generates pixel-wise conﬁdence maps of membrane predictions using local image cues [10,11,12]. Next, region-based methods are applied to transforming the membrane conﬁdence maps into cell segments. It has been shown that region-based methods are necessary for improving the segmentation accuracy from membrane detections for EM images [13]. A common approach to region-based segmentation is to transform a membrane conﬁdence map into over-segmenting superpixels and use them as “building blocks” for ﬁnal segmentation. To correctly combine superpixels, greedy region agglomeration based on certain boundary saliency has been shown to work [14]. Meanwhile, structures, such as loopy graphs [15,16] or trees [17,18,19], are more often imposed to represent the region merging hierarchy and help transform the superpixel combination search into graph labeling problems. To this end, local [17,16] or structured [18,19] learning based methods are developed.} \SOURCE{SSHMT} \SOURCE{Jan Funke Multicut proposals}
-\end{itemize}
-\item \textbf{Signed graph}
-\begin{itemize}
-\item Multicut pipiline and heuristics
-% \item \textit{\textbf{Multicut} has the great advantage that a “natural” partitioning of a graph can be found, without needing to specify a desired number of clusters, or a termination criterion, or one seed per region. Its great drawback is that its optimization is NP-hard.} \SOURCE{MWS}.
+    \item popular in image segmentation: \textbf{agglomerative clustering}.
+    \item Why: more efficient than divisive approaches and graph cuts; does not usually require to specify the final number of clusters (e.g. spectral clustering) or seed nodes (e.g. watershed, random walker) 
+    % old graph cut paper: \cite{shi2000normalized}
+    % \item \emph{[other clustering methods working in an euclidean embedding space like mean-shift, K-means, Mixture models, BIRCH... can most probably be omitted]}
+    \item many segmentation pipelines used to start the agglomeration from superpixels (SLIC, \cite{felzenszwalb2004efficient}, watershed) to reduce size of the problem 
+    \item usually we build an hierarchy of clusters (or a \emph{merge-tree}): \TODO{find meaningful order}
 
-\item Jan Funke proposals
-\item \textit{Must-not-link edges:} initially introduced as hard-constraints \cite{malmberg2011generalized}, then relaxed \cite{wolf2018mutex,levinkov2017comparative}
+ 
+% \item \textit{Some reference (atm in random order, to be continued)} 
+\begin{itemize}
+
+\item examples on natural images \cite{ren2013image,liu2016image}; ultra-metric contour map \cite{arbelaez2011contour};
+\item \emph{Linkage criteria}: arithmetic average \cite{liu2018affinity,lee2017superhuman}; 
+quantiles (median) \cite{funke2018large}; % and structured training 
+   learned linkage criteria \cite{nunez2013machine}; 
+\item An optimization perspective is taken in \cite{kiran2014global} %, which introduces h-increasing energy functions and builds the hierarchy incrementally such that merge decisions greedily minimize the energy
+% Check MWS for description and more details
+\item normalized cuts and combinatorial grouping \cite{arbelaez2014multiscale}
+\item In \emph{connectomics}: \cite{liu2016sshmt}. Use loopy graphs \cite{kaynig2015large,krasowski2015improving} or trees \cite{liu2016sshmt,liu2014modular,funke2015learning,uzunbas2016efficient} to represent the region merging hierarchy. Using local \cite{liu2014modular,krasowski2015improving} or structured \cite{funke2015learning,uzunbas2016efficient} learning based methods % \SOURCE{SSHMT} Check Funke proposals
+\end{itemize}
+\item Methods finding a flat clustering (no hierarchy): efficient Graph-based Image segmentation \cite{felzenszwalb2004efficient} % defines a measure of quality for the current regions and stops when the merge costs would exceed this measure
+\item \textbf{Signed graphs} \TODO{more}
+\begin{itemize}
+    % \item problem with hierarchical merge-trees is how to choose one single threshold. Choose one single fixed density level. Ideally we want to be able to cut the tree at different places to select our clusters. In density space, \cite{campello2013density}
+    \item Multicut pipiline and heuristics \cite{beier2017multicut}... 
+    % \item \textit{\textbf{Multicut} has the great advantage that a “natural” partitioning of a graph can be found, without needing to specify a desired number of clusters, or a termination criterion, or one seed per region. Its great drawback is that its optimization is NP-hard.} \SOURCE{MWS}.
+
+\item hierarchy and multicut proposals \cite{funke2018candidate}
+\item \textit{Must-not-link edges:} initially introduced as hard-constraints \cite{malmberg2011generalized}, then introduced dynamically \cite{wolf2018mutex,levinkov2017comparative}. 
 \item Local-search approximations of MC: greeedy fixation and greedy additive edge contraction \cite{levinkov2017comparative}
 \end{itemize}
 \end{itemize}

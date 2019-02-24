@@ -3,21 +3,21 @@
 \section{Introduction}
 
 \begin{itemize}
-\item \textbf{General intro about CNN:} big success in pixel-level image understanding tasks: boundary detection \cite{arbelaez2011contour,xie2015holistically,maninis2018convolutional}, semantic segmentation \cite{long2015fully,chen2018deeplab,kong2018recurrent}, optical flow \cite{weinzaepfel2013deepflow,dosovitskiy2015flownet}, and pose estimation \cite{wei2016convolutional,cao2017realtime}
+\item \textbf{General intro about CNN:} big success in pixel-level image understanding tasks: boundary detection \cite{arbelaez2011contour,xie2015holistically,maninis2018convolutional}, semantic segmentation \cite{long2015fully,chen2018deeplab,kong2018recurrent}, optical flow \cite{weinzaepfel2013deepflow,dosovitskiy2015flownet}, pose estimation \cite{wei2016convolutional,cao2017realtime}...
 % \SOURCE{\cite{kong2018recurrent}}
 \item Many recent successful methods generate \textbf{region proposals} and classify the objects in the bounding box \cite{yang2012layered,ladicky2010and,hariharan2014simultaneous,chen2015multi,dai2016instance,liang2016reversible,he2017mask}
 \item \emph{Why we do not like them}:
 \begin{itemize}
 \item rely on the object detector and non-maximum suppression heuristics to accurately “count” nb. of instances, 
-\item difficult to train in an end-to-end manner: interface between instance segmentation and detection is non-differentiable
 \item underperform in cluttered scenes (assignment carried out independently for each detection) 
 \item not usable for wiry or articulated segments/objects 
 \item nothing in the architecture preventing a pixel to be shared between two instances
 \item number of instances is limited by nb. proposals processed by CNN (usually hundreds). 
+\item (difficult to train in an end-to-end manner: interface between instance segmentation and detection is non-differentiable)
 % \item (architecture is complex and hard to tune and “debug”...?)
 \end{itemize}
 
-\item Among successful \textbf{proposal-free methods} there are: predict pixel embedding vectors \cite{kong2018recurrent,fathi2017semantic,newell2017associative,de2017semantic}; predict short- and long-range affinities \cite{liu2018affinity,wolf2018mutex,xie2015holistically}
+\item Among successful \textbf{proposal-free methods} there are: predict pixel embedding vectors \cite{kong2018recurrent,fathi2017semantic,newell2017associative,de2017semantic}; predict short- and long-range affinities \cite{liu2018affinity,wolf2018mutex,xie2015holistically} (more details in related work)
 
 \item In both approaches we can obtain the final segmentation by using a \textbf{graph clustering algorithm}
 \item Recent work (\cite{wolf2018mutex}, more?) shows that it is better to use \textbf{repulsion and attraction} (directly predict it with the classifier, no need to define seeds or to fix a threshold given an hierarchy of clusters)
@@ -30,6 +30,6 @@
 
 \end{itemize}
 \item on other datasets (connectomics) many methods are based on multi-step pipelines first predicting superpixels
-\item \textit{if we get decent scores on CREMI}: we show that also on neuro-data it is worth to skip the hand-crafted superpixel step and compute the final segmentation directly from the CNN predictions (MWS already showed it on ISBI)
+\item \textit{if we get good scores on CREMI}: we show that also on neuro-data it is worth to skip the hand-crafted superpixel step and compute the final segmentation directly from the CNN affinities (MWS already showed it on the ISBI dataset)
 
 \end{itemize}
