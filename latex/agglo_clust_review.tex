@@ -152,26 +152,26 @@ First line of institution2 address\\
     % \Procedure{SignedGraphEdgeContr}{{\color{blue}bool \emph{addConstraints}}}
       % \State $\mathcal{G}'\gets \mathcal{G}(V,E^+ \cup E^-)$ \Comment{Initialize the contracted graph}
       \State Initialize contracted graph $\mathcal{G}'(V',E')$ from $\mathcal{G}$
-      \State Initialize \texttt{canBeLinked}$(e) \gets$ \texttt{True} $\quad \forall e\in E$
+      \State Initialize \texttt{canBeMerged}$(e) \gets$ \texttt{True} $\quad \forall e\in E$
       \State Sort edges in priority queue (PQ) in desc. order of $|w_e|$ 
       \State
       \While{PQ is \textbf{not} empty}
         \State Pop edge $e_{uv}\in E'$ with highest abs. priority $|\tilde{w}|$
         \State
-        \If{({\color{ForestGreen}\textbf{$\tilde{w} > 0$}}) \textbf{and} \texttt{canBeLinked}$(e_{uv})$}
+        \If{({\color{ForestGreen}\textbf{$\tilde{w} > 0$}}) \textbf{and} \texttt{canBeMerged}$(e_{uv})$}
           
           % \State PQ, $\,E_\dagger,\,\, E' \gets$ \textsc{deleteDoubleEdges}($u,v$)
           
         %   \State Update costs of double edges;
         %   \State Propagate constrained flags of double edges;
           \State Merge nodes $u,v$ and delete $e_{uv}$ from $\mathcal{G}'$
-          \State  Replace double edges in $\mathcal{G}'$ with single
-          \Statex \hspace{\algorithmicindent}\hspace{\algorithmicindent}\hspace{\algorithmicindent}edges and update priorities
+          \State  Replace double edges in $\mathcal{G}'$ with single edges
+          \Statex \hspace{\algorithmicindent}\hspace{\algorithmicindent}\hspace{\algorithmicindent} and update priorities
         \EndIf
-        \State
+        % \State
         \If{({\color{red}\textbf{$\tilde{w} \leq 0$}}) \textbf{and} {\color{blue}\emph{addMustNotLink}}}
           % \State Flag $e_{uv}$ as MustNotLink
-          \State \texttt{canBeLinked}$(e_{uv}) \gets$ \texttt{False}
+          \State \texttt{canBeMerged}$(e_{uv}) \gets$ \texttt{False}
         \EndIf
       \EndWhile
 
