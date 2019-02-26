@@ -38,6 +38,12 @@
 % \makeatother
 % end vertical rule patch for algorithmicx
 
+\usepackage{tabularx}
+\usepackage{lipsum}
+\usepackage{makecell}
+\usepackage[labelformat=simple]{subcaption}
+\renewcommand\thesubfigure{(\alph{subfigure})}
+\usepackage{booktabs}
 
 % Include other packages here, before hyperref.
 
@@ -99,6 +105,195 @@ First line of institution2 address\\
 
 \input{chapters/rel_work.tex}
 
+
+\begin{table*}[t]
+    \centering
+    \begin{subtable}[t!]{0.98\textwidth}\centering
+        \begin{tabular}{c | c | c}
+            \toprule\toprule
+            \makecell{Linkage Criteria\\ (double edges with costs $w_1$ and $w_2$)}                   & \makecell{Algorithm name \\\textbf{without} Must-Not-Link edges}  & \makecell{Algorithm name \\ \textbf{with} Must-Not-Link edges}  \\        
+            \midrule\midrule
+
+            Sum: $w_{\mathrm{new}} = w_1+w_2 $                                 & \thead{Greedy Additive \\ Edge Contraction \cite{levinkov2017comparative}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ \midrule
+            
+            \makecell{$w_{\mathrm{new}}=w_{\tilde{e}}$,$\,
+            \,$ where $\tilde{e}=\mathrm{arg}\max_{e\in \{e_{1},e_{2}\}} \left|w_e\right|$  }  & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
+
+            Arithmetic mean: $w_{\mathrm{new}} = (w_1+w_2) / 2 $                                 & \thead{Hierarchical Clustering \\ with Average Linkage (UPGMA)} & \thead{\textbf{NEW}}\\ \midrule
+
+            Maximum: $w_{\mathrm{new}} = \max \{ w_1, w_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Single Linkage} & \thead{\textbf{NEW}}\\ \midrule
+
+            Minimum: $w_{\mathrm{new}} = \min \{ w_1, w_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Complete Linkage} & \thead{\textbf{NEW}}
+
+
+
+            
+        \end{tabular}
+        \caption{Linkage criteria}
+        \label{tab:linkage-criteria}
+    \end{subtable} 
+\end{table*}
+
+
+\begin{algorithm}
+  \caption{Agglomerative Clustering}
+   \hspace*{\algorithmicindent} \textbf{Inputs:} graph $\mathcal{G}(V,E,W)$; bool {\color{blue}\emph{addMustNotLink}}  \\
+  \hspace*{\algorithmicindent} \textbf{Outputs:} Final clustering and contracted graph $\mathcal{G}'$\\
+  \hspace*{\algorithmicindent} 
+  \begin{algorithmic}[1]
+
+
+    % \Procedure{SignedGraphEdgeContr}{{\color{blue}bool \emph{addConstraints}}}
+      % \State $\mathcal{G}'\gets \mathcal{G}(V,E^+ \cup E^-)$ \Comment{Initialize the contracted graph}
+      \State Initialize contracted graph $\mathcal{G}'(V',E')$ from $\mathcal{G}$
+      \State Sort edges in priority queue PQ in desc. order of $|w_e|$ 
+      \State Set \textsc{canBeLinked}$(e)$ = True, $\forall e\in E$
+      \State
+      \While{PQ is \textbf{not} empty}
+        \State Pop edge $e_{uv}\in E'$ with highest abs. priority $|\tilde{w}|$
+        \State
+
+        \If{({\color{ForestGreen}\textbf{$\tilde{w} > 0$}}) \textbf{and} \textsc{canBeLinked}$(e_{uv})$}
+          
+          % \State PQ, $\,E_\dagger,\,\, E' \gets$ \textsc{deleteDoubleEdges}($u,v$)
+          
+        %   \State Update costs of double edges;
+        %   \State Propagate constrained flags of double edges;
+          \State Merge nodes $u,v$ and delete $e_{uv}$ from $\mathcal{G}'$
+          \State Replace double edges in $\mathcal{G}'$ with single edges with updated priorities
+
+        \EndIf
+        \State
+        \If{({\color{red}\textbf{$\tilde{w} \leq 0$}}) \textbf{and} {\color{blue}\emph{addMustNotLink}}}
+          % \State Flag $e_{uv}$ as MustNotLink
+          \State Set \textsc{canBeLinked}$(e_{uv})$ to False
+        \EndIf
+      \EndWhile
+
+
+      % \For{$e  \in E$ in descending order of absolute costs $|W(e)|$}
+      %   \If{({\color{ForestGreen}\textbf{$W(e) > 0$}}) \textbf{AND} (edge is not constrained)}
+      %     \State Contract edge $e$ in the graph $\mathcal{G}'$;
+      %     \State Update costs of double edges;
+      %     \State Propagate constrained flags of double edges;
+      %     % \For{every new double edge}
+      %     %   \State Delete double edges
+      %     %   \State Insert new one with updated cost
+      %     % \EndFor
+      %   \EndIf
+      %   \If{({\color{red}\textbf{$W(e) \leq 0$}}) \textbf{AND} ({\color{blue}\emph{addConstraints}})}
+      %     \State Flag edge $e$ as constrained
+      %   \EndIf
+      % \EndFor
+      \State
+      \State
+      \Return $\mathcal{G}'$
+      % \State
+
+
+    % \EndProcedure
+
+  \end{algorithmic}
+\end{algorithm}
+
+
+
+
+
+
+% \section{Algorithm}
+\section{Agglomerative Clustering}
+\begin{itemize}
+\item Define graph formalism and clustering $\Pi$
+\item Description and pseudo-code
+\item Linkage criteria in the table:
+\begin{itemize}
+\item Mutex Watershed \cite{wolf2018mutex}, [proof of equivalence included in Appendix]
+\item Greedy Additive Edge Contraction \cite{levinkov2017comparative}, 
+\item Greedy Fixation \cite{levinkov2017comparative}, 
+\item Hierarchical Agglomerative Clustering with single, complete, average (UPGMA) linkage criteria
+\end{itemize}
+\item Easily generalizable for: learned linkage criteria \cite{nunez2013machine}, something depending on node size \cite{felzenszwalb2004efficient}, quantiles, weighted average (WPGMA) and weighted sum
+
+\item Comment about must-not-link relations: they give high priority to the most confident repulsive edges 
+\item I don't think I need to mention the merge tree (although it could be easily deduced from the code, as a sequence of clustering)
+\item comment about complexity (depends on the linkage criteria) and how dense is the graph (check PQ update)
+\end{itemize}
+
+
+\section{Experiments}
+\begin{itemize}
+\item define pixel grid graph and long range connections
+\item probability of long-range connections
+\end{itemize}
+
+
+% \begin{tabularx}{\columnwidth}{ X | c | c }
+%   \toprule
+%   \toprule
+% Linkage Criteria                   & w/o MNLE & with MNLE \\        
+%             \midrule\midrule
+%   $w(e_{3})=w(e_{1})+w(e_{2})$  \xdef\tempwidth{\the\linewidth} & top\\\hline
+%   \multicolumn{1}{|m{\tempwidth}|}{\lipsum*[1]} & center\\\hline
+%   \multicolumn{1}{|b{\tempwidth}|}{\lipsum*[1]} & bottom\\\hline
+% \end{tabularx}
+
+
+
+\subsection{Qualitative comparison}
+\begin{itemize}
+\item find good way to represent agglomeration order
+\item can we display the must-not-link edges...?
+\end{itemize}
+\subsection{Noise experiments}
+
+\subsection{Comparison on CREMI and cityscapes}
+
+\section{Conclusions}
+
+\begin{table*}[t]
+    \centering
+    \begin{subtable}[t!]{0.98\textwidth}\centering
+        \begin{tabular}{c | c }
+            \toprule\toprule
+            \makecell{Algorithm name} & \makecell{Algorithm description and \\linkage criteria}    \\
+            \midrule\midrule
+
+            Weighted Arithmetic Mean (WPGMA) & \thead{Assign a weighting $\alpha_e \in \mathbb{R}^+$, $\forall e \in E$ \\ \\ Linkage criteria: $w_{\mathrm{new}} = \frac{\alpha_1 w_1 +\alpha_2 w_2}{\alpha_1 + \alpha_2} $}  \\ \midrule
+            
+            \makecell{Felzenszwalb Efficient \\Graph-based Image Segmentation \cite{felzenszwalb2004efficient}}  & \thead{...}  \\ \midrule
+
+            \makecell{Quantile Agglomeration Clustering (...?)}  & \thead{...}  \\ \midrule
+
+            \makecell{Graph-based active learning \\of agglomeration (GALA) \cite{nunez2013machine}}  & \thead{Assign set of edge features $\phi^{\mathrm{I}}_e$ and \\node features $\phi^{\mathrm{II}}_u$, $\forall u \in V$, $\forall e \in E$. \\ \\ A classifier $f$ with parameters $\theta$ predicts and updates\\ the cost of an edge: $w_e = f(\phi^{\mathrm{I}}_e, \phi^{\mathrm{II}}_u, \phi^{\mathrm{II}}_v; \theta)$, $\forall e_{uv} \in E$} \\ \midrule
+
+            % \makecell{$w_{\mathrm{new}}=w_{\tilde{e}}$,$\,
+            % \,$ where $\tilde{e}=\mathrm{arg}\max_{e\in \{e_{1},e_{2}\}} \left|w_e\right|$  }  & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
+
+            % Arithmetic mean: $w_{\mathrm{new}} = (w_1+w_2) / 2 $                                 & \thead{Hierarchical Clustering \\ with Average Linkage (UPGMA)} & \thead{\textbf{NEW}}\\ \midrule
+
+            % Maximum: $w_{\mathrm{new}} = \max \{ w_1, w_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Single Linkage} & \thead{\textbf{NEW}}\\ \midrule
+
+            % Minimum: $w_{\mathrm{new}} = \min \{ w_1, w_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Complete Linkage} & \thead{\textbf{NEW}}
+
+
+
+            
+        \end{tabular}
+        \caption{Linkage criteria}
+        \label{tab:linkage-criteria}
+    \end{subtable} 
+\end{table*}
+
+{\small
+\bibliographystyle{ieee}
+\bibliography{agglo_clust}
+}
+
+\section{Supplementary Material}
+\begin{itemize}
+\item Equivalence Mutex Watershed and Greedy Edge Contraction
+\end{itemize}
 
 \begin{algorithm}
   \caption{Graph Agglomerative Clustering}
@@ -197,54 +392,6 @@ First line of institution2 address\\
   \end{algorithmic}
   
 \end{algorithm}
-
-
-
-% \section{Algorithm}
-\section{Agglomerative Clustering}
-\begin{itemize}
-\item Define graph formalism and clustering $\Pi$
-\item Description and pseudo-code
-\item Linkage criteria in the table:
-\begin{itemize}
-\item Mutex Watershed \cite{wolf2018mutex}, [proof of equivalence included in Appendix]
-\item Greedy Additive Edge Contraction \cite{levinkov2017comparative}, 
-\item Greedy Fixation \cite{levinkov2017comparative}, 
-\item Hierarchical Agglomerative Clustering with single, complete, average (UPGMA) linkage criteria
-\end{itemize}
-\item Easily generalizable for: learned linkage criteria \cite{nunez2013machine}, something depending on node size \cite{felzenszwalb2004efficient}, quantiles, weighted average (WPGMA) and weighted sum
-
-\item Comment about must-not-link relations: they give high priority to the most confident repulsive edges 
-\item I don't think I need to mention the merge tree (although it could be easily deduced from the code, as a sequence of clustering)
-\item comment about complexity (depends on the linkage criteria) and how dense is the graph (check PQ update)
-\end{itemize}
-
-
-\section{Experiments}
-\begin{itemize}
-\item define pixel grid graph and long range connections
-\item probability of long-range connections
-\end{itemize}
-\subsection{Qualitative comparison}
-\begin{itemize}
-\item find good way to represent agglomeration order
-\item can we display the must-not-link edges...?
-\end{itemize}
-\subsection{Noise experiments}
-
-\subsection{Comparison on CREMI and cityscapes}
-
-\section{Conclusions}
-
-{\small
-\bibliographystyle{ieee}
-\bibliography{agglo_clust}
-}
-
-\section{Supplementary Material}
-\begin{itemize}
-\item Equivalence Mutex Watershed and Greedy Edge Contraction
-\end{itemize}
 
 
 \end{document}
