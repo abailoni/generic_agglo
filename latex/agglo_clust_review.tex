@@ -11,6 +11,11 @@
 \PassOptionsToPackage{noend}{algpseudocode}% comment out if want end's to show
 \usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 
+\makeatletter
+\newcommand*{\skipnumber}[2][1]{%
+   {\renewcommand*{\alglinenumber}[1]{}\State #2}%
+   \addtocounter{ALG@line}{-#1}}
+\makeatother
 
 % \newcommand*{\algrule}[1][\algorithmicindent]{\makebox[#1][l]{\hspace*{.5em}\vrule height .75\baselineskip depth .25\baselineskip}}%
 
@@ -129,15 +134,16 @@ First line of institution2 address\\
 
             
         \end{tabular}
-        \caption{Linkage criteria}
-        \label{tab:linkage-criteria}
+        % \caption{Linkage criteria}
     \end{subtable} 
+    \caption{Algorithms and linkage criteria}
+        \label{tab:linkage-criteria}
 \end{table*}
 
 
 \begin{algorithm}
   \caption{Agglomerative Clustering}
-   \hspace*{\algorithmicindent} \textbf{Inputs:} graph $\mathcal{G}(V,E,W)$; bool {\color{blue}\emph{addMustNotLink}}  \\
+   \hspace*{\algorithmicindent} \textbf{Inputs:} graph $\mathcal{G}(V,E,W)$; boolean {\color{blue}\emph{addMustNotLink}}  \\
   \hspace*{\algorithmicindent} \textbf{Outputs:} Final clustering and contracted graph $\mathcal{G}'$\\
   \hspace*{\algorithmicindent} 
   \begin{algorithmic}[1]
@@ -146,27 +152,26 @@ First line of institution2 address\\
     % \Procedure{SignedGraphEdgeContr}{{\color{blue}bool \emph{addConstraints}}}
       % \State $\mathcal{G}'\gets \mathcal{G}(V,E^+ \cup E^-)$ \Comment{Initialize the contracted graph}
       \State Initialize contracted graph $\mathcal{G}'(V',E')$ from $\mathcal{G}$
-      \State Sort edges in priority queue PQ in desc. order of $|w_e|$ 
-      \State Set \textsc{canBeLinked}$(e)$ = True, $\forall e\in E$
+      \State Initialize \texttt{canBeLinked}$(e) \gets$ \texttt{True} $\quad \forall e\in E$
+      \State Sort edges in priority queue (PQ) in desc. order of $|w_e|$ 
       \State
       \While{PQ is \textbf{not} empty}
         \State Pop edge $e_{uv}\in E'$ with highest abs. priority $|\tilde{w}|$
         \State
-
-        \If{({\color{ForestGreen}\textbf{$\tilde{w} > 0$}}) \textbf{and} \textsc{canBeLinked}$(e_{uv})$}
+        \If{({\color{ForestGreen}\textbf{$\tilde{w} > 0$}}) \textbf{and} \texttt{canBeLinked}$(e_{uv})$}
           
           % \State PQ, $\,E_\dagger,\,\, E' \gets$ \textsc{deleteDoubleEdges}($u,v$)
           
         %   \State Update costs of double edges;
         %   \State Propagate constrained flags of double edges;
           \State Merge nodes $u,v$ and delete $e_{uv}$ from $\mathcal{G}'$
-          \State Replace double edges in $\mathcal{G}'$ with single edges with updated priorities
-
+          \State  Replace double edges in $\mathcal{G}'$ with single
+          \Statex \hspace{\algorithmicindent}\hspace{\algorithmicindent}\hspace{\algorithmicindent}edges and update priorities
         \EndIf
         \State
         \If{({\color{red}\textbf{$\tilde{w} \leq 0$}}) \textbf{and} {\color{blue}\emph{addMustNotLink}}}
           % \State Flag $e_{uv}$ as MustNotLink
-          \State Set \textsc{canBeLinked}$(e_{uv})$ to False
+          \State \texttt{canBeLinked}$(e_{uv}) \gets$ \texttt{False}
         \EndIf
       \EndWhile
 
@@ -280,9 +285,10 @@ First line of institution2 address\\
 
             
         \end{tabular}
-        \caption{Linkage criteria}
+        % \caption{Linkage criteria}
         \label{tab:linkage-criteria}
     \end{subtable} 
+    \caption{Linkage criteria 2}
 \end{table*}
 
 {\small
