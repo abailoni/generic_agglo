@@ -110,6 +110,22 @@ First line of institution2 address\\
 
 \input{chapters/rel_work.tex}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/edge_contraction.jpeg}
+\caption{\small 
+Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; after nodes $u$ and $v$ are merged and $e_{uv}$ is deleted, there are two double edges $e_1$ and $e_2$ left in the graph. 
+\label{fig:example_non_unique_weights_1}}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.45\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust.jpeg}
+\caption{\small 
+Example of agglomerative clustering on signed graph with sum update rule and... The final clustering is given by one single cluster
+\label{fig:example_non_unique_weights_1}}
+\end{figure}
+
 
 \begin{table*}[t]
     \centering
@@ -202,6 +218,13 @@ First line of institution2 address\\
 \end{algorithm}
 
 
+\begin{figure}
+\centering
+\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust_with_nonlink.jpeg}
+\caption{\small 
+Example of agglomerative clustering on signed graph with sum update rule and... The final clustering is given by two clusters
+\label{fig:example_non_unique_weights_1}}
+\end{figure}
 
 
 
@@ -266,7 +289,7 @@ First line of institution2 address\\
 
             Weighted Arithmetic Mean (WPGMA) & \thead{Assign a weighting $\alpha_e \in \mathbb{R}^+$, $\forall e \in E$ \\ \\ Linkage criteria: $w_{\mathrm{new}} = \frac{\alpha_1 w_1 +\alpha_2 w_2}{\alpha_1 + \alpha_2} $}  \\ \midrule
             
-            \makecell{Felzenszwalb Efficient \\Graph-based Image Segmentation \cite{felzenszwalb2004efficient}}  & \thead{...}  \\ \midrule
+            \makecell{Felzenszwalb Efficient \\Graph-based Image Segmentation \cite{felzenszwalb2004efficient}}  & \thead{Initially all edges have positive weights }  \\ \midrule
 
             \makecell{Quantile Agglomeration Clustering (...?)}  & \thead{...}  \\ \midrule
 
