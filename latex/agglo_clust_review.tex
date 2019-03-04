@@ -117,54 +117,6 @@ Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; 
 \label{fig:example_non_unique_weights_1}}
 \end{figure}
 
-
-\input{chapters/rel_work.tex}
-
-
-\begin{figure}
-\centering
-\includegraphics[width=0.45\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust.jpeg}
-\caption{\small 
-Example of agglomerative clustering on signed graph with sum update rule and... The final clustering is given by one single cluster
-\label{fig:example_non_unique_weights_1}}
-\end{figure}
-
-
-\begin{table*}[t]
-    \centering
-    \begin{subtable}[t!]{0.98\textwidth}\centering
-        \begin{tabular}{r l || c | c | c}
-            % \toprule\toprule
-             & & \textbf{Unsigned graphs}  & \multicolumn{2}{c}{\textbf{Signed graphs}}  \\        
-            \cmidrule(l{.15em}){3-5}
-            % \cline{4-5}
-            & & \multirow{2}{*}{\thead{Output: hierarchy \\ of clusters}} &  \multicolumn{2}{c}{\thead{Use Cannot-Link-Constraints:}} \\        
-           
-            & & &  \thead{NO} & \thead{YES} \\        
-            % \cmidrule[0.3em]{3-5}
-            % \midrule[0.15em]
-            \midrule\midrule
-            Sum: & $f(e_1,e_2) = W(e_1)+W(e_2)$ & \thead{Hierarchical clustering  \\with Sum Linkage} & \thead{Greedy Additive \\ Edge Contraction \cite{levinkov2017comparative}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ \midrule
-            
-            \makecell[r]{Absolute \\ maximum:} & \makecell[l]{$f(e_1,e_2) =W\Big(\argmax_{\{e_{1},e_{2}\}} \big|W(e) \big| \Big)$}   & \thead{Hierarchical clustering \\with Single Linkage} & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
-
-            \makecell[r]{Arithmetic \\mean:} & $f(e_1,e_2) = \frac{W(e_1)+W(e_2)}{2} $                                 & \thead{Hierarchical Clustering \\ with Average Linkage \\(UPGMA)} & \thead{Signed Hierarchical Clust. \\ with Average Linkage \\ and threshold at $w=0$} & \thead{\textbf{NEW}}\\ \midrule
-
-            Maximum: & $f(e_1,e_2) = \max \{ W(e_1), W(e_2) \}  $                                 & \thead{Hierarchical Clustering \\ with Single Linkage} & \thead{Signed Hierarchical Clust. \\ with Single Linkage \\ and threshold at $w=0$} & \thead{\textbf{NEW}}\\ \midrule
-
-            Minimum:& $f(e_1,e_2) = \min \{ W(e_1), W(e_2) \}  $                                 & \thead{Hierarchical Clustering \\ with Complete Linkage}  & \thead{Signed Hierarchical Clust. \\ with Complete Linkage \\ and threshold at $w=0$} & \thead{\textbf{NEW}}
-
-
-
-            
-        \end{tabular}
-        % \caption{Linkage criteria}
-    \end{subtable} 
-    \caption{List of update rules $f$ given a pair of double edges $(e_1, e_2)$ and the corresponding algorithm names on unsigned and signed graphs.}
-    \label{tab:linkage-criteria}
-\end{table*}
-
-
 \begin{algorithm}
   \caption{Generic Agglomerative Clustering}
    \hspace*{\algorithmicindent} \textbf{Inputs:} graph $\mathcal{G}(V,E,W)$; bool {\color{blue}\texttt{useCannotLink}}  \\
@@ -228,16 +180,66 @@ Example of agglomerative clustering on signed graph with sum update rule and... 
     % \EndProcedure
 
   \end{algorithmic}
+  \label{main_alg}
 \end{algorithm}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.45\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust.jpeg}
+\caption{\small 
+Example of agglomerative clustering on signed graph with sum update rule and without Cannot-Link-Constraints. The final clustering is given by one single cluster.
+\label{fig:example_non_unique_weights_1}}
+\end{figure}
 
 
 \begin{figure}
 \centering
 \includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust_with_nonlink.jpeg}
 \caption{\small 
-Example of agglomerative clustering on signed graph with sum update rule and... The final clustering is given by two clusters
-\label{fig:example_non_unique_weights_1}}
+Example of agglomerative clustering on signed graph with sum update rule and using Cannot-Link-Constraints. Edges flagged with \texttt{canBeMerged} = \texttt{False} are highlighted in pink. 
+\label{fig:example_non_unique_weights_2}}
 \end{figure}
+
+
+\begin{table*}[h]
+    \centering
+    \begin{subtable}[t!]{0.98\textwidth}\centering
+        \begin{tabular}{r l || c | c | c}
+            % \toprule\toprule
+             & & \textbf{Unsigned graphs}  & \multicolumn{2}{c}{\textbf{Signed graphs}}  \\        
+            \cmidrule(l{.15em}){3-5}
+            % \cline{4-5}
+            & & \multirow{2}{*}{\thead{Output: hierarchy \\ of clusters}} &  \multicolumn{2}{c}{\thead{Use Cannot-Link-Constraints:}} \\        
+           
+            & & &  \thead{NO} & \thead{YES} \\        
+            % \cmidrule[0.3em]{3-5}
+            % \midrule[0.15em]
+            \midrule\midrule
+            Sum: & $f(e_1,e_2) = W(e_1)+W(e_2)$ & \thead{Hierarchical clustering  \\with Sum Linkage} & \thead{Greedy Additive \\ Edge Contraction \cite{levinkov2017comparative}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ \midrule
+            
+            \makecell[r]{Absolute \\ maximum:} & \makecell[l]{$f(e_1,e_2) =W\Big(\argmax_{\{e_{1},e_{2}\}} \big|W(e) \big| \Big)$}   & \thead{Hierarchical clustering \\with Single Linkage} & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
+
+            \makecell[r]{Arithmetic \\mean:} & $f(e_1,e_2) = \frac{W(e_1)+W(e_2)}{2} $                                 & \thead{Hierarchical Clustering \\ with Average Linkage \\(UPGMA)} & \thead{Signed Hierarchical Clust. \\ with Average Linkage \\ and threshold at $w=0$} & \thead{\textbf{NEW}}\\ \midrule
+
+            Maximum: & $f(e_1,e_2) = \max \{ W(e_1), W(e_2) \}  $                                 & \thead{Hierarchical Clustering \\ with Single Linkage} & \thead{Signed Hierarchical Clust. \\ with Single Linkage \\ and threshold at $w=0$} & \thead{\textbf{NEW}}\\ \midrule
+
+            Minimum:& $f(e_1,e_2) = \min \{ W(e_1), W(e_2) \}  $                                 & \thead{Hierarchical Clustering \\ with Complete Linkage}  & \thead{Signed Hierarchical Clust. \\ with Complete Linkage \\ and threshold at $w=0$} & \thead{\textbf{NEW}}
+
+
+
+            
+        \end{tabular}
+        % \caption{Linkage criteria}
+    \end{subtable} 
+    \caption{The table lists all the algorithms that can be seen as special cases of the Generic Agglomerative Clustering \ref{main_alg} given a specific update rule $f(e_1,e_2)$ and a type of graph...}
+    \label{tab:linkage-criteria}
+\end{table*}
+
+
+\input{chapters/rel_work.tex}
+
+
 
 
 
