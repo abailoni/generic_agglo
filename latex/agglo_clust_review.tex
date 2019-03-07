@@ -113,7 +113,7 @@ First line of institution2 address\\
 \centering
 \includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/edge_contraction.jpeg}
 \caption{\small 
-Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; after nodes $u$ and $v$ are merged and $e_{uv}$ is deleted, there are two double edges $e_1$ and $e_2$ left in the graph. 
+Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; after nodes $u$ and $v$ are merged and $e_{uv}$ is deleted, there are two double edges $e_1$ and $e_2$ left in the graph.  \TODO{Rotate drawings to optimize space}
 \label{fig:example_non_unique_weights_1}}
 \end{figure}
 
@@ -128,8 +128,8 @@ Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; 
     % \Procedure{SignedGraphEdgeContr}{{\color{blue}bool \emph{addConstraints}}}
       % \State $\mathcal{G}'\gets \mathcal{G}(V,E^+ \cup E^-)$ \Comment{Initialize the contracted graph}
       \State Initialize contracted graph $\mathcal{G}'(V',E')$ from $\mathcal{G}$
-      \State Initialize \texttt{canBeMerged}$[e] \gets$ \texttt{True} $\quad \forall e\in E$
-      \State Sort edges in priority queue (PQ) in desc. order of $|w_e|$ 
+      \State Initialize \texttt{canBeMerged}$[e] \gets$ \texttt{True} $\,\,\, \forall e\in E$
+      \State Sort edges in priority queue (PQ) in desc. order of $|W_e|$ 
       \State
       \While{PQ is \textbf{not} empty}
         \State Pop edge $e_{uv}\in E'$ with highest abs. priority $|\tilde{w}|$
@@ -142,7 +142,8 @@ Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; 
         %   \State Propagate constrained flags of double edges;
           \State Contract $e_{uv}$ in $\mathcal{G}'$
           \For{every new pair of double edges $(e_1,e_2)$}
-            \State Use update rule $f(e_1,e_2)$ (see Table 1) to
+            \State Get priorities $\tilde{w}_1, \tilde{w}_2$ of $e_1,e_2$
+            \State Use update rule $f(\tilde{w}_1,\tilde{w}_2)$ (see Table 1) to 
             \Statex \hspace{\algorithmicindent}\hspace{\algorithmicindent}\hspace{\algorithmicindent}\hspace{\algorithmicindent} update priority of $e_1$
             \State Delete $e_2$ from $\mathcal{G}'$
           \EndFor
@@ -207,24 +208,24 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
     \begin{subtable}[t!]{0.98\textwidth}\centering
         \begin{tabular}{r l || c | c | c}
             % \toprule\toprule
-             & & \textbf{Unsigned graphs}  & \multicolumn{2}{c}{\textbf{Signed graphs}}  \\        
-            \cmidrule(l{.15em}){3-5}
+             & &  \multirow{3}{*}{\textbf{Unsigned graphs}}  & \multicolumn{2}{c}{\textbf{Signed graphs}}  \\        
+            % \cmidrule(l{.15em}){4-5}
             % \cline{4-5}
-            & & \multirow{2}{*}{\thead{Output: hierarchy \\ of clusters}} &  \multicolumn{2}{c}{\thead{Use Cannot-Link-Constraints:}} \\        
+            & & &  \multicolumn{2}{c}{\thead{Use Cannot-Link-Constraints:}} \\        
            
             & & &  \thead{NO} & \thead{YES} \\        
             % \cmidrule[0.3em]{3-5}
             % \midrule[0.15em]
             \midrule\midrule
-            Sum: & $f(e_1,e_2) = W(e_1)+W(e_2)$ & \thead{Hierarchical clustering  \\with Sum Linkage} & \thead{Greedy Additive \\ Edge Contraction \cite{levinkov2017comparative}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ \midrule
+            Sum: & $f(\tilde{w}_1,\tilde{w}_2) = \tilde{w}_1+\tilde{w}_2$ & \thead{Hierarchical clustering  \\with Sum Linkage} & \thead{Greedy Additive \\ Edge Contraction \cite{levinkov2017comparative}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ \midrule
             
-            \makecell[r]{Absolute \\ maximum:} & \makecell[l]{$f(e_1,e_2) =W\Big(\argmax_{\{e_{1},e_{2}\}} \big|W(e) \big| \Big)$}   & \thead{Hierarchical clustering \\with Single Linkage} & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
+            \makecell[r]{Absolute \\ maximum:} & \makecell[l]{$f(\tilde{w}_1,\tilde{w}_2) =\argmax_{\tilde{w}\in\{\tilde{w}_{1},\tilde{w}_{2}\}} \big|\tilde{w} \big| $}   & \thead{Hierarchical clustering \\with Single Linkage \cite{lance1967general}} & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
 
-            \makecell[r]{Arithmetic \\mean:} & $f(e_1,e_2) = \frac{W(e_1)+W(e_2)}{2} $                                 & \thead{Hierarchical Clustering \\ with Average Linkage \\(UPGMA)} & \thead{Signed Hierarchical Clust. \\ with Average Linkage \\ and threshold at $w=0$} & \thead{\textbf{NEW}}\\ \midrule
+            \makecell[r]{Arithmetic \\mean:} & $f(\tilde{w}_1,\tilde{w}_2) = \mathrm{weightedAvg}\{ \tilde{w}_1, \tilde{w}_2 \} $                                 & \thead{Hierarchical Clustering \\ with Average Linkage \cite{lance1967general} \\(UPGMA)} & \thead{Signed Agglomerative Clust. \\ with Average Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
 
-            Maximum: & $f(e_1,e_2) = \max \{ W(e_1), W(e_2) \}  $                                 & \thead{Hierarchical Clustering \\ with Single Linkage} & \thead{Signed Hierarchical Clust. \\ with Single Linkage \\ and threshold at $w=0$} & \thead{\textbf{NEW}}\\ \midrule
+            Maximum: & $f(\tilde{w}_1,\tilde{w}_2) = \max \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Single Linkage \cite{lance1967general}} & \thead{Signed Agglomerative Clust. \\ with Single Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
 
-            Minimum:& $f(e_1,e_2) = \min \{ W(e_1), W(e_2) \}  $                                 & \thead{Hierarchical Clustering \\ with Complete Linkage}  & \thead{Signed Hierarchical Clust. \\ with Complete Linkage \\ and threshold at $w=0$} & \thead{\textbf{NEW}}
+            Minimum:& $f(\tilde{w}_1,\tilde{w}_2) = \min \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Complete Linkage \cite{lance1967general}}  & \thead{Signed Agglomerative Clust. \\ with Complete Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}
 
 
 
@@ -245,7 +246,7 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
 
 
 % \section{Algorithm}
-\section{Agglomerative Clustering}
+\section{Generic Agglomerative Clustering Framework}
 \begin{itemize}
 \item Define graph formalism and clustering $\Pi$
 \item Description and pseudo-code
@@ -256,6 +257,7 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
 \item Greedy Fixation \cite{levinkov2017comparative}, 
 \item Hierarchical Agglomerative Clustering with single, complete, average (UPGMA) linkage criteria
 \end{itemize}
+\item comment about the fact that sum is not an ultra-metric (say better)
 \item Easily generalizable for: learned linkage criteria \cite{nunez2013machine}, something depending on node size \cite{felzenszwalb2004efficient}, quantiles, weighted average (WPGMA) and weighted sum
 
 \item Comment about must-not-link relations: they give high priority to the most confident repulsive edges 
@@ -263,11 +265,19 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
 \item comment about complexity (depends on the linkage criteria) and how dense is the graph (check PQ update)
 \end{itemize}
 
+\section{Experimental setup}
+\begin{itemize}
+\item Define long-range grid graph
+\item Introduce "Poisson" random graph with a given probability of long-range connections
+\item Define predictions of the CNN (pseudo probabilities)
+\item Define possible mappings to signed costs
+\item Comment about the short- and long-range distinction in the MWS paper: it does not work that well in practice (applying post-processing to remove small segments is easier and better solution)
+\end{itemize}
 
 \section{Experiments}
+\subsection{Tested datasets}
 \begin{itemize}
-\item define pixel grid graph and long range connections
-\item probability of long-range connections
+\item Define offset patterns, trained networks (loss, etc...) and setups on cremi and cityscapes
 \end{itemize}
 
 
@@ -283,14 +293,21 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
 
 
 
-\subsection{Qualitative comparison}
+\subsection{First set of experiments}
 \begin{itemize}
-\item find good way to represent agglomeration order
-\item can we display the must-not-link edges...?
+  \item compare different choices of signed-cost-mappings
+  \item rule out single and complete linkage
+  \item qualitative comparison: find good way to represent agglomeration order (can we display the must-not-link edges...?)
 \end{itemize}
 \subsection{Noise experiments}
+\begin{itemize}
+  \item Define noise and give explanation
+  \item 
+  \item 
+\end{itemize}
 
-\subsection{Comparison on CREMI and cityscapes}
+\subsection{Scores on CREMI and cityscapes}
+
 
 \section{Conclusions}
 
