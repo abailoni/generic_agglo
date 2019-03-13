@@ -111,7 +111,7 @@ First line of institution2 address\\
 
 \begin{figure}
 \centering
-\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/edge_contraction.jpeg}
+\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/edge_contraction.jpg}
 \caption{\small 
 Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; after nodes $u$ and $v$ are merged and $e_{uv}$ is deleted, there are two double edges $e_1$ and $e_2$ left in the graph.  \TODO{Rotate drawings to optimize space}
 \label{fig:example_non_unique_weights_1}}
@@ -187,7 +187,7 @@ Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; 
 
 \begin{figure}
 \centering
-\includegraphics[width=0.45\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust.jpeg}
+\includegraphics[width=0.45\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust.jpg}
 \caption{\small 
 Example of agglomerative clustering on signed graph with sum update rule and without Cannot-Link-Constraints. The final clustering is given by one single cluster.
 \label{fig:example_non_unique_weights_1}}
@@ -196,7 +196,7 @@ Example of agglomerative clustering on signed graph with sum update rule and wit
 
 \begin{figure}
 \centering
-\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust_with_nonlink.jpeg}
+\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust_with_nonlink.jpg}
 \caption{\small 
 Example of agglomerative clustering on signed graph with sum update rule and using Cannot-Link-Constraints. Edges flagged with \texttt{canBeMerged} = \texttt{False} are highlighted in pink. 
 \label{fig:example_non_unique_weights_2}}
@@ -217,15 +217,15 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
             % \cmidrule[0.3em]{3-5}
             % \midrule[0.15em]
             \midrule\midrule
-            Sum: & $f(\tilde{w}_1,\tilde{w}_2) = \tilde{w}_1+\tilde{w}_2$ & \thead{Hierarchical clustering  \\with Sum Linkage} & \thead{Greedy Additive \\ Edge Contraction \cite{levinkov2017comparative}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ \midrule
+            Sum: & $f(\tilde{w}_1,\tilde{w}_2) = \tilde{w}_1+\tilde{w}_2$ & \thead{Sum Linkage\\Hierarchical Clustering} & \thead{Greedy Additive \\ Edge Contraction \cite{levinkov2017comparative}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ \midrule
             
-            \makecell[r]{Absolute \\ maximum:} & \makecell[l]{$f(\tilde{w}_1,\tilde{w}_2) =\argmax_{\tilde{w}\in\{\tilde{w}_{1},\tilde{w}_{2}\}} \big|\tilde{w} \big| $}   & \thead{Hierarchical clustering \\with Single Linkage \cite{lance1967general}} & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
+            \makecell[r]{Absolute \\ maximum:} & \makecell[l]{$f(\tilde{w}_1,\tilde{w}_2) =\argmax_{\tilde{w}\in\{\tilde{w}_{1},\tilde{w}_{2}\}} \big|\tilde{w} \big| $}   & \thead{Single Linkage\\Hierarchical Clustering\\ \cite{lance1967general}} & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
 
-            \makecell[r]{Arithmetic \\mean:} & $f(\tilde{w}_1,\tilde{w}_2) = \mathrm{weightedAvg}\{ \tilde{w}_1, \tilde{w}_2 \} $                                 & \thead{Hierarchical Clustering \\ with Average Linkage \cite{lance1967general} \\(UPGMA)} & \thead{Signed Agglomerative Clust. \\ with Average Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
+            \makecell[r]{Arithmetic \\mean:} & $f(\tilde{w}_1,\tilde{w}_2) = \mathrm{weightedAvg}\{ \tilde{w}_1, \tilde{w}_2 \} $                                 & \thead{ Average Linkage\\ Hierarchical Clustering \\(UPGMA) \cite{lance1967general}} & \thead{Signed Agglomerative Clust. \\ with Average Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
 
-            Maximum: & $f(\tilde{w}_1,\tilde{w}_2) = \max \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Single Linkage \cite{lance1967general}} & \thead{Signed Agglomerative Clust. \\ with Single Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
+            Maximum: & $f(\tilde{w}_1,\tilde{w}_2) = \max \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Single Linkage\\Hierarchical Clustering\\ \cite{lance1967general}} & \thead{Signed Agglomerative Clust. \\ with Single Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
 
-            Minimum:& $f(\tilde{w}_1,\tilde{w}_2) = \min \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Complete Linkage \cite{lance1967general}}  & \thead{Signed Agglomerative Clust. \\ with Complete Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}
+            Minimum:& $f(\tilde{w}_1,\tilde{w}_2) = \min \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Complete Linkage\\ Hierarchical Clustering \\ \cite{lance1967general}}  & \thead{Signed Agglomerative Clust. \\ with Complete Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}
 
 
 
@@ -265,12 +265,12 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
 \item comment about complexity (depends on the linkage criteria) and how dense is the graph (check PQ update)
 \end{itemize}
 
-\section{Experimental setup}
+\section{Long-range pixel grid graph}
 \begin{itemize}
+\item Define predictions of the classifier (pseudo probabilities) for edge weights
+\item Define possible mappings to signed costs
 \item Define long-range grid graph
 \item Introduce "Poisson" random graph with a given probability of long-range connections
-\item Define predictions of the CNN (pseudo probabilities)
-\item Define possible mappings to signed costs
 \item Comment about the short- and long-range distinction in the MWS paper: it does not work that well in practice (applying post-processing to remove small segments is easier and better solution)
 \end{itemize}
 
@@ -278,6 +278,7 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
 \subsection{Tested datasets}
 \begin{itemize}
 \item Define offset patterns, trained networks (loss, etc...) and setups on cremi and cityscapes
+\item Mention 
 \end{itemize}
 
 
@@ -299,6 +300,99 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
   \item rule out single and complete linkage
   \item qualitative comparison: find good way to represent agglomeration order (can we display the must-not-link edges...?)
 \end{itemize}
+
+
+
+\begin{table*}
+    \centering
+    \begin{subtable}[t!]{0.98\textwidth}\centering
+        \begin{tabular}{c| c | c| c | c | c | c}
+Update rule & \makecell{Use Cannot-Link\\Constraints} & \makecell{Multicut objective} & Runtime (s) & ARAND & VI-merge & VI-split\\ \midrule\midrule
+\textbf{mean} & False & \textbf{-102739991} & {\color{Orange} 3797 } & {\color{ForestGreen} \textbf{0.0708} } & {\color{ForestGreen} 0.286 } & {\color{ForestGreen} 0.428 } \\
+% mean & False & -102730208 & {\color{Orange} 2562 } & {\color{ForestGreen} 0.0715 } & {\color{ForestGreen} 0.292 } & {\color{ForestGreen} 0.423 } \\
+MutexWatershed & False & -102313957 & {\color{ForestGreen} 830 } & {\color{ForestGreen} 0.0754 } & {\color{ForestGreen} 0.291 } & {\color{Orange} 0.471 } \\
+sum & False & -101846418 & {\color{Red} 12681 } & {\color{Orange} 0.1623 } & {\color{Orange} 0.427 } & {\color{ForestGreen} 0.427 } \\
+% sum & False & -101732952 & {\color{Red} 12287 } & {\color{Orange} 0.1624 } & {\color{Orange} 0.436 } & {\color{ForestGreen} 0.390 } \\
+sum & True & -101487448 & {\color{Red} 8497 } & {\color{Orange} 0.1626 } & {\color{Orange} 0.428 } & {\color{ForestGreen} 0.414 } \\
+% sum & True & -100745943 & {\color{Red} 13361 } & {\color{Orange} 0.1574 } & {\color{Orange} 0.410 } & {\color{Orange} 0.451 } \\
+mean & True & -100279671 & {\color{Orange} 4713 } & {\color{Orange} 0.1353 } & {\color{ForestGreen} 0.265 } & {\color{Red} 0.717 } \\
+% mean & True & -99416111 & {\color{Orange} 3445 } & {\color{Orange} 0.1761 } & {\color{ForestGreen} 0.260 } & {\color{Red} 0.822 } \\
+max & True & -98143342 & {\color{Red} 7153 } & {\color{ForestGreen} 0.0792 } & {\color{ForestGreen} 0.292 } & {\color{Orange} 0.496 } \\
+max & False & -48601637 & {\color{ForestGreen} 102 } & {\color{Red} 0.9389 } & {\color{Red} 5.738 } & {\color{ForestGreen} 0.035 } \\
+min & False & 210377447 & {\color{ForestGreen} 493 } & {\color{Red} 0.9263 } & {\color{ForestGreen} 0.233 } & {\color{Red} 4.745 } \\
+min & True & 211183545 & {\color{ForestGreen} 692 } & {\color{Red} 0.9221 } & {\color{ForestGreen} 0.232 } & {\color{Red} 4.714 } \\
+        \end{tabular}
+        % \caption{Linkage criteria}
+    \end{subtable} 
+    \caption{Comparison of update rules on crop of cremi sample C (sorted by multicut energy) }
+    \label{tab:linkage-criteria}
+\end{table*}
+
+\begin{table*}
+    \centering
+    \begin{subtable}[t!]{0.98\textwidth}\centering
+        \begin{tabular}{c| c| c | c}
+        Update rule & \makecell{Use Cannot-Link\\Constraints} & AP & AP 50\%\\ \midrule\midrule
+\textbf{mean} & False & {\color{ForestGreen} 0.3429 } & {\color{ForestGreen} 0.5516 } \\
+% MEAN finetuned affs avg thresh035 use log costs & {\color{ForestGreen} 0.3428 } & {\color{ForestGreen} 0.5493 } \\
+GMIS & - & {\color{ForestGreen} 0.3409 } & {\color{ForestGreen} 0.5465 } \\
+mean & True & {\color{Orange} 0.3154 } & {\color{Orange} 0.5269 } \\
+% MEAN constr finetuned affs avg thresh035 use log costs & {\color{Red} 0.3000 } & {\color{Orange} 0.5140 } \\
+sum & False & {\color{Red} 0.2590 } & {\color{Red} 0.4450 } \\
+% GAEC finetuned affs avg thresh035 dont use log costs & {\color{Red} 0.2371 } & {\color{Red} 0.4187 } \\
+
+
+        \end{tabular}
+        % \caption{Linkage criteria}
+    \end{subtable} 
+    \caption{Results on cityscapes validation set (with finetuned affinities)}
+    \label{tab:linkage-criteria}
+\end{table*}
+
+
+\begin{table*}
+    \centering
+    \begin{subtable}[t!]{0.98\textwidth}\centering
+        \begin{tabular}{c| c| c | c}
+        Update rule & \makecell{Use Cannot-Link\\Constraints} & AP & AP 50\%\\ \midrule\midrule
+GMIS & - & {\color{ForestGreen} 0.3409 } & {\color{ForestGreen} 0.5465 } \\
+mean & False & {\color{Orange} 0.3359 } & {\color{ForestGreen} 0.5416 } \\
+mean & True & {\color{Orange} 0.3315 } & {\color{ForestGreen} 0.5331 } \\
+MutexWatershed & True & {\color{Red} 0.2123 } & {\color{Red} 0.3848 } \\
+SingleLinkage & False & {\color{Red} 0.1935 } & {\color{Red} 0.3615 } \\
+CompleteLinkage & False & {\color{Red} 0.0000 } & {\color{Red} 0.0000 } \\
+
+
+        \end{tabular}
+        % \caption{Linkage criteria}
+    \end{subtable} 
+    \caption{Scores on cityscapes validation set (original affinities trained by GMIS)}
+    \label{tab:linkage-criteria}
+\end{table*}
+
+
+% \begin{table*}
+%     \centering
+%     \begin{subtable}[t!]{0.98\textwidth}\centering
+%         \begin{tabular}{c| c | c | c}
+% Update rule & \makecell{Use Cannot-Link\\Constraints} & \makecell{Multicut objective} & Runtime (s)\\ \midrule\midrule
+% sum & false & \textbf{-150873} & 99 (??) \\
+% sum & true & -150873 & 249 \\
+% MutexWatershed & false & -150854 & 100 \\
+% mean & false & -150850 & 105 \\
+% mean & true & -150848 & 244 \\
+% max & true & -149441 & 459 \\
+% min & true & -147663 & 186 \\
+% min & false & -147663 & 82 \\
+% max & false & -103614 & \textbf{16} \\
+%         \end{tabular}
+%         % \caption{Linkage criteria}
+%     \end{subtable} 
+%     \caption{Compare update-rules on fruit-fly large graph}
+%     \label{tab:linkage-criteria}
+% \end{table*}
+
+
 \subsection{Noise experiments}
 \begin{itemize}
   \item Define noise and give explanation
@@ -311,40 +405,40 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
 
 \section{Conclusions}
 
-\begin{table*}[t]
-    \centering
-    \begin{subtable}[t!]{0.98\textwidth}\centering
-        \begin{tabular}{c | c }
-            \toprule\toprule
-            \makecell{Algorithm name} & \makecell{Algorithm description and \\linkage criteria}    \\
-            \midrule\midrule
+% \begin{table*}[t]
+%     \centering
+%     \begin{subtable}[t!]{0.98\textwidth}\centering
+%         \begin{tabular}{c | c }
+%             \toprule\toprule
+%             \makecell{Algorithm name} & \makecell{Algorithm description and \\linkage criteria}    \\
+%             \midrule\midrule
 
-            Weighted Arithmetic Mean (WPGMA) & \thead{Assign a weighting $\alpha_e \in \mathbb{R}^+$, $\forall e \in E$ \\ \\ Linkage criteria: $w_{\mathrm{new}} = \frac{\alpha_1 w_1 +\alpha_2 w_2}{\alpha_1 + \alpha_2} $}  \\ \midrule
+%             Weighted Arithmetic Mean (WPGMA) & \thead{Assign a weighting $\alpha_e \in \mathbb{R}^+$, $\forall e \in E$ \\ \\ Linkage criteria: $w_{\mathrm{new}} = \frac{\alpha_1 w_1 +\alpha_2 w_2}{\alpha_1 + \alpha_2} $}  \\ \midrule
             
-            \makecell{Felzenszwalb Efficient \\Graph-based Image Segmentation \cite{felzenszwalb2004efficient}}  & \thead{Initially all edges have positive weights }  \\ \midrule
+%             \makecell{Felzenszwalb Efficient \\Graph-based Image Segmentation \cite{felzenszwalb2004efficient}}  & \thead{Initially all edges have positive weights }  \\ \midrule
 
-            \makecell{Quantile Agglomeration Clustering (...?)}  & \thead{...}  \\ \midrule
+%             \makecell{Quantile Agglomeration Clustering (...?)}  & \thead{...}  \\ \midrule
 
-            \makecell{Graph-based active learning \\of agglomeration (GALA) \cite{nunez2013machine}}  & \thead{Assign set of edge features $\phi^{\mathrm{I}}_e$ and \\node features $\phi^{\mathrm{II}}_u$, $\forall u \in V$, $\forall e \in E$. \\ \\ A classifier $f$ with parameters $\theta$ predicts and updates\\ the cost of an edge: $w_e = f(\phi^{\mathrm{I}}_e, \phi^{\mathrm{II}}_u, \phi^{\mathrm{II}}_v; \theta)$, $\forall e_{uv} \in E$} \\ \midrule
+%             \makecell{Graph-based active learning \\of agglomeration (GALA) \cite{nunez2013machine}}  & \thead{Assign set of edge features $\phi^{\mathrm{I}}_e$ and \\node features $\phi^{\mathrm{II}}_u$, $\forall u \in V$, $\forall e \in E$. \\ \\ A classifier $f$ with parameters $\theta$ predicts and updates\\ the cost of an edge: $w_e = f(\phi^{\mathrm{I}}_e, \phi^{\mathrm{II}}_u, \phi^{\mathrm{II}}_v; \theta)$, $\forall e_{uv} \in E$} \\ \midrule
 
-            % \makecell{$w_{\mathrm{new}}=w_{\tilde{e}}$,$\,
-            % \,$ where $\tilde{e}=\mathrm{arg}\max_{e\in \{e_{1},e_{2}\}} \left|w_e\right|$  }  & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
+%             % \makecell{$w_{\mathrm{new}}=w_{\tilde{e}}$,$\,
+%             % \,$ where $\tilde{e}=\mathrm{arg}\max_{e\in \{e_{1},e_{2}\}} \left|w_e\right|$  }  & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
 
-            % Arithmetic mean: $w_{\mathrm{new}} = (w_1+w_2) / 2 $                                 & \thead{Hierarchical Clustering \\ with Average Linkage (UPGMA)} & \thead{\textbf{NEW}}\\ \midrule
+%             % Arithmetic mean: $w_{\mathrm{new}} = (w_1+w_2) / 2 $                                 & \thead{Hierarchical Clustering \\ with Average Linkage (UPGMA)} & \thead{\textbf{NEW}}\\ \midrule
 
-            % Maximum: $w_{\mathrm{new}} = \max \{ w_1, w_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Single Linkage} & \thead{\textbf{NEW}}\\ \midrule
+%             % Maximum: $w_{\mathrm{new}} = \max \{ w_1, w_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Single Linkage} & \thead{\textbf{NEW}}\\ \midrule
 
-            % Minimum: $w_{\mathrm{new}} = \min \{ w_1, w_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Complete Linkage} & \thead{\textbf{NEW}}
+%             % Minimum: $w_{\mathrm{new}} = \min \{ w_1, w_2 \}  $                                 & \thead{Hierarchical Clustering \\ with Complete Linkage} & \thead{\textbf{NEW}}
 
 
 
             
-        \end{tabular}
-        % \caption{Linkage criteria}
-        \label{tab:linkage-criteria}
-    \end{subtable} 
-    \caption{Linkage criteria 2}
-\end{table*}
+%         \end{tabular}
+%         % \caption{Linkage criteria}
+%         \label{tab:linkage-criteria}
+%     \end{subtable} 
+%     \caption{Linkage criteria 2}
+% \end{table*}
 
 {\small
 \bibliographystyle{ieee}
