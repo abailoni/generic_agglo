@@ -9,7 +9,7 @@ Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; 
 \end{figure}
 
 \begin{algorithm}
-  \caption{General Unified Agglomerative Clustering}
+  \caption{Unified Graph Agglomerative Clustering}
    \hspace*{\algorithmicindent} \textbf{Inputs:} graph $\mathcal{G}(V,E,W)$; bool {\color{blue}\texttt{addCannotLink}}  \\
   \hspace*{\algorithmicindent} \textbf{Outputs:} Final clustering and contracted graph $\mathcal{G}'$\\
   \hspace*{\algorithmicindent} 
@@ -130,7 +130,7 @@ Example of agglomerative clustering on signed graph with sum update rule and usi
 
 
 
-\section{General Unified Agglomerative Clustering Algorithm (GUACA)}
+\section{Unified Graph Agglomerative Clustering \\Algorithm}
 In this section we introduce a unified agglomerative clustering algorithm that represents a simple generalized formalization of many agglomerative graph clustering algorithms. It can be used to describe both unsigned clustering algorithms ingesting positive similarities between clusters and signed clustering algorithms using attractive and repulsive cues.\\
 First, we define the graph notation and the concept of cannot-link constraints. Then, we introduce the generalized algorithm and show \UPDATE{how it can be used to introduce several new agglomerative clustering algorithms for graphs with signed weights.}
 
