@@ -1,0 +1,104 @@
+% !TEX root = ../agglo_clust_review.tex
+
+\section{Supplementary Material}
+\begin{itemize}
+\item Equivalence Mutex Watershed and Greedy Edge Contraction
+\end{itemize}
+
+\begin{algorithm}
+  \caption{Graph Agglomerative Clustering}
+\setlength{\parindent}{\algorithmicindent} \textbf{Inputs:}
+     \begin{itemize}[leftmargin=1.3cm,topsep=0.1pt,itemsep=-1.ex]
+    %  \setlength\itemsep{0.em}
+   \item $\mathcal{G}(V,E)$ with $|V|=N$, $|E|=M$
+   \item signed edge weights $w:\,E\rightarrow\mathbb{R}$
+   \item {\color{blue}addMustNotLink} $\in \{ True, False\}$
+   \end{itemize}
+   \vspace{0.4em}
+   
+\setlength{\parindent}{\algorithmicindent} \textbf{Output:} Final clustering $\Pi$
+
+%   \hspace*{\algorithmicindent} \textbf{Inputs:} $\mathcal{G}(V,E)$ with signed costs $w:\,E\rightarrow\mathbb{R}$. \\
+%   Prova \\
+%   \hspace*{\algorithmicindent} \textbf{Outputs:} Final clustering $\Pi$\\
+
+  \hspace*{\algorithmicindent} 
+  \begin{algorithmic}[1]
+
+
+    % \Procedure{GraphEdgeContr}{{\color{blue}bool \emph{addConstraints}}}
+      % \State $\mathcal{G}'\gets \mathcal{G}(V,E^+ \cup E^-)$ \Comment{Initialize the contracted graph}
+      \State $\mathcal{G}'(V', E') \gets \mathcal{G}(V, E)$  \Comment{Contracted graph}
+    %   \State PQ $\gets$ Sort $e\in E$ in descending order of $|w_e|$
+        \State PQ.push$(|w_e|, w_e, e) \quad \forall e \in E $  \Comment{Sort edges by $|w_e|$}
+      
+      \State $\Pi \gets \{ \{v_1\}, ..., \{v_N\} \}$ \Comment{Initial clustering}
+      \State $E_\dagger \gets \{\}$ \Comment{Set of must-not-link edges}
+    %   \State PQ.push$(e,  ) \quad \forall e \in E $  
+    \State
+      \While{PQ is \textbf{not} empty}
+        \State $|\tilde{w}|, \tilde{w}, e_{uv} \gets $ PQ.popHighest()
+        \If{ $e_{uv} \notin E' $} 
+            \State \textbf{continue}
+        \EndIf
+        \If{({\color{ForestGreen}\textbf{$\tilde{w} > 0$}}) \textbf{and} ($e_{uv} \notin E_\dagger$)}
+        %   \State $u,v \gets u,v \in V' : $
+        %   \State $S_u \gets S \in \Pi$ : $ u \in S$
+        %   \State $S_v \gets S \in \Pi$ : $ v \in S$
+          \State PQ, $\,E_\dagger,\,\, E' \gets$ \textsc{deleteDoubleEdges}($u,v$)
+        %   \State mergeDoubleEdges($u,v$) \Comment{Update PQ, $E_\dagger, \mathcal{G}'$}
+          
+        %   \State Update costs of double edges;
+        %   \State Propagate constrained flags of double edges;
+          \State $V' \gets V' \setminus \{ v\}$, $\quad E' \gets E' \setminus \{ e_{uv}\}$
+        %   \State $ S_u \gets S_u \cup S_v$
+          \State $\Pi \gets \Pi \cup \{ S_u^\Pi \cup S_v^\Pi \} \setminus \{ S_u^\Pi, S_v^\Pi \}$
+          % \For{every new double edge}
+          %   \State Delete double edges
+          %   \State Insert new one with updated cost
+          % \EndFor
+        \EndIf
+        \If{({\color{red}\textbf{$\tilde{w} \leq 0$}}) \textbf{and} {\color{blue}addMustNotLink}}
+          \State $ E_\dagger \gets E_\dagger \cup \{e_{uv} \} $
+        \EndIf
+      \EndWhile
+      \State
+    %   \State
+      \Return $\Pi$
+      % \State
+    % \EndProcedure
+
+  \end{algorithmic}
+  \hspace*{2cm} 
+    \begin{algorithmic}[1]
+
+    \Function{DeleteDoubleEdges}{$u,v$}
+      % \State $\mathcal{G}'\gets \mathcal{G}(V,E^+ \cup E^-)$ \Comment{Initialize the contracted graph}
+      \State $\mathcal{N}_u = \{ t \in V' | e_{ut}\in E'  \}$
+      \State $\mathcal{N}_v = \{ t \in V' | e_{vt}\in E'  \}$
+      \For{$t \in \mathcal{N}_u  \cap \mathcal{N}_v$ }
+        \State $|\tilde{w}_1|, \tilde{w}_1, e_1 \gets $ PQ.pop($e_{ut}$)
+        \State $|\tilde{w}_2|, \tilde{w}_2, e_2 \gets $ PQ.pop($e_{vt}$)
+        % \State $e_1, e_2 \gets e_{ut}, e_{vt}$
+        \State $E' \gets E' \setminus \{ e_2\}$ %\Comment{Delete double edge}
+        \If{$e_2 \in E_\dagger $} \Comment{Propagate must-not-link}
+            \State $ E_\dagger \gets E_\dagger \cup \{e_1 \} $
+        \EndIf
+        % \State $\tilde{w}_1, \tilde{w}_2 \gets $ PQ.pop($e_1$), PQ.pop($e_2$)
+        \State $\tilde{w}_{\mathrm{new}} \gets$ \textsc{linkageCriteria}$(\tilde{w}_1, \tilde{w}_2)$
+        \State PQ.push($|\tilde{w}_{\mathrm{new}}|$, $\tilde{w}_{\mathrm{new}}$,  $e_1$)
+        
+        
+      \EndFor
+      
+      \State
+    %   \State
+      \Return PQ, $E_\dagger, E'$
+    %   % \State
+
+
+    \EndFunction
+
+  \end{algorithmic}
+  
+\end{algorithm}

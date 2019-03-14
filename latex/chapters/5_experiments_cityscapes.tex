@@ -1,0 +1,66 @@
+% !TEX root = ../agglo_clust_review.tex
+\subsection{Results on Cityscapes}
+
+\begin{table*}
+    \centering
+    \begin{subtable}[t!]{0.98\textwidth}\centering
+        \begin{tabular}{c| c| c | c}
+        Update rule & \makecell{Use Cannot-Link\\Constraints} & AP & AP 50\%\\ \midrule\midrule
+\textbf{mean} & False & {\color{ForestGreen} 0.3429 } & {\color{ForestGreen} 0.5516 } \\
+% MEAN finetuned affs avg thresh035 use log costs & {\color{ForestGreen} 0.3428 } & {\color{ForestGreen} 0.5493 } \\
+GMIS & - & {\color{ForestGreen} 0.3409 } & {\color{ForestGreen} 0.5465 } \\
+mean & True & {\color{Orange} 0.3154 } & {\color{Orange} 0.5269 } \\
+% MEAN constr finetuned affs avg thresh035 use log costs & {\color{Red} 0.3000 } & {\color{Orange} 0.5140 } \\
+sum & False & {\color{Red} 0.2590 } & {\color{Red} 0.4450 } \\
+% GAEC finetuned affs avg thresh035 dont use log costs & {\color{Red} 0.2371 } & {\color{Red} 0.4187 } \\
+
+
+        \end{tabular}
+        % \caption{Linkage criteria}
+    \end{subtable} 
+    \caption{Results on cityscapes validation set (with finetuned affinities)}
+    \label{tab:linkage-criteria}
+\end{table*}
+
+
+\begin{table*}
+    \centering
+    \begin{subtable}[t!]{0.98\textwidth}\centering
+        \begin{tabular}{c| c| c | c}
+        Update rule & \makecell{Use Cannot-Link\\Constraints} & AP & AP 50\%\\ \midrule\midrule
+GMIS & - & {\color{ForestGreen} 0.3409 } & {\color{ForestGreen} 0.5465 } \\
+mean & False & {\color{Orange} 0.3359 } & {\color{ForestGreen} 0.5416 } \\
+mean & True & {\color{Orange} 0.3315 } & {\color{ForestGreen} 0.5331 } \\
+MutexWatershed & True & {\color{Red} 0.2123 } & {\color{Red} 0.3848 } \\
+SingleLinkage & False & {\color{Red} 0.1935 } & {\color{Red} 0.3615 } \\
+CompleteLinkage & False & {\color{Red} 0.0000 } & {\color{Red} 0.0000 } \\
+
+
+        \end{tabular}
+        % \caption{Linkage criteria}
+    \end{subtable} 
+    \caption{Scores on cityscapes validation set (original affinities trained by GMIS)}
+    \label{tab:linkage-criteria}
+\end{table*}
+
+
+% \begin{table*}
+%     \centering
+%     \begin{subtable}[t!]{0.98\textwidth}\centering
+%         \begin{tabular}{c| c | c | c}
+% Update rule & \makecell{Use Cannot-Link\\Constraints} & \makecell{Multicut objective} & Runtime (s)\\ \midrule\midrule
+% sum & false & \textbf{-150873} & 99 (??) \\
+% sum & true & -150873 & 249 \\
+% MutexWatershed & false & -150854 & 100 \\
+% mean & false & -150850 & 105 \\
+% mean & true & -150848 & 244 \\
+% max & true & -149441 & 459 \\
+% min & true & -147663 & 186 \\
+% min & false & -147663 & 82 \\
+% max & false & -103614 & \textbf{16} \\
+%         \end{tabular}
+%         % \caption{Linkage criteria}
+%     \end{subtable} 
+%     \caption{Compare update-rules on fruit-fly large graph}
+%     \label{tab:linkage-criteria}
+% \end{table*}
