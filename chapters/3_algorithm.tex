@@ -1,12 +1,5 @@
 % !TEX root = ../agglo_clust_review.tex
 
-\begin{figure}
-\centering
-\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/edge_contraction.png}
-\caption{\small 
-Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; after nodes $u$ and $v$ are merged and $e_{uv}$ is deleted, there are two double edges $e_1$ and $e_2$ left in the graph.  \TODO{Rotate drawings to optimize space}
-\label{fig:example_non_unique_weights_1}}
-\end{figure}
 
 \begin{algorithm}
   \caption{Unified Graph Agglomerative Clustering}
@@ -18,12 +11,12 @@ Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; 
 
     % \Procedure{SignedGraphEdgeContr}{{\color{blue}bool \emph{addConstraints}}}
       % \State $\mathcal{G}'\gets \mathcal{G}(V,E^+ \cup E^-)$ \Comment{Initialize the contracted graph}
-      \State Initialize contracted graph $\mathcal{G}'(V',E')$ from $\mathcal{G}$
+      \State Initialize contracted graph $\mathcal{G}'$ from $\mathcal{G}$
       \State Initialize \texttt{canBeMerged}$[e] \gets$ \texttt{True} $\,\,\, \forall e\in E$
       \State Sort edges in priority queue (PQ) in desc. order of $|W_e|$ 
       \State
       \While{PQ is \textbf{not} empty}
-        \State Pop edge $e_{uv}\in E'$ with highest abs. priority $|\tilde{w}|$
+        \State Pop edge $e_{uv}$ in $\mathcal{G}'$ with highest priority $|\tilde{w}|$
         \State
         \If{({\color{ForestGreen}\textbf{$\tilde{w} > 0$}}) \textbf{and} \texttt{canBeMerged}$[e_{uv}]$}
           
@@ -75,98 +68,86 @@ Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; 
   \label{main_alg}
 \end{algorithm}
 
-
 \begin{figure}
 \centering
-\includegraphics[width=0.45\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust.png}
+\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/edge_contraction.png}
 \caption{\small 
-Example of agglomerative clustering on signed graph with sum update rule and without Cannot-Link-Constraints. The final clustering is given by one single cluster.
+Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; after nodes $u$ and $v$ are merged and $e_{uv}$ is deleted, there are two double edges $e_1$ and $e_2$ left in the graph.  \TODO{Rotate drawings to optimize space}
 \label{fig:example_non_unique_weights_1}}
 \end{figure}
 
 
-\begin{figure}
-\centering
-\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/aggl_clust_with_nonlink.png}
-\caption{\small 
-Example of agglomerative clustering on signed graph with sum update rule and using Cannot-Link-Constraints. Edges flagged with \texttt{canBeMerged} = \texttt{False} are highlighted in pink. 
-\label{fig:example_non_unique_weights_2}}
-\end{figure}
 
-
-\begin{table*}[h]
-    \centering
-    \begin{subtable}[t!]{0.98\textwidth}\centering
-        \begin{tabular}{r l || c | c | c}
-            % \toprule\toprule
-             & &  \multirow{3}{*}{\textbf{Unsigned graphs}}  & \multicolumn{2}{c}{\textbf{Signed graphs}}  \\        
-            % \cmidrule(l{.15em}){4-5}
-            % \cline{4-5}
-            & & &  \multicolumn{2}{c}{\thead{Use Cannot-Link-Constraints:}} \\        
-           
-            & & &  \thead{NO} & \thead{YES} \\        
-            % \cmidrule[0.3em]{3-5}
-            % \midrule[0.15em]
-            \midrule\midrule
-            Sum: & $f(\tilde{w}_1,\tilde{w}_2) = \tilde{w}_1+\tilde{w}_2$ & \thead{Sum Linkage\\Hierarchical Clustering} & \thead{Greedy Additive \\ Edge Contraction \cite{levinkov2017comparative}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ \midrule
-            
-            \makecell[r]{Absolute \\ maximum:} & \makecell[l]{$f(\tilde{w}_1,\tilde{w}_2) =\argmax_{\tilde{w}\in\{\tilde{w}_{1},\tilde{w}_{2}\}} \big|\tilde{w} \big| $}   & \thead{Single Linkage\\Hierarchical Clustering\\ \cite{lance1967general}} & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
-
-            \makecell[r]{Arithmetic \\mean:} & $f(\tilde{w}_1,\tilde{w}_2) = \mathrm{weightedAvg}\{ \tilde{w}_1, \tilde{w}_2 \} $                                 & \thead{ Average Linkage\\ Hierarchical Clustering \\(UPGMA) \cite{lance1967general}} & \thead{Signed Agglomerative Clust. \\ with Average Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
-
-            Maximum: & $f(\tilde{w}_1,\tilde{w}_2) = \max \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Single Linkage\\Hierarchical Clustering\\ \cite{lance1967general}} & \thead{Signed Agglomerative Clust. \\ with Single Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
-
-            Minimum:& $f(\tilde{w}_1,\tilde{w}_2) = \min \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Complete Linkage\\ Hierarchical Clustering \\ \cite{lance1967general}}  & \thead{Signed Agglomerative Clust. \\ with Complete Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}
-
-
-
-            
-        \end{tabular}
-        % \caption{Linkage criteria}
-    \end{subtable} 
-    \caption{The table lists all the algorithms that can be seen as special cases of the Generic Agglomerative Clustering \ref{main_alg} given a specific update rule $f(e_1,e_2)$ and a type of graph...}
-    \label{tab:linkage-criteria}
-\end{table*}
-
-
-
-\section{Unified Graph Agglomerative Clustering \\Algorithm}
-In this section we introduce a unified agglomerative clustering algorithm that represents a simple generalized formalization of many agglomerative graph clustering algorithms. It can be used to describe both unsigned clustering algorithms ingesting positive similarities between clusters and signed clustering algorithms using attractive and repulsive cues.\\
+\section{Unified Graph Agglomerative Clustering}
+In this section we introduce a unified agglomerative clustering algorithm that represents a simple generalized formalization of many agglomerative graph clustering algorithms. It can be used to describe both unsigned clustering algorithms ingesting positive cluster similarities and signed clustering algorithms using attractive and repulsive cues.\\
 First, we define the graph notation and the concept of cannot-link constraints. Then, we introduce the generalized algorithm and show \UPDATE{how it can be used to introduce several new agglomerative clustering algorithms for graphs with signed weights.}
 
 \subsection{Graph notation and cannot-link constraints}
 
 \begin{itemize}
-\item Define graph formalism and clustering $\Pi$. Make comment about special case of unsigned graph!
-\item Introduce concept of cannot-link-constraints
-\item From wiki: \emph{Both a must-link and a cannot-link constraint define a relationship between two data instances. A must-link constraint is used to specify that the two instances in the must-link relation should be associated with the same cluster. A cannot-link constraint is used to specify that the two instances in the cannot-link relation should not be associated with the same cluster. These sets of constraints acts as a guide for which a constrained clustering algorithm will attempt to find clusters in a data set which satisfy the specified must-link and cannot-link constraints. Some constrained clustering algorithms will abort if no such clustering exists which satisfies the specified constraints. Others will try to minimize the amount of constraint violation should it be impossible to find a clustering which satisfies the constraints.}
+\item Define graph formalism and clustering $\Pi$. Make comment about special case of unsigned graph
+\item Define multicut and associated energy
+\item A cannot-link-constraint defines a mutual exclusion relationship between two nodes in the graph and is used to specify that the these two nodes should not be associated with the same cluster. (the alg. will introduce them dynamically...)
+\item Given a clustering $\Pi$ and a graph $\mathcal{G}(V,E,W)$, the interaction between two clusters $S_1, S_2 \in \Pi$ is usually defined in terms of a \emph{linkage criterion}, i.e. a function of all the edge weights connecting the two clusters:
+\begin{equation} \label{eq:linkage_criterion_def}
+\begin{gathered}
+\mathcal{L}(S_1,S_2) = \mathcal{L}(\mathcal{W})\quad \\
+   \text{where} \quad \mathcal{W} = \{ W(e_{uv})| u\in S_1, v\in S_2 \}.
+\end{gathered}
+\end{equation}
 
 \end{itemize}
+
+
 \subsection{The algorithm}
 \begin{itemize}
-\item First give intuitive idea of agglomerative clustering
-\item enforce the fact that the cannot-link relations are introduced \textbf{dynamically}
+  \item We now present our first contribution: a unified algorithm for agglomerative graph clustering that can describe in a simple general form many graph partitioning algorithms previously introduced in the literature \UPDATE{and highlights the existence of totally new algorithms}.
+\item We consider a graph $\mathcal{G}(V,E,W)$ with associated signed edge weights, where each node initially represents one cluster.
+\item The proposed graph partitioning algorithm is a general form of agglomerative clustering that outputs a final graph clustering $\Pi$ by progressively merging pairs of neighboring clusters. The algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \ref{fig:general_idea}b and \ref{fig:general_idea}c). 
 
-\item \textbf{Specific description:} The algorithm proceeds as follows: it initializes a contracted graph $\mathcal{G}'$ from the original graph $\mathcal{G}$ and it sorts the edges $e\in E$ in a priority queue (PQ) in descending order of absolute value  of the weight, so that the most attractive and the most repulsive edges are analyzed first. The algorithm has two variants: the first one a
+\item A second variant of the proposed algorithm also introduces cannot-link constraints between clusters during the agglomeration and stops when all the remaining clusters have been previously constrained.
+
+
+\item During the agglomerative process, the interaction between neighboring clusters is defined by the linkage criterion defined in Equation \ref{eq:linkage_criterion_def} and has to be properly recomputed. 
+
+ \item An efficient way of doing this is presented in Algorithm \ref{main_alg}, which proceeds as follows. \UPDATE{TO BE CONTINUED}
+\item The so called contracted graph is initialized from the original graph $\mathcal{G}$ and will represent the clustering $\Pi$ at each iteration of the 
+
+\item \textbf{Specific description:}  The algorithm proceeds as follows: it initializes a contracted graph $\mathcal{G}'$ from the original graph $\mathcal{G}$ and it sorts the edges $e\in E$ in a priority queue (PQ) in descending order of absolute value  of the weight, so that the most attractive and the most repulsive edges are analyzed first. The algorithm has two variants: the first one a
 
 At each iteration, one edge is popped from PQ and it is processed only if it belongs to the contracted graph $\mathcal{G}'$. The algorithm terminates when all edges have been processed. and it has two variants: one adding cannot link constraints and one not using them.
 \item Comment about must-not-link relations: they give high priority to the most confident repulsive edges 
 % \item I don't think I need to mention the merge tree (although it could be easily deduced from the code, as a sequence of clustering)
+\item Mention precise version in the Appendix
 \item comment about complexity (depends on the linkage criteria) and how dense is the graph (check PQ update)
 
+
+\item In the special case of an unsigned graph %$\mathcal{G}(V,E,W:E\rightarrow \mathbb{R}^+)$ 
+ representing strictly positive similarities between nodes, the algorithm then returns only one single cluster as an output (see Fig. \ref{fig:general_idea}a), \UPDATE{together with a merging tree representing the merging order and defining an hierarchy of clusters}.
+
 \end{itemize}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.45\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/cannot-lin-constraints.png}
+\caption{\small 
+Example of agglomerative clustering on signed graph with and without cannot-link constraints. The final clustering is given by one single cluster.
+\label{fig:example_cannot_link_constraints}}
+\end{figure}
+
 
 \subsection{Update rules and associated algorithms}
 \begin{itemize}
-\item Linkage criteria in the table:
-\begin{itemize}
-\item Mutex Watershed \cite{wolf2018mutex}, [proof of equivalence included in Appendix, also showing that adding or not CLC does not change anything]
-\item Greedy Additive Edge Contraction \cite{levinkov2017comparative}, 
-\item Greedy Fixation \cite{levinkov2017comparative}, 
-\item Hierarchical Agglomerative Clustering with single, complete, average (UPGMA) linkage criteria
-\end{itemize}
+\item In this section we will list \UPDATE{ALL} (...) algorithms that can be described using the generalized algorithm we presented and define some new ones
+\item In Table 1 we collected the update rules we tested and compared in this article (correspond to the simplest and cheapest ones to compute). Later we will mention more of them
+\item First unsigned graphs: the merging tree defined by the algorithm (\textbf{define merge tree somewhere..?}) is equivalent to the hierarchical dendrogram (but careful with the sum...) that we have in HC
+\item Then mention CLC and who started using them recently for this type of problem: fixed, then greedyFixation introduced exactly this algorithm as a greedy approx of MC, together with Greedy Additive Edge Contraction
+\item MWS: proposes an efficient implementation of this update rule (briefly mention the idea). In the Supplementary material we show that the algorithm they present can be seen as a special case of Unified Graph Agglomerative Clustering with absolute maximum update rule and that adding or not CLC does not change anything
+\item Then new versions of avg/complete and single linkage clustering 
+\item In this article we analyze only the simplest (and cheapest) types of update rules, but... Easily generalizable for: learned linkage criteria \cite{nunez2013machine}, something depending on node size \cite{felzenszwalb2004efficient}, quantiles, weighted average (WPGMA) and weighted sum (and related work by Paul), size rule by Thorsten
 \item comment about the fact that sum is not an ultra-metric (say better)
-\item In this article we analyze only the simplest (and cheapest) types of update rules, but... Easily generalizable for: learned linkage criteria \cite{nunez2013machine}, something depending on node size \cite{felzenszwalb2004efficient}, quantiles, weighted average (WPGMA) and weighted sum (and related work by Paul)
+\end{itemize}
 
 
 % \begin{table*}[t]
@@ -206,4 +187,38 @@ At each iteration, one edge is popped from PQ and it is processed only if it bel
 
 
 
-\end{itemize}
+
+
+\begin{table*}
+    \centering
+    \begin{subtable}[t!]{0.98\textwidth}\centering
+        \begin{tabular}{r l || c | c | c}
+            % \toprule\toprule
+             & &  \multirow{3}{*}{\textbf{Unsigned graphs}}  & \multicolumn{2}{c}{\textbf{Signed graphs}}  \\        
+            % \cmidrule(l{.15em}){4-5}
+            % \cline{4-5}
+            & & &  \multicolumn{2}{c}{\thead{Add Cannot-Link-Constraints:}} \\        
+           
+            & & &  \thead{NO} & \thead{YES} \\        
+            % \cmidrule[0.3em]{3-5}
+            % \midrule[0.15em]
+            \midrule\midrule
+            Sum: & $f(\tilde{w}_1,\tilde{w}_2) = \tilde{w}_1+\tilde{w}_2$ & \thead{Sum Linkage\\Hierarchical Clustering} & \thead{Greedy Additive \\ Edge Contraction \cite{levinkov2017comparative}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ \midrule
+            
+            \makecell[r]{Absolute \\ maximum:} & \makecell[l]{$f(\tilde{w}_1,\tilde{w}_2) =\argmax_{\tilde{w}\in\{\tilde{w}_{1},\tilde{w}_{2}\}} \big|\tilde{w} \big| $}   & \thead{Single Linkage\\Hierarchical Clustering\\ \cite{lance1967general}} & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
+
+            \makecell[r]{Arithmetic \\mean:} & $f(\tilde{w}_1,\tilde{w}_2) = \mathrm{weightedAvg}\{ \tilde{w}_1, \tilde{w}_2 \} $                                 & \thead{ Average Linkage\\ Hierarchical Clustering \\(UPGMA) \cite{lance1967general}} & \thead{Signed Agglomerative Clust. \\ with Average Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
+
+            Maximum: & $f(\tilde{w}_1,\tilde{w}_2) = \max \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Single Linkage\\Hierarchical Clustering\\ \cite{lance1967general}} & \thead{Signed Agglomerative Clust. \\ with Single Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
+
+            Minimum:& $f(\tilde{w}_1,\tilde{w}_2) = \min \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Complete Linkage\\ Hierarchical Clustering \\ \cite{lance1967general}}  & \thead{Signed Agglomerative Clust. \\ with Complete Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}
+
+
+
+            
+        \end{tabular}
+        % \caption{Linkage criteria}
+    \end{subtable} 
+    \caption{The table lists all the algorithms that can be seen as special cases of the Generic Agglomerative Clustering \ref{main_alg} given a specific update rule $f(e_1,e_2)$ and a type of graph...}
+    \label{tab:linkage-criteria}
+\end{table*}

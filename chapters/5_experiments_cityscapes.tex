@@ -4,15 +4,64 @@
 \begin{table*}
     \centering
     \begin{subtable}[t!]{0.98\textwidth}\centering
-        \begin{tabular}{c| c| c | c}
-        Update rule & \makecell{Use Cannot-Link\\Constraints} & AP & AP 50\%\\ \midrule\midrule
-\textbf{mean} & False & {\color{ForestGreen} 0.3429 } & {\color{ForestGreen} 0.5516 } \\
-% MEAN finetuned affs avg thresh035 use log costs & {\color{ForestGreen} 0.3428 } & {\color{ForestGreen} 0.5493 } \\
-GMIS & - & {\color{ForestGreen} 0.3409 } & {\color{ForestGreen} 0.5465 } \\
-mean & True & {\color{Orange} 0.3154 } & {\color{Orange} 0.5269 } \\
-% MEAN constr finetuned affs avg thresh035 use log costs & {\color{Red} 0.3000 } & {\color{Orange} 0.5140 } \\
-sum & False & {\color{Red} 0.2590 } & {\color{Red} 0.4450 } \\
-% GAEC finetuned affs avg thresh035 dont use log costs & {\color{Red} 0.2371 } & {\color{Red} 0.4187 } \\
+        \begin{tabular}{c| c| c | c | c}
+        Update rule & \makecell{Bias factor $\beta$} & AP & AP 50\%\\ \midrule\midrule
+MEAN & thresh035  & {\color{ForestGreen} 0.3429 } & {\color{ForestGreen} 0.5516 } \\
+% MEAN & thresh035 & True & {\color{ForestGreen} 0.3428 } & {\color{ForestGreen} 0.5493 } \\
+% MEAN & thresh030 & False & {\color{ForestGreen} 0.3409 } & {\color{ForestGreen} 0.5457 } \\
+ORIGINAL \cite{liu2018affinity} & -  & {\color{ForestGreen} 0.3409 } & {\color{ForestGreen} 0.5465 } \\
+% MEAN & thresh040 & - & {\color{ForestGreen} 0.3402 } & {\color{ForestGreen} 0.5502 } \\
+MEANconstr & thresh025  & {\color{Orange} 0.3390 } & {\color{ForestGreen} 0.5481 } \\
+% MEANconstr & thresh030 & False & {\color{Orange} 0.3344 } & {\color{ForestGreen} 0.5469 } \\
+% MEAN & thresh045 & - & {\color{Orange} 0.3333 } & {\color{ForestGreen} 0.5438 } \\
+% MEAN & thresh050 & - & {\color{Orange} 0.3255 } & {\color{ForestGreen} 0.5341 } \\
+SingleLinkagePlusCLC & thresh050  & {\color{Orange} 0.3252 } & {\color{ForestGreen} 0.5304 } \\
+MutexWatershed & thresh045  & {\color{Orange} 0.3214 } & {\color{ForestGreen} 0.5306 } \\
+greedyFixation & thresh055  & {\color{Orange} 0.3188 } & {\color{Orange} 0.5271 } \\
+% greedyFixation & thresh050 & - & {\color{Orange} 0.3180 } & {\color{Orange} 0.5155 } \\
+% MEANconstr & thresh020 & False & {\color{Orange} 0.3161 } & {\color{Orange} 0.5136 } \\
+% MutexWatershed & thresh050 & - & {\color{Orange} 0.3158 } & {\color{Orange} 0.5246 } \\
+% MEANconstr & thresh035 & False & {\color{Orange} 0.3154 } & {\color{Orange} 0.5269 } \\
+% greedyFixation & thresh060 & - & {\color{Orange} 0.3135 } & {\color{Orange} 0.5196 } \\
+GAEC & thresh055  & {\color{Orange} 0.3127 } & {\color{Orange} 0.5114 } \\
+% GAEC & thresh050 & - & {\color{Orange} 0.3112 } & {\color{Orange} 0.5085 } \\
+% SingleLinkagePlusCLC & thresh045 & - & {\color{Orange} 0.3109 } & {\color{Orange} 0.5134 } \\
+% GAEC & thresh060 & - & {\color{Orange} 0.3100 } & {\color{Orange} 0.5120 } \\
+% greedyFixation & thresh065 & - & {\color{Orange} 0.3056 } & {\color{Orange} 0.5063 } \\
+% greedyFixation & thresh045 & - & {\color{Orange} 0.3045 } & {\color{Red} 0.4989 } \\
+% GAEC & thresh065 & - & {\color{Orange} 0.3035 } & {\color{Orange} 0.5072 } \\
+% GAEC & thresh045 & - & {\color{Orange} 0.3008 } & {\color{Red} 0.4956 } \\
+% MEANconstr & thresh035 & True & {\color{Red} 0.3000 } & {\color{Orange} 0.5140 } \\
+% MEANconstr & thresh040 & False & {\color{Red} 0.2983 } & {\color{Orange} 0.5076 } \\
+% GAEC & thresh070 & - & {\color{Red} 0.2943 } & {\color{Red} 0.4989 } \\
+% SingleLinkagePlusCLC & thresh055 & - & {\color{Red} 0.2942 } & {\color{Orange} 0.5074 } \\
+% greedyFixation & thresh070 & - & {\color{Red} 0.2919 } & {\color{Red} 0.4906 } \\
+% GAEC & thresh075 & - & {\color{Red} 0.2793 } & {\color{Red} 0.4784 } \\
+% greedyFixation & thresh075 & - & {\color{Red} 0.2750 } & {\color{Red} 0.4707 } \\
+% SingleLinkagePlusCLC & thresh060 & - & {\color{Red} 0.2681 } & {\color{Red} 0.4744 } \\
+% GAEC & thresh035 & True & {\color{Red} 0.2590 } & {\color{Red} 0.4450 } \\
+% greedyFixation & thresh035 & - & {\color{Red} 0.2587 } & {\color{Red} 0.4484 } \\
+% MutexWatershed & thresh040 & - & {\color{Red} 0.2562 } & {\color{Red} 0.4505 } \\
+% MEANconstr & thresh050 & - & {\color{Red} 0.2507 } & {\color{Red} 0.4443 } \\
+% SingleLinkagePlusCLC & thresh040 & - & {\color{Red} 0.2490 } & {\color{Red} 0.4411 } \\
+% SingleLinkagePlusCLC & thresh065 & - & {\color{Red} 0.2489 } & {\color{Red} 0.4401 } \\
+% greedyFixation & thresh035 & - & {\color{Red} 0.2438 } & {\color{Red} 0.4297 } \\
+SingleLinkage & thresh085 & {\color{Red} 0.2433 } & {\color{Red} 0.4436 } \\
+% GAEC & thresh035 & False & {\color{Red} 0.2371 } & {\color{Red} 0.4187 } \\
+% SingleLinkage & thresh080 & - & {\color{Red} 0.2336 } & {\color{Red} 0.4265 } \\
+% SingleLinkagePlusCLC & thresh070 & - & {\color{Red} 0.2285 } & {\color{Red} 0.4045 } \\
+% SingleLinkage & thresh075 & - & {\color{Red} 0.2265 } & {\color{Red} 0.4065 } \\
+% MutexWatershed & thresh035 & - & {\color{Red} 0.2253 } & {\color{Red} 0.4004 } \\
+% SingleLinkage & thresh070 & - & {\color{Red} 0.2213 } & {\color{Red} 0.3947 } \\
+% SingleLinkagePlusCLC & thresh035 & - & {\color{Red} 0.2213 } & {\color{Red} 0.3954 } \\
+% SingleLinkage & thresh065 & - & {\color{Red} 0.2177 } & {\color{Red} 0.3889 } \\
+% SingleLinkage & thresh060 & - & {\color{Red} 0.2116 } & {\color{Red} 0.3842 } \\
+% SingleLinkagePlusCLC & thresh075 & - & {\color{Red} 0.2093 } & {\color{Red} 0.3785 } \\
+% SingleLinkage & thresh055 & - & {\color{Red} 0.1987 } & {\color{Red} 0.3700 } \\
+% SingleLinkage & thresh050 & - & {\color{Red} 0.1952 } & {\color{Red} 0.3659 } \\
+% SingleLinkage & thresh035 & - & {\color{Red} 0.1852 } & {\color{Red} 0.3463 } \\
+CompleteLinkagePlusCLC & thresh035  & {\color{Red} 0.0000 } & {\color{Red} 0.0000 } \\
+CompleteLinkage & thresh035  & {\color{Red} 0.0000 } & {\color{Red} 0.0000 } \\
 
 
         \end{tabular}
@@ -23,44 +72,22 @@ sum & False & {\color{Red} 0.2590 } & {\color{Red} 0.4450 } \\
 \end{table*}
 
 
-\begin{table*}
-    \centering
-    \begin{subtable}[t!]{0.98\textwidth}\centering
-        \begin{tabular}{c| c| c | c}
-        Update rule & \makecell{Use Cannot-Link\\Constraints} & AP & AP 50\%\\ \midrule\midrule
-GMIS & - & {\color{ForestGreen} 0.3409 } & {\color{ForestGreen} 0.5465 } \\
-mean & False & {\color{Orange} 0.3359 } & {\color{ForestGreen} 0.5416 } \\
-mean & True & {\color{Orange} 0.3315 } & {\color{ForestGreen} 0.5331 } \\
-MutexWatershed & True & {\color{Red} 0.2123 } & {\color{Red} 0.3848 } \\
-SingleLinkage & False & {\color{Red} 0.1935 } & {\color{Red} 0.3615 } \\
-CompleteLinkage & False & {\color{Red} 0.0000 } & {\color{Red} 0.0000 } \\
-
-
-        \end{tabular}
-        % \caption{Linkage criteria}
-    \end{subtable} 
-    \caption{Scores on cityscapes validation set (original affinities trained by GMIS)}
-    \label{tab:linkage-criteria}
-\end{table*}
-
-
 % \begin{table*}
 %     \centering
 %     \begin{subtable}[t!]{0.98\textwidth}\centering
-%         \begin{tabular}{c| c | c | c}
-% Update rule & \makecell{Use Cannot-Link\\Constraints} & \makecell{Multicut objective} & Runtime (s)\\ \midrule\midrule
-% sum & false & \textbf{-150873} & 99 (??) \\
-% sum & true & -150873 & 249 \\
-% MutexWatershed & false & -150854 & 100 \\
-% mean & false & -150850 & 105 \\
-% mean & true & -150848 & 244 \\
-% max & true & -149441 & 459 \\
-% min & true & -147663 & 186 \\
-% min & false & -147663 & 82 \\
-% max & false & -103614 & \textbf{16} \\
+%         \begin{tabular}{c| c| c | c}
+%         Update rule & \makecell{Use Cannot-Link\\Constraints} & AP & AP 50\%\\ \midrule\midrule
+% GMIS & - & {\color{ForestGreen} 0.3409 } & {\color{ForestGreen} 0.5465 } \\
+% mean & False & {\color{Orange} 0.3359 } & {\color{ForestGreen} 0.5416 } \\
+% mean & True & {\color{Orange} 0.3315 } & {\color{ForestGreen} 0.5331 } \\
+% MutexWatershed & True & {\color{Red} 0.2123 } & {\color{Red} 0.3848 } \\
+% SingleLinkage & False & {\color{Red} 0.1935 } & {\color{Red} 0.3615 } \\
+% CompleteLinkage & False & {\color{Red} 0.0000 } & {\color{Red} 0.0000 } \\
+
+
 %         \end{tabular}
 %         % \caption{Linkage criteria}
 %     \end{subtable} 
-%     \caption{Compare update-rules on fruit-fly large graph}
+%     \caption{Scores on cityscapes validation set (original affinities trained by GMIS)}
 %     \label{tab:linkage-criteria}
 % \end{table*}
