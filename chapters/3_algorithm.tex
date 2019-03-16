@@ -1,5 +1,33 @@
 % !TEX root = ../agglo_clust_review.tex
 
+\begin{figure}
+\centering
+\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/edge_contraction.png}
+\caption{\small 
+Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; after nodes $u$ and $v$ are merged and $e_{uv}$ is deleted, there are two double edges $e_1$ and $e_2$ left in the graph.  \TODO{Rotate drawings to optimize space} \TODO{Add some cannot-link constraints to explain their propagation}
+\label{fig:edge_contraction_and_contr_graph} }
+\end{figure}
+
+\section{Unified Graph Agglomerative Clustering}
+In this section we introduce a unified agglomerative clustering algorithm that represents a simple generalized formalization of many agglomerative graph clustering algorithms. It can be used to describe both unsigned clustering algorithms ingesting positive cluster similarities and signed clustering algorithms using attractive and repulsive cues.\\
+First, we define the graph notation and the concept of cannot-link constraints. Then, we introduce the generalized algorithm and show \UPDATE{how it can be used to introduce several new agglomerative clustering algorithms for graphs with signed weights.}
+
+\subsection{Contracted graph and cannot-link constraints} \label{sec:contr_graph_and_CLC}
+
+\begin{itemize}
+\item Define graph formalism and clustering $\Pi$. Make comment about special case of unsigned graph
+\item Define multicut and associated energy
+\item A cannot-link-constraint defines a mutual exclusion relationship between two nodes in the graph and is used to specify that the these two nodes should not be associated with the same cluster. (the alg. will introduce them dynamically...)
+\item Given a clustering $\Pi$ and a graph $\mathcal{G}(V,E,W)$, the interaction between two clusters $S_1, S_2 \in \Pi$ is usually defined in terms of a \emph{linkage criterion}, i.e. a function of all the edge weights connecting the two clusters:
+\begin{equation} \label{eq:linkage_criterion_def}
+\begin{gathered}
+\mathcal{L}(S_1,S_2) = \mathcal{L}(\mathcal{W})\quad \\
+   \text{where} \quad \mathcal{W} = \{ W(e_{uv})| u\in S_1, v\in S_2 \}.
+\end{gathered}
+\end{equation}
+
+\end{itemize}
+
 
 \begin{algorithm}
   \caption{Unified Graph Agglomerative Clustering}
@@ -68,72 +96,37 @@
   \label{main_alg}
 \end{algorithm}
 
-\begin{figure}
-\centering
-\includegraphics[width=0.50\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/edge_contraction.png}
-\caption{\small 
-Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; after nodes $u$ and $v$ are merged and $e_{uv}$ is deleted, there are two double edges $e_1$ and $e_2$ left in the graph.  \TODO{Rotate drawings to optimize space}
-\label{fig:example_non_unique_weights_1}}
-\end{figure}
-
-
-
-\section{Unified Graph Agglomerative Clustering}
-In this section we introduce a unified agglomerative clustering algorithm that represents a simple generalized formalization of many agglomerative graph clustering algorithms. It can be used to describe both unsigned clustering algorithms ingesting positive cluster similarities and signed clustering algorithms using attractive and repulsive cues.\\
-First, we define the graph notation and the concept of cannot-link constraints. Then, we introduce the generalized algorithm and show \UPDATE{how it can be used to introduce several new agglomerative clustering algorithms for graphs with signed weights.}
-
-\subsection{Graph notation and cannot-link constraints}
-
-\begin{itemize}
-\item Define graph formalism and clustering $\Pi$. Make comment about special case of unsigned graph
-\item Define multicut and associated energy
-\item A cannot-link-constraint defines a mutual exclusion relationship between two nodes in the graph and is used to specify that the these two nodes should not be associated with the same cluster. (the alg. will introduce them dynamically...)
-\item Given a clustering $\Pi$ and a graph $\mathcal{G}(V,E,W)$, the interaction between two clusters $S_1, S_2 \in \Pi$ is usually defined in terms of a \emph{linkage criterion}, i.e. a function of all the edge weights connecting the two clusters:
-\begin{equation} \label{eq:linkage_criterion_def}
-\begin{gathered}
-\mathcal{L}(S_1,S_2) = \mathcal{L}(\mathcal{W})\quad \\
-   \text{where} \quad \mathcal{W} = \{ W(e_{uv})| u\in S_1, v\in S_2 \}.
-\end{gathered}
-\end{equation}
-
-\end{itemize}
-
 
 \subsection{The algorithm}
-\begin{itemize}
-  \item We now present our first contribution: a unified algorithm for agglomerative graph clustering that can describe in a simple general form many graph partitioning algorithms previously introduced in the literature \UPDATE{and highlights the existence of totally new algorithms}.
-\item We consider a graph $\mathcal{G}(V,E,W)$ with associated signed edge weights, where each node initially represents one cluster.
-\item The proposed graph partitioning algorithm is a general form of agglomerative clustering that outputs a final graph clustering $\Pi$ by progressively merging pairs of neighboring clusters. The algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \ref{fig:general_idea}b and \ref{fig:general_idea}c). 
 
-\item A second variant of the proposed algorithm also introduces cannot-link constraints between clusters during the agglomeration and stops when all the remaining clusters have been previously constrained.
+We now present our first contribution: a unified algorithm for agglomerative graph clustering that can describe in a simple general form many graph partitioning algorithms previously introduced in the literature \UPDATE{and highlights the existence of totally new algorithms}.
 
+We consider a graph $\mathcal{G}(V,E,W)$ with associated signed edge weights, where each node initially represents one cluster.
+The proposed graph partitioning algorithm is a general form of agglomerative clustering that outputs a final graph clustering $\Pi$ by progressively merging pairs of neighboring clusters. The algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \ref{fig:general_idea}b and \ref{fig:general_idea}c). 
 
-\item During the agglomerative process, the interaction between neighboring clusters is defined by the linkage criterion defined in Equation \ref{eq:linkage_criterion_def} and has to be properly recomputed. 
-
- \item An efficient way of doing this is presented in Algorithm \ref{main_alg}, which proceeds as follows. \UPDATE{TO BE CONTINUED}
-\item The so called contracted graph is initialized from the original graph $\mathcal{G}$ and will represent the clustering $\Pi$ at each iteration of the 
-
-\item \textbf{Specific description:}  The algorithm proceeds as follows: it initializes a contracted graph $\mathcal{G}'$ from the original graph $\mathcal{G}$ and it sorts the edges $e\in E$ in a priority queue (PQ) in descending order of absolute value  of the weight, so that the most attractive and the most repulsive edges are analyzed first. The algorithm has two variants: the first one a
-
-At each iteration, one edge is popped from PQ and it is processed only if it belongs to the contracted graph $\mathcal{G}'$. The algorithm terminates when all edges have been processed. and it has two variants: one adding cannot link constraints and one not using them.
-\item Comment about must-not-link relations: they give high priority to the most confident repulsive edges 
-% \item I don't think I need to mention the merge tree (although it could be easily deduced from the code, as a sequence of clustering)
-\item Mention precise version in the Appendix
-\item comment about complexity (depends on the linkage criteria) and how dense is the graph (check PQ update)
+A second variant of the proposed algorithm also introduces cannot-link constraints between clusters during the agglomeration and stops when all the remaining clusters have been previously constrained (option \texttt{addCannotLink} in Algorithm \ref{main_alg}).
 
 
-\item In the special case of an unsigned graph %$\mathcal{G}(V,E,W:E\rightarrow \mathbb{R}^+)$ 
- representing strictly positive similarities between nodes, the algorithm then returns only one single cluster as an output (see Fig. \ref{fig:general_idea}a), \UPDATE{together with a merging tree representing the merging order and defining an hierarchy of clusters}.
+During the agglomerative process, the interaction between neighboring clusters is defined by the linkage criterion defined in Equation \ref{eq:linkage_criterion_def} and has to be properly recomputed. 
+One possible efficient way of doing this is to use an edge contraction algorithm like the one presented in Algorithm \ref{main_alg}, which proceeds as follows.
 
-\end{itemize}
+Given an initial clustering $\Pi$ where each node of the original graph $\mathcal{G}$ represents its own cluster, the algorithm starts by initializing a contracted graph $\mathcal{G}'$ (see Definition \ref{def:contr_graph}) that will represent the clustering $\Pi$ at each iteration of the agglomeration. The algorithm then sorts all edges $e\in E$ by their absolute weight $|W(e)|$ in descending order in a priority queue, so that the most attractive and the most repulsive edges are processed first. It iteratively pops one edge $e_{uv}$ from priority queue and, depending on the value of the priority $\tilde{w}$ associated to $e_{uv}$, does the following. If the edge is attractive and $\tilde{w}>0$, then perform an edge contraction of $e_{uv}$ in $\mathcal{G}'$ (see Sec. \ref{sec:contr_graph_and_CLC} and Fig. \ref{fig:edge_contraction_and_contr_graph}), provided that $e_{uv}$ was not previously flagged as a cannot-link constraint; for every new pair of double edges in $\mathcal{G}'$ update \UPDATE{their priorities} according to one of the update rules listed in Table \ref{tab:linkage-criteria} and update cannot-link relationships (see example in Fig. \ref{fig:algorithm_with_without_CLC}b from step 3 to 4). If, on the other hand, the edge $e_{uv}$ is repulsive and $\tilde{w}\leq 0$, then flag it as a cannot-link constraint if and only if the algorithm input-option \texttt{addCannotLink} is true and mutual exclusion relationships should be enforced.
+
+In the Supplementary material we provide a more detailed version of the algorithm implementation (Sec. \ref{sec:detailed_algorithm}) and we also comment on its theoretical complexity (Sec. \ref{sec:complexity}).
+
+ In the special case of an unsigned graph %$\mathcal{G}(V,E,W:E\rightarrow \mathbb{R}^+)$ 
+ presenting strictly positive similarities between nodes, the algorithm then returns only one single cluster as an output (see Fig. \ref{fig:intro_figure}a), \UPDATE{together with a merging tree representing the merging order and defining an hierarchy of clusters} \TODO{use def of merging process of contracted graph to define merging tree}.
+
+% \item Comment about must-not-link relations: they give high priority to the most confident repulsive edges {}
+
 
 
 \begin{figure}
 \centering
 \includegraphics[width=0.45\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/cannot-lin-constraints.png}
 \caption{\small 
-Example of agglomerative clustering on signed graph with and without cannot-link constraints. The final clustering is given by one single cluster.
-\label{fig:example_cannot_link_constraints}}
+Example of agglomerative clustering on signed graph with and without cannot-link constraints...
+\label{fig:algorithm_with_without_CLC}}
 \end{figure}
 
 
@@ -146,7 +139,7 @@ Example of agglomerative clustering on signed graph with and without cannot-link
 \item MWS: proposes an efficient implementation of this update rule (briefly mention the idea). In the Supplementary material we show that the algorithm they present can be seen as a special case of Unified Graph Agglomerative Clustering with absolute maximum update rule and that adding or not CLC does not change anything
 \item Then new versions of avg/complete and single linkage clustering 
 \item In this article we analyze only the simplest (and cheapest) types of update rules, but... Easily generalizable for: learned linkage criteria \cite{nunez2013machine}, something depending on node size \cite{felzenszwalb2004efficient}, quantiles, weighted average (WPGMA) and weighted sum (and related work by Paul), size rule by Thorsten
-\item comment about the fact that sum is not an ultra-metric (say better)
+\item comment about the fact that sum is not really an ultra-metric-distance
 \end{itemize}
 
 
