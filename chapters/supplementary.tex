@@ -47,6 +47,78 @@ min & True &  & 214747429 & {\color{ForestGreen} 852 } & {\color{Red} 0.9314 } &
 \end{table*}
 
 
+\begin{table}
+    \centering
+    \begin{subtable}[t!]{0.5\textwidth}\centering
+        \begin{tabular}{M{0.1\textwidth}| c| c| c | c }
+        \thead{Update \\rule} & \thead{Use Cannot-Link\\ Constraints} & \thead{Bias \\factor $\beta$} & \thead{AP} & \thead{AP 50\%} \\ \midrule\midrule
+\multirow{2}{*}{Sum} &No & 0.55  & {\color{Orange} 0.313 } & {\color{Orange} 0.511 } \\
+ &Yes & 0.55  & {\color{Orange} 0.319 } & {\color{Orange} 0.527 } \\\midrule
+Abs. max. &- & 0.45  & {\color{Orange} 0.321 } & {\color{ForestGreen} 0.531 } \\\midrule
+\multirow{2}{*}{Mean} &No & 0.35  & {\color{ForestGreen} 0.343 } & {\color{ForestGreen} 0.552 } \\
+ &Yes & 0.25  & {\color{Orange} 0.339 } & {\color{ForestGreen} 0.548 } \\\midrule
+\multirow{2}{*}{Max} &No & 0.85 & {\color{Red} 0.243 } & {\color{Red} 0.444 } \\
+ &Yes & 0.50  & {\color{Orange} 0.325 } & {\color{ForestGreen} 0.530 } \\\midrule
+\multirow{2}{*}{Min} &No & 0.50  & {\color{Red} 0.000 } & {\color{Red} 0.000 } \\
+ &Yes & 0.50  & {\color{Red} 0.000 } & {\color{Red} 0.000 } \\\midrule
+\cite{liu2018affinity} &-  & -  & {\color{ForestGreen} 0.341 } & {\color{ForestGreen} 0.547 } \\
+% MEAN & 0.35 & True & {\color{ForestGreen} 0.3428 } & {\color{ForestGreen} 0.5493 } \\
+% MEAN & 0.30 & False & {\color{ForestGreen} 0.3409 } & {\color{ForestGreen} 0.5457 } \\
+% MEAN & 0.40 & - & {\color{ForestGreen} 0.3402 } & {\color{ForestGreen} 0.5502 } \\
+% MEANconstr & 0.30 & False & {\color{Orange} 0.3344 } & {\color{ForestGreen} 0.5469 } \\
+% MEAN & 0.45 & - & {\color{Orange} 0.3333 } & {\color{ForestGreen} 0.5438 } \\
+% MEAN & 0.50 & - & {\color{Orange} 0.3255 } & {\color{ForestGreen} 0.5341 } \\
+% greedyFixation & 0.50 & - & {\color{Orange} 0.3180 } & {\color{Orange} 0.5155 } \\
+% MEANconstr & 0.20 & False & {\color{Orange} 0.3161 } & {\color{Orange} 0.5136 } \\
+% MutexWatershed & 0.50 & - & {\color{Orange} 0.3158 } & {\color{Orange} 0.5246 } \\
+% MEANconstr & 0.35 & False & {\color{Orange} 0.3154 } & {\color{Orange} 0.5269 } \\
+% greedyFixation & 0.60 & - & {\color{Orange} 0.3135 } & {\color{Orange} 0.5196 } \\
+% GAEC & 0.50 & - & {\color{Orange} 0.3112 } & {\color{Orange} 0.5085 } \\
+% SingleLinkagePlusCLC & 0.45 & - & {\color{Orange} 0.3109 } & {\color{Orange} 0.5134 } \\
+% GAEC & 0.60 & - & {\color{Orange} 0.3100 } & {\color{Orange} 0.5120 } \\
+% greedyFixation & 0.65 & - & {\color{Orange} 0.3056 } & {\color{Orange} 0.5063 } \\
+% greedyFixation & 0.45 & - & {\color{Orange} 0.3045 } & {\color{Red} 0.4989 } \\
+% GAEC & 0.65 & - & {\color{Orange} 0.3035 } & {\color{Orange} 0.5072 } \\
+% GAEC & 0.45 & - & {\color{Orange} 0.3008 } & {\color{Red} 0.4956 } \\
+% MEANconstr & 0.35 & True & {\color{Red} 0.3000 } & {\color{Orange} 0.5140 } \\
+% MEANconstr & 0.40 & False & {\color{Red} 0.2983 } & {\color{Orange} 0.5076 } \\
+% GAEC & 0.70 & - & {\color{Red} 0.2943 } & {\color{Red} 0.4989 } \\
+% SingleLinkagePlusCLC & 0.55 & - & {\color{Red} 0.2942 } & {\color{Orange} 0.5074 } \\
+% greedyFixation & 0.70 & - & {\color{Red} 0.2919 } & {\color{Red} 0.4906 } \\
+% GAEC & 0.75 & - & {\color{Red} 0.2793 } & {\color{Red} 0.4784 } \\
+% greedyFixation & 0.75 & - & {\color{Red} 0.2750 } & {\color{Red} 0.4707 } \\
+% SingleLinkagePlusCLC & 0.60 & - & {\color{Red} 0.2681 } & {\color{Red} 0.4744 } \\
+% GAEC & 0.35 & True & {\color{Red} 0.2590 } & {\color{Red} 0.4450 } \\
+% greedyFixation & 0.35 & - & {\color{Red} 0.2587 } & {\color{Red} 0.4484 } \\
+% MutexWatershed & 0.40 & - & {\color{Red} 0.2562 } & {\color{Red} 0.4505 } \\
+% MEANconstr & 0.50 & - & {\color{Red} 0.2507 } & {\color{Red} 0.4443 } \\
+% SingleLinkagePlusCLC & 0.40 & - & {\color{Red} 0.2490 } & {\color{Red} 0.4411 } \\
+% SingleLinkagePlusCLC & 0.65 & - & {\color{Red} 0.2489 } & {\color{Red} 0.4401 } \\
+% greedyFixation & 0.35 & - & {\color{Red} 0.2438 } & {\color{Red} 0.4297 } \\
+% GAEC & 0.35 & False & {\color{Red} 0.2371 } & {\color{Red} 0.4187 } \\
+% SingleLinkage & 0.80 & - & {\color{Red} 0.2336 } & {\color{Red} 0.4265 } \\
+% SingleLinkagePlusCLC & 0.70 & - & {\color{Red} 0.2285 } & {\color{Red} 0.4045 } \\
+% SingleLinkage & 0.75 & - & {\color{Red} 0.2265 } & {\color{Red} 0.4065 } \\
+% MutexWatershed & 0.35 & - & {\color{Red} 0.2253 } & {\color{Red} 0.4004 } \\
+% SingleLinkage & 0.70 & - & {\color{Red} 0.2213 } & {\color{Red} 0.3947 } \\
+% SingleLinkagePlusCLC & 0.35 & - & {\color{Red} 0.2213 } & {\color{Red} 0.3954 } \\
+% SingleLinkage & 0.65 & - & {\color{Red} 0.2177 } & {\color{Red} 0.3889 } \\
+% SingleLinkage & 0.60 & - & {\color{Red} 0.2116 } & {\color{Red} 0.3842 } \\
+% SingleLinkagePlusCLC & 0.75 & - & {\color{Red} 0.2093 } & {\color{Red} 0.3785 } \\
+% SingleLinkage & 0.55 & - & {\color{Red} 0.1987 } & {\color{Red} 0.3700 } \\
+% SingleLinkage & 0.50 & - & {\color{Red} 0.1952 } & {\color{Red} 0.3659 } \\
+% SingleLinkage & 0.35 & - & {\color{Red} 0.1852 } & {\color{Red} 0.3463 } \\
+
+
+        \end{tabular}
+        % \caption{Linkage criteria}
+    \end{subtable} 
+    \caption{Results on cityscapes validation set (with finetuned affinities). \TODO{Reformat in the usual form, delete colors, less digits}}
+    \label{tab:results_cityscapes_full}
+\end{table}
+
+
+
 \begin{algorithm}
   \caption{Graph Agglomerative Clustering}
 \setlength{\parindent}{\algorithmicindent} \textbf{Inputs:}

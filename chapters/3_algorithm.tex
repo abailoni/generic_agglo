@@ -27,7 +27,7 @@ First, we define the graph notation and the concept of cannot-link constraints. 
 \end{equation}
 
 \item A cannot-link-constraint defines a mutual exclusion relationship between two nodes in the graph and is used to specify that the these two nodes should not be associated with the same cluster. (the alg. will introduce them dynamically)
-\item Define contracted graph from given graph  $\mathcal{G}$ and clustering $\Pi$; explain edge contraction shown in Fig. 2
+\item Define contracted graph from given graph  $\mathcal{G}$ and clustering $\Pi$; explain edge contraction shown in Fig. 2 and define \emph{update rule} $f(w_1, w_2)$
 
 \end{itemize}
 
@@ -113,7 +113,7 @@ A second variant of the proposed algorithm also introduces cannot-link constrain
 During the agglomerative process, the interaction between neighboring clusters is defined by the linkage criterion defined in Equation \ref{eq:linkage_criterion_def} and has to be properly updated and recomputed. 
 An efficient way of implementing these updates can be achieved by using the presented edge contraction Algorithm \ref{main_alg}, which proceeds as follows.
 
-Given an initial clustering $\Pi$ where each node of the original graph $\mathcal{G}$ represents its own cluster, the algorithm starts by initializing a contracted graph $\mathcal{G}'$ (see Definition \ref{def:contr_graph}) that will represent the clustering $\Pi$ at each iteration of the agglomeration. The algorithm then sorts all edges $e\in E$ by their absolute weight $|W(e)|$ in descending order in a priority queue, so that the most attractive and the most repulsive edges are processed first. It iteratively pops one edge $e_{uv}$ from priority queue and, depending on the value of the priority $\tilde{w}$ associated to $e_{uv}$, does the following. If the edge is attractive and $\tilde{w}>0$, then merge the connected nodes and perform an edge contraction of $e_{uv}$ in $\mathcal{G}'$ (see Sec. \ref{sec:contr_graph_and_CLC} and Fig. \ref{fig:edge_contraction_and_contr_graph}), provided that $e_{uv}$ was not previously flagged as a cannot-link constraint; for every new pair of double edges in $\mathcal{G}'$ update \UPDATE{their priorities} according to one of the update rules listed in Table \ref{tab:linkage-criteria} and update the cannot-link relationships (see example in Fig. \ref{fig:algorithm_with_without_CLC}b from step 3 to 4). If, on the other hand, the edge $e_{uv}$ is repulsive and $\tilde{w}\leq 0$, then flag it as a cannot-link constraint if and only if the algorithm input-option \texttt{addCannotLink} is true and mutual exclusion relationships should be enforced.
+Given an initial clustering $\Pi$ where each node of the original graph $\mathcal{G}$ represents its own cluster, the algorithm starts by initializing a contracted graph $\mathcal{G}'$ (see Definition \ref{def:contr_graph}) that will represent the clustering $\Pi$ at each iteration of the agglomeration. The algorithm then sorts all edges $e\in E$ by their absolute weight $|W(e)|$ in descending order in a priority queue, so that the most attractive and the most repulsive edges are processed first. It iteratively pops one edge $e_{uv}$ from priority queue and, depending on the value of the priority $\tilde{w}$ associated to $e_{uv}$, does the following. If the edge is attractive and $\tilde{w}>0$, then merge the connected nodes and perform an edge contraction of $e_{uv}$ in $\mathcal{G}'$ (see Sec. \ref{sec:contr_graph_and_CLC} and Fig. \ref{fig:edge_contraction_and_contr_graph}), provided that $e_{uv}$ was not previously flagged as a cannot-link constraint; for every new pair of double edges in $\mathcal{G}'$ update \UPDATE{their priorities} according to one of the update rules listed in Table \ref{tab:linkage-criteria} and update their cannot-link relationships (see example in Fig. \ref{fig:algorithm_with_without_CLC}b from step 3 to 4). If, on the other hand, the edge $e_{uv}$ is repulsive and $\tilde{w}\leq 0$, then flag it as a cannot-link constraint if and only if the algorithm input-option \texttt{addCannotLink} is true and mutual exclusion relationships should be enforced.
 
 In the Supplementary material we provide a more detailed version of the algorithm implementation (Sec. \ref{sec:detailed_algorithm}) and we also comment on its theoretical complexity (Sec. \ref{sec:complexity}).
 
@@ -142,7 +142,7 @@ Example of agglomerative clustering on signed graph with and without cannot-link
             % \cline{4-5}
             & & &  \multicolumn{2}{c}{\thead{Add Cannot-Link-Constraints:}} \\        
            
-            & & &  \thead{NO} & \thead{YES} \\        
+            & & &  \thead{\textsc{No}} & \thead{\textsc{Yes}} \\        
             % \cmidrule[0.3em]{3-5}
             % \midrule[0.15em]
             \midrule\midrule
