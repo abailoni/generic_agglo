@@ -18,8 +18,6 @@ First, we define the graph notation and the concept of cannot-link constraints. 
 \item Define graph formalism and clustering $\Pi$. Make comment about special case of unsigned graph
 \item Define multicut and associated energy
 
-\item A cannot-link-constraint defines a mutual exclusion relationship between two nodes in the graph and is used to specify that the these two nodes should not be associated with the same cluster. (the alg. will introduce them dynamically...)
-\item Define contracted graph and edge contraction (explain Fig. 2)
 \item Given a clustering $\Pi$ and a graph $\mathcal{G}(V,E,W)$, the interaction between two clusters $S_1, S_2 \in \Pi$ is usually defined in terms of a \emph{linkage criterion}, i.e. a function of all the edge weights connecting the two clusters:
 \begin{equation} \label{eq:linkage_criterion_def}
 \begin{gathered}
@@ -27,6 +25,9 @@ First, we define the graph notation and the concept of cannot-link constraints. 
    \text{where} \quad \mathcal{W} = \{ W(e_{uv})| u\in S_1, v\in S_2 \}.
 \end{gathered}
 \end{equation}
+
+\item A cannot-link-constraint defines a mutual exclusion relationship between two nodes in the graph and is used to specify that the these two nodes should not be associated with the same cluster. (the alg. will introduce them dynamically)
+\item Define contracted graph from given graph  $\mathcal{G}$ and clustering $\Pi$; explain edge contraction shown in Fig. 2
 
 \end{itemize}
 
@@ -104,7 +105,7 @@ First, we define the graph notation and the concept of cannot-link constraints. 
 We now present our first contribution: a unified algorithm for agglomerative graph clustering that can describe in a simple general form many graph partitioning algorithms previously introduced in the literature \UPDATE{and highlights the existence of totally new algorithms}.
 
 We consider a graph $\mathcal{G}(V,E,W)$ with associated signed edge weights, where each node initially represents one cluster.
-The proposed graph partitioning algorithm is a general form of agglomerative clustering that outputs a final graph clustering $\Pi$ by progressively merging pairs of neighboring clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \ref{fig:general_idea}b and \ref{fig:general_idea}c). 
+The proposed graph partitioning algorithm is a general form of agglomerative clustering that outputs a final graph clustering $\Pi$ by progressively merging pairs of neighboring clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \ref{fig:intro_figure}b and \ref{fig:intro_figure}c). 
 
 A second variant of the proposed algorithm also introduces cannot-link constraints between clusters during the agglomeration and stops when all the remaining clusters have been previously constrained (option \texttt{addCannotLink} in Algorithm \ref{main_alg}).
 
@@ -112,7 +113,7 @@ A second variant of the proposed algorithm also introduces cannot-link constrain
 During the agglomerative process, the interaction between neighboring clusters is defined by the linkage criterion defined in Equation \ref{eq:linkage_criterion_def} and has to be properly updated and recomputed. 
 An efficient way of implementing these updates can be achieved by using the presented edge contraction Algorithm \ref{main_alg}, which proceeds as follows.
 
-Given an initial clustering $\Pi$ where each node of the original graph $\mathcal{G}$ represents its own cluster, the algorithm starts by initializing a contracted graph $\mathcal{G}'$ (see Definition \ref{def:contr_graph}) that will represent the clustering $\Pi$ at each iteration of the agglomeration. The algorithm then sorts all edges $e\in E$ by their absolute weight $|W(e)|$ in descending order in a priority queue, so that the most attractive and the most repulsive edges are processed first. It iteratively pops one edge $e_{uv}$ from priority queue and, depending on the value of the priority $\tilde{w}$ associated to $e_{uv}$, does the following. If the edge is attractive and $\tilde{w}>0$, then perform an edge contraction of $e_{uv}$ in $\mathcal{G}'$ (see Sec. \ref{sec:contr_graph_and_CLC} and Fig. \ref{fig:edge_contraction_and_contr_graph}), provided that $e_{uv}$ was not previously flagged as a cannot-link constraint; for every new pair of double edges in $\mathcal{G}'$ update \UPDATE{their priorities} according to one of the update rules listed in Table \ref{tab:linkage-criteria} and update cannot-link relationships (see example in Fig. \ref{fig:algorithm_with_without_CLC}b from step 3 to 4). If, on the other hand, the edge $e_{uv}$ is repulsive and $\tilde{w}\leq 0$, then flag it as a cannot-link constraint if and only if the algorithm input-option \texttt{addCannotLink} is true and mutual exclusion relationships should be enforced.
+Given an initial clustering $\Pi$ where each node of the original graph $\mathcal{G}$ represents its own cluster, the algorithm starts by initializing a contracted graph $\mathcal{G}'$ (see Definition \ref{def:contr_graph}) that will represent the clustering $\Pi$ at each iteration of the agglomeration. The algorithm then sorts all edges $e\in E$ by their absolute weight $|W(e)|$ in descending order in a priority queue, so that the most attractive and the most repulsive edges are processed first. It iteratively pops one edge $e_{uv}$ from priority queue and, depending on the value of the priority $\tilde{w}$ associated to $e_{uv}$, does the following. If the edge is attractive and $\tilde{w}>0$, then merge the connected nodes and perform an edge contraction of $e_{uv}$ in $\mathcal{G}'$ (see Sec. \ref{sec:contr_graph_and_CLC} and Fig. \ref{fig:edge_contraction_and_contr_graph}), provided that $e_{uv}$ was not previously flagged as a cannot-link constraint; for every new pair of double edges in $\mathcal{G}'$ update \UPDATE{their priorities} according to one of the update rules listed in Table \ref{tab:linkage-criteria} and update the cannot-link relationships (see example in Fig. \ref{fig:algorithm_with_without_CLC}b from step 3 to 4). If, on the other hand, the edge $e_{uv}$ is repulsive and $\tilde{w}\leq 0$, then flag it as a cannot-link constraint if and only if the algorithm input-option \texttt{addCannotLink} is true and mutual exclusion relationships should be enforced.
 
 In the Supplementary material we provide a more detailed version of the algorithm implementation (Sec. \ref{sec:detailed_algorithm}) and we also comment on its theoretical complexity (Sec. \ref{sec:complexity}).
 
@@ -168,8 +169,8 @@ Example of agglomerative clustering on signed graph with and without cannot-link
 
 \subsection{Update rules and associated algorithms}
 \begin{itemize}
-\item In this section we will list some of the algorithms that can be described using the generalized algorithm we presented and define some new ones
-\item In Table 1 we collected the update rules we tested and compared in this article (correspond to the simplest and cheapest ones to compute). Later we will mention more of them that were proposed in the literature.
+\item In this section we will list some of the algorithms that can be described using the generalized algorithm we presented and we will introduce some new ones.
+\item In Table \ref{tab:linkage-criteria} we collected the update rules that we tested and compared in this article. Later we will mention more of them that were proposed in the literature.
 \item In the special case of unsigned graphs (Table \ref{tab:linkage-criteria} column 1), the UGAC algorithm becomes simply a version of hierarchical clustering with different linkage criteria depending on the chosen update rule. It outputs one single cluster and it also defines an hierarchy of clusters during the merging process that can be associated to \UPDATE{a merging tree/  the hierarchical clustering dendrogram}... \TODO{Problem: sum does not trivially define an ultra-metric-distance...}  
 \item In the literature there have been already several methods using cannot-link constraints for agglomerative clustering algorithms \TODO{repetition from related work}: for example, \cite{malmberg2011generalized} used initially fixed mutual exclusion relationships, whereas \cite{levinkov2017comparative} introduced them dynamically in an edge contraction algorithm for signed graphs, named Greedy Fixation (Table \ref{tab:linkage-criteria} row 1, \emph{sum}). At the same time, they also proposed a version of it without cannot link constraints (Greedy Additive Edge Contraction) and they compared both with other greedy and local-search algorithms for solving the multicut/correlation clustering problem.
 \item Dynamically introduced cannot-link constraints were also proposed by \cite{wolf2018mutex}, that... \TODO{brief MWS description as efficient implementation of this update rule}. In the Supplementary material we show that the algorithm they present can be seen as a special case of UGACA with absolute maximum update rule (Table \ref{tab:linkage-criteria} row 2 - \emph{absolute maximum}) and that adding or not cannot-link constraints does not change the final clustering.
