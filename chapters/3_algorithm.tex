@@ -105,7 +105,7 @@ First, we define the graph notation and the concept of cannot-link constraints. 
 We now present our first contribution: a unified algorithm for agglomerative graph clustering that can describe in a simple general form many graph partitioning algorithms previously introduced in the literature \UPDATE{and highlights the existence of totally new algorithms}.
 
 We consider a graph $\mathcal{G}(V,E,W)$ with associated signed edge weights, where each node initially represents one cluster.
-The proposed graph partitioning algorithm is a general form of agglomerative clustering that outputs a final graph clustering $\Pi$ by progressively merging pairs of neighboring clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \ref{fig:intro_figure}b and \ref{fig:intro_figure}c). 
+The proposed graph partitioning algorithm is a general form of agglomerative clustering that outputs a final graph clustering $\Pi$ by progressively merging pairs of neighboring clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b} and \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}c}). 
 
 A second variant of the proposed algorithm also introduces cannot-link constraints between clusters during the agglomeration and stops when all the remaining clusters have been previously constrained (option \texttt{addCannotLink} in Algorithm \ref{main_alg}).
 
@@ -118,7 +118,7 @@ Given an initial clustering $\Pi$ where each node of the original graph $\mathca
 In the Supplementary material we provide a more detailed version of the algorithm implementation (Sec. \ref{sec:detailed_algorithm}) and we also comment on its theoretical complexity (Sec. \ref{sec:complexity}).
 
  In the special case of an unsigned graph %$\mathcal{G}(V,E,W:E\rightarrow \mathbb{R}^+)$ 
- presenting strictly positive similarities between nodes, the algorithm then returns only one single cluster as an output (see Fig. \ref{fig:intro_figure}a), \UPDATE{together with a merging tree representing the merging order and defining an hierarchy of clusters} \TODO{use def of merging process of contracted graph to define merging tree?}.
+ presenting strictly positive similarities between nodes, the algorithm then returns only one single cluster as an output (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}a}), \UPDATE{together with a merging tree representing the merging order and defining an hierarchy of clusters} \TODO{use def of merging process of contracted graph to define merging tree?}.
 
 % \item Comment about must-not-link relations: they give high priority to the most confident repulsive edges {}
 
@@ -140,7 +140,7 @@ Example of agglomerative clustering on signed graph with and without cannot-link
              & &  \multirow{3}{*}{\textbf{Unsigned graphs}}  & \multicolumn{2}{c}{\textbf{Signed graphs}}  \\        
             % \cmidrule(l{.15em}){4-5}
             % \cline{4-5}
-            & & &  \multicolumn{2}{c}{\thead{Add Cannot-Link-Constraints:}} \\        
+            & & &  \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\        
            
             & & &  \thead{\textsc{No}} & \thead{\textsc{Yes}} \\        
             % \cmidrule[0.3em]{3-5}
