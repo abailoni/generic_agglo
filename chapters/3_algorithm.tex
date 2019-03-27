@@ -1,12 +1,23 @@
 % !TEX root = ../agglo_clust_review.tex
 
-\begin{figure}
+\begin{minipage}[b]{\textwidth}
+        \centering
+        \begin{minipage}[b]{0.45\textwidth}
 \centering
-\includegraphics[width=0.50\textwidth,trim=0.1in 0.4in 0.2in 0.2in,clip]{./figs/edge_contraction.png} % left bottom right top
-\caption{\small 
+        \includegraphics[width=\textwidth,trim=0.1in 0.4in 0.2in 0.2in,clip]{./figs/edge_contraction.png} % left bottom right top
+\captionof{figure}{\small 
 Example of edge contraction: the edge $e_{uv}$ is selected from priority queue; after nodes $u$ and $v$ are merged and $e_{uv}$ is deleted, there are two double edges $e_1$ and $e_2$ left in the graph...  
 \label{fig:edge_contraction_and_contr_graph} }
-\end{figure}
+    \end{minipage}\hspace{0.04\textwidth}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+\includegraphics[width=0.8\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/cannot-lin-constraints.png}
+\captionof{figure}{\small 
+Example of agglomerative clustering on signed graph with and without cannot-link constraints...
+\label{fig:algorithm_with_without_CLC}}
+    \end{minipage}
+\end{minipage}
+
 
 \section{Unified Graph Agglomerative Clustering}
 In this section we introduce the Unified Graph Agglomerative Clustering Algorithm (UGACA) that represents a simple generalized formalization of many agglomerative graph clustering algorithms. \UPDATE{It can be used to describe both unsigned clustering algorithms ingesting positive node similarities and signed clustering algorithms using attractive and repulsive cues.}\\
@@ -33,7 +44,7 @@ First, we define notation and the concept of cannot-link constraints. Then, we i
 
 
 \begin{algorithm}
-  \caption{Unified Graph Agglomerative Clustering}
+  \caption{Unified Graph Agglomerative Clustering \TODO{adapt to width}}
    \hspace*{\algorithmicindent} \textbf{Inputs:} graph $\mathcal{G}(V,E,W)$; bool {\color{blue}\texttt{addCannotLink}}  \\
   \hspace*{\algorithmicindent} \textbf{Outputs:} Final clustering and contracted graph $\mathcal{G}'$\\
   \hspace*{\algorithmicindent} 
@@ -123,18 +134,9 @@ In the Supplementary material we provide a more detailed description of the algo
 % \item Comment about must-not-link relations: they give high priority to the most confident repulsive edges {}
 
 
-
-\begin{figure}
-\centering
-\includegraphics[width=0.45\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/cannot-lin-constraints.png}
-\caption{\small 
-Example of agglomerative clustering on signed graph with and without cannot-link constraints...
-\label{fig:algorithm_with_without_CLC}}
-\end{figure}
-
 \begin{table*}
     \centering
-    \begin{subtable}[t!]{0.98\textwidth}\centering
+    \begin{subtable}[t!]{\textwidth}\centering
         \begin{tabular}{r l || c | c | c}
             % \toprule\toprule
              & &  \multirow{3}{*}{\textbf{Unsigned graphs}}  & \multicolumn{2}{c}{\textbf{Signed graphs}}  \\        
@@ -146,15 +148,21 @@ Example of agglomerative clustering on signed graph with and without cannot-link
             % \cmidrule[0.3em]{3-5}
             % \midrule[0.15em]
             \midrule\midrule
-            Sum: & $f(\tilde{w}_1,\tilde{w}_2) = \tilde{w}_1+\tilde{w}_2$ & \thead{Sum Linkage\\Hierarchical Clustering} & \thead{Greedy Additive \\ Edge Contraction \cite{levinkov2017comparative}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ \midrule
+            Sum: & \thead[l]{$f(\tilde{w}_1,\tilde{w}_2) = \tilde{w}_1+\tilde{w}_2$} & \thead{Sum Linkage\\Hierarchical Clust.} & \thead{Greedy Additive \\ Edge Contraction \\\cite{levinkov2017comparative}} & \thead{Greedy \\Fixation \\\cite{levinkov2017comparative}} \\ \midrule
             
-            \makecell[r]{Absolute \\ maximum:} & \makecell[l]{$f(\tilde{w}_1,\tilde{w}_2) =\argmax_{\tilde{w}\in\{\tilde{w}_{1},\tilde{w}_{2}\}} \big|\tilde{w} \big| $}   & \thead{Single Linkage\\Hierarchical Clustering\\ \cite{lance1967general}} & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\ \midrule
+            \makecell[r]{Abs. \\ max:} & \thead[l]{
+            $
+            f(\tilde{w}_1,\tilde{w}_2) = \begin{cases} 
+            \tilde{w}_1 & \text{if}\,\, |\tilde{w}_1|>|\tilde{w}_2|\\
+            \tilde{w}_2 & \text{otherwise}
+             \end{cases} 
+            $}
+               & \thead{Single Linkage\\Hierarchical Clust.\\ \cite{lance1967general}} & \thead{Mutex \\Watershed \\\cite{wolf2018mutex}} & \thead{Mutex \\Watershed \\\cite{wolf2018mutex}} \\ \midrule
+            \makecell[r]{Mean:} & \thead[l]{$f(\tilde{w}_1,\tilde{w}_2) = \mathrm{wAvg}\{ \tilde{w}_1, \tilde{w}_2 \} $}                                 & \thead{ Average Linkage\\ Hierarchical Clust. \\(UPGMA) \cite{lance1967general}} & \thead{Average Linkage\\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
 
-            \makecell[r]{Arithmetic \\mean:} & $f(\tilde{w}_1,\tilde{w}_2) = \mathrm{weightedAvg}\{ \tilde{w}_1, \tilde{w}_2 \} $                                 & \thead{ Average Linkage\\ Hierarchical Clustering \\(UPGMA) \cite{lance1967general}} & \thead{Signed Agglomerative Clust. \\ with Average Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
+            Max: & \thead[l]{$f(\tilde{w}_1,\tilde{w}_2) = \max \{ \tilde{w}_1, \tilde{w}_2 \}  $}                                 & \thead{Single Linkage\\Hierarchical Clust.\\ \cite{lance1967general}} & \thead{Single Linkage \\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
 
-            Maximum: & $f(\tilde{w}_1,\tilde{w}_2) = \max \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Single Linkage\\Hierarchical Clustering\\ \cite{lance1967general}} & \thead{Signed Agglomerative Clust. \\ with Single Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
-
-            Minimum:& $f(\tilde{w}_1,\tilde{w}_2) = \min \{ \tilde{w}_1, \tilde{w}_2 \}  $                                 & \thead{Complete Linkage\\ Hierarchical Clustering \\ \cite{lance1967general}}  & \thead{Signed Agglomerative Clust. \\ with Complete Linkage \\ (\textbf{NEW})} & \thead{\textbf{NEW}}
+            Min:& \thead[l]{$f(\tilde{w}_1,\tilde{w}_2) = \min \{ \tilde{w}_1, \tilde{w}_2 \}  $}                                 & \thead{Complete Linkage\\ Hierarchical Clust. \\ \cite{lance1967general}}  & \thead{Complete Linkage \\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}
 
 
 

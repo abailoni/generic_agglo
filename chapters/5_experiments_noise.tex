@@ -1,15 +1,7 @@
 % !TEX root = ../agglo_clust_review.tex
 % 
+
 \begin{figure}
-\centering
-
-        \includegraphics[width=0.48\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
-   
-    \caption{The two figures represent the predictions of the CNN on the CREMI dataset (\UPDATE{REF}) a) without added noise, b) with the addition of the merge-biased noise defined in Eq. \ref{eq:opensimplex_noise_def} and c) with split-biased noise. The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries \TODO{Add colorbar? Adapt to noise defs}}
-    \label{fig:noisy_affs}
-\end{figure}% 
-
-\begin{figure*}
 \centering
         \begin{subfigure}[t]{0.48 \textwidth}
         \centering
@@ -25,7 +17,26 @@
 
 
 \caption{Plot illustrating Adapted RAND scores achieved by UGACA and different update rules when noise is added to the edge weights... Solid lines represent median values, whereas values between the 25th and the 75th percentile are shown in shade areas.    \TODO{Label which uses only local-neighbors and which uses long-range connections}}\label{fig:noise_plots}
-\end{figure*}
+\end{figure}
+
+% \begin{minipage}[b]{0.48\textwidth}
+% % \begin{figure}
+%         % \begin{subfigure}[t]{0.48 \textwidth}
+%         \centering
+%         \includegraphics[width=0.98\textwidth,trim=0.35in 0.35in 0.35in 0.35in,clip]{./figs/merge_noise.pdf}
+
+%         \captionof{subfigure}{Merge-biased opensimplex noise} \label{fig:thresh}
+%     \end{minipage}\hfil
+% \begin{minipage}[b]{0.48\textwidth}
+%     % \end{subfigure}%
+%     % \begin{subfigure}[t]{0.48 \textwidth}
+%         \centering
+%         \includegraphics[width=0.98\textwidth,trim=0.29in 0.31in 0.31in 0.31in,clip]{./figs/split_noise.pdf}
+%         \captionof{subfigure}{Split-biased opensimplex noise} \label{fig:ws}
+%     % \end{subfigure}
+% \captionof{figure}{Plot illustrating Adapted RAND scores achieved by UGACA and different update rules when noise is added to the edge weights... Solid lines represent median values, whereas values between the 25th and the 75th percentile are shown in shade areas.    \TODO{Label which uses only local-neighbors and which uses long-range connections}}\label{fig:noise_plots}
+% % \end{figure}
+
 
 
 \subsection{Testing the robustness of the algorithms}
@@ -54,6 +65,38 @@ With this strategy, we randomly perturbed the CNN predictions and the edge weigh
 %Nevertheless, these additional experiments show that it provides an \UPDATE{almost true over-segmentation of the ground truth segmentation even with strongly merge-biased predictions}.
 \end{itemize}
 
+\begin{minipage}[T!]{\textwidth}
+        \centering
+        \begin{minipage}{0.45\textwidth}
+\centering
+
+        \includegraphics[width=0.85\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
+   
+    \captionof{figure}{The two figures represent the predictions of the CNN on the CREMI dataset (\UPDATE{REF}) a) without added noise, b) with the addition of the merge-biased noise defined in Eq. \ref{eq:opensimplex_noise_def} and c) with split-biased noise. The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries \TODO{Add colorbar? Adapt to noise defs}}
+    \label{fig:noisy_affs}
+    \end{minipage}\hspace{0.04\textwidth}
+\begin{minipage}{0.48\textwidth}
+% \begin{table}
+    \centering
+    % \begin{subtable}[t!]{0.5\textwidth}\centering
+        \begin{tabular}{l M{0.25\textwidth} M{0.25\textwidth}}
+        \toprule
+        & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
+        Update rule: & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
+         % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
+\textbf{Mean}& \textbf{0.343}  & 0.339  \\
+GMIS \cite{liu2018affinity} & 0.341 & -  \\
+Max &   0.243  &   0.325  \\
+Abs. Max. \cite{wolf2018mutex}  & -  & 0.321 \\
+Sum \cite{levinkov2017comparative} & 0.313  & 0.319  \\
+Min &  0.000    & 0.000  \\
+        \end{tabular}
+        % \caption{Linkage criteria}
+    % \end{subtable} 
+    \captionof{table}{AP scores on the cityscapes validation set for UGACA and different types of update rules. \TODO{PROBLEM: all apart from GMIS uses finetuned affinities} }
+    \label{tab:results_cityscapes}
+\end{minipage}
+\end{minipage}
 
 % \begin{equation}
 % \begin{gathered}

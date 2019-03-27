@@ -1,26 +1,6 @@
 % !TEX root = ../agglo_clust_review.tex
 \subsection{Results on Cityscapes}
 In the experiments on the cityscapes dataset, we used the pipeline proposed by \cite{liu2018affinity} \UPDATE{that currently represents the method not using any external dataset like MS-COCO}...
-\begin{table}
-    \centering
-    \begin{subtable}[t!]{0.5\textwidth}\centering
-        \begin{tabular}{l M{0.25\textwidth} M{0.25\textwidth}}
-        \toprule
-        & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
-        Update rule: & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
-         % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
-\textbf{Mean}& \textbf{0.343}  & 0.339  \\
-GMIS \cite{liu2018affinity} & 0.341 & -  \\
-Max &   0.243  &   0.325  \\
-Abs. Max. \cite{wolf2018mutex}  & -  & 0.321 \\
-Sum \cite{levinkov2017comparative} & 0.313  & 0.319  \\
-Min &  0.000    & 0.000  \\
-        \end{tabular}
-        % \caption{Linkage criteria}
-    \end{subtable} 
-    \caption{AP scores on the cityscapes validation set for UGACA and different types of update rules. \TODO{PROBLEM: all apart from GMIS uses finetuned affinities} }
-    \label{tab:results_cityscapes}
-\end{table}
 
 
 % \begin{table}
