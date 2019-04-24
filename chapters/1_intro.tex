@@ -3,7 +3,24 @@
 \section{Introduction}
 %On possible selling story could be: currently many of the successful proposal-free instance segmentation methods rely on a final clustering step on a grid-graph with both short and long-range connections. So it is worth to study this problem in more details. 
 
+\emph{Instance segmentation} is a task of computer vision consisting in assigning each pixel of an image to an object instance \TODO{REF}. The most success in instance segmentation (IS) has been achieved by applying deep learning [REF]. There are two main types of deep learning approaches to IS: proposal-based and proposal-free methods. Proposal-based methods consist of two steps: object detection, for example by finding bounding boxes around the objects, and assigning pixels to the detected objects \TODO{REF}. Although these approaches have proven to be highly successful in instance segmentation competitions like MS COCO \cite{lin2014microsoft}, Pascal VOC2012 \cite{everingham2010pascal} and CityScapes \cite{cordts2016cityscapes}, they are not applicable to certain types of data, for example microscopy images of neurons \TODO{cremi, isbi}, where objects are not approximated well by bounding boxes. 
+% More motivation: They are at the same time limited by the quality of the object detection routine, which is hard to train on small datasets (but no ref for this)
+Proposal-free methods perform IS by directly predicting pixel features and then using a clustering algorithm for grouping pixels into object instances \TODO{REF}. In this paper, we focus on a proposal-free method, where a Convolutional Neural Network (CNN) predicts affinities representing how likely it is for pairs of pixels to belong to the same instance. Recently, this approach was used in \cite{liu2018affinity} to achieve a performance comparable to the proposal-based methods on the Cityscapes dataset and in \cite{wolf2018mutex} to achieve state-of-the-art results in a competitive neuron segmentation challenge. 
+
+The output of the CNN can be represented as a weighted grid graph such that each node represents a pixel of the image and the weights of the edges define interactions between the pixels. A graph clustering algorithm is then applied to cluster pixels into instances. The majority of clustering methods work with positive edge weights only, representing attractive interactions between the nodes. These methods require the user to specify the desired numbers of segments or a termination criterion (as in spectral clustering or iterated normalized cuts) or even a stronger version of supervision in terms of seeds (as in seeded watershed or random walker).  
+
+A popular method for graph clustering is hierarchical clustering (HC) which creates an hierarchy of clusters. Agglomerative HC is a bottom-up approach starting with each node assigned to its own cluster and incrementally merging clusters while moving up the hierarchy REF?. This method requires the user to choose a level in the cluster hierarchy defining the desired output clustering. 
+
+Other clustering methods work with so-called \emph{signed graphs}, which include both positive and negative edge weights corresponding to attraction and repulsion between pixels [REF]. The advantage of using signed graphs is that balancing attraction and repulsion allows us to perform the clustering without defining additional parameters. For small problems, this can be done optimally by solving the so-called \emph{multicut optimization problem} or \emph{correlation clustering}; however, this problem is NP-hard and thus not scalable [REF]. Other recently algorithms applicable to signed graphs are greedy approximations of the multicut pro
+
+
+
+As to our knowledge, related work applies HC to graphs with positive weights only \TODO{REF}. 
+
 \begin{itemize}
+
+
+
 \item \emph{Possible intro about aggl. clustering:} \UPDATE{Hierarchical, agglomerative clustering is an important and well-established technique in unsupervised machine learning. Agglomerative clustering schemes start from the partition of the data set into singleton nodes and merge step by step the current pair of mutually closest nodes into a new node until there is one final node left, which comprises the entire data set. Various clustering schemes share this procedure as a common definition, but differ in the way in which the measure of inter-cluster dissimilarity is updated after each step. } %\cite{mullner2011modern}
 
 
