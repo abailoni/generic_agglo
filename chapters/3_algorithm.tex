@@ -23,12 +23,23 @@ Example of agglomerative clustering on signed graph with and without cannot-link
 In this section we introduce the Unified Graph Agglomerative Clustering Algorithm (UGACA) that represents a simple generalized formalization of many agglomerative graph clustering algorithms. \UPDATE{It can be used to describe both unsigned clustering algorithms ingesting positive node similarities and signed clustering algorithms using attractive and repulsive cues.}\\
 First, we define notation and the concept of cannot-link constraints. Then, we introduce the generalized algorithm and show \UPDATE{how it can be used to introduce several new agglomerative clustering algorithms for graphs with signed edge weights.}
 
-\subsection{Contracted graph and cannot-link constraints} \label{sec:contr_graph_and_CLC}
+\subsection{Signed graph formalism: edge contraction and cannot-link constraints} \label{sec:contr_graph_and_CLC}
 
 \begin{itemize}
-\item Define graph formalism and clustering $\Pi$. Make comment about special case of unsigned graph
-\item Define multicut and associated energy
+\item \TODO{First define clustering, then weights, costs} We consider the problem of clustering a simple graph $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes. The weight function $w^+: E \rightarrow \mathbb{R}^+$ associates a positive scalar attribute $w_e^+$ to each edge $e \in E$ representing a merge affinity: the higher this number, the higher the inclination of the two incident vertices to be assigned to the same cluster\footnote{Note that several formalisms defining unsigned weighted graphs associate to each edge a positive scalar that represents a metric or distance on the graph. In these formalisms, the \emph{lower} the edge weight, the higher the attraction between the two linked nodes, contrary to our definition of $w^+: E \rightarrow \mathbb{R}^+$.}. On the other hand, $w^-: E \rightarrow \mathbb{R}^+$ associates a split tendency $w_e^-$ to each edge: the higher this weight, the greater the desire of the incident vertices to be in different clusters.
+Graphs that have only positive weights can be seen as special cases of the previously defined graph $\mathcal{G}(V,E,w^+,w^-)$, when $w^-_e=0$ for every $e \in E$.   
 
+\item The set $\Pi$ is defined as a partition of the set of nodes $V$ into $K$ subsets if $V = \cup_{i=1}^K S_i $ and $S_i \cap S_j = \emptyset$ for every $i\neq j \in \{1, ..., K\}$. We call a partition $\Pi$ of $V$ a \emph{clustering} if every $S \in \Pi$ induces a connected subgraph (\emph{cluster}) of $\mathcal{G}$.
+\item For any clustering $\Pi$ of $\mathcal{G}$, we define as $E^0_\Pi$ the set of edges linking nodes in the same cluster, and as $E_\Pi^1$ the complementary set of edges whose linked nodes belong to distinct clusters:
+
+\begin{align}
+E_\Pi^0 &= \{ uv \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \\
+E^1_\Pi &= E \setminus E^0_\Pi.
+\end{align}
+
+The set of edges $E_\Pi^1$ is known as the \emph{multicut} of $\mathcal{G}$ associated to the clustering $\Pi$. 
+\item Often, graphs with both attractive and repulsive edge attributes are described in terms of a cost function $c: E \rightarrow \mathbb{R}$   The NP-hard multicut graph partition problem also called \emph{correlation clustering} \TODO{cits} amounts to finding a graph multicut $E^1_\Pi$ for which the sum of costs $c_e = w^-_e - w^+_e$  
+for every edge e
 \item Given a clustering $\Pi$ and a graph $\mathcal{G}(V,E,W)$, the interaction between two clusters $S_1, S_2 \in \Pi$ is usually defined in terms of a \emph{linkage criterion}, i.e. a function of all the edge weights connecting the two clusters:
 \begin{equation} \label{eq:linkage_criterion_def}
 \begin{gathered}
@@ -38,7 +49,9 @@ First, we define notation and the concept of cannot-link constraints. Then, we i
 \end{equation}
 
 \item A cannot-link-constraint defines a mutual exclusion relationship between two nodes in the graph and is used to specify that the these two nodes should not be associated with the same cluster. (the alg. will introduce them dynamically)
-\item Define contracted graph from given graph  $\mathcal{G}$ and clustering $\Pi$; explain edge contraction shown in Fig. 2 and define \emph{update rule} $f(w_1, w_2)$
+\item The algorithm that we will present in the next section iteratively performs a sequence of \emph{edge contractions} on the original graph $\mathcal{G}(V,E,w^+, w^-)$.
+
+\item define \emph{update rule} $f(c_1, c_2)$
 
 \end{itemize}
 

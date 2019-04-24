@@ -5,7 +5,8 @@
 \item \textbf{Proposal based methods} 
 \begin{itemize}
 \item Generate region proposals or bounding boxes and classify the objects in the bounding box \cite{yang2012layered,ladicky2010and,hariharan2014simultaneous,chen2015multi,dai2016instance,liang2016reversible,he2017mask}; fully convolutional  box proposals \cite{li2017fully}. 
-\item \emph{More references:} use an object detector to enumerate candidate instances and then perform pixel-level segmentation of each instance \cite{liang2018proposal,dai2016instance,li2017fully,liang2016reversible,arnab2017pixelwise} or generate generic proposal segments and then label each one with a semantic detector \cite{hariharan2014simultaneous,chen2015multi,hariharan2015hypercolumns,dai2015convolutional,uhrig2016pixel,he2017mask}.
+\item \emph{More references:} or generate generic proposal segments and then label each one with a semantic detector \cite{hariharan2014simultaneous,chen2015multi,hariharan2015hypercolumns,dai2015convolutional,uhrig2016pixel,he2017mask}.
+\item these somehow still uses some kind of object detector (at least to find the number of objects), but they do not necessary analyse one proposal at the time: use an object detector to enumerate candidate instances and then perform pixel-level segmentation of each instance \cite{liang2018proposal,dai2016instance,li2017fully,liang2016reversible,arnab2017pixelwise} \TODO{check \cite{dai2016instance}}
 % \SOURCE{\cite{kong2018recurrent}
 \end{itemize}
 
