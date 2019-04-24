@@ -47,12 +47,13 @@
 \item \textbf{Graph clustering related work}:
 \begin{itemize}
     \item popular in image segmentation: \textbf{agglomerative clustering}.
+    \item {\small More from \cite{mullner2011modern}: The seven most common methods are termed single, complete, average (UPGMA), weighted (WPGMA, McQuitty), Ward, centroid (UPGMC) and median (WPGMC) linkage (see Everitt et al., 2011, Table 4.1). They are implemented in standard numerical and statistical software such as R (R Development Core Team, 2011), MATLAB (The MathWorks, Inc., 2011), Mathematica (Wolfram Research, Inc., 2010), SciPy (Jones et al., 2001).}
     \item Why: more efficient than divisive approaches and graph cuts; does not usually require to specify the final number of clusters (e.g. spectral clustering) or seed nodes (e.g. watershed, random walker) 
     % old graph cut paper: \cite{shi2000normalized}
     % \item \emph{[other clustering methods working in an euclidean embedding space like mean-shift, K-means, Mixture models, BIRCH... can most probably be omitted]}
     \item many segmentation pipelines used to start the agglomeration from superpixels (SLIC, \cite{felzenszwalb2004efficient}, watershed) to reduce size of the problem 
     \item usually we build an hierarchy of clusters (or a \emph{merge-tree}): \TODO{find meaningful order}
-    \item clustering paper suggested by Roman
+    \item clustering paper suggested by Roman; Cocoons
 
  
 % \item \textit{Some reference (atm in random order, to be continued)} 
