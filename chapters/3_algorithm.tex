@@ -2,26 +2,27 @@
 
 \begin{minipage}[t]{\textwidth}
         \centering
-        \begin{minipage}[t]{0.45\textwidth}
+        \begin{minipage}[t]{0.49\textwidth}
 \centering
         \includegraphics[width=\textwidth,trim=0.1in 0.4in 0.2in 0.2in,clip]{./figs/edge_contraction.png} % left bottom right top
 \captionof{figure}{{\small 
-Example of edge contraction. The first row represents the original graph $\mathcal{G}$, the clustering $\Pi$ (purple lines) and the edges not on the cut (highlighted in green) before and after the contraction. The second row shows the corresponding contracted graph $\mathcal{G'}$ and cannot-link constraints (edges with red bars). In step (b), edge $e_{uv}$ is contracted: nodes $u$ and $v$ are merged and $e_{uv}$ is deleted from $\mathcal{G'}$. In (c), the two double edges $e_1$ and $e_2$ left in $\mathcal{G'}$ after the contraction are replaced by a single constrained edge with updated cost $f(c_1, c_2)$, where $f$ is one of the update rules defined in Table \ref{tab:linkage-criteria}.} 
+Example of edge contraction of $e_{uv}$. The first row represents the original graph $\mathcal{G}$ and the clustering $\Pi$ (purple lines), where green edges are not on the cut. Red bars indicate cannot-link constraints, whereas the contracted graph $\tilde{\mathcal{G}}_\Pi$ is shown in the second row. In step (ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In (iii), the two double edges $e_{ut}$ and $e_{vt}$ resulting from the contraction are replaced by a single constrained edge with updated interaction $f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}))$, where $f$ is defined in Table \ref{tab:linkage-criteria}.} 
 \label{fig:edge_contraction_and_contr_graph} }
-    \end{minipage}\hspace{0.04\textwidth}
-    \begin{minipage}[t]{0.45\textwidth}
+    \end{minipage}\hspace{0.01\textwidth}
+    \begin{minipage}[t]{0.49\textwidth}
         \centering
 \includegraphics[width=0.8\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/cannot-lin-constraints.jpg}
 \captionof{figure}{\small 
-Example of agglomerative clustering on signed graph with and without cannot-link constraints...
+\UPDATE{Comparison of \algname{}  with (top) and without (bottom) enforcing cannot-link constraints on a toy graph with positive (green) and repulsive (red) interactions. Only contracted graph is represented; every column represent one iteration of the algorithm; the selected edge at each iteration is highlighted in yellow; constrained edges are represented with red bars. We note that the two resulting clusterings are different.}
 \label{fig:algorithm_with_without_CLC}}
     \end{minipage}
 \end{minipage}
 
 
-\section{Generalized framework for Agglomerative Clustering of Signed Graphs}
-In this section we introduce the Unified Graph Agglomerative Clustering Algorithm (UGACA) that represents a simple \UPDATE{generalized} formalization of many agglomerative graph clustering algorithms. \UPDATE{It can be used to describe both unsigned clustering algorithms ingesting positive node similarities and signed clustering algorithms using attractive and repulsive cues.}\\
-First, we define notation and the concept of cannot-link constraints. Then, we introduce the generalized algorithm and show \UPDATE{how it can be used to introduce several new agglomerative clustering algorithms for graphs with signed edge weights.}
+\section{Generalized framework for Signed Graphs Agglomerative Clustering}
+In this section we introduce the proposed framework for agglomerative clustering of signed graphs. 
+%that represents a simple \UPDATE{generalized} formalization of many agglomerative graph clustering algorithms. \UPDATE{It can be used to describe both unsigned clustering algorithms ingesting positive node similarities and signed clustering algorithms using attractive and repulsive cues.}\\
+First, we define the graph notation in Sec. \ref{sec:notation}, then we introduce the generalized algorithm in Sec. \ref{sec:algorithm} and finally we show \UPDATE{how it represents a generalized version of several existing and new graph clustering algorithms (Sec. \ref{sec:alg_update_rules}).}
 
 \subsection{Notation and graph formalism} \label{sec:notation}
 
@@ -35,11 +36,11 @@ Often, graphs $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edg
 \begin{equation}
 \cost_e = w_e^+ - w_e^- \in \mathbb{R}, \quad \quad \forall e \in E
 \end{equation}
-Graphs that have only positive weights can be clearly seen as a special case of the previously defined graph $\mathcal{G}(V,E,w^+,w^-)$, when $w^-_e=0$ and $c_e \geq 0$ for every $e \in E$.
+Graphs that have only positive weights can be clearly seen as a special case of the previously defined graph $\mathcal{G}(V,E,w^+,w^-)$, when $w^-_e=0$ and $\cost_e \geq 0$ for every $e \in E$.
 
 \paragraph{Inter-cluster interaction}\label{par:linkage_criterion_def} We call two clusters $S_1,S_2$ \emph{adjacent} if there exists at least one edge ${e_{uv}\in E}$ connecting a node $u\in S_1$ to a node $v\in S_2$. In agglomerative HC, the interaction $\interact_{S_1,S_2}$ between two clusters $S_1, S_2$ is usually defined as a function, named \emph{linkage criterion}, depending on the weights of all edges connecting clusters $S_1$ and $S_2$. For example, for a \emph{maximum} linkage criterion statistic (single-linkage), the inter-cluster interaction is given by:
 \begin{equation}\label{eq:max_linkage}
-\mathscr{W}_{S_1,S_2} = \max_{e\in U} \cost(e), \qquad \text{where}\quad U = \{ e_{uv} \in E | u \in S_1, \, v \in S_2 \}.
+\interact_{S_1,S_2} = \, \max_{e\in U} \cost(e), \qquad \text{where}\quad U = \{ e_{uv} \in E | u \in S_1, \, v \in S_2 \}.
 \end{equation}
 Other common choices are \emph{minimum} (complete linkage) or \emph{average} (average linkage). %and \emph{sum}.
 % \begin{equation}
@@ -55,7 +56,7 @@ E_\Pi^0 \equiv \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \
 % E_\Pi^0 &= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \\
 % E^1_\Pi &= E \setminus E^0_\Pi.
 % \end{align}
-The set of edges $E_\Pi^1$ is known as the \emph{multicut} of $\mathcal{G}$ associated to the clustering $\Pi$. The instance of the NP-hard \emph{weighted correlation clustering} or \emph{minimum cost multicut problem} w.r.t. $\mathcal{G}(V,E,w^+, w^-)$ \cite{kappes2011globally,chopra1991multiway,andres2015lifting} is the task of finding a clustering that optimally balance the attraction and repulsion in the graph and is given by the following optimization problem/binary integer program:
+The set of edges $E_\Pi^1$ is known as the \emph{multicut} of $\mathcal{G}$ w.r.t. clustering $\Pi$. The instance of the NP-hard \emph{weighted correlation clustering} or \emph{minimum cost multicut problem} w.r.t. $\mathcal{G}(V,E,w^+, w^-)$ \cite{kappes2011globally,chopra1991multiway,andres2015lifting} is the task of finding a clustering that optimally balance the attraction and repulsion in the graph and is given by the following optimization problem/binary integer program:
 \begin{equation}
 % \min_\Pi \texttt{MC}(\Pi) \equiv
  \min_\Pi \sum_{e\in E} \cost_e x_e^\Pi,  \qquad \text{where} \quad x^\Pi_e = 
@@ -67,27 +68,27 @@ The set of edges $E_\Pi^1$ is known as the \emph{multicut} of $\mathcal{G}$ asso
 In the next chapters we will use this objective as a way to measure how much a clustering is balanced.
 
 \begin{algorithm}[t]
-  \caption{Generalized Agglomerative Clustering Algorithm for Signed Graphs}
-   \hspace*{\algorithmicindent} \textbf{Inputs:} graph $\mathcal{G}(V,E,W)$; boolean {\color{blue}\texttt{addCannotLink}}  \\
-  \hspace*{\algorithmicindent} \textbf{Outputs:} Final clustering $\Pi$ and contracted graph $\mathcal{G}'$\\
+  \caption{Generalized Algorithm for Signed Graphs Agglomerative Clustering}
+   \hspace*{\algorithmicindent} \textbf{Inputs:} Graph $\mathcal{G}(V,E,w^+,w^-)$ with $N$ nodes; boolean variable {\color{blue}\texttt{addCannotLink}}  \\
+  \hspace*{\algorithmicindent} \textbf{Outputs:} Final clustering $\Pi$\\
   \hspace*{\algorithmicindent} 
   \begin{algorithmic}[1]
     % \Procedure{SignedGraphEdgeContr}{{\color{blue}bool \emph{addConstraints}}}
       % \State $\mathcal{G}'\gets \mathcal{G}(V,E^+ \cup E^-)$ \Comment{Initialize the contracted graph}
-      \State Initialize clustering $\Pi=\{\{v_1\}, \ldots, \{v_N\}\}$ and contracted graph $\mathcal{G}' \gets \mathcal{G}$
+      \State Initialize clustering $\Pi=\{\{v_1\}, \ldots, \{v_N\}\}$ and contracted graph $\tilde{\mathcal{G}}_\Pi \gets \mathcal{G}$
       \State Initialize \texttt{canBeMerged}$[e] \gets$ \texttt{True} $\,\,\, \forall e\in E$
-      \State Sort edges in priority queue (PQ) in descending order of absolute costs $|w^+_e - w^-_e|$ 
+      \State Sort edges in priority queue (PQ) in descending order of priority $|\cost_e|=|w^+_e - w^-_e|$ 
       \State
       \While{PQ is \textbf{not} empty}
-        \State Pop edge $e_{uv}$ in $\mathcal{G}'$ with highest absolute cost $|\cost|$
-        \If{({\color{ForestGreen}\textbf{$\cost > 0$}}) \textbf{and} \texttt{canBeMerged}$[e_{uv}]$}
+        \State Pop edge $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ with highest absolute interaction $|\tilde{\cost}|$
+        \If{({\color{ForestGreen}\textbf{$\tilde{\cost} > 0$}}) \textbf{and} \texttt{canBeMerged}$[e_{uv}]$}
           % \State PQ, $\,E_\dagger,\,\, E' \gets$ \textsc{deleteDoubleEdges}($u,v$)
         %   \State Update costs of double edges;
         %   \State Propagate constrained flags of double edges;
-          \State Contract $e_{uv}$ in $\mathcal{G}'$ and merge clusters in $\Pi$
-          \For{every new pair of double edges $(e_1,e_2)$}
+          \State Contract $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and merge the two clusters $S_u,S_v \in \Pi$
+          \For{every new pair of double edges $(e_1,e_2)$ in $\tilde{\mathcal{G}}_\Pi$}
             % \State Get costs $\cost_1, \cost_2$ of $e_1,e_2$
-            \State Delete $e_2$ from $\mathcal{G}'$ and update cost of $e_1$ with update rule $f(\cost_{e_1},\cost_{e_2})$ def. in Tab. 1 
+            \State Delete $e_2$ from $\tilde{\mathcal{G}}_\Pi$ and update priority of $e_1$ with rule $f(\tilde{\cost}_{e_1},\tilde{\cost}_{e_2})$ defined in Tab. \ref{tab:linkage-criteria} 
             % \Statex \hspace{\algorithmicindent}\hspace{\algorithmicindent}\hspace{\algorithmicindent}\hspace{\algorithmicindent} update priority of $e_1$
             % \State Delete $e_2$ from $\mathcal{G}'$
           \EndFor
@@ -95,7 +96,7 @@ In the next chapters we will use this objective as a way to measure how much a c
           % \Statex \hspace{\algorithmicindent}\hspace{\algorithmicindent}\hspace{\algorithmicindent} and update priorities
         \EndIf
         % \State
-        \If{({\color{red}\textbf{$\cost \leq 0$}}) \textbf{and} {\color{blue}\texttt{addCannotLink}}}
+        \If{({\color{red}\textbf{$\tilde{\cost} \leq 0$}}) \textbf{and} {\color{blue}\texttt{addCannotLink}}}
           % \State Flag $e_{uv}$ as MustNotLink
           \State \texttt{canBeMerged}$[e_{uv}] \gets$ \texttt{False}
         \EndIf
@@ -116,7 +117,7 @@ In the next chapters we will use this objective as a way to measure how much a c
       % \EndFor
       % \State
       \State
-      \Return $\Pi$, $\mathcal{G}'$
+      \Return $\Pi$
       % \State
 
 
@@ -127,38 +128,33 @@ In the next chapters we will use this objective as a way to measure how much a c
 \end{algorithm}
 
 
-\subsection{Generalized agglomerative clustering framework} \label{sec:algorithm}
+\subsection{Generalized Algorithm for Signed Graphs Agglomerative Clustering} \label{sec:algorithm}
 
-We now present our main contribution: a generalized framework for agglomerative graph clustering that can describe in a simple form several graph partitioning algorithms previously introduced in the literature and highlights the existence of new ones.
+We now present our main contribution: a Generalized Algorithm for Signed Graphs Agglomerative Clustering (\algname) that can describe in a simple form several graph partitioning algorithms previously introduced in the literature and highlights the existence of new ones.
 
 The proposed generalized clustering uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merging pairs of adjacent clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b} and \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}c}). 
 
 A second variant of the proposed algorithm also introduces \emph{cannot-link constraints}, representing mutual exclusion relationships between pairs of nodes that cannot be associated with the same cluster in the final clustering. This variant (Algorithm \ref{main_alg} with \texttt{addCannotLink=True}) stops when all the remaining clusters have been previously constrained.
-
-
 % The algorithm that we will present in the next section iteratively performs a sequence of so-called \emph{edge contractions} on the original graph $\mathcal{G}(V,E,w^+, w^-)$.
-
 % The graph clustering algorithm we will present in Sec. \ref{sec:algorithm} is a bottom-up approach starting with each node assigned to its own cluster and iteratively merging clusters. During the agglomeration, the current clustering $\Pi$ is represented by a \emph{contracted graph} $\mathcal{G'}(\mathcal{G}, \Pi)$, such that each of its nodes represents a cluster $S \in \Pi$ and \emph{adjacent} clusters are linked by an edge. 
 
-\paragraph{Edge contraction and update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
-An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that $\tilde{V} \subseteq V$ and each node $u\in \tilde{V}$ represents the cluster $S_u \in \Pi$, edges in $\tilde{E}$ represent adjacency-relationships between clusters and the signed edge weights are given by inter-cluster interactions, i.e. $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
-For the linkage criteria tested in this work, when clusters $S_u,S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can easily express them in terms of a simple \emph{update rule} $f$. For instance, in the case of the single-linkage criterion defined in Eq. \ref{eq:max_linkage}, we can use the following simple max-update-rule to recompute the interaction between $S_u \cup S_v$ and one of its neighbors $S_t$:
+\paragraph{Update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
+An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph (Fig. \ref{fig:edge_contraction_and_contr_graph}). Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that $\tilde{V} \subseteq V$ and each node $u\in \tilde{V}$ represents the cluster $S_u \in \Pi$, edges in $\tilde{E}$ represent adjacency-relationships between clusters and the signed edge weights $\tilde{\cost}$ are given by inter-cluster interactions, i.e. $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
+For the linkage criteria tested in this work, when two clusters $S_u$ and $S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can easily recompute these interactions by using a simple \emph{update rule} $f$ that does not involve any loop over the edges of the original graph $\mathcal{G}$. As an example, given the single-linkage criterion defined in Eq. \ref{eq:max_linkage}, the interaction between $S_u \cup S_v$ and one of its neighbors $S_t$ is simply given by:
 \begin{equation}
   \interact_{S_u \cup S_v,S_t} = f( \interact_{S_u,S_t}, \interact_{S_v,S_t}) = f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt})) = \max \{ \tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}) \}
 \end{equation}
-
-
-\UPDATE{Every time a pair of clusters is merged, the contracted graph is updated by performing an edge contraction and merging the associated nodes. The only interactions that then need to be updated are those between nodes that after the edge contraction happen to be connected by double edges (see Fig. \ref{fig:edge_contraction_and_contr_graph}, step b). For basic linkage criteria, e.g. \emph{max} or \emph{min}, the new interaction can be formulated in terms of an \emph{update rule} $f$ depending only on the these updates can be computed with an update rule $f$ that depends only on the interactions at the previous step }
+All the update rules tested in this article are listed in Table \ref{tab:linkage-criteria}.
+% \UPDATE{Every time a pair of clusters is merged, the contracted graph is updated by performing an edge contraction and merging the associated nodes. The only interactions that then need to be updated are those between nodes that after the edge contraction happen to be connected by double edges (see Fig. \ref{fig:edge_contraction_and_contr_graph}, step b). For basic linkage criteria, e.g. \emph{max} or \emph{min}, the new interaction can be formulated in terms of an \emph{update rule} $f$ depending only on the these updates can be computed with an update rule $f$ that depends only on the interactions at the previous step }
 % As a result, the merged node could be linked to some of its neighbors by double edges . , representing the fact that their interaction should be updated. This update can be easily achieved by using an \emph{update rule} depending only on the weights of the double edges. 
-\TODO{such a mess...} ...without the need of running a loop over the edges of the original graph.
-\UPDATE{In this way we do not need to recompute the interaction by using the linkage criterion over all the edges of the original graph, that would be computationally expensive.}
+% \TODO{such a mess...} ...without the need of running a loop over the edges of the original graph.
+% \UPDATE{In this way we do not need to recompute the interaction by using the linkage criterion over all the edges of the original graph, that would be computationally expensive.}
 
+\paragraph{The edge contraction algorithm} The proposed generalized Algorithm \ref{main_alg} then proceeds as follows, similarly to the one proposed in \cite{levinkov2017comparative}. It starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}$, does the following: in case of attractive interaction $\tilde{\cost}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
+% For every new pair of double edges in $\tilde{\mathcal{G}}_\Pi$, update their priorities according to one of the update rules listed in Table \ref{tab:linkage-criteria} together with their cannot-link relationships. 
+If, on the other hand, the interaction is repulsive ($\tilde{\cost}\leq 0$) and the option \texttt{addCannotLink} of Alg. \ref{main_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
+In the Supplementary material we provide a more detailed description of the algorithm and we also comment on its computational complexity (Sec. \ref{sec:complexity}).
 
-\paragraph{The algorithm} The proposed Algorithm \ref{main_alg} proceeds as follows. Given an initial clustering $\Pi$ where each node of the original graph $\mathcal{G}$ represents its own cluster  \TODO{repetition}, the algorithm starts by initializing a contracted graph $\mathcal{G}'$ (see Definition \ref{def:contr_graph}) that will represent the clustering $\Pi$ at each iteration of the agglomeration. The algorithm then sorts all edges $e\in E$ by their absolute weight $|W(e)|$ in descending order in a priority queue, so that the most attractive and the most repulsive edges are processed first. It iteratively pops one edge $e_{uv}$ from priority queue and, depending on the value of the priority $\tilde{w}$ associated with $e_{uv}$, does the following: if the edge is attractive and $\tilde{w}>0$, then merge the connected nodes and perform an edge contraction of $e_{uv}$ in $\mathcal{G}'$ (see Sec. \ref{sec:notation} and Fig. \ref{fig:edge_contraction_and_contr_graph}), provided that $e_{uv}$ was not previously flagged as a cannot-link constraint; for every new pair of double edges in $\mathcal{G}'$ update \UPDATE{their priorities} according to one of the update rules listed in Table \ref{tab:linkage-criteria} and update their cannot-link relationships (see example in Fig. \ref{fig:algorithm_with_without_CLC}b from step 3 to 4). If, on the other hand, the edge $e_{uv}$ is repulsive and $\tilde{w}\leq 0$, then flag it as a cannot-link constraint if and only if the algorithm input-option \texttt{addCannotLink} is true and mutual exclusion relationships should be enforced.
-In the Supplementary material we provide a more detailed description of the algorithm (Sec. \ref{sec:detailed_algorithm}) and we also comment on its computational complexity (Sec. \ref{sec:complexity}).
-
- In the special case of a graph with only positive edge interactions, i.e. $w_e^-=0$ $\forall e\in E$, %$\mathcal{G}(V,E,W:E\rightarrow \mathbb{R}^+)$ 
- the algorithm performs a standard agglomerative hierarchical clustering by returning only one single cluster (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}a}) and a hierarchy of clusters defined by the order in which the clusters were merged. 
  %\TODO{use def of merging process of contracted graph to define merging tree?}.
 
 % \item Comment about must-not-link relations: they give high priority to the most confident repulsive edges {}
@@ -187,21 +183,21 @@ In the Supplementary material we provide a more detailed description of the algo
             % \cmidrule[0.3em]{3-5}
             % \midrule[0.15em]
             \midrule\midrule
-            Sum: & \thead[l]{$f(\tilde{w}_1,\tilde{w}_2) = \tilde{w}_1+\tilde{w}_2$} & \thead{Sum Linkage\\Hierarchical Aggl.\\Clustering} & \thead{Greedy Additive \\ Edge Contraction \\\cite{levinkov2017comparative}} & \thead{Greedy \\Fixation \\\cite{levinkov2017comparative}} \\ \midrule
+            Sum: & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \tilde{\cost}_1+\tilde{\cost}_2$} & \thead{Sum Linkage\\Hierarchical Aggl.\\Clustering} & \thead{Greedy Additive \\ Edge Contraction \\\cite{levinkov2017comparative}} & \thead{Greedy \\Fixation \\\cite{levinkov2017comparative}} \\ \midrule
             
             \makecell[r]{Abs. \\ max:} & \thead[l]{
             $
-            f(\tilde{w}_1,\tilde{w}_2) = \begin{cases} 
-            \tilde{w}_1 & \text{if}\,\, |\tilde{w}_1|>|\tilde{w}_2|\\
-            \tilde{w}_2 & \text{otherwise}
+            f(\tilde{\cost}_1,\tilde{\cost}_2) = \begin{cases} 
+            \tilde{\cost}_1 & \text{if}\,\, |\tilde{\cost}_1|>|\tilde{\cost}_2|\\
+            \tilde{\cost}_2 & \text{otherwise}
              \end{cases} 
             $}
                & \thead{Single Linkage\\Hierarchical Aggl.\\Clustering \cite{lance1967general}} & \thead{Mutex \\Watershed \\\cite{wolf2018mutex}} & \thead{Mutex \\Watershed \\\cite{wolf2018mutex}} \\ \midrule
-            \makecell[r]{Mean:} & \thead[l]{$f(\tilde{w}_1,\tilde{w}_2) = \mathrm{weightAvg}\{ \tilde{w}_1, \tilde{w}_2 \} $}                                 & \thead{ Average Linkage\\ Hierarchical Clust. \\(UPGMA) \cite{lance1967general}} & \thead{Average Linkage\\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
+            \makecell[r]{Mean:} & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \mathrm{weightAvg}\{ \tilde{\cost}_1, \tilde{\cost}_2 \} $}                                 & \thead{ Average Linkage\\ Hierarchical Clust. \\(UPGMA) \cite{lance1967general}} & \thead{Average Linkage\\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
 
-            Max: & \thead[l]{$f(\tilde{w}_1,\tilde{w}_2) = \max \{ \tilde{w}_1, \tilde{w}_2 \}  $}                                 & \thead{Single Linkage\\Hierarchical Aggl.\\Clustering \cite{lance1967general}} & \thead{Single Linkage \\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
+            Max: & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \max \{ \tilde{\cost}_1, \tilde{\cost}_2 \}  $}                                 & \thead{Single Linkage\\Hierarchical Aggl.\\Clustering \cite{lance1967general}} & \thead{Single Linkage \\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
 
-            Min:& \thead[l]{$f(\tilde{w}_1,\tilde{w}_2) = \min \{ \tilde{w}_1, \tilde{w}_2 \}  $}                                 & \thead{Complete Linkage\\ Hierarchical Aggl.\\Clustering \cite{lance1967general}}  & \thead{Complete Linkage \\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}
+            Min:& \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \min \{ \tilde{\cost}_1, \tilde{\cost}_2 \}  $}                                 & \thead{Complete Linkage\\ Hierarchical Aggl.\\Clustering \cite{lance1967general}}  & \thead{Complete Linkage \\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}
 
 
 
@@ -209,23 +205,29 @@ In the Supplementary material we provide a more detailed description of the algo
         \end{tabular}
         % \caption{Linkage criteria}
     \end{subtable} 
-    \caption{The table lists all the algorithms that can be seen as special cases of the Generic Agglomerative Clustering \ref{main_alg} given a specific update rule $f(e_1,e_2)$ and a type of graph...}
+    \caption{The table lists the update rules $f$ tested in this article. Depending on the type of graph (signed or unsigned) and the use of cannot-link constraints, existing and new algorithms are obtained.}
     \label{tab:linkage-criteria}
 \end{table*}
 
 
-\subsection{Update rules and associated algorithms}
+\subsection{Different update rules: new and existing algorithms} \label{sec:alg_update_rules}
 \begin{itemize}
 \item In this section we will list some of the algorithms that can be described using the generalized Algorithm \ref{main_alg} presented above \UPDATE{and we will introduce some new ones}.
 \item In Table \ref{tab:linkage-criteria} we collected the update rules that we tested and compared in this article. Later we will mention more of them that were proposed in the literature.
+
+\item In the special case of a graph with only positive edge interactions, i.e. $w_e^-=0$ $\forall e\in E$, %$\mathcal{G}(V,E,W:E\rightarrow \mathbb{R}^+)$ 
+ the algorithm performs a standard agglomerative hierarchical clustering by returning only one single cluster (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}a}) and a hierarchy of clusters defined by the order in which the clusters were merged. 
+ 
+
 \item In the special case of unsigned graphs (Table \ref{tab:linkage-criteria} column 1), the UGAC algorithm becomes simply a version of hierarchical clustering with different linkage criteria depending on the chosen update rule. It outputs one single cluster and it also defines a hierarchy of clusters during the merging process that can be associated to \UPDATE{a merging tree/  the hierarchical clustering dendrogram}... \TODO{Problem: sum does not trivially define an ultra-metric-distance...}  
 \item In the literature there have been already several methods using cannot-link constraints for agglomerative clustering algorithms \TODO{repetition from related work}: for example, \cite{malmberg2011generalized} used initially fixed mutual exclusion relationships, whereas \cite{levinkov2017comparative} introduced them dynamically in an edge contraction algorithm for signed graphs, named Greedy Fixation (Table \ref{tab:linkage-criteria} row 1, \emph{sum}). At the same time, they also proposed a version of it without cannot link constraints (Greedy Additive Edge Contraction) and they compared both with other greedy and local-search algorithms for solving the multicut/correlation clustering problem.
 \item Dynamically introduced cannot-link constraints were also proposed by \cite{wolf2018mutex}, that... \TODO{brief MWS description as efficient implementation of this update rule}. In the Supplementary material we show that the algorithm they present can be seen as a special case of UGACA with absolute maximum update rule (Table \ref{tab:linkage-criteria} row 2 - \emph{absolute maximum}) and that adding or not cannot-link constraints does not change the final clustering.
 \item On the other hand, the signed graph versions of UGACA with update rules \emph{arithmetic mean}, \emph{max} and \emph{min} (rows 3 to 5 in Table \ref{tab:linkage-criteria}) are new algorithms that were never mentioned in the literature, \UPDATE{especially those with cannot-link constraints}.
 \item In this article, we test and run a comparison of the five types of update rule listed in Table \ref{tab:linkage-criteria} (i.e. \emph{sum}, \emph{absolute max}, \emph{arithmetic mean}, \emph{max} and \emph{min}), since \UPDATE{they they are the most commonly used and the cheapest to compute}. Nevertheless, UGACA can be easily generalized to include even more complex rules. For instance, \cite{nunez2013machine} proposes a learned version of update rule where a neural network updates the edge weights depending on edge and node features; another really common choice is to introduce a weight regularization depending on the size of the linked nodes (\cite{felzenszwalb2004efficient} and \cite{kardoostsolving} (unpublished...??), Thorsten..); 
 \cite{funke2018large} on the other hand accumulate statistics for each \UPDATE{boundary between clusters} by keeping a discrete histograms of the edge weights and then computes quantiles from it.
-\end{itemize}
 
+\end{itemize}
+\TODO{More details on efficient implementations in appendix?}
 
 % \begin{table*}[t]
 %     \centering
