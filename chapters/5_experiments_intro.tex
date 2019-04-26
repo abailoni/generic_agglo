@@ -1,6 +1,18 @@
 % !TEX root = ../agglo_clust_review.tex
+\section{Experiments on neuron segmentation}
 
-\subsection{Experimental setup and tested datasets}
+We first evaluate and compare the agglomerative clustering algorithms described in the generalized framework on the task of neuron segmentation in electron microscopy (EM) image volumes. This application is of key interest in connectomics, a field of neuro-science with the goal of reconstructing neural wiring diagrams spanning complete central nervous systems. While a lot of progress is being made, only proof-reading or manual tracing yields sufficient accuracy for correct circuit reconstruction \cite{schlegel2017learning}.
+\TODO{subsections description}
+
+\subsection{Experimental setup and pixel grid-graph} \label{sec:grid_graph}
+\begin{itemize}
+\item Define predictions of the classifier (pseudo probabilities) for edge weights
+\item Define possible mappings to signed costs
+\item Make comment about which version defines nested segmentations and which does not give hirarchical solutions
+
+\end{itemize}
+
+
 \begin{itemize}
     \item Define long-range grid graph. (Mention the fact of enforcing local merge)
 \item Introduce "Poisson" random graph with a given probability of long-range connections

@@ -31,6 +31,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
+\usepackage{mathrsfs}
+
 \usepackage{algorithm}% http://ctan.org/pkg/algorithm
 \PassOptionsToPackage{noend}{algpseudocode}% comment out if want end's to show
 \usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
@@ -75,7 +77,8 @@
 \renewcommand\thesubfigure{(\alph{subfigure})}
 \usepackage{booktabs}
 
-\newcommand*{\cost}{c}%
+\newcommand*{\cost}{\omega}%
+\newcommand*{\interact}{\mathscr{W}}
 \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
 % \newcolumntype{M}[1]{>{\arraybackslash}m{#1}}
 
@@ -162,14 +165,14 @@
 
 \input{chapters/3_algorithm}
 
-\input{chapters/4_long_range_graph_def}
+% \input{chapters/4_long_range_graph_def}
 
-\section{Experiments}
+% \section{Experiments}
 \input{chapters/5_experiments_intro}
 \input{chapters/5_experiments_compare_rules}
 \input{chapters/5_experiments_noise}
-\input{chapters/5_experiments_cityscapes}
 \input{chapters/5_experiments_cremi}
+\input{chapters/5_experiments_cityscapes}
 
 
 \input{chapters/6_conclusions}

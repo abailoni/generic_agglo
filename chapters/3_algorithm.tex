@@ -25,20 +25,27 @@ First, we define notation and the concept of cannot-link constraints. Then, we i
 
 \subsection{Notation and graph formalism} \label{sec:notation}
 
-Given a simple graph $\mathcal{G}(V,E)$, we call the set $\Pi$ a \emph{clustering} with $K$ clusters if $V = \cup_{i=1}^K S_i $, $S_i \cap S_j = \emptyset$ for every $i\neq j$ and every $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$.
+Given a simple graph $\mathcal{G}(V,E)$, we call the set $\Pi$ a \emph{clustering} with $K$ clusters if $V = \cup_{i=1}^K S_i $, $S_i \cap S_j = \emptyset$ for every $i\neq j$ and every $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. In the following we denote the cluster associated with node $u$ as $S_u$.
+% \begin{equation}
+% S_u \equiv S \in \Pi \,\, \text{s.t.} \,\, u \in S
+% \end{equation}
 
 In this work, we consider the problem of clustering a weighted graph $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes. The weight function $w^+: E \rightarrow \mathbb{R}^+$ associates a positive scalar attribute $w_e^+\in \mathbb{R}^+$ to each edge $e \in E$ representing a merge affinity or a similarity measure: the higher this number, the higher the inclination of the two incident vertices to be assigned to the same cluster\footnote{Note that several formalisms defining positively weighted graphs associate to each edge a positive scalar that represents a metric or distance on the graph. In these formalisms, the \emph{lower} the edge weight, the higher the attraction between the two linked nodes, contrary to our definition of $w^+: E \rightarrow \mathbb{R}^+$.}. On the other hand, $w^-: E \rightarrow \mathbb{R}^+$ associates a split tendency $w_e^- \in \mathbb{R}^+$ to each edge: the higher this weight, the greater the desire of the incident vertices to be in different clusters. 
-Often, graphs with both attractive and repulsive edge attributes are described in terms of a \emph{signed} cost function $\cost: E \rightarrow \mathbb{R}$ that combines both edge weights into one signed scalar number: 
+Often, graphs $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes are also defined as $\mathcal{G}(V,E,\cost)$, where $\cost: E \rightarrow \mathbb{R}$ represents a \emph{signed interaction} that combines both attraction and repulsion into one signed scalar number: % space: make equation in line
 \begin{equation}
 \cost_e = w_e^+ - w_e^- \in \mathbb{R}, \quad \quad \forall e \in E
 \end{equation}
-Graphs that have only positive weights can be clearly seen as special cases of the previously defined graph $\mathcal{G}(V,E,w^+,w^-)$, when $w^-_e=0$ and $c_e \geq 0$ for every $e \in E$.
+Graphs that have only positive weights can be clearly seen as a special case of the previously defined graph $\mathcal{G}(V,E,w^+,w^-)$, when $w^-_e=0$ and $c_e \geq 0$ for every $e \in E$.
 
-\paragraph{Linkage criterion}\label{par:linkage_criterion_def} We call two clusters $S_1,S_2$ \emph{adjacent} if there exists at least one edge $e_{uv}\in E$ in the original graph connecting a node $u\in S_1$ to a node $v\in S_2$:
-\begin{equation}
- \text{$S_1, S_2 \in \Pi$ are \emph{adjacent}} \quad \Longleftrightarrow  \quad  \mathcal{B}(S_1,S_2) \equiv \{ e_{uv} \in E | u \in S_1, \, v \in S_2 \} \neq \emptyset
+\paragraph{Inter-cluster interaction}\label{par:linkage_criterion_def} We call two clusters $S_1,S_2$ \emph{adjacent} if there exists at least one edge ${e_{uv}\in E}$ connecting a node $u\in S_1$ to a node $v\in S_2$. In agglomerative HC, the interaction $\interact_{S_1,S_2}$ between two clusters $S_1, S_2$ is usually defined as a function, named \emph{linkage criterion}, depending on the weights of all edges connecting clusters $S_1$ and $S_2$. For example, for a \emph{maximum} linkage criterion statistic (single-linkage), the inter-cluster interaction is given by:
+\begin{equation}\label{eq:max_linkage}
+\mathscr{W}_{S_1,S_2} = \max_{e\in U} \cost(e), \qquad \text{where}\quad U = \{ e_{uv} \in E | u \in S_1, \, v \in S_2 \}.
 \end{equation}
-where we defined the set of edges connecting two adjacent clusters as \UPDATE{\emph{boundary}} \UPDATE{$\mathcal{B}(S_1,S_2)$}. The interaction between two clusters $S_1, S_2$ is usually defined as a function, named \emph{linkage criterion}, depending on the weights of all edges in the boundary $\mathcal{B}(S_1,S_2)$. In hierarchical agglomerative clustering and graphs with only positive weights, some examples of linkage criterion statistics are \emph{maximum} (single-linkage clustering), \emph{minimum} (complete-linkage clustering) and arithmetical average (average-linkage clustering).
+Other common choices are \emph{minimum} (complete linkage) or \emph{average} (average linkage). %and \emph{sum}.
+% \begin{equation}
+%  \text{$S_1, S_2 \in \Pi$ are \emph{adjacent}} \quad \Longleftrightarrow  \quad  \mathcal{B}(S_1,S_2) \equiv \{ e_{uv} \in E | u \in S_1, \, v \in S_2 \} \neq \emptyset
+% \end{equation}
+% where we defined the set of edges connecting two adjacent clusters as \UPDATE{\emph{boundary}} \UPDATE{$\mathscr{W}(S_1,S_2) , \mathcal{G}'_{\mathcal{G},\Pi}(V',E')$}.  in the boundary $\mathcal{B}(S_1,S_2)$. Some examples of linkage criterion statistics are \emph{maximum} (single-linkage), \emph{minimum} (complete-linkage) and average (average-linkage).
 
 \paragraph{Multicut and correlation clustering} For any clustering $\Pi$ of $\mathcal{G}$, we define as $E^0_\Pi$ the set of edges linking nodes in the same cluster, and as $E_\Pi^1$ the complementary set of edges whose linked nodes belong to distinct clusters:
 \begin{equation}
@@ -57,7 +64,7 @@ The set of edges $E_\Pi^1$ is known as the \emph{multicut} of $\mathcal{G}$ asso
  0 & \text{otherwise}.
  \end{cases}
 \end{equation}
-In the next chapters we will use this objective as a way to measure how balanced is a clustering found by the tested agglomerative clustering algorithms.
+In the next chapters we will use this objective as a way to measure how much a clustering is balanced.
 
 \begin{algorithm}[t]
   \caption{Generalized Agglomerative Clustering Algorithm for Signed Graphs}
@@ -124,7 +131,7 @@ In the next chapters we will use this objective as a way to measure how balanced
 
 We now present our main contribution: a generalized framework for agglomerative graph clustering that can describe in a simple form several graph partitioning algorithms previously introduced in the literature and highlights the existence of new ones.
 
-Given a graph $\mathcal{G}(V,E,w^+, w^-)$, the proposed generalized clustering uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merging pairs of adjacent clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b} and \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}c}). 
+The proposed generalized clustering uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merging pairs of adjacent clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b} and \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}c}). 
 
 A second variant of the proposed algorithm also introduces \emph{cannot-link constraints}, representing mutual exclusion relationships between pairs of nodes that cannot be associated with the same cluster in the final clustering. This variant (Algorithm \ref{main_alg} with \texttt{addCannotLink=True}) stops when all the remaining clusters have been previously constrained.
 
@@ -134,10 +141,16 @@ A second variant of the proposed algorithm also introduces \emph{cannot-link con
 % The graph clustering algorithm we will present in Sec. \ref{sec:algorithm} is a bottom-up approach starting with each node assigned to its own cluster and iteratively merging clusters. During the agglomeration, the current clustering $\Pi$ is represented by a \emph{contracted graph} $\mathcal{G'}(\mathcal{G}, \Pi)$, such that each of its nodes represents a cluster $S \in \Pi$ and \emph{adjacent} clusters are linked by an edge. 
 
 \paragraph{Edge contraction and update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
-An efficient way of implementing these updates can be achieved by representing the clustering $\Pi$ with a \emph{contracted graph} $\mathcal{G'}(\mathcal{G}, \Pi)$, such that each of its nodes is associated to a cluster $S \in \Pi$, edges represent adjacency-relationships between clusters and edge weights inter-cluster interactions.
-\UPDATE{Every time a pair of neighboring clusters is merged, the contracted graph is updated by performing an edge contraction and merging two nodes. After the edge contraction, the only cluster interactions that need to be updated are those between nodes connected by double edges in the contracted graph (see Fig. \ref{fig:edge_contraction_and_contr_graph}, step b). For simple linkage criteria, these updates can be easily computed with an update rule $f$ that depends only on the interactions at the previous step }
+An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that $\tilde{V} \subseteq V$ and each node $u\in \tilde{V}$ represents the cluster $S_u \in \Pi$, edges in $\tilde{E}$ represent adjacency-relationships between clusters and the signed edge weights are given by inter-cluster interactions, i.e. $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
+For the linkage criteria tested in this work, when clusters $S_u,S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can easily express them in terms of a simple \emph{update rule} $f$. For instance, in the case of the single-linkage criterion defined in Eq. \ref{eq:max_linkage}, we can use the following simple max-update-rule to recompute the interaction between $S_u \cup S_v$ and one of its neighbors $S_t$:
+\begin{equation}
+  \interact_{S_u \cup S_v,S_t} = f( \interact_{S_u,S_t}, \interact_{S_v,S_t}) = f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt})) = \max \{ \tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}) \}
+\end{equation}
+
+
+\UPDATE{Every time a pair of clusters is merged, the contracted graph is updated by performing an edge contraction and merging the associated nodes. The only interactions that then need to be updated are those between nodes that after the edge contraction happen to be connected by double edges (see Fig. \ref{fig:edge_contraction_and_contr_graph}, step b). For basic linkage criteria, e.g. \emph{max} or \emph{min}, the new interaction can be formulated in terms of an \emph{update rule} $f$ depending only on the these updates can be computed with an update rule $f$ that depends only on the interactions at the previous step }
 % As a result, the merged node could be linked to some of its neighbors by double edges . , representing the fact that their interaction should be updated. This update can be easily achieved by using an \emph{update rule} depending only on the weights of the double edges. 
-\TODO{such a mess...}
+\TODO{such a mess...} ...without the need of running a loop over the edges of the original graph.
 \UPDATE{In this way we do not need to recompute the interaction by using the linkage criterion over all the edges of the original graph, that would be computationally expensive.}
 
 
