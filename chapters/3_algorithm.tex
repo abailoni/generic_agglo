@@ -22,7 +22,7 @@ Example of edge contraction of $e_{uv}$. The first row represents the original g
 \section{Generalized framework for Signed Graphs Agglomerative Clustering}
 In this section we introduce the proposed framework for agglomerative clustering of signed graphs. 
 %that represents a simple \UPDATE{generalized} formalization of many agglomerative graph clustering algorithms. \UPDATE{It can be used to describe both unsigned clustering algorithms ingesting positive node similarities and signed clustering algorithms using attractive and repulsive cues.}\\
-First, we define the graph notation in Sec. \ref{sec:notation}, then we introduce the generalized algorithm in Sec. \ref{sec:algorithm} and finally we show \UPDATE{how it can be seen as a generalization of existing and new graph clustering algorithms (Sec. \ref{sec:alg_update_rules}).}
+First, we define the graph notation in Sec. \ref{sec:notation}, then we introduce the generalized algorithm in Sec. \ref{sec:algorithm} and finally we show \UPDATE{how it can be seen as a generalization of existing and new graph clustering algorithms in Sec. \ref{sec:alg_update_rules}.}
 
 \subsection{Notation and graph formalism} \label{sec:notation}
 
@@ -56,7 +56,7 @@ E_\Pi^0 \equiv \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \
 % E_\Pi^0 &= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \\
 % E^1_\Pi &= E \setminus E^0_\Pi.
 % \end{align}
-The set of edges $E_\Pi^1$ is known as the \emph{multicut} of $\mathcal{G}$ w.r.t. clustering $\Pi$. The instance of the NP-hard \emph{weighted correlation clustering} or \emph{minimum cost multicut problem} w.r.t. $\mathcal{G}(V,E,w^+, w^-)$ \cite{kappes2011globally,chopra1991multiway,andres2015lifting} is the task of finding a clustering that optimally balance the attraction and repulsion in the graph and is given by the following optimization problem/binary integer program:
+The set of edges $E_\Pi^1$ is known as the \emph{multicut} of $\mathcal{G}$ w.r.t. clustering $\Pi$. The instance of the NP-hard \emph{weighted correlation clustering} or \emph{minimum cost multicut problem} w.r.t. $\mathcal{G}(V,E,w^+, w^-)$ \cite{kappes2011globally,chopra1991multiway,andres2015lifting} is the task of finding the clustering that optimally balance the attraction and repulsion in the graph and is given by the following optimization problem/binary integer program:
 \begin{equation}
 % \min_\Pi \texttt{MC}(\Pi) \equiv
  \min_\Pi \sum_{e\in E} \cost_e x_e^\Pi,  \qquad \text{where} \quad x^\Pi_e = 
@@ -149,7 +149,6 @@ All the update rules tested in this article are listed in Table \ref{tab:linkage
 % As a result, the merged node could be linked to some of its neighbors by double edges . , representing the fact that their interaction should be updated. This update can be easily achieved by using an \emph{update rule} depending only on the weights of the double edges. 
 % \TODO{such a mess...} ...without the need of running a loop over the edges of the original graph.
 % \UPDATE{In this way we do not need to recompute the interaction by using the linkage criterion over all the edges of the original graph, that would be computationally expensive.}
-
 \paragraph{The proposed edge contraction algorithm} The proposed generalized Algorithm \ref{main_alg} then proceeds as follows, similarly to the one proposed in \cite{levinkov2017comparative}. It starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}$, does the following: in case of attractive interaction $\tilde{\cost}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
 % For every new pair of double edges in $\tilde{\mathcal{G}}_\Pi$, update their priorities according to one of the update rules listed in Table \ref{tab:linkage-criteria} together with their cannot-link relationships. 
 If, on the other hand, the interaction is repulsive ($\tilde{\cost}\leq 0$) and the option \texttt{addCannotLink} of Alg. \ref{main_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
@@ -205,7 +204,7 @@ In the Supplementary material we provide a more detailed description of the algo
         \end{tabular}
         % \caption{Linkage criteria}
     \end{subtable} 
-    \caption{The table lists the update rules $f$ tested in this article. Depending on the type of graph (signed or unsigned) and the use of cannot-link constraints, existing and new algorithms are obtained.}
+    \caption{The table lists the tested update rules $f$. Existing and new algorithms are given by a specific choice of update rule, type of graph (signed or unsigned) and optional use of cannot-link constraints.}
     \label{tab:linkage-criteria}
 \end{table*}
 
@@ -222,7 +221,7 @@ A clustering algorithm for signed graphs dynamically introducing cannot-link con
 
 New variations of agglomerative clustering on signed graphs that, to our knowledge, were never mentioned in the literature are given by \algname{} with update rules \emph{mean}, \emph{max} and \emph{min} (rows 3 to 5 in Table \ref{tab:linkage-criteria}). 
 
-In this work we test and compare the five update rules listed in Table \ref{tab:linkage-criteria} that represents the most used ones. 
-Apart from these, for instance, \cite{nunez2013machine} proposes a learned update rule where a neural network updates the cluster interactions depending on predefined edge and node features. Other approaches introduce a weight regularization depending on the size of the clusters \cite{felzenszwalb2004efficient,kardoostsolving}), whereas 
+In this work we test and compare the five update rules listed in Table \ref{tab:linkage-criteria} that represents the most common options. 
+Apart from these, \cite{nunez2013machine} proposes a learned update rule where a neural network updates the cluster interactions depending on predefined edge and node features. Other approaches introduce a weight regularization depending on the size of the clusters \cite{felzenszwalb2004efficient,kardoostsolving}), whereas 
 \cite{funke2018large} uses a \emph{quantile} update rule by populating a histogram for each inter-cluster interaction.
 
