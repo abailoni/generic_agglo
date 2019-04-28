@@ -2,15 +2,6 @@
 
 \section{Related work} \label{sec:related_work}
 
-% \begin{itemize}
-
-% \item Contributions: (and mention introductory Figure)
-% \begin{itemize}
-% \item We generalize the hierarchical agglomerative clustering framework to graphs with positive and negative edge attributes
-% \item We review both standard hierarchical clustering algorithms and signed graph partitioning algorithms by showing how they can be described in this simplified framework (and as special cases of the general algorithm presented in Sec. \ref{sec:algorithm})
-% \item we introduce and test new variations of these algorithms for signed graphs
-% \end{itemize}
-% \end{itemize}
 
 % \begin{itemize}
 % \item Motivation 2:
@@ -89,17 +80,6 @@
 % \end{itemize}
 
 
-\begin{itemize}
-
-% \item \emph{Possible intro about aggl. clustering:} \UPDATE{Hierarchical, agglomerative clustering is an important and well-established technique in unsupervised machine learning. Agglomerative clustering schemes start from the partition of the data set into singleton nodes and merge step by step the current pair of mutually closest nodes into a new node until there is one final node left, which comprises the entire data set. Various clustering schemes share this procedure as a common definition, but differ in the way in which the measure of inter-cluster dissimilarity is updated after each step. } %\cite{mullner2011modern}
-
-
-
-% \item \emph{Other possible intro:} Many problems in computer vision involve clustering. Partitional clustering, such as k-means [1], determines all clusters at once, while agglomerative clustering [1] begins with a large number of small clusters, and iteratively selects two clusters with the largest affinity under some measures to merge, until some stopping condition is reached. Ag- glomerative clustering has been studied for more than half a century, and used in many applications [1], because it is conceptually simple and produces an informative hierar- chical structure of clusters. % FROM https://arxiv.org/pdf/1208.5092.pdf#page14
-
-% \item Get more specific about graph (we do not cluster points in a space, but we cluster vertices with specified neighbors and interactions given by edges). 
-
-% \item HC is a popular graph partitioning algorithm. Why: more efficient than divisive approaches and graph cuts; does not usually require to specify the final number of clusters (e.g. spectral clustering) or seed nodes (e.g. watershed, random walker). \UPDATE{And if the graph is not dense, HC algorithms scale up well with complexity}
 
 % \item Motivation 1:
 
@@ -110,42 +90,28 @@
 % \item An important line of research is based on the observation that superior partitionings are obtained when the graph has both attractive and repulsive edges. Solutions that optimally balance attraction and repulsion do not require external stopping criteria such as predefined number of regions or seeds. This generalization leads to the NP-hard problem of correlation clustering or (synonymous) multicut (MC) partitioning. \emph{Alternative:} multicut / correlation clustering partitions vertices with both attractive and repulsive interactions encoded into the edges of a graph. Multicut has the great advantage that a “natural” partitioning of a graph can be found, without needing to specify a desired number of clusters, or a termination criterion, or one seed per region. Its great drawback is that its optimization is NP-hard.
 
 % \end{itemize}
+In recent years there has been considerable progress in pixel-level understanding tasks of computer vision, such as semantic segmentation \cite{long2015fully,kong2018recurrent,chen2018deeplab}, boundary detection \cite{arbelaez2011contour,xie2015holistically,maninis2018convolutional}, %, optical flow \cite{weinzaepfel2013deepflow,dosovitskiy2015flownet},
+and pose estimation \cite{wei2016convolutional,cao2017realtime}. This progress was mostly associated with new key ideas and architectures of deep convolutional convolutional networks (CNNs), like dilated/``atrous'' convolutions \cite{yu2015multi,chen2018deeplab} or ``hourglass'' architectures with skip connections \cite{ronneberger2015u,paszke2016enet} increasing the receptive field of view of the model.
 
+\textbf{Proposal-based instance segmentation methods} decompose the segmentation task into two steps that consists in generating object proposals or bounding boxes and assigning to each object a class and a binary segmentation mask \cite{he2017mask,yang2012layered,li2017fully,ladicky2010and,hariharan2014simultaneous,chen2015multi,dai2016instance,liang2016reversible}. 
+% Here I could have more: \cite{pinheiro2015learning,pinheiro2016learning,hu2017fastmask} and probably something more in Deep coloring
+% \item \emph{More references:} or generate generic proposal segments and then label each one with a semantic detector \cite{hariharan2014simultaneous,chen2015multi,hariharan2015hypercolumns,dai2015convolutional,uhrig2016pixel,he2017mask}.
+They commonly rely on Faster RCNN \cite{ren2015faster} and can be trained end-to-end using non-maximum suppression. Other methods use instead recurrent models to sequentially generate instances one-by-one \cite{romera2016recurrent,ren2017end}.
 
+\textbf{Proposal-free methods} avoid the limitations of box proposals (e.g. for wiry objects) by directly grouping pixels into instances. For example, some approaches use a combinatorial framework for joint segmentation \cite{kirillov2017instancecut}, whereas others sequentially group pixels into lines and then instances \cite{liu2017sgn}.
+% encode instance relationships to classes and exploit the boundary information  \cite{jin2016object}; 
+A watershed transform is learned in \cite{bai2017deep} by also predicting its gradient direction and a template matching scheme using scene depth information is proposed in \cite{uhrig2016pixel}.
+Another line of research uses metric learning to predict high-dimensional associative pixel embeddings that map pixels of the same instance close to each other, while mapping pixels belonging to different instances further apart \cite{fathi2017semantic,newell2017associative,de2017semantic,novotny2018semi,kulikov2018instance} 
+% \TODO{What about \cite{liang2018proposal} using spectral clustering?}. 
+A clustering algorithm, e.g. HDBSCAN, is then applied to retrieve instances: for example, a model was trained end-to-end in \cite{kong2018recurrent} by using a mean-shift algorithm.
+%  and introducing a ﬁxed number of labels (colors) and then dynamically assigning object instances to those labels during training (coloring) \cite{kulikov2018instance}
 
-\item \textbf{Proposal based methods} 
+\textbf{Boundary prediction} is another task that has seen noticeable progress thanks to deep supervision \cite{xie2015holistically,kokkinos2015pushing}. 
+Our work is based on \cite{liu2018affinity}, where a model is trained to classify whether a pair of pixels (not necessarily given by direct neighbors) belong to the same instance. 
+
 \begin{itemize}
-\item Generate region proposals or bounding boxes and classify the objects in the bounding box \cite{yang2012layered,ladicky2010and,hariharan2014simultaneous,chen2015multi,dai2016instance,liang2016reversible,he2017mask}; fully convolutional  box proposals \cite{li2017fully}. 
-\item \emph{More references:} or generate generic proposal segments and then label each one with a semantic detector \cite{hariharan2014simultaneous,chen2015multi,hariharan2015hypercolumns,dai2015convolutional,uhrig2016pixel,he2017mask}.
-\item these somehow still uses some kind of object detector (at least to find the number of objects), but they do not necessary analyse one proposal at the time: use an object detector to enumerate candidate instances and then perform pixel-level segmentation of each instance \cite{liang2018proposal,dai2016instance,li2017fully,liang2016reversible,arnab2017pixelwise} \TODO{check \cite{dai2016instance}}
-% \SOURCE{\cite{kong2018recurrent}
-\end{itemize}
-
-\item \textbf{Proposal-free methods:} 
+    \item Ciao
 \begin{itemize}
-\item box-free \cite{pinheiro2015learning,pinheiro2016learning,hu2017fastmask}; joint segmentation and instance labeling in a combinatorial framework \cite{kirillov2017instancecut}; recurrent models \cite{romera2016recurrent,ren2017end}; encode instance relationships to classes and exploit the boundary information  \cite{jin2016object}; sequential framework to gradually group from points to lines and then instances \cite{liu2017sgn}
-% \item From end-to-end recurrent attention: \textit{Other approaches us- ing FCNs are proposal-free, but rely on a \textbf{bottom-up merging process}\textbf{}. Liang et al. [26] predict dense pixel prediction of ob- ject location and size, using clustering as a post-processing step. Uhrig et al. [41] present another approach based on FCNs, which is trained to produces a semantic segmen- tation as well as an instance-aware angle map, encoding the instance centroids. Post-processing based on template matching and instance fusion produces the instance identi- ties. Importantly, they also used ground-truth depth labels in training. Concurrent work [2, 19, 22] also explores a similar idea of using FCNs to output instance-sensitive embeddings.}
-\item \textbf{Pixel embedding vectors}: 
-\begin{itemize}
-\item supervised vectors \cite{bai2017deep}, unsupervised vectors  \cite{kong2018recurrent,fathi2017semantic,newell2017associative,de2017semantic} of which \cite{kong2018recurrent} is trained end-to-end;  using scene depth information \cite{uhrig2016pixel}, \TODO{check \cite{sironi2014multiscale}} 
-%    \TODO{more on pose estimation, vector distance transform, deep coloring?, ECCV semi-convolutions}
-
-% different types of loss
-% \item For each pixel in the image, a CNN predicts an embedding vector, such that pixels in the same instance are represented by the same vector. (\textit{by training a model that labels pixels with unit-length vectors that live in some ﬁxed dimension embedding space} \SOURCE{Rec. embeddings} ). \textit{With instance embedding, each object is assigned a “color” in a n-dimensional space. The network processes the image and produces a dense output, same size as the input image. Each pixel in the output of the network is a point in the embedding space. Pixels that belong to the same object are close in the embedding space while pixels that belong to different objects are distant in the embedding space. Parsing the image embedding space involves some sort of clustering algorithm.} \SOURCE{online} 
-
-% \item Clustering methods: DBSCAN, more
-
-\item \emph{Division by used clustering methods}: spectral clustering \cite{liang2018proposal}; mean-shift \cite{kong2018recurrent}; HDBSCAN \cite{}; seeds \cite{fathi2017semantic} \TODO{incomplete}
-\end{itemize}
-
-% \item Nevertheless, in both approaches we can define a grid graph (each vertex representing a pixel) with signed weights and find the final instance segmentation by using a graph partitioning algorithm:
-% \begin{itemize}
-% \item In Method 1, the graph is complete and the edge weights represent similarities between pairs of pixel embedding vectors. In most proposed approaches, embedding vectors representing distinct instances should be "distant enough" in the embedding space (a minimum distance is usually used during the training of the CNN). Thus, this threshold distance can be used to define signed affinities, representing attraction or repulsion between pairs of pixels;
-% \item  In Method 2, the short- and long-range affinities predicted by the CNN are directly used as signed edge weights in the grid graph
-% \end{itemize}
-
-
-
 \item \textbf{Most related: predict short- and long-range affinities}. For each pixel we fix a set of neighboring pixels (not necessarily limited to the direct neighbors) and CNN predicts how likely it is for each pixel pair to be in the same instance \cite{liu2018affinity,wolf2018mutex,lee2017superhuman,xie2015holistically,Maire_2016_CVPR}. Mention that  \cite{liu2018affinity} is SoA on cityscapes for proposal-free methods and \cite{wolf2018mutex} is SoA on ISBI
 % \item \cite{liu2018affinity} achieved comparable results to methods based on object proposal like Mask-R-CNN on natural images (Cityscapes); \cite{wolf2018mutex} achieved SOA results on a biological images (ISBI)
 % \item Side comment: Even with pixel embedding vectors we can deduce affinities or signed costs
@@ -188,9 +154,10 @@ quantiles (median) \cite{funke2018large}; % and structured training
 
 \item hierarchy and multicut proposals \cite{funke2018candidate}
 \item \textit{Must-not-link edges:} initially introduced as hard-constraints \cite{malmberg2011generalized}, then introduced dynamically \cite{wolf2018mutex,levinkov2017comparative}. 
-\item Local-search approximations of MC: greeedy fixation and greedy additive edge contraction \cite{levinkov2017comparative}
+\item Local-search approximations of MC: greeedy fixation and greedy additive edge contraction \cite{levinkov2017comparative}, and mention size-depending GAEC
 \end{itemize}
 \item Section 4 requires to related work in connectomics!
+\item Conclusion: we specifically build on top of work by......!! We combine the work of MWS, GMIS, GAEC, GF by defining a simple framework and then compare them!
 \end{itemize}
 
 \end{itemize}

@@ -70,7 +70,7 @@ On the other hand, \algname{} with \emph{mean} update rule and cannot-link const
 
         \includegraphics[width=0.85\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
    
-    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge}. (a) shows the original predictions $F(x)$, (b) the merge-biased version $\tilde{F}_{+}(x;\mathcal{K})$ defined in Eq. \ref{eq:noise_biased_predictions} and c) the split-biased version $\tilde{F}_{-}(x;\mathcal{K})$. Blue pixels represent boundary evidence.
+    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the merge-biased version $\tilde{F}_{+}$ and c) the split-biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). 
     %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
     %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
     }
