@@ -101,64 +101,57 @@ They commonly rely on Faster RCNN \cite{ren2015faster} and can be trained end-to
 \textbf{Proposal-free methods} avoid the limitations of box proposals (e.g. for wiry objects) by directly grouping pixels into instances. For example, some approaches use a combinatorial framework for joint segmentation \cite{kirillov2017instancecut}, whereas others sequentially group pixels into lines and then instances \cite{liu2017sgn}.
 % encode instance relationships to classes and exploit the boundary information  \cite{jin2016object}; 
 A watershed transform is learned in \cite{bai2017deep} by also predicting its gradient direction and a template matching scheme using scene depth information is proposed in \cite{uhrig2016pixel}.
-Another line of research uses metric learning to predict high-dimensional associative pixel embeddings that map pixels of the same instance close to each other, while mapping pixels belonging to different instances further apart \cite{fathi2017semantic,newell2017associative,de2017semantic,novotny2018semi,kulikov2018instance} 
+Another line of research uses metric learning to predict high-dimensional associative pixel embeddings that map pixels of the same instance close to each other, while mapping pixels belonging to different instances further apart \cite{fathi2017semantic,newell2017associative,de2017semantic,novotny2018semi,kulikov2018instance}. 
 % \TODO{What about \cite{liang2018proposal} using spectral clustering?}. 
-A clustering algorithm, e.g. HDBSCAN, is then applied to retrieve instances: for example, a model was trained end-to-end in \cite{kong2018recurrent} by using a mean-shift algorithm.
+Final instances are then retrieved by applying a clustering algorithm, e.g. DBSCAN, and the method of \cite{kong2018recurrent} based on the mean-shift algorithm is an example of approach trained end-to-end.
 %  and introducing a ﬁxed number of labels (colors) and then dynamically assigning object instances to those labels during training (coloring) \cite{kulikov2018instance}
 
-\textbf{Boundary prediction} is another task that has seen noticeable progress thanks to deep supervision \cite{xie2015holistically,kokkinos2015pushing}. 
-Our work is based on \cite{liu2018affinity}, where a model is trained to classify whether a pair of pixels (not necessarily given by direct neighbors) belong to the same instance. 
+\textbf{Edge detection} is another task that has seen noticeable progress thanks to deep learning \cite{xie2015holistically,kokkinos2015pushing}. This is also nicely illustrated by the evolution of neuron segmentation for connectomics, an important field of neuroscience we also address in our experiments. CNNs were introduced to this application in \cite{jain2007supervised}, but further progress in model architectures and data augmentation methods lead to much more refined boundary map predictions \cite{lee2017superhuman,meirovitch2016multi,ciresan2012deep} as well as structured loss learning \cite{funke2018large,turaga2009maximin}. 
+% or trained an end-to-end watershed region growing algorithm \cite{wolf2017learned}.  
+In all these methods, subsequent postprocessing and superpixel merging outputs the final segmentation. Some use loopy graphs \cite{kaynig2015large,krasowski2015improving} or trees \cite{meirovitch2016multi,liu2016sshmt,liu2014modular,funke2015learning,uzunbas2016efficient} to represent the region merging hierarchy. The lifted multicut \cite{beier2017multicut} formulates the problem in a combinatorial framework, while flood-filling networks \cite{januszewski2018high} eliminate superpixels by training a recurrent CNN to perform region growing one region at the time.
+% \SOURCE{SSHMT} Check Funke proposals
 
-\begin{itemize}
-    \item Ciao
-\begin{itemize}
-\item \textbf{Most related: predict short- and long-range affinities}. For each pixel we fix a set of neighboring pixels (not necessarily limited to the direct neighbors) and CNN predicts how likely it is for each pixel pair to be in the same instance \cite{liu2018affinity,wolf2018mutex,lee2017superhuman,xie2015holistically,Maire_2016_CVPR}. Mention that  \cite{liu2018affinity} is SoA on cityscapes for proposal-free methods and \cite{wolf2018mutex} is SoA on ISBI
-% \item \cite{liu2018affinity} achieved comparable results to methods based on object proposal like Mask-R-CNN on natural images (Cityscapes); \cite{wolf2018mutex} achieved SOA results on a biological images (ISBI)
-% \item Side comment: Even with pixel embedding vectors we can deduce affinities or signed costs
-% (see MWS paper for a good review)
+\textbf{Agglomerative graph clustering} has often been successfully applied to instance segmentation \cite{ren2013image,liu2016image,salembier2000binary}, because of its efficiency as compared to other top-down/divisive approaches like graph cuts. 
+Outside of neuron segmentation, novel termination criteria and merging strategies were proposed: \cite{malmberg2011generalized}, for example, uses fixed sets of merge constraints during the agglomeration, while ultrametric contour maps \cite{arbelaez2011contour} combines an oriented watershed transform with an edge detector and agglomerates superpixels until the ultrametric distance exceeds a learned threshold. An optimization approach is considered in \cite{kiran2014global} by performing greedy merge decisions minimizing a certain energy. The popular graph-based segmentation proposed in \cite{felzenszwalb2004efficient} then defines a measure of quality for the current clusters and stops when the merge costs would exceed this measure. \TODO{Roman's paper, Cocoons}
+On the other hand, several approaches simply use some of the classical hierarchical clustering methods to define inter-cluster dissimilarity, e.g. average linkage \cite{liu2018affinity,lee2017superhuman} or median \cite{funke2018large}. The GALA algorithm in \cite{nunez2013machine,knowles2016rhoananet} features instead a linkage criterion learned by a neural network.
 
-\end{itemize}
+\textbf{Clustering of signed graphs} is another important line of research with the goal of balancing a graph with both attractive and repulsive interactions between clusters, avoiding the need for external stopping criteria. The problem of finding an optimally balanced clustering has a long history in the field of combinatorial optimization \cite{grotschel1989cutting,grotschel1990facets,chopra1993partition}. The name \emph{correlation clustering} was coined by \cite{bansal2004correlation} that also showed its NP-hardness, while its connection with graph multicuts was made by \cite{demaine2006correlation}. Modern integer linear programming solvers can tackle problem instances of considerable size \cite{andres2012globally}, and for even larger problems some methods use good approximations \cite{pape2017solving,beier2016efficient,yarkony2012fast}, greedy heuristic algorithms \cite{levinkov2017comparative,wolf2018mutex,keuper2015efficient,kardoostsolving} or persistence criteria to reduce the size of the problem \cite{lange2018partial,lange2018combinatorial}.
+\TODO{Cannot-link constraints!}
+% Missing: Funke proposals, discussion about cannot-link constraints!!!
 
+This work combines the clustering algorithms proposed in \cite{levinkov2017comparative,wolf2018mutex,keuper2015efficient} in a simple generalized framework for agglomerative clustering and \UPDATE{evaluate them on an instance segmentation task by adopting ideas and CNN models from \cite{liu2018affinity,wolf2018mutex,funke2018large} to predict boundary evidence and long-range pixelwise relationships.}
 
+% \begin{itemize}
 
-\item \textbf{Graph clustering related work}:
-\begin{itemize}
-    \item popular in image segmentation: \textbf{agglomerative clustering}.
-    \item {\small More from \cite{mullner2011modern}: The seven most common methods are termed single, complete, average (UPGMA), weighted (WPGMA, McQuitty), Ward, centroid (UPGMC) and median (WPGMC) linkage (see Everitt et al., 2011, Table 4.1). They are implemented in standard numerical and statistical software such as R (R Development Core Team, 2011), MATLAB (The MathWorks, Inc., 2011), Mathematica (Wolfram Research, Inc., 2010), SciPy (Jones et al., 2001).}
-    \item Why: more efficient than divisive approaches and graph cuts; does not usually require to specify the final number of clusters (e.g. spectral clustering) or seed nodes (e.g. watershed, random walker) 
-    % old graph cut paper: \cite{shi2000normalized}
-    % \item \emph{[other clustering methods working in an euclidean embedding space like mean-shift, K-means, Mixture models, BIRCH... can most probably be omitted]}
-    \item many segmentation pipelines used to start the agglomeration from superpixels (SLIC, \cite{felzenszwalb2004efficient}, watershed) to reduce size of the problem 
-    \item usually we build an hierarchy of clusters (or a \emph{merge-tree}): \TODO{find meaningful order}
-    \item clustering paper suggested by Roman; Cocoons
+% \item \textbf{Graph clustering related work}:
+% \begin{itemize}
+    
+%     \item clustering paper suggested by Roman; Cocoons
 
  
-% \item \textit{Some reference (atm in random order, to be continued)} 
-\begin{itemize}
+% % \item \textit{Some reference (atm in random order, to be continued)} 
+% \begin{itemize}
 
-\item examples on natural images \cite{ren2013image,liu2016image}; ultra-metric contour map \cite{arbelaez2011contour};
-\item \emph{Linkage criteria}: arithmetic average \cite{liu2018affinity,lee2017superhuman}; 
-quantiles (median) \cite{funke2018large}; % and structured training 
-   learned linkage criteria \cite{nunez2013machine}; 
-\item An optimization perspective is taken in \cite{kiran2014global} %, which introduces h-increasing energy functions and builds the hierarchy incrementally such that merge decisions greedily minimize the energy
-% Check MWS for description and more details
-\item normalized cuts and combinatorial grouping \cite{arbelaez2014multiscale}
-\item In \emph{connectomics}: \cite{liu2016sshmt}. Use loopy graphs \cite{kaynig2015large,krasowski2015improving} or trees \cite{liu2016sshmt,liu2014modular,funke2015learning,uzunbas2016efficient} to represent the region merging hierarchy. Using local \cite{liu2014modular,krasowski2015improving} or structured \cite{funke2015learning,uzunbas2016efficient} learning based methods % \SOURCE{SSHMT} Check Funke proposals
-\end{itemize}
-\item Methods finding a flat clustering (no hierarchy): efficient Graph-based Image segmentation \cite{felzenszwalb2004efficient} % defines a measure of quality for the current regions and stops when the merge costs would exceed this measure
-\item \textbf{Signed graphs} \TODO{more}
-\begin{itemize}
-    % \item problem with hierarchical merge-trees is how to choose one single threshold. Choose one single fixed density level. Ideally we want to be able to cut the tree at different places to select our clusters. In density space, \cite{campello2013density}
-    \item Multicut pipiline and heuristics \cite{beier2017multicut}... 
-    % \item \textit{\textbf{Multicut} has the great advantage that a “natural” partitioning of a graph can be found, without needing to specify a desired number of clusters, or a termination criterion, or one seed per region. Its great drawback is that its optimization is NP-hard.} \SOURCE{MWS}.
+% \item examples on natural images \cite{ren2013image,liu2016image}; ultra-metric contour map \cite{arbelaez2011contour};
+% \item \emph{Linkage criteria}: arithmetic average \cite{liu2018affinity,lee2017superhuman}; 
+% quantiles (median) \cite{funke2018large}; % and structured training 
+%    learned linkage criteria \cite{nunez2013machine}; 
+% \item An optimization perspective is taken in \cite{kiran2014global} %, which introduces h-increasing energy functions and builds the hierarchy incrementally such that merge decisions greedily minimize the energy
+% % Check MWS for description and more details
+% \item normalized cuts and combinatorial grouping 
+% \end{itemize}
+% \item Methods finding a flat clustering (no hierarchy): efficient Graph-based Image segmentation \cite{felzenszwalb2004efficient} % defines a measure of quality for the current regions and stops when the merge costs would exceed this measure
+% \item \textbf{Signed graphs}
+% \begin{itemize}
+%     % \item problem with hierarchical merge-trees is how to choose one single threshold. Choose one single fixed density level. Ideally we want to be able to cut the tree at different places to select our clusters. In density space, \cite{campello2013density}
+%     \item Multicut pipiline and heuristics \cite{beier2017multicut}... 
+%     % \item \textit{\textbf{Multicut} has the great advantage that a “natural” partitioning of a graph can be found, without needing to specify a desired number of clusters, or a termination criterion, or one seed per region. Its great drawback is that its optimization is NP-hard.} \SOURCE{MWS}.
 
-\item hierarchy and multicut proposals \cite{funke2018candidate}
-\item \textit{Must-not-link edges:} initially introduced as hard-constraints \cite{malmberg2011generalized}, then introduced dynamically \cite{wolf2018mutex,levinkov2017comparative}. 
-\item Local-search approximations of MC: greeedy fixation and greedy additive edge contraction \cite{levinkov2017comparative}, and mention size-depending GAEC
-\end{itemize}
-\item Section 4 requires to related work in connectomics!
-\item Conclusion: we specifically build on top of work by......!! We combine the work of MWS, GMIS, GAEC, GF by defining a simple framework and then compare them!
-\end{itemize}
+% \item hierarchy and multicut proposals \cite{funke2018candidate}
+% \item \textit{Must-not-link edges:} initially introduced as hard-constraints \cite{malmberg2011generalized}, then introduced dynamically \cite{wolf2018mutex,levinkov2017comparative}. 
+% \item Local-search approximations of MC: greeedy fixation and greedy additive edge contraction \cite{levinkov2017comparative}, and mention size-depending GAEC
+% \end{itemize}
+% \end{itemize}
 
-\end{itemize}
+% \end{itemize}
 

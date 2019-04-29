@@ -18,7 +18,6 @@ Example of edge contraction of $e_{uv}$. The first row represents the original g
     \end{minipage}
 \end{minipage}
 
-
 \section{Generalized framework for Signed Graphs Agglomerative Clustering}
 In this section we introduce the proposed framework for agglomerative clustering of signed graphs. 
 %that represents a simple \UPDATE{generalized} formalization of many agglomerative graph clustering algorithms. \UPDATE{It can be used to describe both unsigned clustering algorithms ingesting positive node similarities and signed clustering algorithms using attractive and repulsive cues.}\\
@@ -182,7 +181,7 @@ In the Supplementary material we provide a more detailed description of the algo
             % \cmidrule[0.3em]{3-5}
             % \midrule[0.15em]
             \midrule\midrule
-            Sum: & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \tilde{\cost}_1+\tilde{\cost}_2$} & \thead{Sum Linkage\\Hierarchical Aggl.\\Clustering} & \thead{Greedy Additive \\ Edge Contraction \\\cite{levinkov2017comparative}} & \thead{Greedy \\Fixation \\\cite{levinkov2017comparative}} \\ \midrule
+            Sum: & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \tilde{\cost}_1+\tilde{\cost}_2$} & \thead{Sum Linkage\\Hierarchical Aggl.\\Clustering} & \thead{Greedy Additive \\ Edge Contraction \\\cite{keuper2015efficient}} & \thead{Greedy \\Fixation \\\cite{levinkov2017comparative}} \\ \midrule
             
             \makecell[r]{Abs. \\ max:} & \thead[l]{
             $
@@ -215,7 +214,7 @@ In the Supplementary material we provide a more detailed description of the algo
 In the special case of an unsigned graph with only positive interactions, i.e. $w_e^-=0$ and $\cost_e \geq 0$ $\forall e\in E$, %$\mathcal{G}(V,E,W:E\rightarrow \mathbb{R}^+)$ 
  the algorithm performs a standard agglomerative HC by returning only one single cluster and a hierarchy of clusters defined by the order in which the clusters are merged (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}a}), where the choice of update rule determines the type of linkage (Table \ref{tab:linkage-criteria}, column 2 with unsigned graphs).
 
-Given a graph with both attractive and repulsive cues, an edge contraction algorithm with a sum update rule was already proposed in \cite{levinkov2017comparative} (Table \ref{tab:linkage-criteria}, sum update rule, row 1). They present both a version with cannot-link constraints and one without, and then compare them with other greedy local-search algorithms solving the multicut optimization problem.
+Given a graph with both attractive and repulsive cues, an edge contraction algorithm with a sum update rule was already proposed in \cite{levinkov2017comparative,keuper2015efficient} (Table \ref{tab:linkage-criteria}, sum update rule, row 1). They present both a version with cannot-link constraints and one without, and then compare them with other greedy local-search algorithms solving the multicut optimization problem.
 
 Another proposed clustering algorithm for signed graphs, named Mutex Watershed \cite{wolf2018mutex}, also introduces dynamical cannot-link constraints. In the supplementary material (Sec. \ref{sec:equivalence_MWS}) we show how it can be seen as an efficient implementation of \algname{} with the \emph{absolute-maximum} update rule defined in Table \ref{tab:linkage-criteria} and we also observe that this case the algorithm returns the same clustering with or without enforcing cannot-link constraints.
 
