@@ -1,157 +1,35 @@
 % !TEX root = ../agglo_clust_review.tex
 
 \section{Related work} \label{sec:related_work}
+% In recent years there has been considerable progress in pixel-level understanding tasks of computer vision, such as semantic segmentation \cite{long2015fully,kong2018recurrent,chen2018deeplab}, boundary detection \cite{arbelaez2011contour,xie2015holistically,maninis2018convolutional}, %, optical flow \cite{weinzaepfel2013deepflow,dosovitskiy2015flownet},
+Recent progress in semantic segmentation \cite{long2015fully,kong2018recurrent,chen2018deeplab}, boundary detection \cite{arbelaez2011contour,xie2015holistically,maninis2018convolutional}, %, optical flow \cite{weinzaepfel2013deepflow,dosovitskiy2015flownet},
+and pose estimation \cite{wei2016convolutional,cao2017realtime} was mostly associated with new key ideas and architectures in deep learning, like dilated convolutions \cite{yu2015multi,chen2018deeplab} or ``hourglass'' architectures with skip connections \cite{ronneberger2015u,paszke2016enet} increasing the receptive field of view of the model.
 
-
-% \begin{itemize}
-% \item Motivation 2:
-% \begin{itemize}
-% \item HC has been always really popular in computer vision: \emph{Instance segmentation} is a task of computer vision that involves the detection of all objects in an image by performing pixel-level segmentation of each instance.   
-% \item Since conventional unsigned graph agglomerative clustering algorithms, such as the well-known linkage methods [1], usually are quite sensitive to noise and outliers [1] (As their affinities are directly computed using pairwise distances between samples), most methods were based on multi-step pipelines first predicting superpixels (to reduce noise).
-% \item These methods are still commonly used for specific instance segmentation applications: connectomics, build merge-tree 
-%  %https://arxiv.org/pdf/1208.5092.pdf
-% \item still commonly used for building merge-trees, give recent examples in connectomics (Sebastian Seung, etc...) % https://arxiv.org/abs/1608.04051
-% \item Graph clustering algorithms recently gained more and more popularity with the advent of deep-learning and its application to instance segmentation
-% \item Deep convolutional neural nets (CNNs) has been successfully applied to a wide range of tasks of computer vision and pixel-level image understanding, such as \UPDATE{boundary detection \cite{arbelaez2011contour,xie2015holistically,maninis2018convolutional}, semantic segmentation \cite{long2015fully,chen2018deeplab,kong2018recurrent}, optical flow \cite{weinzaepfel2013deepflow,dosovitskiy2015flownet}, and pose estimation \cite{wei2016convolutional,cao2017realtime}.}
-% % \SOURCE{\cite{kong2018recurrent}}
-
-% \item Currently there are two successful approaches used for proposal-free bottom-up instance segmentation: the first ones predict associative pixel embedding vectors, where the goal is to have a CNN predicting embedding vectors that are similar only for pixels in the same instance \cite{kong2018recurrent,fathi2017semantic,newell2017associative,de2017semantic}; in the second type of approaches, for every pixel a set of neighboring pixels is fixed  (not necesarelly limited to the direct neighbors) and a CNN then predicts affinities, that represent how likely it is for each of neighboring pixels to be in the same instance \cite{liu2018affinity,wolf2018mutex,xie2015holistically}
-
-% \item Both approaches requires a final clustering algorithm to output the final instance segmentation 
-
-%  and we can define a grid graph, where each vertex represents a pixel, with short- and long-range edge connections 
-
-%  and find the final instance segmentation by using a graph clustering algorithm.
-
-% \item GMIS achieved 
-% comparable results to methods based on object 
-% proposal like Mask-R-CNN on natural images 
-% (Cityscapes); MWS achieved SOA results on a 
-% biological images (ISBI)
-
-% \item Out contributions:
-
-% \begin{itemize}
-%  \item we compare different types of agglomeration clustering on a pixel grid graph with short and long-range connections, focusing on aspects like efficieny, robustness (and quality of the final clustering in terms of multicut energy) \textbf{Comparison paper}
-%  \item \textit{if we get good scores on CREMI dataset}: we show that also on neuro-data it is worth to skip the hand-crafted superpixel step and compute the final segmentation directly from the CNN affinities (MWS already showed it on the ISBI dataset): main selling point is again the almost-parameter free feature of the method
-% \end{itemize}
-% \end{itemize}
-% \end{itemize}
-
-
-% More details about instance segmentation (move to related work)
-% \begin{itemize}
-
-
-% \item 
-% \item Many recent successful methods for instance segmentation %, usually named \emph{proposal-based methods}, 
-%  use heuristic approaches that start from the classical computer vision task of \emph{object detection}, where the goal is to localize each objects using a bounding box, and then predict both a pixel-level mask of each instance and a semantic label (classify the objects in the bounding box). \TODO{Is it really general enough as a description...?} \cite{yang2012layered,ladicky2010and,hariharan2014simultaneous,chen2015multi,dai2016instance,liang2016reversible,he2017mask}
-% \item While effective, these approaches are \UPDATE{somewhat unsatisfying (copy/paste, change: present some faults)} because:
-% \begin{itemize}
-% \item they rely on the object detector and non-maximum suppression heuristics to count how many instances are present in the image, 
-% \item they tend to underperform in cluttered scenes, since instance assignment is often carried out independently for each detection; 
-% \item they are not usable for wiry or articulated objects (e.g. in the field of connectomics and neuron segmenation from electron microscopy images) 
-% \item their architecture do not usually prevent a pixel to be shared between multiple instances
-% \item they do not scale up well since each proposal has to be singularly processed by the CNN. 
-% % \item (difficult to train in an end-to-end manner: interface between instance segmentation and detection is non-differentiable)
-% % \item (architecture is complex and hard to tune and “debug”...?)
-% \end{itemize}
-
-% \item Currently there are two successful approaches used for proposal-free (make brief intro) instance segmentation: the first ones predict associative pixel embedding vectors, where the goal is to have a CNN predicting embedding vectors that are similar only for pixels in the same instance \cite{kong2018recurrent,fathi2017semantic,newell2017associative,de2017semantic}; in the second type of approaches, for every pixel a set of neighboring pixels is fixed  (not necesarelly limited to the direct neighbors) and a CNN then predicts affinities, that represent how likely it is for each of neighboring pixels to be in the same instance \cite{liu2018affinity,wolf2018mutex,xie2015holistically}
-
-% \item Both approaches requires a final clustering algorithm to output the final instance segmentation 
-
-%  and we can define a grid graph, where each vertex represents a pixel, with short- and long-range edge connections 
-
-%  and find the final instance segmentation by using a graph clustering algorithm.
-
-% \item Recent work (\cite{wolf2018mutex}, more...) shows that it is better to use \textbf{repulsion and attraction} (directly predict it with the classifier, no need to define seeds or to fix a threshold given an hierarchy of clusters)
-% \item solving correlation clustering problem (multicut) is too expensive for this application (even using recently proposed heuristics)
-% \item our contributions:
-% \begin{itemize}
-% \item we propose a unified and simple formalization of Agglomerative Clustering and show how many of the recently proposed methods can be seen as special cases (focusing in particular on signed graphs) (\textbf{review and comparison paper})
-% \item new clustering algorithms on signed graphs
-
-
-% \end{itemize}
-% \item on other datasets (connectomics) many methods are based on multi-step pipelines first predicting superpixels
-
-
-% \end{itemize}
-
-
-
-% \item Motivation 1:
-
-% \begin{itemize}
-
-% \item all HC methods only talk about positive edge weights, but it is actually easy to generalize them for negative and attractive edges. 
-% \item The standard version of HC is good for building hierarchy but problem with hierarchical merge-trees is how to choose one single threshold. Choose one single fixed density level. Ideally we would like to be able to cut the tree at different places to select our clusters.
-% \item An important line of research is based on the observation that superior partitionings are obtained when the graph has both attractive and repulsive edges. Solutions that optimally balance attraction and repulsion do not require external stopping criteria such as predefined number of regions or seeds. This generalization leads to the NP-hard problem of correlation clustering or (synonymous) multicut (MC) partitioning. \emph{Alternative:} multicut / correlation clustering partitions vertices with both attractive and repulsive interactions encoded into the edges of a graph. Multicut has the great advantage that a “natural” partitioning of a graph can be found, without needing to specify a desired number of clusters, or a termination criterion, or one seed per region. Its great drawback is that its optimization is NP-hard.
-
-% \end{itemize}
-In recent years there has been considerable progress in pixel-level understanding tasks of computer vision, such as semantic segmentation \cite{long2015fully,kong2018recurrent,chen2018deeplab}, boundary detection \cite{arbelaez2011contour,xie2015holistically,maninis2018convolutional}, %, optical flow \cite{weinzaepfel2013deepflow,dosovitskiy2015flownet},
-and pose estimation \cite{wei2016convolutional,cao2017realtime}. This progress was mostly associated with new key ideas and architectures of deep convolutional convolutional networks (CNNs), like dilated/``atrous'' convolutions \cite{yu2015multi,chen2018deeplab} or ``hourglass'' architectures with skip connections \cite{ronneberger2015u,paszke2016enet} increasing the receptive field of view of the model.
-
-\textbf{Proposal-based instance segmentation methods} decompose the segmentation task into two steps that consists in generating object proposals or bounding boxes and assigning to each object a class and a binary segmentation mask \cite{he2017mask,yang2012layered,li2017fully,ladicky2010and,hariharan2014simultaneous,chen2015multi,dai2016instance,liang2016reversible}. 
+\textbf{Proposal-based methods} decompose the instance segmentation task into two steps that consists in generating object proposals and assigning to each bounding box a class and a binary segmentation mask \cite{he2017mask,yang2012layered,li2017fully,ladicky2010and,hariharan2014simultaneous,chen2015multi,dai2016instance,liang2016reversible}. 
 % Here I could have more: \cite{pinheiro2015learning,pinheiro2016learning,hu2017fastmask} and probably something more in Deep coloring
 % \item \emph{More references:} or generate generic proposal segments and then label each one with a semantic detector \cite{hariharan2014simultaneous,chen2015multi,hariharan2015hypercolumns,dai2015convolutional,uhrig2016pixel,he2017mask}.
-They commonly rely on Faster RCNN \cite{ren2015faster} and can be trained end-to-end using non-maximum suppression. Other methods use instead recurrent models to sequentially generate instances one-by-one \cite{romera2016recurrent,ren2017end}.
+They commonly rely on {Faster-RCNN}~\cite{ren2015faster} and can be trained end-to-end using non-maximum suppression. Other methods use instead recurrent models to sequentially generate instances one-by-one \cite{romera2016recurrent,ren2017end}.
 
-\textbf{Proposal-free methods} avoid the limitations of box proposals (e.g. for wiry objects) by directly grouping pixels into instances. For example, some approaches use a combinatorial framework for joint segmentation \cite{kirillov2017instancecut}, whereas others sequentially group pixels into lines and then instances \cite{liu2017sgn}.
+\textbf{Proposal-free methods} adopt a bottom-up approach by directly grouping pixels into instances. For example, the approach proposed in \cite{kirillov2017instancecut} uses a combinatorial framework for joint segmentation; SGN \cite{liu2017sgn} sequentially group pixels into lines and then instances;
 % encode instance relationships to classes and exploit the boundary information  \cite{jin2016object}; 
-A watershed transform is learned in \cite{bai2017deep} by also predicting its gradient direction and a template matching scheme using scene depth information is proposed in \cite{uhrig2016pixel}.
-Another line of research uses metric learning to predict high-dimensional associative pixel embeddings that map pixels of the same instance close to each other, while mapping pixels belonging to different instances further apart \cite{fathi2017semantic,newell2017associative,de2017semantic,novotny2018semi,kulikov2018instance}. 
+a watershed transform is learned in \cite{bai2017deep} by also predicting its gradient direction, whereas the template matching \cite{uhrig2016pixel} deploys scene depth information.
+Others use metric learning to predict high-dimensional associative pixel embeddings that map pixels of the same instance close to each other, while mapping pixels belonging to different instances further apart \cite{fathi2017semantic,newell2017associative,de2017semantic,novotny2018semi,kulikov2018instance}. 
 % \TODO{What about \cite{liang2018proposal} using spectral clustering?}. 
-Final instances are then retrieved by applying a clustering algorithm, e.g. DBSCAN, and the method of \cite{kong2018recurrent} based on the mean-shift algorithm is an example of approach trained end-to-end.
+Final instances are then retrieved by applying a clustering algorithm, like in the end-to-end trainable mean-shift pipeline of \cite{kong2018recurrent}.
 %  and introducing a ﬁxed number of labels (colors) and then dynamically assigning object instances to those labels during training (coloring) \cite{kulikov2018instance}
 
-\textbf{Edge detection} is another task that has seen noticeable progress thanks to deep learning \cite{xie2015holistically,kokkinos2015pushing}. This is also nicely illustrated by the evolution of neuron segmentation for connectomics, an important field of neuroscience we also address in our experiments. CNNs were introduced to this application in \cite{jain2007supervised}, but further progress in model architectures and data augmentation methods lead to much more refined boundary map predictions \cite{lee2017superhuman,meirovitch2016multi,ciresan2012deep} as well as structured loss learning \cite{funke2018large,turaga2009maximin}. 
+\textbf{Edge detection} also experienced recent noticeable progress \cite{xie2015holistically,kokkinos2015pushing}. This is nicely illustrated by the evolution of neuron segmentation for connectomics, a field of neuroscience we also address in our experiments. CNNs were introduced to this application in \cite{jain2007supervised}, but further progress in deep learning and data augmentation lead to much more refined boundary detection \cite{lee2017superhuman,meirovitch2016multi,ciresan2012deep}. 
 % or trained an end-to-end watershed region growing algorithm \cite{wolf2017learned}.  
-In all these methods, subsequent postprocessing and superpixel merging outputs the final segmentation. Some use loopy graphs \cite{kaynig2015large,krasowski2015improving} or trees \cite{meirovitch2016multi,liu2016sshmt,liu2014modular,funke2015learning,uzunbas2016efficient} to represent the region merging hierarchy. The lifted multicut \cite{beier2017multicut} formulates the problem in a combinatorial framework, while flood-filling networks \cite{januszewski2018high} eliminate superpixels by training a recurrent CNN to perform region growing one region at the time.
+Subsequent postprocessing and superpixel-merging outputs final instances. Some use loopy graphs \cite{kaynig2015large,krasowski2015improving} or trees \cite{meirovitch2016multi,liu2016sshmt,liu2014modular,funke2015learning,uzunbas2016efficient} to represent the region merging hierarchy. The lifted multicut \cite{beier2017multicut} formulates the problem in a combinatorial framework, while flood-filling networks \cite{januszewski2018high} eliminate superpixels by training a recurrent CNN to perform region growing one region at the time. A structured learning approach was also proposed in \cite{funke2018large,turaga2009maximin}.
 % \SOURCE{SSHMT} Check Funke proposals
 
-\textbf{Agglomerative graph clustering} has often been successfully applied to instance segmentation \cite{ren2013image,liu2016image,salembier2000binary}, because of its efficiency as compared to other top-down/divisive approaches like graph cuts. 
-Outside of neuron segmentation, novel termination criteria and merging strategies were proposed: \cite{malmberg2011generalized}, for example, uses fixed sets of merge constraints during the agglomeration, while ultrametric contour maps \cite{arbelaez2011contour} combines an oriented watershed transform with an edge detector and agglomerates superpixels until the ultrametric distance exceeds a learned threshold. An optimization approach is considered in \cite{kiran2014global} by performing greedy merge decisions minimizing a certain energy. The popular graph-based segmentation proposed in \cite{felzenszwalb2004efficient} then defines a measure of quality for the current clusters and stops when the merge costs would exceed this measure. \TODO{Roman's paper, Cocoons}
-On the other hand, several approaches simply use some of the classical hierarchical clustering methods to define inter-cluster dissimilarity, e.g. average linkage \cite{liu2018affinity,lee2017superhuman} or median \cite{funke2018large}. The GALA algorithm in \cite{nunez2013machine,knowles2016rhoananet} features instead a linkage criterion learned by a neural network.
+\textbf{Agglomerative graph clustering} has often been applied to instance segmentation \cite{ren2013image,liu2016image,salembier2000binary}, because of its efficiency as compared to other top-down approaches like graph cuts. 
+Novel termination criteria and merging strategies have often been proposed: the agglomeration in \cite{malmberg2011generalized} deploys fixed sets of merge constraints; ultrametric contour maps \cite{arbelaez2011contour} combine an oriented watershed transform with an edge detector, so that superpixels are merged until the ultrametric distance exceeds a learned threshold; the popular graph-based method \cite{felzenszwalb2004efficient} stops the agglomeration when the merge costs exceed a measure of quality for the current clusters; whereas the optimization approach in \cite{kiran2014global} performs greedy merge decisions that minimize a certain energy. \TODO{Roman, Cocoons, Benjamin}
+On the other hand, several segmentation pipelines use classical HC linkage criteria, e.g. average linkage \cite{liu2018affinity,lee2017superhuman} or median \cite{funke2018large}. The GALA algorithm in \cite{nunez2013machine,knowles2016rhoananet} features instead a linkage learned by a neural network.
 
-\textbf{Clustering of signed graphs} is another important line of research with the goal of balancing a graph with both attractive and repulsive interactions between clusters, avoiding the need for external stopping criteria. The problem of finding an optimally balanced clustering has a long history in the field of combinatorial optimization \cite{grotschel1989cutting,grotschel1990facets,chopra1993partition}. The name \emph{correlation clustering} was coined by \cite{bansal2004correlation} that also showed its NP-hardness, while its connection with graph multicuts was made by \cite{demaine2006correlation}. Modern integer linear programming solvers can tackle problem instances of considerable size \cite{andres2012globally}, and for even larger problems some methods use good approximations \cite{pape2017solving,beier2016efficient,yarkony2012fast}, greedy heuristic algorithms \cite{levinkov2017comparative,wolf2018mutex,keuper2015efficient,kardoostsolving} or persistence criteria to reduce the size of the problem \cite{lange2018partial,lange2018combinatorial}.
+\textbf{Clustering of signed graphs} is another important line of research with the goal of balancing a graph with both attractive and repulsive cues. Finding an optimally balanced clustering has a long history in the field of combinatorial optimization \cite{grotschel1989cutting,grotschel1990facets,chopra1993partition}. %and can be done without the need to specify a termination criterion. 
+The name \emph{correlation clustering} was coined by \cite{bansal2004correlation} that also showed its NP-hardness, while its connection with graph multicuts was made by \cite{demaine2006correlation}. Modern integer linear programming solvers can tackle problem instances of considerable size \cite{andres2012globally}, but accurate approximations \cite{pape2017solving,beier2016efficient,yarkony2012fast}, greedy heuristic algorithms \cite{levinkov2017comparative,wolf2018mutex,keuper2015efficient,kardoostsolving} and persistence criteria \cite{lange2018partial,lange2018combinatorial} have been proposed for even larger problems.
 \TODO{Cannot-link constraints!}
 % Missing: Funke proposals, discussion about cannot-link constraints!!!
 
-This work combines the clustering algorithms proposed in \cite{levinkov2017comparative,wolf2018mutex,keuper2015efficient} in a simple generalized framework for agglomerative clustering and \UPDATE{evaluate them on an instance segmentation task by adopting ideas and CNN models from \cite{liu2018affinity,wolf2018mutex,funke2018large} to predict boundary evidence and long-range pixelwise relationships.}
-
-% \begin{itemize}
-
-% \item \textbf{Graph clustering related work}:
-% \begin{itemize}
-    
-%     \item clustering paper suggested by Roman; Cocoons
-
- 
-% % \item \textit{Some reference (atm in random order, to be continued)} 
-% \begin{itemize}
-
-% \item examples on natural images \cite{ren2013image,liu2016image}; ultra-metric contour map \cite{arbelaez2011contour};
-% \item \emph{Linkage criteria}: arithmetic average \cite{liu2018affinity,lee2017superhuman}; 
-% quantiles (median) \cite{funke2018large}; % and structured training 
-%    learned linkage criteria \cite{nunez2013machine}; 
-% \item An optimization perspective is taken in \cite{kiran2014global} %, which introduces h-increasing energy functions and builds the hierarchy incrementally such that merge decisions greedily minimize the energy
-% % Check MWS for description and more details
-% \item normalized cuts and combinatorial grouping 
-% \end{itemize}
-% \item Methods finding a flat clustering (no hierarchy): efficient Graph-based Image segmentation \cite{felzenszwalb2004efficient} % defines a measure of quality for the current regions and stops when the merge costs would exceed this measure
-% \item \textbf{Signed graphs}
-% \begin{itemize}
-%     % \item problem with hierarchical merge-trees is how to choose one single threshold. Choose one single fixed density level. Ideally we want to be able to cut the tree at different places to select our clusters. In density space, \cite{campello2013density}
-%     \item Multicut pipiline and heuristics \cite{beier2017multicut}... 
-%     % \item \textit{\textbf{Multicut} has the great advantage that a “natural” partitioning of a graph can be found, without needing to specify a desired number of clusters, or a termination criterion, or one seed per region. Its great drawback is that its optimization is NP-hard.} \SOURCE{MWS}.
-
-% \item hierarchy and multicut proposals \cite{funke2018candidate}
-% \item \textit{Must-not-link edges:} initially introduced as hard-constraints \cite{malmberg2011generalized}, then introduced dynamically \cite{wolf2018mutex,levinkov2017comparative}. 
-% \item Local-search approximations of MC: greeedy fixation and greedy additive edge contraction \cite{levinkov2017comparative}, and mention size-depending GAEC
-% \end{itemize}
-% \end{itemize}
-
-% \end{itemize}
-
+\UPDATE{This work combines the clustering algorithms proposed in \cite{levinkov2017comparative,wolf2018mutex,keuper2015efficient} in a simple generalized framework for agglomerative clustering and evaluate them on an instance segmentation task by adopting ideas and CNN architectures from \cite{liu2018affinity,wolf2018mutex,funke2018large} to predict long-range relationships between pixels and boundary evidence between instances.}

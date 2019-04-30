@@ -1,23 +1,5 @@
 % !TEX root = ../agglo_clust_review.tex
 
-\begin{minipage}[t]{\textwidth}
-        \centering
-        \begin{minipage}[t]{0.49\textwidth}
-\centering
-        \includegraphics[width=\textwidth,trim=0.1in 0.4in 0.2in 0.2in,clip]{./figs/edge_contraction.png} % left bottom right top
-\captionof{figure}{{\small 
-Example of edge contraction of $e_{uv}$. The first row represents the original graph $\mathcal{G}$ and the clustering $\Pi$ (purple lines), where green edges are not on the cut. Red bars indicate cannot-link constraints, whereas the contracted graph $\tilde{\mathcal{G}}_\Pi$ is shown in the second row. In step (ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In (iii), the two double edges $e_{ut}$ and $e_{vt}$ resulting from the contraction are replaced by a single constrained edge with updated interaction $f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}))$, where $f$ is defined in Table \ref{tab:linkage-criteria}.} 
-\label{fig:edge_contraction_and_contr_graph} }
-    \end{minipage}\hspace{0.01\textwidth}
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-\includegraphics[width=0.8\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/cannot-lin-constraints.jpg}
-\captionof{figure}{\small 
-\UPDATE{Comparison of \algname{}  with (top) and without (bottom) enforcing cannot-link constraints on a toy graph with positive (green) and repulsive (red) interactions. Only contracted graph is represented; every column represent one iteration of the algorithm; the selected edge at each iteration is highlighted in yellow; constrained edges are represented with red bars. We note that the two resulting clusterings are different.}
-\label{fig:algorithm_with_without_CLC}}
-    \end{minipage}
-\end{minipage}
-
 \section{Generalized framework for Signed Graphs Agglomerative Clustering}
 In this section we introduce the proposed framework for agglomerative clustering of signed graphs. 
 %that represents a simple \UPDATE{generalized} formalization of many agglomerative graph clustering algorithms. \UPDATE{It can be used to describe both unsigned clustering algorithms ingesting positive node similarities and signed clustering algorithms using attractive and repulsive cues.}\\
@@ -25,17 +7,14 @@ First, we define the graph notation in Sec. \ref{sec:notation}, then we introduc
 
 \subsection{Notation and graph formalism} \label{sec:notation}
 
-Given a simple graph $\mathcal{G}(V,E)$, we call the set $\Pi$ a \emph{clustering} with $K$ clusters if $V = \cup_{i=1}^K S_i $, $S_i \cap S_j = \emptyset$ for every $i\neq j$ and every $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. In the following we denote the cluster associated with node $u$ as $S_u$.
+We consider an undirected simple graph $\mathcal{G}(V,E)$, in which nodes can represent either pixels, superpixels or voxels. We call the set $\Pi$ a \emph{clustering} with $K$ clusters if $V = \cup_{i=1}^K S_i $, $S_i \cap S_j = \emptyset$ for each $i\neq j$ and every $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. In the following we denote as $S_u$ the cluster associated with node $u$.
 % \begin{equation}
 % S_u \equiv S \in \Pi \,\, \text{s.t.} \,\, u \in S
 % \end{equation}
 
-In this work, we consider the problem of clustering a weighted graph $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes. The weight function $w^+: E \rightarrow \mathbb{R}^+$ associates a positive scalar attribute $w_e^+\in \mathbb{R}^+$ to each edge $e \in E$ representing a merge affinity or a similarity measure: the higher this number, the higher the inclination of the two incident vertices to be assigned to the same cluster\footnote{Note that several formalisms defining positively weighted graphs associate to each edge a positive scalar that represents a metric or distance on the graph. In these formalisms, the \emph{lower} the edge weight, the higher the attraction between the two linked nodes, contrary to our definition of $w^+: E \rightarrow \mathbb{R}^+$.}. On the other hand, $w^-: E \rightarrow \mathbb{R}^+$ associates a split tendency $w_e^- \in \mathbb{R}^+$ to each edge: the higher this weight, the greater the desire of the incident vertices to be in different clusters. 
-Often, graphs $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes are also defined as $\mathcal{G}(V,E,\cost)$, where $\cost: E \rightarrow \mathbb{R}$ represents a \emph{signed interaction} that combines both attraction and repulsion into one signed scalar number: % space: make equation in line
-\begin{equation}
-\cost_e = w_e^+ - w_e^- \in \mathbb{R}, \quad \quad \forall e \in E
-\end{equation}
-Graphs that have only positive weights can be clearly seen as a special case of the previously defined graph $\mathcal{G}(V,E,w^+,w^-)$, when $w^-_e=0$ and $\cost_e \geq 0$ for every $e \in E$.
+In this work, we consider the problem of clustering a weighted graph $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes. The weight function $w^+: E \rightarrow \mathbb{R}^+$ associates a positive scalar attribute $w_e^+\in \mathbb{R}^+$ representing a merge affinity or a similarity measure: the higher this number, the higher the inclination of the two incident vertices to be assigned to the same cluster\footnote{Note that several formalisms for positively weighted graphs associate to each edge a positive scalar that represents a metric or distance on the graph, thus, the \emph{lower} the edge weight, the higher the attraction between the two linked nodes, contrary to our definition of $w^+: E \rightarrow \mathbb{R}^+$.}. On the other hand, $w^-: E \rightarrow \mathbb{R}^+$ associates a split tendency $w_e^- \in \mathbb{R}^+$: the higher this weight, the more the incident vertices would like to be in different clusters. 
+Graphs of the type $\mathcal{G}(V,E,w^+, w^-)$ are also often defined as \emph{signed graphs} $\mathcal{G}(V,E,\cost)$, featuring signed edge weights: ${\cost_e = w_e^+ - w_e^- \in \mathbb{R}, \, \forall e \in E}$.
+Graphs with purely attractive interactions are a special case of $\mathcal{G}(V,E,\cost)$ with $\cost_e \geq 0$ and $w^-_e=0$ for each $e \in E$.
 
 \paragraph{Inter-cluster interaction}\label{par:linkage_criterion_def} We call two clusters $S_1,S_2$ \emph{adjacent} if there exists at least one edge ${e_{uv}\in E}$ connecting a node $u\in S_1$ to a node $v\in S_2$. In agglomerative HC, the interaction $\interact_{S_1,S_2}$ between two clusters $S_1, S_2$ is usually defined as a function, named \emph{linkage criterion}, depending on the weights of all edges connecting clusters $S_1$ and $S_2$. For example, for a \emph{maximum} linkage criterion statistic (single-linkage), the inter-cluster interaction is given by:
 \begin{equation}\label{eq:max_linkage}
@@ -126,10 +105,28 @@ In the next chapters we will use this objective as a way to measure how much a c
   \label{main_alg}
 \end{algorithm}
 
+\begin{minipage}{\textwidth}
+        \centering
+        \begin{minipage}{0.49\textwidth}
+\centering
+        % \includegraphics[width=\textwidth,trim=0.1in 0.4in 0.2in 0.2in,clip]{./figs/edge_contraction.png} % left bottom right top
+        \includegraphics[width=\textwidth]{./figs/edge_contraction.pdf} % left bottom right top
+\captionof{figure}{ 
+Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (red bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{ut}$ and $e_{vt}$ resulting from edge contraction are replaced by single edge with updated interaction $f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}))$, see definitions in Tab.~\ref{tab:linkage-criteria}. 
+\label{fig:edge_contraction_and_contr_graph} }
+    \end{minipage}\hspace{0.01\textwidth}
+    \begin{minipage}{0.49\textwidth}
+        \centering
+\includegraphics[width=0.8\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/cannot-lin-constraints.jpg}
+\captionof{figure}{ 
+\UPDATE{Comparison of \algname{}  with (top) and without (bottom) enforcing cannot-link constraints on a toy graph with positive (green) and repulsive (red) interactions. Only contracted graph is represented; every column represent one iteration of the algorithm; the selected edge at each iteration is highlighted in yellow; constrained edges are represented with red bars. We note that the two resulting clusterings are different.}
+\label{fig:algorithm_with_without_CLC}}
+    \end{minipage}
+\end{minipage}
 
 \subsection{Generalized Algorithm for Signed Graphs Agglomerative Clustering} \label{sec:algorithm}
 
-We now present our main contribution: a Generalized Algorithm for Signed Graphs Agglomerative Clustering (\algname) that can describe in a simple form several graph partitioning algorithms previously introduced in the literature and highlights the existence of new ones.
+We now present a Generalized Algorithm for Signed Graphs Agglomerative Clustering (\algname) that can describe in a simple form several graph partitioning algorithms previously introduced in the literature and highlights the existence of new ones.
 
 The proposed algorithm uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merging pairs of adjacent clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b} and \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}c}). 
 
@@ -151,7 +148,7 @@ All the update rules tested in this article are listed in Table \ref{tab:linkage
 \paragraph{The proposed edge contraction algorithm} Algorithm \ref{main_alg} then proceeds as follows, similarly to the one presented in \cite{levinkov2017comparative}. It starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}$, does the following: in case of attractive interaction $\tilde{\cost}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
 % For every new pair of double edges in $\tilde{\mathcal{G}}_\Pi$, update their priorities according to one of the update rules listed in Table \ref{tab:linkage-criteria} together with their cannot-link relationships. 
 If, on the other hand, the interaction is repulsive ($\tilde{\cost}\leq 0$) and the option \texttt{addCannotLink} of Alg. \ref{main_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
-In the Supplementary material we provide a more detailed description of the algorithm and we also comment on its computational complexity (Sec. \ref{sec:complexity}).
+In the Supplementary material we comment on the algorithm computational complexity (Sec. \ref{sec:complexity}).
 
  %\TODO{use def of merging process of contracted graph to define merging tree?}.
 
@@ -216,11 +213,11 @@ In the special case of an unsigned graph with only positive interactions, i.e. $
 
 Given a graph with both attractive and repulsive cues, an edge contraction algorithm with a sum update rule was already proposed in \cite{levinkov2017comparative,keuper2015efficient} (Table \ref{tab:linkage-criteria}, sum update rule, row 1). They present both a version with cannot-link constraints and one without, and then compare them with other greedy local-search algorithms solving the multicut optimization problem.
 
-Another proposed clustering algorithm for signed graphs, named Mutex Watershed \cite{wolf2018mutex}, also introduces dynamical cannot-link constraints. In the supplementary material (Sec. \ref{sec:equivalence_MWS}) we show how it can be seen as an efficient implementation of \algname{} with the \emph{absolute-maximum} update rule defined in Table \ref{tab:linkage-criteria} and we also observe that this case the algorithm returns the same clustering with or without enforcing cannot-link constraints.
+Mutex Watershed \cite{wolf2018mutex}, another algorithm for signed graphs, also introduces dynamical cannot-link constraints. In supplementary material (Sec. \ref{sec:equivalence_MWS}) we show how it can be seen as an efficient implementation of \algname{} with the \emph{abs-max} update rule (see Tab. \ref{tab:linkage-criteria}) and observe that in this case \algname{} returns the same clustering with or without enforcing cannot-link constraints.
 
-On the other hand, new variations of agglomerative clustering on signed graphs that, to our knowledge, were never mentioned in the literature are given by \algname{} with update rules \emph{mean}, \emph{max} and \emph{min} (rows 3 to 5 in Table \ref{tab:linkage-criteria}). 
+On the other hand, new variations of \algname{} that, to our knowledge, were never mentioned in the literature are showed in Tab. \ref{tab:linkage-criteria} by using signed graphs and update rules \emph{mean}, \emph{max} or \emph{min}. 
 
-In this work we test and compare these algorithms and the five update rules listed in Table \ref{tab:linkage-criteria} that represent the most common options. 
-Nevertheless, more elaborated options exist: \cite{nunez2013machine} proposes a learned update rule where a neural network updates the cluster interactions depending on predefined edge and node features; other approaches introduce a weight regularization depending on the size of the clusters \cite{felzenszwalb2004efficient,kardoostsolving}), whereas 
+In this work we compare the algorithms listed in Table \ref{tab:linkage-criteria}, which represent the most common options. 
+Nevertheless, more elaborated options exist: \cite{nunez2013machine} proposes a learned update rule where a neural network updates the cluster interactions depending on predefined edge and node features; other approaches introduce a weight regularization depending on the size of the clusters \cite{felzenszwalb2004efficient,kardoostsolving}, whereas 
 \cite{funke2018large} uses a \emph{quantile} update rule by populating a histogram for each inter-cluster interaction.
 
