@@ -105,6 +105,16 @@ In the next chapters we will use this objective as a way to measure how much a c
   \label{main_alg}
 \end{algorithm}
 
+\subsection{Generalized Algorithm for Signed Graphs Agglomerative Clustering} \label{sec:algorithm}
+
+We now present a Generalized Algorithm for Signed Graphs Agglomerative Clustering (\algname) that can describe in a simple form several graph partitioning algorithms previously introduced in the literature and highlights the existence of new ones.
+
+The proposed algorithm uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merging pairs of adjacent clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b} and \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}c}). 
+
+A second variant of the proposed algorithm also introduces \emph{cannot-link constraints}, representing mutual exclusion relationships between pairs of nodes that cannot be associated with the same cluster in the final clustering. This variant (Algorithm \ref{main_alg} with \texttt{addCannotLink=True}) stops when all the remaining clusters have been previously constrained.
+% The algorithm that we will present in the next section iteratively performs a sequence of so-called \emph{edge contractions} on the original graph $\mathcal{G}(V,E,w^+, w^-)$.
+% The graph clustering algorithm we will present in Sec. \ref{sec:algorithm} is a bottom-up approach starting with each node assigned to its own cluster and iteratively merging clusters. During the agglomeration, the current clustering $\Pi$ is represented by a \emph{contracted graph} $\mathcal{G'}(\mathcal{G}, \Pi)$, such that each of its nodes represents a cluster $S \in \Pi$ and \emph{adjacent} clusters are linked by an edge. 
+
 \begin{minipage}{\textwidth}
         \centering
         \begin{minipage}{0.49\textwidth}
@@ -123,16 +133,6 @@ Example of edge contraction. First row: original graph $\mathcal{G}$; clustering
 \label{fig:algorithm_with_without_CLC}}
     \end{minipage}
 \end{minipage}
-
-\subsection{Generalized Algorithm for Signed Graphs Agglomerative Clustering} \label{sec:algorithm}
-
-We now present a Generalized Algorithm for Signed Graphs Agglomerative Clustering (\algname) that can describe in a simple form several graph partitioning algorithms previously introduced in the literature and highlights the existence of new ones.
-
-The proposed algorithm uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merging pairs of adjacent clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b} and \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}c}). 
-
-A second variant of the proposed algorithm also introduces \emph{cannot-link constraints}, representing mutual exclusion relationships between pairs of nodes that cannot be associated with the same cluster in the final clustering. This variant (Algorithm \ref{main_alg} with \texttt{addCannotLink=True}) stops when all the remaining clusters have been previously constrained.
-% The algorithm that we will present in the next section iteratively performs a sequence of so-called \emph{edge contractions} on the original graph $\mathcal{G}(V,E,w^+, w^-)$.
-% The graph clustering algorithm we will present in Sec. \ref{sec:algorithm} is a bottom-up approach starting with each node assigned to its own cluster and iteratively merging clusters. During the agglomeration, the current clustering $\Pi$ is represented by a \emph{contracted graph} $\mathcal{G'}(\mathcal{G}, \Pi)$, such that each of its nodes represents a cluster $S \in \Pi$ and \emph{adjacent} clusters are linked by an edge. 
 
 \paragraph{Update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
 An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that $\tilde{V} \subseteq V$ and each node $u\in \tilde{V}$ represents the cluster $S_u \in \Pi$ including $u\in V$. Edges in $\tilde{E}$ represent adjacency-relationships between clusters and the signed edge weights $\tilde{\cost}_e$ are given by inter-cluster interactions $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
