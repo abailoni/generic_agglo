@@ -122,12 +122,12 @@ A second variant of the proposed algorithm also introduces \emph{cannot-link con
         % \includegraphics[width=\textwidth,trim=0.1in 0.4in 0.2in 0.2in,clip]{./figs/edge_contraction.png} % left bottom right top
         \includegraphics[width=\textwidth]{./figs/edge_contraction.pdf} % left bottom right top
 \captionof{figure}{ 
-Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (red bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{ut}$ and $e_{vt}$ resulting from edge contraction are replaced by single edge with updated interaction $f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}))$, see definitions in Tab.~\ref{tab:linkage-criteria}. 
-\label{fig:edge_contraction_and_contr_graph} }
+Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (red bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from edge contraction are replaced by single edge with updated interaction $f(\tilde{\cost}(e_{tu}), \tilde{\cost}(e_{tv}))$, see definitions in Tab.~\ref{tab:linkage-criteria}. 
+\label{fig:edge_contraction_and_contr_graph}  }
     \end{minipage}\hspace{0.01\textwidth}
     \begin{minipage}{0.49\textwidth}
         \centering
-\includegraphics[width=0.8\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/cannot-lin-constraints.jpg}
+\includegraphics[width=\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/add_constraints.pdf}
 \captionof{figure}{ 
 \UPDATE{Comparison of \algname{}  with (top) and without (bottom) enforcing cannot-link constraints on a toy graph with positive (green) and repulsive (red) interactions. Only contracted graph is represented; every column represent one iteration of the algorithm; the selected edge at each iteration is highlighted in yellow; constrained edges are represented with red bars. We note that the two resulting clusterings are different.}
 \label{fig:algorithm_with_without_CLC}}
