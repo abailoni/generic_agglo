@@ -15,7 +15,7 @@ They commonly rely on {Faster-RCNN}~\cite{ren2015faster} and can be trained end-
 a watershed transform is learned in \cite{bai2017deep} by also predicting its gradient direction, whereas the template matching \cite{uhrig2016pixel} deploys scene depth information.
 Others use metric learning to predict high-dimensional associative pixel embeddings that map pixels of the same instance close to each other, while mapping pixels belonging to different instances further apart \cite{fathi2017semantic,newell2017associative,de2017semantic,kulikov2018instance}. % Semi-convolutiona: \cite{novotny2018semi}
 % \TODO{What about \cite{liang2018proposal} using spectral clustering?}. 
-Final instances are then retrieved by applying a clustering algorithm, like in the end-to-end trainable mean-shift pipeline of \cite{kong2018recurrent}.
+Final instances are then retrieved by applying a clustering algorithm, like in the end-to-end trainable mean-shift pipeline of \cite{kong2018recurrentPix}.
 %  and introducing a ﬁxed number of labels (colors) and then dynamically assigning object instances to those labels during training (coloring) \cite{kulikov2018instance}
 
 \textbf{Edge detection} also experienced recent noticeable progress \cite{xie2015holistically,kokkinos2015pushing}. This is nicely illustrated by the evolution of neuron segmentation for connectomics, a field of neuroscience we also address in our experiments. CNNs were introduced to this application in \cite{jain2007supervised}, but further progress in deep learning and data augmentation lead to much more refined boundary detection \cite{lee2017superhuman,meirovitch2016multi,ciresan2012deep}. 

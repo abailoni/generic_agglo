@@ -45,6 +45,25 @@ The set of edges $E_\Pi^1$ is known as the \emph{multicut} of $\mathcal{G}$ w.r.
 \end{equation}
 In the next chapters we will use this objective as a way to measure how much a clustering is balanced.
 
+\begin{figure}
+        \centering
+        \begin{minipage}{0.49\textwidth}
+\centering
+        % \includegraphics[width=\textwidth,trim=0.1in 0.4in 0.2in 0.2in,clip]{./figs/edge_contraction.png} % left bottom right top
+        \includegraphics[width=\textwidth]{./figs/edge_contraction.pdf} % left bottom right top
+\captionof{figure}{ 
+{\small Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (violet bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from edge contraction are replaced by single edge with updated interaction $f(\tilde{\cost}(e_{tu}), \tilde{\cost}(e_{tv}))$, see definitions in Tab.~\ref{tab:linkage-criteria}. }
+\label{fig:edge_contraction_and_contr_graph}  }
+    \end{minipage}\hspace{0.01\textwidth}
+    \begin{minipage}{0.49\textwidth}
+        \centering
+\includegraphics[width=0.91\textwidth]{./figs/add_constraints.pdf}
+\captionof{figure}{ 
+{\small Some iterations of the generalized algorithm  with (top) and without (bottom) adding cannot-link constraints. The graph has both attractive (green) and repulsive (red) edges; cannot-link constraints are given by violet bars. At each iteration, the edge selected by the algorithm is highlighted in yellow. When cannot-link constraints are enforced, the final clustering is given by two clusters instead of only one.}
+\label{fig:algorithm_with_without_CLC}}
+    \end{minipage}
+\end{figure}
+
 \begin{algorithm}[t]
   \caption{Generalized Algorithm for Signed Graphs Agglomerative Clustering}
    \hspace*{\algorithmicindent} \textbf{Inputs:} Graph $\mathcal{G}(V,E,w^+,w^-)$ with $N$ nodes; boolean variable {\color{blue}\texttt{addCannotLink}}  \\
@@ -115,25 +134,6 @@ A second variant of the proposed algorithm also introduces \emph{cannot-link con
 % The algorithm that we will present in the next section iteratively performs a sequence of so-called \emph{edge contractions} on the original graph $\mathcal{G}(V,E,w^+, w^-)$.
 % The graph clustering algorithm we will present in Sec. \ref{sec:algorithm} is a bottom-up approach starting with each node assigned to its own cluster and iteratively merging clusters. During the agglomeration, the current clustering $\Pi$ is represented by a \emph{contracted graph} $\mathcal{G'}(\mathcal{G}, \Pi)$, such that each of its nodes represents a cluster $S \in \Pi$ and \emph{adjacent} clusters are linked by an edge. 
 
-\begin{minipage}{\textwidth}
-        \centering
-        \begin{minipage}{0.49\textwidth}
-\centering
-        % \includegraphics[width=\textwidth,trim=0.1in 0.4in 0.2in 0.2in,clip]{./figs/edge_contraction.png} % left bottom right top
-        \includegraphics[width=\textwidth]{./figs/edge_contraction.pdf} % left bottom right top
-\captionof{figure}{ 
-Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (red bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from edge contraction are replaced by single edge with updated interaction $f(\tilde{\cost}(e_{tu}), \tilde{\cost}(e_{tv}))$, see definitions in Tab.~\ref{tab:linkage-criteria}. 
-\label{fig:edge_contraction_and_contr_graph}  }
-    \end{minipage}\hspace{0.01\textwidth}
-    \begin{minipage}{0.49\textwidth}
-        \centering
-\includegraphics[width=\textwidth,trim=0.in 0.in 0.in 0.in,clip]{./figs/add_constraints.pdf}
-\captionof{figure}{ 
-\UPDATE{Comparison of \algname{}  with (top) and without (bottom) enforcing cannot-link constraints on a toy graph with positive (green) and repulsive (red) interactions. Only contracted graph is represented; every column represent one iteration of the algorithm; the selected edge at each iteration is highlighted in yellow; constrained edges are represented with red bars. We note that the two resulting clusterings are different.}
-\label{fig:algorithm_with_without_CLC}}
-    \end{minipage}
-\end{minipage}
-
 \paragraph{Update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
 An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that $\tilde{V} \subseteq V$ and each node $u\in \tilde{V}$ represents the cluster $S_u \in \Pi$ including $u\in V$. Edges in $\tilde{E}$ represent adjacency-relationships between clusters and the signed edge weights $\tilde{\cost}_e$ are given by inter-cluster interactions $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
 For the linkage criteria tested in this work, when two clusters $S_u$ and $S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can easily recompute these interactions by using a simple \emph{update rule} $f$ that does not involve any loop over the edges of the original graph $\mathcal{G}$. As an example, given the single-linkage criterion defined in Eq. \ref{eq:max_linkage}, the interaction between $S_u \cup S_v$ and one of its neighbors $S_t$ is simply given by:
@@ -166,33 +166,33 @@ In the Supplementary material we comment on the algorithm computational complexi
 
 \begin{table*}
     \centering
+    \scriptsize
     \begin{subtable}[t!]{\textwidth}\centering
-        \begin{tabular}{r l || c | c | c}
+        \begin{tabular}{r  l || c | c | c}
             % \toprule\toprule
-             & &  \multirow{3}{*}{\textbf{Unsigned graphs}}  & \multicolumn{2}{c}{\textbf{Signed graphs}}  \\        
+            \multicolumn{2}{c||}{}  &   & \multicolumn{2}{c}{\textbf{Signed graphs}}  \\        
             % \cmidrule(l{.15em}){4-5}
             % \cline{4-5}
-            & & &  \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\        
-           
-            & & &  \thead{\textsc{No}} & \thead{\textsc{Yes}} \\        
+            \multicolumn{2}{c||}{} & \textbf{Unsigned graphs} &  \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\        
+             &  &  &  \thead{\textsc{No}} & \thead{\textsc{Yes}} \\        
             % \cmidrule[0.3em]{3-5}
             % \midrule[0.15em]
             \midrule\midrule
-            Sum: & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \tilde{\cost}_1+\tilde{\cost}_2$} & \thead{Sum Linkage\\Hierarchical Aggl.\\Clustering} & \thead{Greedy Additive \\ Edge Contraction \\\cite{keuper2015efficient}} & \thead{Greedy \\Fixation \\\cite{levinkov2017comparative}} \\ \midrule
+            Sum: & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \tilde{\cost}_1+\tilde{\cost}_2$} & \thead{Sum Linkage\\Hier. Aggl. Clust.} & \thead{Greedy Additive \\ Edge Contraction \cite{keuper2015efficient}} & \thead{Greedy Fixation\\\cite{levinkov2017comparative}} \\ \midrule
             
-            \makecell[r]{Abs. \\ max:} & \thead[l]{
+            \makecell[r]{Absolute \\Max:} & \thead[l]{
             $
             f(\tilde{\cost}_1,\tilde{\cost}_2) = \begin{cases} 
             \tilde{\cost}_1 & \text{if}\,\, |\tilde{\cost}_1|>|\tilde{\cost}_2|\\
             \tilde{\cost}_2 & \text{otherwise}
              \end{cases} 
             $}
-               & \thead{Single Linkage\\Hierarchical Aggl.\\Clustering \cite{lance1967general}} & \thead{Mutex \\Watershed \\\cite{wolf2018mutex}} & \thead{Mutex \\Watershed \\\cite{wolf2018mutex}} \\ \midrule
-            \makecell[r]{Mean:} & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \mathrm{weightAvg}\{ \tilde{\cost}_1, \tilde{\cost}_2 \} $}                                 & \thead{ Average Linkage\\ Hierarchical Clust. \\(UPGMA) \cite{lance1967general}} & \thead{Average Linkage\\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
+               & \thead{Single Linkage\\Hier. Aggl. Clust. \cite{lance1967general}} & \thead{Mutex Watershed \\\cite{wolf2018mutex}} & \thead{Mutex Watershed\\\cite{wolf2018mutex}} \\ \midrule
+            \makecell[r]{Mean:} & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \mathrm{weightAvg}\{ \tilde{\cost}_1, \tilde{\cost}_2 \} $}                                 & \thead{ Average Linkage\\ Hier. Aggl. Clust. \cite{lance1967general}} & \thead{Average Linkage\\Signed Aggl. Clust. (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
 
-            Max: & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \max \{ \tilde{\cost}_1, \tilde{\cost}_2 \}  $}                                 & \thead{Single Linkage\\Hierarchical Aggl.\\Clustering \cite{lance1967general}} & \thead{Single Linkage \\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
+            Max: & \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \max \{ \tilde{\cost}_1, \tilde{\cost}_2 \}  $}                                 & \thead{Single Linkage\\Hier. Aggl. Clust. \cite{lance1967general}} & \thead{Single Linkage \\Signed Aggl. Clust. (\textbf{NEW})} & \thead{\textbf{NEW}}\\ \midrule
 
-            Min:& \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \min \{ \tilde{\cost}_1, \tilde{\cost}_2 \}  $}                                 & \thead{Complete Linkage\\ Hierarchical Aggl.\\Clustering \cite{lance1967general}}  & \thead{Complete Linkage \\Signed Aggl. Clust. \\ (\textbf{NEW})} & \thead{\textbf{NEW}}
+            Min:& \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \min \{ \tilde{\cost}_1, \tilde{\cost}_2 \}  $}                                 & \thead{Complete Linkage\\ Hier. Aggl. Clust. \cite{lance1967general}}  & \thead{Complete Linkage \\Signed Aggl. Clust. (\textbf{NEW})} & \thead{\textbf{NEW}}
 
 
 
@@ -200,7 +200,7 @@ In the Supplementary material we comment on the algorithm computational complexi
         \end{tabular}
         % \caption{Linkage criteria}
     \end{subtable} 
-    \caption{The table lists the tested update rules $f$. Existing and new algorithms are given by a specific choice of update rule, type of graph (signed or unsigned) and optional use of cannot-link constraints.}
+    \caption{{\small The table lists the tested update rules $f$. Existing and new algorithms are given by a specific choice of update rule, type of graph (signed or unsigned) and optional use of cannot-link constraints.}}
     \label{tab:linkage-criteria}
 \end{table*}
 

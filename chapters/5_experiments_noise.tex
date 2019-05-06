@@ -3,20 +3,20 @@
 
 \begin{figure}
 \centering
-        \begin{subfigure}[t]{0.48 \textwidth}
+        \begin{subfigure}[t]{0.49 \textwidth}
         \centering
-        \includegraphics[width=0.98\textwidth,trim=0.35in 0.35in 0.35in 0.35in,clip]{./figs/merge_noise.pdf}
+        \includegraphics[width=\textwidth,trim=0.55in 0.35in 0.65in 0.80in,clip]{./figs/merge_noise.pdf}
 
-        \caption{Merge-biased opensimplex noise} \label{fig:thresh}
+        \caption{Merge-biased noise added to edge weights} \label{fig:thresh}
     \end{subfigure}%
-    \begin{subfigure}[t]{0.48 \textwidth}
+    \begin{subfigure}[t]{0.49 \textwidth}
         \centering
-        \includegraphics[width=0.98\textwidth,trim=0.29in 0.31in 0.31in 0.31in,clip]{./figs/split_noise.pdf}
-        \caption{Split-biased opensimplex noise} \label{fig:ws}
+        \includegraphics[width=\textwidth,trim=0.53in 0.35in 0.65in 0.80in,clip]{./figs/split_noise.pdf}
+        \caption{Split-biased noise added to edge weights} \label{fig:ws}
     \end{subfigure}
 
 
-\caption{Plot of the Rand-Scores achieved by the generalized algorithm and different update rules when noise is added to the edge weights. Solid lines represent median values, whereas values between the 25th and the 75th percentile are shown in shade areas.}\label{fig:noise_plots}
+\caption{{\small Rand-Scores achieved by the generalized algorithm and different update rules when noise is added to the edge weights. Solid lines represent median values; values between the 25th and the 75th percentile are shown in shade areas. In the plots at the top, long-range connections are not used.}}\label{fig:noise_plots}
 \end{figure}
 
 % \begin{minipage}[b]{0.48\textwidth}

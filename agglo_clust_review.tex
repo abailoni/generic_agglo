@@ -41,6 +41,7 @@
 \newcommand*{\skipnumber}[2][1]{%
    {\renewcommand*{\alglinenumber}[1]{}\State #2}%
    \addtocounter{ALG@line}{-#1}}
+\renewcommand{\ALG@beginalgorithmic}{\small}
 \makeatother
 
 % \newcommand*{\algrule}[1][\algorithmicindent]{\makebox[#1][l]{\hspace*{.5em}\vrule height .75\baselineskip depth .25\baselineskip}}%
@@ -72,6 +73,7 @@
 \usepackage{tabularx}
 \usepackage{lipsum}
 \usepackage{makecell}
+\renewcommand\theadfont{}
 \usepackage{multirow}
 \usepackage[labelformat=simple]{subcaption}
 \renewcommand\thesubfigure{(\alph{subfigure})}
