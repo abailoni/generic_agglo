@@ -126,9 +126,9 @@ In the next chapters we will use this objective as a way to measure how much a c
 
 \subsection{Generalized Algorithm for Signed Graphs Agglomerative Clustering} \label{sec:algorithm}
 
-We now present a Generalized Algorithm for Signed Graphs Agglomerative Clustering (\algname) that can describe in a simple form several graph partitioning algorithms previously introduced in the literature and highlights the existence of new ones.
+We now present a Generalized Algorithm for Signed Graphs Agglomerative Clustering (\algname) that describes several graph partitioning algorithms previously introduced in the literature and highlights the existence of new ones.
 
-The proposed algorithm uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merging pairs of adjacent clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b} and \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}c}). 
+The proposed algorithm \ref{main_alg} uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merges pairs of adjacent clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b} and \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}c}). 
 
 A second variant of the proposed algorithm also introduces \emph{cannot-link constraints}, representing mutual exclusion relationships between pairs of nodes that cannot be associated with the same cluster in the final clustering. This variant (Algorithm \ref{main_alg} with \texttt{addCannotLink=True}) stops when all the remaining clusters have been previously constrained.
 % The algorithm that we will present in the next section iteratively performs a sequence of so-called \emph{edge contractions} on the original graph $\mathcal{G}(V,E,w^+, w^-)$.
