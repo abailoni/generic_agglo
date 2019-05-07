@@ -1,6 +1,39 @@
 % !TEX root = ../agglo_clust_review.tex
 
+\begin{figure}
+        \centering
+\begin{minipage}{0.45\textwidth}
+\centering
+        \includegraphics[width=0.85\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
+   
+    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the merge-biased version $\tilde{F}_{+}$ and c) the split-biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). 
+    %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
+    %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
+    }
+    \label{fig:noisy_affs}
+    \end{minipage}\hfill
+\begin{minipage}{0.49\textwidth}
+\centering
+        % \includegraphics[width=\textwidth,trim=0.1in 0.4in 0.2in 0.2in,clip]{./figs/edge_contraction.png} % left bottom right top
+        \includegraphics[width=\textwidth]{./figs/edge_contraction.pdf} % left bottom right top
+\captionof{figure}{ 
+{\small Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (violet bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from edge contraction are replaced by single edge with updated interaction $f(\tilde{\cost}(e_{tu}), \tilde{\cost}(e_{tv}))$, see definitions in Tab.~\ref{tab:linkage-criteria}. }
+\label{fig:edge_contraction_and_contr_graph}  }
+    \end{minipage}
+\end{figure}
+
+
 \section{Supplementary Material}
+\paragraph{Update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
+An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that $\tilde{V} \subseteq V$ and each node $u\in \tilde{V}$ represents the cluster $S_u \in \Pi$ including $u\in V$. Edges in $\tilde{E}$ represent adjacency-relationships between clusters and the signed edge weights $\tilde{\cost}_e$ are given by inter-cluster interactions $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
+For the linkage criteria tested in this work, when two clusters $S_u$ and $S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can easily recompute these interactions by using a simple \emph{update rule} $f$ that does not involve any loop over the edges of the original graph $\mathcal{G}$. As an example, given the single-linkage criterion defined in Eq. \ref{eq:max_linkage}, the interaction between $S_u \cup S_v$ and one of its neighbors $S_t$ is simply given by:
+\begin{equation}
+  \interact_{S_u \cup S_v,S_t} = f( \interact_{S_u,S_t}, \interact_{S_v,S_t}) = f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt})) = \max \{ \tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}) \}
+\end{equation}
+All the update rules tested in this article are listed in Table \ref{tab:linkage-criteria}.
+
+
+
 \begin{itemize}
 \item Equivalence Mutex Watershed and Greedy Edge Contraction
 \item Complexity: plain agglo., addition of the cannot-link constraints and then comment about efficient implementation of MWS and of single-linkage (what about single linkage+CLC...?)
@@ -40,6 +73,35 @@ max & True &  & -81432464 & {\color{Red} 7759 } & {\color{Orange} 0.1653 } & {\c
 max & False &  & -37045939 & {\color{ForestGreen} 134 } & {\color{Red} 0.9150 } & {\color{Red} 5.691 } & {\color{ForestGreen} 0.013 } \\
 min & False &  & 213670839 & {\color{ForestGreen} 600 } & {\color{Red} 0.9330 } & {\color{ForestGreen} 0.207 } & {\color{Red} 4.880 } \\
 min & True &  & 214747429 & {\color{ForestGreen} 852 } & {\color{Red} 0.9314 } & {\color{ForestGreen} 0.202 } & {\color{Red} 4.887 } \\
+
+
+
+        \end{tabular}
+        % \caption{Linkage criteria}
+    \end{subtable} 
+    \caption{Comparison of update rules on crop of cremi sample B (sorted by multicut energy) \TODO{Reduce insane amount of numbers. Better put figures, leave numbers in the supplementary and only insert small table with MC, ARAND, Runtime. Invert ARAND to make it consistent with the plots} }
+    \label{tab:results_cremi_crop_C}
+\end{table*}
+
+\begin{table*}
+    \centering
+    \begin{subtable}[t!]{0.98\textwidth}\centering
+        \begin{tabular}{c| c | c| c | c | c | c | c}
+Update rule & \makecell{Use Cannot-Link\\Constraints} & Log-costs & \makecell{Multicut objective} & Runtime (s) & ARAND & VI-merge & VI-split\\ \midrule\midrule
+mean & False &  & -102739991 & {\color{Orange} 3797 } & {\color{ForestGreen} 0.9292 } & {\color{ForestGreen} 0.286 } & {\color{ForestGreen} 0.428 } \\
+mean & False &  & -102730208 & {\color{Orange} 2562 } & {\color{ForestGreen} 0.9285 } & {\color{ForestGreen} 0.292 } & {\color{ForestGreen} 0.423 } \\
+MutexWatershed & False &  & -102313957 & {\color{ForestGreen} 830 } & {\color{ForestGreen} 0.9246 } & {\color{ForestGreen} 0.291 } & {\color{Orange} 0.471 } \\
+max & True &  & -98143342 & {\color{Red} 7153 } & {\color{ForestGreen} 0.9208 } & {\color{ForestGreen} 0.292 } & {\color{Orange} 0.496 } \\
+mean & True &  & -100279671 & {\color{Orange} 4713 } & {\color{Orange} 0.8647 } & {\color{ForestGreen} 0.265 } & {\color{Red} 0.717 } \\
+sum & True &  & -100745943 & {\color{Red} 13361 } & {\color{Orange} 0.8426 } & {\color{Orange} 0.410 } & {\color{Orange} 0.451 } \\
+sum & False &  & -101846418 & {\color{Red} 12681 } & {\color{Orange} 0.8377 } & {\color{Orange} 0.427 } & {\color{ForestGreen} 0.427 } \\
+sum & False &  & -101732952 & {\color{Red} 12287 } & {\color{Orange} 0.8376 } & {\color{Orange} 0.436 } & {\color{ForestGreen} 0.390 } \\
+sum & True &  & -101487448 & {\color{Red} 8497 } & {\color{Orange} 0.8374 } & {\color{Orange} 0.428 } & {\color{ForestGreen} 0.414 } \\
+mean & True &  & -99416111 & {\color{Orange} 3445 } & {\color{Orange} 0.8239 } & {\color{ForestGreen} 0.260 } & {\color{Red} 0.822 } \\
+min & True &  & 211183545 & {\color{ForestGreen} 692 } & {\color{Red} 0.0779 } & {\color{ForestGreen} 0.232 } & {\color{Red} 4.714 } \\
+min & False &  & 210377447 & {\color{ForestGreen} 493 } & {\color{Red} 0.0737 } & {\color{ForestGreen} 0.233 } & {\color{Red} 4.745 } \\
+max & False &  & -48601637 & {\color{ForestGreen} 102 } & {\color{Red} 0.0611 } & {\color{Red} 5.738 } & {\color{ForestGreen} 0.035 } \\
+
 
 
 

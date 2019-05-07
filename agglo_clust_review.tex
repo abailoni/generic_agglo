@@ -78,10 +78,13 @@
 \usepackage[labelformat=simple]{subcaption}
 \renewcommand\thesubfigure{(\alph{subfigure})}
 \usepackage{booktabs}
+\usepackage{rotating}
+\newcolumntype{?}{!{\vrule width 1pt}}
+
 
 \newcommand*{\cost}{\omega}%
 \newcommand*{\interact}{\mathcal{W}}
-\newcommand*{\algname}{GALSGAC}
+\newcommand*{\algname}{GASA}
 \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
 % \newcolumntype{M}[1]{>{\arraybackslash}m{#1}}
 
@@ -113,7 +116,7 @@
 
 
 %%%%%%%%% TITLE
-\title{Generalized Framework for \\Agglomerative Clustering of Signed Graphs \\applied to proposal-free instance segmentation}
+\title{Generalized Framework for \\Agglomerative Clustering of Signed Graphs \\applied to Proposal-Free Instance Segmentation}
 
 % The \author macro works with any number of authors. There are two commands
 % used to separate the names and addresses of multiple authors: \And and \AND.

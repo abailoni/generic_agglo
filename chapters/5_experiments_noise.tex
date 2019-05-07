@@ -14,8 +14,6 @@
         \includegraphics[width=\textwidth,trim=0.53in 0.35in 0.65in 0.80in,clip]{./figs/split_noise.pdf}
         \caption{Split-biased noise added to edge weights} \label{fig:ws}
     \end{subfigure}
-
-
 \caption{{\small Rand-Scores achieved by the generalized algorithm and different update rules when noise is added to the edge weights. Solid lines represent median values; values between the 25th and the 75th percentile are shown in shade areas. In the plots at the top, long-range connections are not used.}}\label{fig:noise_plots}
 \end{figure}
 
@@ -63,41 +61,53 @@ On the other hand, \algname{} with \emph{mean} update rule and cannot-link const
 %Nevertheless, these additional experiments show that it provides an \UPDATE{almost true over-segmentation of the ground truth segmentation even with strongly merge-biased predictions}.
 
 
-\begin{minipage}[T!]{\textwidth}
+\begin{figure}
         \centering
-        \begin{minipage}{0.45\textwidth}
-\centering
-
-        \includegraphics[width=0.85\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
-   
-    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the merge-biased version $\tilde{F}_{+}$ and c) the split-biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). 
-    %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
-    %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
-    }
-    \label{fig:noisy_affs}
-    \end{minipage}\hspace{0.04\textwidth}
-\begin{minipage}{0.48\textwidth}
+\begin{minipage}[T]{0.48\textwidth}
+% \begin{table}
+    \centering
+    % \begin{subtable}[t!]{0.5\textwidth}\centering
+        \begin{tabular}{l M{0.2\textwidth} M{0.2\textwidth}}
+        \toprule
+        % & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
+         % & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
+         & \multicolumn{1}{c}{\thead{No\\Constraints}} & \multicolumn{1}{c}{\thead{With\\constraints}} \\ \midrule
+         % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
+\textbf{Mean}& \textbf{0.9292}  & 0.8647  \\
+% Lifted multicut & - & -  \\
+Abs. Max.  & 0.9246 & 0.9246 \\
+Max &   0.0611  &  0.9208  \\
+Sum  & 0.8377  & 0.8426  \\
+Min &  0.0737 & 0.0779  \\
+        \end{tabular}
+        % \caption{Linkage criteria}
+    % \end{subtable} 
+    \captionof{table}{Arand-Scores on CREMI challenge (crop of sample C) \UPDATE{for the generalized algorithm and different types of linkage criteria and the optional use of cannot-link constraints.} }
+    \label{tab:results_cremi_val}
+\end{minipage}\hfill
+\begin{minipage}[T]{0.48\textwidth}
 % \begin{table}
     \centering
     % \begin{subtable}[t!]{0.5\textwidth}\centering
         \begin{tabular}{l M{0.25\textwidth} M{0.25\textwidth}}
         \toprule
-        & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
-        Update rule: & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
+        % & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
+         % & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
+         & \multicolumn{1}{c}{\thead{No\\Constraints}} & \multicolumn{1}{c}{\thead{With\\constraints}} \\ \midrule
          % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
 \textbf{Mean}& \textbf{0.343}  & 0.339  \\
-GMIS \cite{liu2018affinity} & 0.341 & -  \\
+GMIS \cite{liu2018affinity} & 0.330 & -  \\
 Max &   0.243  &   0.325  \\
-Abs. Max. \cite{wolf2018mutex}  & -  & 0.321 \\
-Sum \cite{levinkov2017comparative} & 0.313  & 0.319  \\
+Abs. Max.  & 0.321 & 0.321 \\
+Sum & 0.313  & 0.319  \\
 Min &  0.000    & 0.000  \\
         \end{tabular}
         % \caption{Linkage criteria}
     % \end{subtable} 
-    \captionof{table}{AP scores on the cityscapes validation set for the generalized algorithm and different types of update rules.  }
+    \captionof{table}{AP scores on the cityscapes validation set for the generalized algorithm and different types of linkage criteria.  }
     \label{tab:results_cityscapes}
 \end{minipage}
-\end{minipage}
+\end{figure}
 
 % \begin{equation}
 % \begin{gathered}
