@@ -24,6 +24,11 @@
 
 
 \section{Supplementary Material}
+During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
+Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, with $\tilde{V} \subseteq V$ such that node $u\in \tilde{V}$ represents the associated cluster $S_u \in \Pi$. Edges in $\tilde{E}$ are defined by adjacency-relationships between clusters and edge weights $\tilde{\cost}_{uv}$ represent inter-cluster interactions $\interact(S_u,S_v)$. 
+
+
+
 \paragraph{Update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
 An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that $\tilde{V} \subseteq V$ and each node $u\in \tilde{V}$ represents the cluster $S_u \in \Pi$ including $u\in V$. Edges in $\tilde{E}$ represent adjacency-relationships between clusters and the signed edge weights $\tilde{\cost}_e$ are given by inter-cluster interactions $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
 For the linkage criteria tested in this work, when two clusters $S_u$ and $S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can easily recompute these interactions by using a simple \emph{update rule} $f$ that does not involve any loop over the edges of the original graph $\mathcal{G}$. As an example, given the single-linkage criterion defined in Eq. \ref{eq:max_linkage}, the interaction between $S_u \cup S_v$ and one of its neighbors $S_t$ is simply given by:
@@ -31,6 +36,15 @@ For the linkage criteria tested in this work, when two clusters $S_u$ and $S_v$ 
   \interact_{S_u \cup S_v,S_t} = f( \interact_{S_u,S_t}, \interact_{S_v,S_t}) = f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt})) = \max \{ \tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}) \}
 \end{equation}
 All the update rules tested in this article are listed in Table \ref{tab:linkage-criteria}.
+
+% \UPDATE{Every time a pair of clusters is merged, the contracted graph is updated by performing an edge contraction and merging the associated nodes. The only interactions that then need to be updated are those between nodes that after the edge contraction happen to be connected by double edges (see Fig. \ref{fig:edge_contraction_and_contr_graph}, step b). For basic linkage criteria, e.g. \emph{max} or \emph{min}, the new interaction can be formulated in terms of an \emph{update rule} $f$ depending only on the these updates can be computed with an update rule $f$ that depends only on the interactions at the previous step }
+% As a result, the merged node could be linked to some of its neighbors by double edges . , representing the fact that their interaction should be updated. This update can be easily achieved by using an \emph{update rule} depending only on the weights of the double edges. 
+% \TODO{such a mess...} ...without the need of running a loop over the edges of the original graph.
+% \UPDATE{In this way we do not need to recompute the interaction by using the linkage criterion over all the edges of the original graph, that would be computationally expensive.}
+\textbf{The proposed edge contraction algorithm } Algorithm \ref{main_alg} then proceeds as follows, similarly to the one presented in \cite{levinkov2017comparative}. It starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}$, does the following: in case of attractive interaction $\tilde{\cost}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
+% For every new pair of double edges in $\tilde{\mathcal{G}}_\Pi$, update their priorities according to one of the update rules listed in Table \ref{tab:linkage-criteria} together with their cannot-link relationships. 
+If, on the other hand, the interaction is repulsive ($\tilde{\cost}\leq 0$) and the option \texttt{addCannotLink} of Alg. \ref{main_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
+In the Supplementary material we comment on the algorithm computational complexity (Sec. \ref{sec:complexity}).
 
 
 
@@ -183,7 +197,34 @@ Abs. max. &- & 0.45  & {\color{Orange} 0.321 } & {\color{ForestGreen} 0.531 } \\
     \label{tab:results_cityscapes_full}
 \end{table}
 
-
+\begin{algorithm}[t]
+  \caption{Generalized Algorithm for Signed Graphs Agglomerative Clustering}
+   \hspace*{\algorithmicindent} \textbf{Inputs:} Graph $\mathcal{G}(V,E,w^+,w^-)$ with $N$ nodes; boolean variable {\color{blue}\texttt{addCannotLink}}  \\
+  \hspace*{\algorithmicindent} \textbf{Outputs:} Final clustering $\Pi$\\
+  \hspace*{\algorithmicindent} 
+  \begin{algorithmic}[1]
+      \State Initialize clustering $\Pi=\{\{v_1\}, \ldots, \{v_N\}\}$ and contracted graph $\tilde{\mathcal{G}}_\Pi \gets \mathcal{G}$
+      \State Initialize \texttt{canBeMerged}$[e] \gets$ \texttt{True} $\,\,\, \forall e\in E$
+      \State Sort edges in priority queue (PQ) in descending order of priority $|\cost_e|=|w^+_e - w^-_e|$ 
+      \State
+      \While{PQ is \textbf{not} empty}
+        \State Pop edge $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ with highest absolute interaction $|\tilde{\cost}|$
+        \If{({\color{ForestGreen}\textbf{$\tilde{\cost} > 0$}}) \textbf{and} \texttt{canBeMerged}$[e_{uv}]$}
+          \State Contract $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and merge the two clusters $S_u,S_v \in \Pi$
+          \For{every new pair of double edges $(e_1,e_2)$ in $\tilde{\mathcal{G}}_\Pi$}
+            % \State Get costs $\cost_1, \cost_2$ of $e_1,e_2$
+            \State Delete $e_2$ from $\tilde{\mathcal{G}}_\Pi$ and update priority of $e_1$ with rule $f(\tilde{\cost}_{e_1},\tilde{\cost}_{e_2})$ defined in Tab. \ref{tab:linkage-criteria} 
+          \EndFor
+        \EndIf
+        \If{({\color{red}\textbf{$\tilde{\cost} \leq 0$}}) \textbf{and} {\color{blue}\texttt{addCannotLink}}}
+          \State \texttt{canBeMerged}$[e_{uv}] \gets$ \texttt{False}
+        \EndIf
+      \EndWhile
+      \State
+      \Return $\Pi$
+  \end{algorithmic}
+  \label{main_alg_suppl}
+\end{algorithm}
 
 \begin{algorithm}
   \caption{Graph Agglomerative Clustering}

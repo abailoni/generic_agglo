@@ -13,12 +13,10 @@ Hierarchical clustering (HC) is also a popular method, which creates an hierarch
 
 Other clustering methods work with so-called \emph{signed graphs}, which include both positive and negative edge weights corresponding to attraction and repulsion between pixels. The advantage of using signed graphs is that balancing attraction and repulsion allows us to perform the clustering without defining additional parameters. This can be done optimally by solving the so-called \emph{multicut optimization problem} or \emph{correlation clustering} \cite{kappes2011globally,chopra1991multiway}. However, this problem is NP-hard, so good approximations \cite{yarkony2012fast,pape2017solving} and efficient greedy heuristics \cite{levinkov2017comparative,wolf2018mutex} were proposed.
 
-Our main contribution is a review framework for graph clustering that represents a generalization of agglomerative HC to graphs with both attractive and repulsive edge weights (see Figure \ref{fig:intro_figure} for a visual abstract). 
-Various existing clustering algorithms, previously introduced in \cite{levinkov2017comparative,wolf2018mutex,kardoostsolving,lance1967general}, share the general procedure defined in our framework, but differ in the way in which the interaction between clusters is updated after each agglomeration step. Moreover, we also introduce new variations of these algorithms by allowing the possibility of enforcing mutual-exclusion relationships between clusters.  
+Our first contribution is a review framework for graph clustering (Sec. \ref{sec:general_framework}) that represents a generalization of agglomerative HC to graphs with both attractive and repulsive edge weights (see Figure \ref{fig:intro_figure} for a visual abstract). 
+We show that various existing partitioning algorithms \cite{levinkov2017comparative,wolf2018mutex,kardoostsolving,lance1967general} can be reformulated in our framework, so that they share a general procedure but differ in the way inter-cluster interaction is updated after each iteration. Moreover, this framework allows us to introduce new variations of these algorithms that also enforce mutual-exclusion relationships between clusters.  
 
-We evaluate the performances of these different agglomerative clustering algorithms on image instance segmentation of 2D urban scenes (CityScapes dataset) and 3D biological image stacks (CREMI neuron segmentation challenge), by comparing achieved scores, efficiency and robustness to noisy edge weights. 
-% \TODO{Chapters description} 
-
+Finally, the algorithms included in the framework are evaluated on an instance segmentation task, both on 3D biological image stacks (Sec. \ref{sec:neuro_segm_exp}) and 2D urban scenes (Sec. \ref{sec:cityscapes_exp}). Our analysis highlights strengths and weaknesses of each algorithm by comparing their robustness to noise, efficiency and inclination to output a well balanced graph partitioning.
 
 
 
