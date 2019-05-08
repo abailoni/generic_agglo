@@ -50,12 +50,12 @@ In the next chapters we will use this objective as a way to measure how much a c
         \begin{subfigure}[t]{0.46 \textwidth}
         \centering
         \includegraphics[width=\textwidth]{./figs/example_no_constr.pdf}
-        \caption{No constraints}
+        \caption{No constraints}\label{subfig:no_constraints}
     \end{subfigure} \hfill
     \begin{subfigure}[t]{0.46 \textwidth}
         \centering
         \includegraphics[width=\textwidth]{./figs/example_with_constr.pdf}
-        \caption{With constraints}
+        \caption{With constraints}\label{subfig:with_constraints}
     \end{subfigure}
 \caption{Some iterations of the generalized algorithm (using \emph{Sum} linkage criteria) with and without adding cannot-link constraints. The graph has both attractive (green) and repulsive (red) edges and cannot-link constraints are shown with triple violet bars on the edges. We note that when constraints are enforced, the final clustering is given by two clusters instead of only one.}
 \label{fig:algorithm_with_without_CLC}
@@ -67,6 +67,7 @@ In the next chapters we will use this objective as a way to measure how much a c
   \hspace*{\algorithmicindent} 
   \begin{algorithmic}[1]
       \State Initialize clustering $\Pi=\{\{v_1\}, \ldots, \{v_N\}\}$ with each node in its own cluster
+      \State Initial interactions between nodes given by $\cost_e = w^+_e - w^-_e$
       % \State Initialize \texttt{canBeMerged}$[e] \gets$ \texttt{True} $\,\,\, \forall e\in E$
       % \State Sort edges in priority queue (PQ) in descending order of absolute weight $|\cost_e|=|w^+_e - w^-_e|$ 
       \State
@@ -99,27 +100,27 @@ In the next chapters we will use this objective as a way to measure how much a c
   \label{main_alg}
 \end{algorithm}
 
-\subsection{Generalized Algorithm for Signed Graphs Agglomerative Clustering} \label{sec:algorithm}
+\subsection{Generalized Algorithm for Signed Graphs Agglomerative Clustering (\algname)} \label{sec:algorithm} 
 
-We now present a Generalized Algorithm for Signed Graphs Agglomerative Clustering (\algname) that describes several graph partitioning algorithms previously introduced in the literature and highlights the existence of new ones.
+The proposed Algorithm \ref{main_alg} uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merges pairs of adjacent clusters. It starts by merging clusters with the strongest attractive interaction and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}}). After each merging iteration, the interaction between the merged cluster and its neighbors is updated according to one of the linkage criteria $\interact(S_u, S_v)$ listed in Table \ref{tab:linkage-criteria}.
 
-The proposed algorithm \ref{main_alg} uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merges pairs of adjacent clusters. Intuitively, the algorithm starts by merging clusters with the strongest attractive interaction, corresponding to the highest positive weights in the graph, and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b} and \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}c}). 
-
-A second variant of the proposed algorithm also introduces \emph{cannot-link constraints}, representing mutual exclusion relationships between pairs of nodes that cannot be associated with the same cluster in the final clustering. This variant (Algorithm \ref{main_alg} with \texttt{addCannotLinkConstraints=True}) stops when all the remaining clusters have been previously constrained.
+A second variant of Algorithm \ref{main_alg}, with option \texttt{addCannotLinkConstraints=True}, introduces \emph{cannot-link constraints}, which represent mutual exclusion relationships between pairs of nodes that cannot be associated with the same cluster in the final clustering. This variant 
+select the pair of clusters with the highest absolute interaction $|\interact(S_u, S_v)|$, so that the most attractive and the most repulsive pairs are analyzed first (see example in Fig. \ref{subfig:with_constraints}). If the interaction is repulsive, then the two clusters are constrained. If it is attractive, then they are merged, provided that they were not already previously constrained. 
+The algorithm stops when all the remaining clusters are constrained.
 % The algorithm that we will present in the next section iteratively performs a sequence of so-called \emph{edge contractions} on the original graph $\mathcal{G}(V,E,w^+, w^-)$.
 % The graph clustering algorithm we will present in Sec. \ref{sec:algorithm} is a bottom-up approach starting with each node assigned to its own cluster and iteratively merging clusters. During the agglomeration, the current clustering $\Pi$ is represented by a \emph{contracted graph} $\mathcal{G'}(\mathcal{G}, \Pi)$, such that each of its nodes represents a cluster $S \in \Pi$ and \emph{adjacent} clusters are linked by an edge. 
-
-
 % For the linkage criteria tested in this work, when two clusters $S_u$ and $S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can easily recompute these interactions by using a simple \emph{update rule} $f$ that does not involve any loop over the edges of the original graph $\mathcal{G}$. As an example, given the single-linkage criterion defined in Eq. \ref{eq:max_linkage}, the interaction between $S_u \cup S_v$ and one of its neighbors $S_t$ is simply given by:
 % \begin{equation}
 %   \interact_{S_u \cup S_v,S_t} = f( \interact_{S_u,S_t}, \interact_{S_v,S_t}) = f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt})) = \max \{ \tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}) \}
 % \end{equation}
 % All the update rules tested in this article are listed in Table \ref{tab:linkage-criteria}.
 
-\UPDATE{\textbf{The proposed edge contraction algorithm } Algorithm \ref{main_alg} then proceeds as follows, similarly to the one presented in \cite{levinkov2017comparative}. It starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}$, does the following: in case of attractive interaction $\tilde{\cost}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
-% For every new pair of double edges in $\tilde{\mathcal{G}}_\Pi$, update their priorities according to one of the update rules listed in Table \ref{tab:linkage-criteria} together with their cannot-link relationships. 
-If, on the other hand, the interaction is repulsive ($\tilde{\cost}\leq 0$) and the option \texttt{addCannotLink} of Alg. \ref{main_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
-In the Supplementary material we comment on the algorithm computational complexity (Sec. \ref{sec:complexity}).}
+In the Supplementary material we comment on the algorithm \UPDATE{computational complexity $\mathcal{O}(?)$} and present an efficient implementation based on an edge contraction algorithm combined with a priority queue (Sec. \ref{sec:complexity}).
+
+% \UPDATE{\textbf{The proposed edge contraction algorithm } Algorithm \ref{main_alg} then proceeds as follows, similarly to the one presented in \cite{levinkov2017comparative}. It starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}$, does the following: in case of attractive interaction $\tilde{\cost}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
+% % For every new pair of double edges in $\tilde{\mathcal{G}}_\Pi$, update their priorities according to one of the update rules listed in Table \ref{tab:linkage-criteria} together with their cannot-link relationships. 
+% If, on the other hand, the interaction is repulsive ($\tilde{\cost}\leq 0$) and the option \texttt{addCannotLink} of Alg. \ref{main_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
+% In the Supplementary material we comment on the algorithm computational complexity (Sec. \ref{sec:complexity}).}
 
  %\TODO{use def of merging process of contracted graph to define merging tree?}.
 
@@ -172,7 +173,7 @@ In the Supplementary material we comment on the algorithm computational complexi
         \end{tabular}
         % \caption{Linkage criteria}
     \end{subtable} 
-    \caption{The table lists the existing clustering algorithms that can be reformulated as special cases of the proposed generalized algorithm, given a linkage criteria, a type of graph (signed or unsigned) and the optional use of cannot-link constraints. In the listed linkage criteria, we defined the set of all edges connecting cluster $S_u$ to cluster $S_v$ as $E_{uv}=(S_u \times S_v) \cap E$}
+    \caption{The table lists the existing clustering algorithms that can be reformulated as special cases of the proposed generalized algorithm, given a linkage criteria, a type of graph (signed or unsigned) and the optional use of cannot-link constraints. The set $E_{uv}$ of all edges connecting cluster $S_u$ to cluster $S_v$ is defined as $E_{uv}=(S_u \times S_v) \cap E$.}
     \label{tab:linkage-criteria}
 \end{table*}
 
@@ -231,7 +232,7 @@ The Mutex Watershed \cite{wolf2018mutex}, another algorithm for signed graph par
 
 On the other hand, to our knowledge, the presented agglomerative algorithm with \emph{Average}, \emph{Max} or \emph{Min} linkage was never applied to signed graphs or combined with cannot-link constraints, thus we decided to test all these new variations. 
 
-\UPDATE{Additional types of linkage criteria were proposed in the literature}:
+Apart from the linkage criteria defined in Table \ref{tab:linkage-criteria}, additional ones were proposed in the literature:
 \cite{nunez2013machine} for example proposed a learned update rule where a neural network updates the cluster interactions depending on predefined edge and node features; other approaches introduce a weight regularization depending on the size of the clusters \cite{felzenszwalb2004efficient,kardoostsolving}, whereas 
-\cite{funke2018large} uses a \emph{quantile} linkage criteria by populating a histogram for each inter-cluster interaction. \UPDATE{To our knowledge, the linkage criteria listed in Table \ref{tab:linkage-criteria} represent the most used ones, thus we include them in our experimental comparison presented in the next chapters.}
+\cite{funke2018large} uses a \emph{quantile} linkage criteria by populating a histogram for each inter-cluster interaction. In the next chapters, our experiments focus on the linkage criteria listed in Table \ref{tab:linkage-criteria}, since they represent the most used ones.
 
