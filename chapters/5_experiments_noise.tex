@@ -5,16 +5,16 @@
 \centering
         \begin{subfigure}[t]{0.49 \textwidth}
         \centering
-        \includegraphics[width=\textwidth,trim=0.55in 0.35in 0.65in 0.80in,clip]{./figs/merge_noise.pdf}
+        \includegraphics[width=\textwidth,trim=0.55in 0.35in 0.65in 0.80in,clip]{./figs/merge_noise_only_direct.pdf}
 
-        \caption{Merge-biased noise added to edge weights} \label{fig:thresh}
-    \end{subfigure}%
+        \caption{Direct neighbor connections ($p_{\mathrm{long}}=0$)} \label{fig:merge_noise_only_direct}
+    \end{subfigure} \hfill
     \begin{subfigure}[t]{0.49 \textwidth}
         \centering
-        \includegraphics[width=\textwidth,trim=0.53in 0.35in 0.65in 0.80in,clip]{./figs/split_noise.pdf}
-        \caption{Split-biased noise added to edge weights} \label{fig:ws}
+        \includegraphics[width=\textwidth,trim=0.53in 0.35in 0.65in 0.80in,clip]{./figs/merge_noise_long_range.pdf}
+        \caption{With long-range connections ($p_{\mathrm{long}}=0.1$)} \label{fig:merge_noise_with_long_range}
     \end{subfigure}
-\caption{{\small Rand-Scores achieved by the generalized algorithm and different update rules when noise is added to the edge weights. Solid lines represent median values; values between the 25th and the 75th percentile are shown in shade areas. In the plots at the top, long-range connections are not used.}}\label{fig:noise_plots}
+\caption{\UPDATE{Rand-Scores achieved by the generalized algorithm and different update rules when noise is added to the edge weights. Solid lines represent median values; values between the 25th and the 75th percentile are shown in shade areas. In the plots at the top, long-range connections are not used.}}\label{fig:noise_plots}
 \end{figure}
 
 % \begin{minipage}[b]{0.48\textwidth}
@@ -38,7 +38,7 @@
 
 
 \subsection{Different update rules and robustness to noise}
- In this section we evaluate the robustness of \algname{} with different update rules by adding noise to the edge weights.
+ In this section we evaluate the robustness of \algname{} with different linkage criteria by adding noise to the edge weights.
   %Before to present the results shown in Fig. \ref{fig:noise_plots}, we will first introduce the type of noise that was added to the edge weights.
 % In the set of experiments presented in this article, edge weights are estimated \UPDATE{by using a CNN that predicts how likely two neighboring pixels are to be part of the same cluster}. 
 Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}a} shows an example of uncertain CNN predictions on a slice of the neuron segmentation dataset. We now present a way of modifying the CNN output to introduce additional artifacts like a missing or false boundary evidence. 
@@ -55,7 +55,7 @@ Thus, we used Perlin noise\footnote{In our experiments, we used an open-source v
 \end{equation}
 where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}\in \mathbb{R}^+$ is a positive factor representing the amount of added noise. $\tilde{F}_{+}(x;\mathcal{K})$ represents then a merge-biased prediction, such that the probability for two pixels to be in the same cluster is increased only if $N(x)>0$ (see Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}b}), whereas $\tilde{F}_{-}(x;\mathcal{K})$ is a split-biased prediction with decreased probabilities when $N(x)<0$ (Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}c}). In the Supplementary material (Sec. \ref{sec:details_perlin}) we provide a more detailed description of the parameters used for the noise generation.
 
-The plots in Fig. \ref{fig:noise_plots} represent the scores achieved by \algname{} with different update rules depending on the amount of noise $\mathcal{K}$ added to the edge weights and the probability $p_{\mathrm{long}}$ of long-range connections in the graph. Results clearly show that adding long-range edges is always beneficial for the final segmentation. \TODO{What about time?} The most robust version of update rule proved to be the \emph{mean}, that achieves similar scores even with significantly noisy edge weights. The \emph{absolute maximum} update rule proposed by \cite{wolf2018mutex} provides an efficient and fast option, but completely fails when too much noise is added. 
+The plots in Fig. \ref{fig:noise_plots} represent the scores achieved by \algname{} with different update rules depending on the amount of noise $\mathcal{K}$ added to the edge weights and the probability $p_{\mathrm{long}}$ of long-range connections in the graph. Results clearly show that adding long-range edges is always beneficial for the final segmentation \TODO{Not True!}. \TODO{What about time?} The most robust version of update rule proved to be the \emph{mean}, that achieves similar scores even with significantly noisy edge weights. The \emph{absolute maximum} update rule proposed by \cite{wolf2018mutex} provides an efficient and fast option, but completely fails when too much noise is added. 
 The \emph{sum} update rule version was the slowest option tested, but it was not as robust as the \emph{mean} version, probably due to its tendency to grow one cluster at the time (see Sec. \ref{sec:exp_first_comparison}). \TODO{Comment about MC energy}
 On the other hand, \algname{} with \emph{mean} update rule and cannot-link constraints did not achieve high scores because of the strong over-segmentation error.
 %Nevertheless, these additional experiments show that it provides an \UPDATE{almost true over-segmentation of the ground truth segmentation even with strongly merge-biased predictions}.

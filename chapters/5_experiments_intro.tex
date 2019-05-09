@@ -15,4 +15,4 @@ The trained CNN outputs pseudo-probabilities $p:E \rightarrow [0,1]$ that have t
 \begin{equation}
 \cost_{e,\mathrm{Add}} = p_e - \beta, \qquad \quad \cost_{e,\mathrm{Log}} = \log \left( \frac{p_e}{1-p_e} \right) + \log \left( \frac{\beta}{1-\beta} \right),
 \end{equation}
-where $\beta \in [0,1]$ is a \emph{bias} parameter that allow a tuning between over- and under-segmentation. We evaluated both of them empirically with each of the tested update rules and found that the additive mapping is the best option in all cases apart from the \emph{Sum} linkage. 
+where $\beta \in [0,1]$ is a \emph{bias} parameter that allow a tuning between over- and under-segmentation. We evaluated both of them empirically with each of the tested linkage and found that the additive mapping is the best option in all cases apart from the \emph{Sum} linkage. 
