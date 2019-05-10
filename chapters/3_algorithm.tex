@@ -7,16 +7,16 @@ we define the graph notation in Sec.~\ref{sec:notation}, introduce Algorithm \re
 
 \subsection{Notation and graph formalism} \label{sec:notation}
 
-We consider an undirected simple graph $\mathcal{G}(V,E)$, in which nodes can represent either pixels, superpixels or voxels. We call the set $\Pi$ a \emph{clustering} or \emph{partitioning} with $K$ clusters if $V = \cup_{i=1}^K S_i $, $S_i \cap S_j = \emptyset$ for each $i\neq j$ and every $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. We also denote as $S_u$ the cluster associated with node $u$.
+We consider an undirected simple edge-weighted graph $\mathcal{G}(V,E,w^+, w^-)$, in which nodes can represent either pixels, superpixels or voxels. We call the set $\Pi$ a \emph{clustering} or \emph{partitioning} with $K$ clusters if $V = \cup_{i=1}^K S_i $, $S_i \cap S_j = \emptyset$ for each $i\neq j$ and every $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. We also denote as $S_u$ the cluster associated with node $u$.
 % \begin{equation}
 % S_u \equiv S \in \Pi \,\, \text{s.t.} \,\, u \in S
 % \end{equation}
-
-In this work, we consider the problem of clustering a weighted graph $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes. The weight function $w^+: E \rightarrow \mathbb{R}^+$ associates a positive scalar attribute $w_e^+\in \mathbb{R}^+$ representing a merge affinity or a similarity measure: the higher this number, the higher the inclination of the two incident vertices to be assigned to the same cluster\footnote{Note that other formalisms \UPDATE{REFS} for positively weighted graphs associate distances to the edges, thus, the \emph{lower} the edge weight, the higher the attraction between the two linked nodes, contrary to our definition of $w^+$.}. On the other hand, $w^-: E \rightarrow \mathbb{R}^+$ associates a split tendency $w_e^- \in \mathbb{R}^+$: the higher this weight, the more the incident vertices would like to be in different clusters. 
+% In this work, we consider the problem of clustering a weighted graph $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes. 
+The weight function $w^+: E \rightarrow \mathbb{R}^+$ associates a positive scalar attribute $w_e^+\in \mathbb{R}^+$ representing a merge affinity or a similarity measure: the higher this number, the higher the inclination of the two incident vertices to be assigned to the same cluster\footnote{Note that other formalisms \UPDATE{REFS} for positively weighted graphs associate distances to the edges, thus, the \emph{lower} the edge weight, the higher the attraction between the two linked nodes, contrary to our definition of $w^+$.}. On the other hand, $w^-: E \rightarrow \mathbb{R}^+$ associates a split tendency $w_e^- \in \mathbb{R}^+$: the higher this weight, the more the incident vertices would like to be in different clusters. 
 Graphs of the type $\mathcal{G}(V,E,w^+, w^-)$ are also often defined as \emph{signed graphs} $\mathcal{G}(V,E,\cost)$, featuring positive and negative edge weights $\cost_e\in \mathbb{R}$. Following the theoretical considerations in \cite{lange2018partial}, we define these signed weights as ${\cost_e = w_e^+ - w_e^-}$. Some approaches directly compute $\cost_e$, whereas others compute $w_e^+$ and $w_e^-$ separately.
 In this formalism, graphs with purely attractive interactions are a special case of $\mathcal{G}(V,E,\cost)$ with $\cost_e \geq 0, \, \forall e \in E$.
 
-\textbf{Inter-cluster interaction } We call two clusters $S_1,S_2$ \emph{adjacent} if there exists at least one edge ${e_{uv}\in E}$ connecting a node $u\in S_1$ to a node $v\in S_2$. In agglomerative HC, the interaction $\interact(S_1,S_2)$ between the two clusters is usually defined as a function, named \emph{linkage criterion}, depending on the weights of all edges connecting clusters $S_1$ and $S_2$. 
+\textbf{Inter-cluster interaction } We call two clusters $S_1,S_2$ \emph{adjacent} if there exists at least one edge ${e_{uv}\in E}$ connecting a node $u\in S_1$ to a node $v\in S_2$. In agglomerative HC, the interaction $\interact(S_1,S_2)$ between the two clusters is usually defined as a function, named \emph{linkage criterion}, depending on the weights of \emph{all} edges connecting clusters $S_1$ and $S_2$. 
 All the linkage criteria tested in this article are listed and defined in Table \ref{tab:linkage-criteria}.
 % For example, for a \emph{maximum} linkage criterion statistic (single-linkage), the inter-cluster interaction is given by:
 % \begin{equation}\label{eq:max_linkage}
@@ -24,7 +24,7 @@ All the linkage criteria tested in this article are listed and defined in Table 
 % \end{equation}
 % Other common choices are \emph{minimum} (complete linkage) or \emph{average} (average linkage). %and \emph{sum}.
 
-\textbf{Multicut and correlation clustering } For any clustering $\Pi$ of $\mathcal{G}$, we define as $E^{\mathrm{internal}}_\Pi$ the set of edges linking nodes in the same cluster, and as $E_\Pi^{\mathrm{external}}$ the complementary set of edges whose linked nodes belong to distinct clusters:
+\textbf{Multicut and correlation clustering } For any clustering $\Pi$ of $\mathcal{G}$, we define as $E^{\mathrm{internal}}_\Pi$ the set of edges linking nodes in the same cluster, and as $E_\Pi^{\mathrm{external}}$ the complementary set of edges whose incident nodes belong to distinct clusters:
 \begin{equation}
 E_\Pi^{\mathrm{internal}} \equiv \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \qquad E^{\mathrm{external}}_\Pi \equiv E \setminus E^{\mathrm{internal}}_\Pi.
 \end{equation}
@@ -43,7 +43,7 @@ corresponds to finding the partitioning that optimally balance attraction and re
  0 & \text{otherwise}.
  \end{cases}
 \end{equation}
-In the next chapters we will use this objective as a way to measure how much a clustering is balanced.
+In the next chapters we will use this objective as measure of how balanced a clustering is.
 
 \begin{figure}
 \centering

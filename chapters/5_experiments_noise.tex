@@ -7,14 +7,15 @@
         \centering
         \includegraphics[width=\textwidth,trim=0.55in 0.35in 0.65in 0.80in,clip]{./figs/merge_noise_only_direct.pdf}
 
-        \caption{Direct neighbor connections ($p_{\mathrm{long}}=0$)} \label{fig:merge_noise_only_direct}
+        \caption{Without long-range edges: $p_{\mathrm{long}}=0$} \label{fig:merge_noise_only_direct}
     \end{subfigure} \hfill
     \begin{subfigure}[t]{0.49 \textwidth}
         \centering
         \includegraphics[width=\textwidth,trim=0.53in 0.35in 0.65in 0.80in,clip]{./figs/merge_noise_long_range.pdf}
-        \caption{With long-range connections ($p_{\mathrm{long}}=0.1$)} \label{fig:merge_noise_with_long_range}
+        \caption{With long-range edges: $p_{\mathrm{long}}=0.1$} \label{fig:merge_noise_with_long_range}
     \end{subfigure}
-\caption{\UPDATE{Rand-Scores achieved by the generalized algorithm and different update rules when noise is added to the edge weights. Solid lines represent median values; values between the 25th and the 75th percentile are shown in shade areas. In the plots at the top, long-range connections are not used.}}\label{fig:noise_plots}
+\caption{Performances of \algname{} with different linkage criteria on a crop of CREMI training data, depending on the amount of noise (x-axis) added to the CNN predictions. \textbf{Top}: Accuracies given by Rand-Score (higher is better). \textbf{Bottom}: Relative difference in multicut objective (lower is better) measuring how balanced the final clusterings are.   
+Solid lines represent median values. Values between the 25th and the 75th percentile are shown in shade areas.}\label{fig:noise_plots}
 \end{figure}
 
 % \begin{minipage}[b]{0.48\textwidth}
@@ -37,7 +38,15 @@
 
 
 
-\subsection{Different update rules and robustness to noise}
+\subsection{In-depth comparison of different linkage criteria for \algname{}}
+Highlight difference of the sum in Fig. \ref{fig:intro_figure}.
+% \begin{itemize}
+%   % \item compare different choices of signed-cost-mappings (say which one worked best)
+%   % \item present cremi crop-C table and rule out single and complete linkage
+% \end{itemize}
+Among the update rules listed in Table \ref{tab:linkage-criteria}, in the next sections we will only focus on \emph{sum}, \emph{arithmetic mean} and \emph{absolute maximum}, since they performed best in these experiments.
+
+
  In this section we evaluate the robustness of \algname{} with different linkage criteria by adding noise to the edge weights.
   %Before to present the results shown in Fig. \ref{fig:noise_plots}, we will first introduce the type of noise that was added to the edge weights.
 % In the set of experiments presented in this article, edge weights are estimated \UPDATE{by using a CNN that predicts how likely two neighboring pixels are to be part of the same cluster}. 
@@ -54,68 +63,40 @@ Thus, we used Perlin noise\footnote{In our experiments, we used an open-source v
 \tilde{F}_{\pm}(x;\mathcal{K})=F(x)\pm\big|\mathcal{K}\cdot\max\left(\pm N(x),0\right)\big|,
 \end{equation}
 where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}\in \mathbb{R}^+$ is a positive factor representing the amount of added noise. $\tilde{F}_{+}(x;\mathcal{K})$ represents then a merge-biased prediction, such that the probability for two pixels to be in the same cluster is increased only if $N(x)>0$ (see Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}b}), whereas $\tilde{F}_{-}(x;\mathcal{K})$ is a split-biased prediction with decreased probabilities when $N(x)<0$ (Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}c}). In the Supplementary material (Sec. \ref{sec:details_perlin}) we provide a more detailed description of the parameters used for the noise generation.
-
-\UPDATE{The plots in Fig. \ref{fig:noise_plots} represent the scores achieved by \algname{} with different update rules depending on the amount of noise $\mathcal{K}$ added to the edge weights and the probability $p_{\mathrm{long}}$ of long-range connections in the graph. Results clearly show that adding long-range edges is always beneficial for the final segmentation \TODO{Not True!}. \TODO{What about time?} The most robust version of update rule proved to be the \emph{mean}, that achieves similar scores even with significantly noisy edge weights. The \emph{absolute maximum} update rule proposed by \cite{wolf2018mutex} provides an efficient and fast option, but completely fails when too much noise is added. 
-The \emph{sum} update rule version was the slowest option tested, but it was not as robust as the \emph{mean} version, probably due to its tendency to grow one cluster at the time (see Sec. \ref{sec:exp_first_comparison}). \TODO{Comment about MC energy}
-On the other hand, \algname{} with \emph{mean} update rule and cannot-link constraints did not achieve high scores because of the strong over-segmentation error.}
-%Nevertheless, these additional experiments show that it provides an \UPDATE{almost true over-segmentation of the ground truth segmentation even with strongly merge-biased predictions}.
+% \UPDATE{The plots in Fig. \ref{fig:noise_plots} represent the scores achieved by \algname{} with different update rules depending on the amount of noise $\mathcal{K}$ added to the edge weights and the probability $p_{\mathrm{long}}$ of long-range connections in the graph. Results clearly show that adding long-range edges is always beneficial for the final segmentation \TODO{Not True!}. \TODO{What about time?} The most robust version of update rule proved to be the \emph{mean}, that achieves similar scores even with significantly noisy edge weights. The \emph{absolute maximum} update rule proposed by \cite{wolf2018mutex} provides an efficient and fast option, but completely fails when too much noise is added. 
+% The \emph{sum} update rule version was the slowest option tested, but it was not as robust as the \emph{mean} version, probably due to its tendency to grow one cluster at the time (see Sec. \ref{sec:exp_first_comparison}). \TODO{Comment about MC energy}
+% On the other hand, \algname{} with \emph{mean} update rule and cannot-link constraints did not achieve high scores because of the strong over-segmentation error.}
 
 
-\begin{figure}
-        \centering
-\begin{minipage}[T]{0.48\textwidth}
-% \begin{table}
-    \centering
-    % \begin{subtable}[t!]{0.5\textwidth}\centering
-        \begin{tabular}{l M{0.2\textwidth} M{0.2\textwidth}}
-        \toprule
-        % & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
-         % & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
-         & \multicolumn{1}{c}{\thead{No\\Constraints}} & \multicolumn{1}{c}{\thead{With\\constraints}} \\ \midrule
-         % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
-\textbf{Mean}& \textbf{0.9292}  & 0.8647  \\
-% Lifted multicut & - & -  \\
-Abs. Max.  & 0.9246 & 0.9246 \\
-Max &   0.0611  &  0.9208  \\
-Sum  & 0.8377  & 0.8426  \\
-Min &  0.0737 & 0.0779  \\
-        \end{tabular}
-        % \caption{Linkage criteria}
-    % \end{subtable} 
-    \captionof{table}{Arand-Scores on CREMI challenge (crop of sample C) \UPDATE{for the generalized algorithm and different types of linkage criteria and the optional use of cannot-link constraints.} }
-    \label{tab:results_cremi_val}
-\end{minipage}\hfill
-\begin{minipage}[T]{0.48\textwidth}
-% \begin{table}
-    \centering
-    % \begin{subtable}[t!]{0.5\textwidth}\centering
-        \begin{tabular}{l M{0.25\textwidth} M{0.25\textwidth}}
-        \toprule
-        % & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
-         % & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
-         & \multicolumn{1}{c}{\thead{No\\Constraints}} & \multicolumn{1}{c}{\thead{With\\constraints}} \\ \midrule
-         % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
-\textbf{Mean}& \textbf{0.343}  & 0.339  \\
-GMIS \cite{liu2018affinity} & 0.330 & -  \\
-Max &   0.243  &   0.325  \\
-Abs. Max.  & 0.321 & 0.321 \\
-Sum & 0.313  & 0.319  \\
-Min &  0.000    & 0.000  \\
-        \end{tabular}
-        % \caption{Linkage criteria}
-    % \end{subtable} 
-    \captionof{table}{AP scores on the cityscapes validation set for the generalized algorithm and different types of linkage criteria.  }
-    \label{tab:results_cityscapes}
-\end{minipage}
-\end{figure}
 \begin{figure}[b]
 \centering
-% \includegraphics[width=0.5\textwidth,trim=0.4in 1.2in 0.in 0.05in,clip]{./figs/intro_image.jpg} % left bottom right top
-\includegraphics[width=\textwidth]{./figs/cityscapes_compare.pdf} % left bottom right top
-\caption{
-\UPDATE{Comparison of results from different update rules on signed graph with and without cannot-link constraints}
- \label{fig:cytiscapes_comparison}}
+\begin{minipage}[T]{0.54\textwidth}
+    \centering
+    \footnotesize
+        \begin{tabular}{l|l|cc}
+           & \algname{}  &  \multicolumn{2}{c}{Use constraints:} \\
+           & Linkage & \textsc{No} & \textsc{Yes} \\ \midrule
+DWT \cite{bai2017deep} & - & 21.2 & - \\
+SGN \cite{liu2017sgn} & - & 29.2 & - \\
+Mask RCNN \cite{he2017mask} & - & 31.5 & - \\ \hline
+ & Min &  0    & 0  \\
+ & Sum \cite{keuper2015efficient,levinkov2017comparative} & 31.3  & 31.9  \\
+\multirow{2}{*}{GMIS Pipeline \cite{liu2018affinity}} & Abs. Max. \cite{wolf2018mutex}  & 32.1 & 32.1 \\
+ & Max &   24.3  &   32.5  \\
+ & GMIS \cite{liu2018affinity} & 33.0 & -  \\
+ & \textbf{Average}& \textbf{34.3}  & 33.9  \\
+        \end{tabular}
+    \captionof{table}{AP scores on the cityscapes validation set for the generalized algorithm and different types of linkage criteria.  }
+    \label{tab:results_cityscapes_val}
+\end{minipage}\hfill
+\begin{minipage}[T]{0.43\textwidth}
+    \centering
+    \centering
+\includegraphics[width=\textwidth]{./figs/cityscapes_compare_2.pdf} % left bottom right top
+\end{minipage}
 \end{figure}
+
+
 
 % \begin{equation}
 % \begin{gathered}
