@@ -57,6 +57,29 @@ In the Supplementary material we comment on the algorithm computational complexi
 
 \end{itemize}
 
+\subsection{Noise exps}
+ % In this section we evaluate the robustness of \algname{} with different linkage criteria by adding noise to the edge weights.
+  %Before to present the results shown in Fig. \ref{fig:noise_plots}, we will first introduce the type of noise that was added to the edge weights.
+% In the set of experiments presented in this article, edge weights are estimated \UPDATE{by using a CNN that predicts how likely two neighboring pixels are to be part of the same cluster}. 
+Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}a} shows an example of uncertain CNN predictions on a slice of the neuron segmentation dataset. We now present a way of modifying the CNN output to introduce additional artifacts like a missing or false boundary evidence. 
+
+In the field of image processing there are several ways of adding noise to an image, among which the most common are Gaussian noise or Poisson shot noise. 
+In these cases, the noise of one pixel does not correlate with its neighboring noise values. On the other hand, predictions of a CNN are known to be spatially correlated. 
+Thus, we used Perlin noise\footnote{In our experiments, we used an open-source version of simplex noise \cite{perlin2001noise}, which is an improved open-source version of Perlin noise \cite{perlin1985image}}, one of the most common gradient noises used in procedural pattern generation. This type of noise $n(x)\in[0,1]$ generates spatial random patterns that are locally smooth but have large and diverse variations on bigger scales. We then combined it with the CNN predictions $p(x)$ in the two following ways: 
+\begin{equation}\label{eq:noise_biased_predictions}
+% \tilde{F}(x;\theta)=\begin{cases}
+% F(x;\theta)+\mathcal{K}\cdot\max\left(N(x),0\right) & \text{if merge-biased}\\
+% F(x;\theta)+\mathcal{K}\cdot\min\left(N(x),0\right) & \text{if split-biased}
+% \end{cases}
+\tilde{F}_{\pm}(x;\mathcal{K})=F(x)\pm\big|\mathcal{K}\cdot\max\left(\pm N(x),0\right)\big|,
+\end{equation}
+where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}\in \mathbb{R}^+$ is a positive factor representing the amount of added noise. $\tilde{F}_{+}(x;\mathcal{K})$ represents then a merge-biased prediction, such that the probability for two pixels to be in the same cluster is increased only if $N(x)>0$ (see Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}b}), whereas $\tilde{F}_{-}(x;\mathcal{K})$ is a split-biased prediction with decreased probabilities when $N(x)<0$ (Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}c}). In the Supplementary material (Sec. \ref{sec:details_perlin}) we provide a more detailed description of the parameters used for the noise generation.
+
+
+\subsection{Cityscapes exps}
+Mention the main trick in the loss: ignore background pixels (so focus on boundaries). Same mapping defined in \ref{eq:mappings}
+
+
 \begin{table*}
     \centering
     \begin{subtable}[t!]{0.98\textwidth}\centering

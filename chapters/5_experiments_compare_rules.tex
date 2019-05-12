@@ -4,7 +4,7 @@
 \centering
 % \includegraphics[width=0.5\textwidth,trim=0.4in 1.2in 0.in 0.05in,clip]{./figs/intro_image.jpg} % left bottom right top
 \includegraphics[width=\textwidth]{./figs/comparison.pdf} % left bottom right top
-\caption{\algname{} with different linkage criteria on some difficult parts of the CREMI Challenge \cite{cremiChallenge} training data. Red arrows point to wrongly split regions. Yellow arrows point out merge errors. Green arrows indicate challenging, but correctly segmented regions. 
+\caption{Failure cases of \algname{} with different linkage criteria highlighted on some difficult parts of the CREMI Challenge \cite{cremiChallenge} training data. Only the few wrongly segmented regions are highlighted in colors. Red arrows point to wrongly split regions. Yellow arrows point out merge errors. Green arrows indicate challenging, but correctly segmented regions. 
 % Only the involved segments are colored.
  % main ideas and contributions
 \label{fig:cremi_comparison}}
@@ -20,16 +20,16 @@
         % \toprule
         % & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
          % & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
-         & \algname{} Linkage & \makecell{Arand\\Score} & VI-Score \\ \midrule
+         & \algname{} Linkage & \makecell{Arand} & \makecell{VI-Merge} \\ \midrule
          % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
 DTWS + LMC \cite{beier2016efficient}& -& & \\
 DTWS + avgHC &-& & \\
 DTWS  & -& & \\
 THRESH &-& & \\ \hline
-\algname{} & Average& & \\
-Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & & \\
-GAEC \cite{keuper2015efficient} & Sum & & \\
-Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr.  & & \\
+\algname{} & Average& 0.936 & 0.685 \\
+Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.906 & 0.642 \\
+Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & 0.897 & 0.714 \\
+GAEC \cite{keuper2015efficient} & Sum & 0.872 & 0.539 \\
         \end{tabular}
     \captionof{table}{Arand-Scores and VI-Scores on CREMI challenge training data}
     \label{tab:results_cremi_train}
@@ -51,15 +51,11 @@ LFC \cite{parag2017anisotropic} & 0.616 & \\
 \end{minipage}
 \end{figure}
 
-\subsection{CREMI Challenge} \label{sec:exp_first_comparison}
-We evaluate the algorithms in our framework on the competitive CREMI 2016 EM Segmentation Challenge \cite{cremiChallenge} that is currently the neuron segmentation challenge with the largest amount of training data available. The dataset comes from a serial section EM of \emph{Drosophila} fruit-fly tissue and consists of 6 volumes of 1250x1250x125 voxels at resolution 4x4x40nm, three of which present available training ground truth. The results submitted to the leaderboard are evaluated using the CREMI score\footnote{\url{https://cremi.org/leaderboard/}}, based on the Adapted Rand-Score (Rand-Score) and the Variation of Information Score\cite{arganda2015crowdsourcing}. The data is highly anisotropic and contains artifacts like missing sections, staining precipitations and support film folds. 
+\subsection{CREMI Challenge} \label{sec:cremi_challenge}
+We evaluate the algorithms in our framework on the competitive CREMI 2016 EM Segmentation Challenge \cite{cremiChallenge} that is currently the neuron segmentation challenge with the largest amount of training data available. The dataset comes from a serial section EM of \emph{Drosophila} fruit-fly tissue and consists of 6 volumes of 1250x1250x125 voxels at resolution 4x4x40nm, three of which present publicly available training ground truth. The results submitted to the leaderboard are evaluated using the CREMI score\footnote{\url{https://cremi.org/leaderboard/}}, based on the Adapted Rand-Score (Rand-Score) and the Variation of Information Score\cite{arganda2015crowdsourcing}. The data is highly anisotropic and contains artifacts like missing sections, staining precipitations and support film folds. 
 
-\textbf{Training } We pre-aligned the training and test data with an elastic alignment method \cite{saalfeld2012elastic}. We further simulated low contrast sections... and missing sections by setting their intensity value to zero... We used 3D U-Net architecture \cite{ronneberger2015u,cciccek20163d} trained with L1 loss (Adam optimizer with learning rate...). 
+\textbf{Training details} \UPDATE{We pre-aligned the training and test data with an elastic alignment method \cite{saalfeld2012elastic}. We further simulated low contrast sections... and missing sections by setting their intensity value to zero... We used 3D U-Net architecture \cite{ronneberger2015u,cciccek20163d} trained with L1 loss (Adam optimizer with learning rate...).} 
 
-\textbf{Additional methods tested }  We compare the performances of the algorithms in our framework with other basic and state-of-the-art post-processing methods. To ensure a fair comparison, we test all methods on the same predictions of our CNN model. As baseline methods, we consider a simple thresholding (THRESH) and a watershed algorithm seeded at the maxima of a boundary distance transform (WSDT). For these baselines, affinities are converted to a boundary map \UPDATE{by taking a weighted average over short- and long-range edge connections}. Other state-of-the-art neuron-segmentation multi-step-pipelines first find 2D superpixels using WSDT and then apply a graph partitioning algorithm: in our comparison, we include one pipeline using agglomerative HC with average linkage (avgHC) and one using an approximation of the Lifted Multicut Problem (LMC) \cite{beier2016efficient}.
-
-\textbf{Comparison results } Among all the signed graph algorithms included in our generalized framework, the less-known one with \emph{Average} linkage consistently outperformed all other previously proposed linkage like \emph{Sum} or \emph{Absolute Max}
-(see Table \ref{tab:results_cremi_train}). This method also achieved \UPDATE{comparable} scores to other complex multi-step pipelines that usually require the user to tune several hyper-parameters. The performances of all linkage criteria listed in Table \ref{tab:linkage-criteria} are summarized in Table \ref{tab:cremi_train_full} in Appendix and in Fig. \ref{fig:cremi_comparison}, where we highlight some of the major mistakes... 
-
+\textbf{Additional methods tested }  We compare the performances of the algorithms in our framework with other basic and state-of-the-art post-processing methods. To ensure a fair comparison, we test all methods on the same predictions of our CNN model. As baseline methods, we consider a simple thresholding (THRESH) and a watershed algorithm seeded at the maxima of a boundary distance transform (WSDT). For these baselines, affinities are converted to a boundary map \UPDATE{by taking a weighted average over short- and long-range edge connections}. Other state-of-the-art multi-step-pipelines for neuron-segmentation first find 2D superpixels using WSDT and then apply a graph partitioning algorithm: in our comparison, we include one pipeline using agglomerative HC with average linkage (avgHC) and one using an approximation of the Lifted Multicut Problem (LMC) \cite{beier2016efficient}.
 
 

@@ -14,8 +14,8 @@
         \includegraphics[width=\textwidth,trim=0.53in 0.35in 0.65in 0.80in,clip]{./figs/merge_noise_long_range.pdf}
         \caption{With long-range edges: $p_{\mathrm{long}}=0.1$} \label{fig:merge_noise_with_long_range}
     \end{subfigure}
-\caption{Performances of \algname{} with different linkage criteria on a crop of CREMI training data, depending on the amount of noise (x-axis) added to the CNN predictions. \textbf{Top}: Accuracies given by Rand-Score (higher is better). \textbf{Bottom}: Relative difference in multicut objective (lower is better) measuring how balanced the final clusterings are.   
-Solid lines represent median values. Values between the 25th and the 75th percentile are shown in shade areas.}\label{fig:noise_plots}
+\caption{Performances of \algname{} with different linkage criteria on a crop of CREMI training data sample B, depending on the amount of noise (x-axis) added to the CNN predictions. \textbf{Top}: Accuracy given by Rand-Score (higher is better). Solid lines represent median values. Values between the 25th and the 75th percentile are shown in shade areas. \textbf{Bottom}: Multicut objective (Eq. \ref{eq:multicut_obj}), measuring how balanced the final clusterings are (lower is better); for a clearer comparison, an offset is added to the energy values, so that the method achieving the lowest energy is always assigned to value 1. \UPDATE{CLC}  
+}\label{fig:noise_plots}
 \end{figure}
 
 % \begin{minipage}[b]{0.48\textwidth}
@@ -38,34 +38,27 @@ Solid lines represent median values. Values between the 25th and the 75th percen
 
 
 
-\subsection{In-depth comparison of different linkage criteria for \algname{}}
-Highlight difference of the sum in Fig. \ref{fig:intro_figure}.
+\subsection{In-depth comparison of different linkage criteria for \algname{}} \label{sec:comparison_exps}
+As shown in Table \ref{tab:results_cremi_train}, among all the signed graph algorithms included in our generalized framework, the less-known one with \emph{Average} linkage consistently outperformed all other previously proposed linkage like \emph{Sum} or \emph{Absolute Max}. This method also achieved \UPDATE{comparable} scores to other complex multi-step pipelines that usually require the user to tune several hyper-parameters, like LMC. 
+In Fig. \ref{fig:cremi_comparison}, we highlight some failure cases of \algname{} and in Appendix we provide an extended version of Table \ref{tab:results_cremi_train} including all linkage tested with \algname{} on the full CREMI training data. 
+
+In order to highlight the properties and the strengths of each linkage criteria and  perform an in-depth comparison that is as quantitative as possible, we run an additional set of experiments where we perturbed the CNN predictions with noise. In Appendix, we provide all the details about the used type of spatially correlated noise that allowed us to perturb the CNN outputs by introducing simulated additional artifacts like missing or false boundary evidences (see visual example in Fig. \ref{fig:noisy_affs}).  
+
+Plots in Fig. \ref{fig:noise_plots} summarize 6000 experiments: we focused on the best performing linkage criteria, i.e. \emph{Average}, \emph{Sum} and \emph{Abs Max}, and tested them with different values of noise, both with and without use of long-range connections in the grid-graph\footnote{We tested 20 values of noise and, for each setup, we averaged the scores over 30 runs.}. In Fig. \ref{fig:noise_plots}, we used a merge-biased noise decreasing boundary evidence. See Fig. \ref{fig:noise_split} in Appendix for a split-biased version. 
+Our findings confirm that \algname{} with \emph{Average} linkage criterion represents the most robust algorithm tested and that is the one benefiting more from additional long-range edge connections. Other versions using cannot-link constraints generally lead to an over-segmentation, but are robust to ``leaks through holes'' given by missing boundary evidence. The greedy \emph{absolute maximum} linkage proposed by \cite{wolf2018mutex} is the least robust to noise, but, as we show in Table \ref{tab:full_cremi_results}, it represents an efficient and considerably faster option.   
+The \emph{Sum} linkage generally outputs the most balanced graph partitioning according to the objective defined in Eq. \ref{eq:multicut_obj} and is then confirmed to be a good choice for initializing more complex approximations of the multicut optimization problem like \cite{beier2016efficient}. Nevertheless, in more challenging parts of the data (see Fig. \ref{fig:cremi_comparison}) or in the presence of noise, it often incorrectly merge regions together, leading to more unbalanced graph partitioning. In these cases, the use of cannot-link constraints or a more robust average linkage are preferable.  
+% \UPDATE{The plots in Fig. \ref{fig:noise_plots} represent the scores achieved by \algname{} with different update rules depending on the amount of noise $\m{}athcal{K}$ added to the edge weights and the probability $p_{\mathrm{long}}$ of long-range connections in the graph. Results clearly show that adding long-range edges is always beneficial for the final segmentation \TODO{Not True!}. \TODO{What about time?} The most robust version of update rule proved to be the \emph{mean}, that achieves similar scores even with significantly noisy edge weights. The \emph{absolute maximum} update rule proposed by \cite{wolf2018mutex} provides an efficient and fast option, but completely fails when too much noise is added. 
+% The \emph{sum} update rule version was the slowest option tested, but it was not as robust as the \emph{mean} version, probably due to its tendency to grow one cluster at the time (see Sec. \ref{sec:exp_first_comparison}). \TODO{Comment about MC energy}
+% On the other hand, \algname{} with \emph{mean} update rule and cannot-link constraints did not achieve high scores because of the strong over-segmentation error.}
+
+
+% Highlight difference of the sum in Fig. \ref{fig:intro_figure}.
 % \begin{itemize}
 %   % \item compare different choices of signed-cost-mappings (say which one worked best)
 %   % \item present cremi crop-C table and rule out single and complete linkage
 % \end{itemize}
-Among the update rules listed in Table \ref{tab:linkage-criteria}, in the next sections we will only focus on \emph{sum}, \emph{arithmetic mean} and \emph{absolute maximum}, since they performed best in these experiments.
 
 
- In this section we evaluate the robustness of \algname{} with different linkage criteria by adding noise to the edge weights.
-  %Before to present the results shown in Fig. \ref{fig:noise_plots}, we will first introduce the type of noise that was added to the edge weights.
-% In the set of experiments presented in this article, edge weights are estimated \UPDATE{by using a CNN that predicts how likely two neighboring pixels are to be part of the same cluster}. 
-Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}a} shows an example of uncertain CNN predictions on a slice of the neuron segmentation dataset. We now present a way of modifying the CNN output to introduce additional artifacts like a missing or false boundary evidence. 
-
-In the field of image processing there are several ways of adding noise to an image, among which the most common are Gaussian noise or Poisson shot noise. 
-In these cases, the noise of one pixel does not correlate with its neighboring noise values. On the other hand, predictions of a CNN are known to be spatially correlated. 
-Thus, we used Perlin noise\footnote{In our experiments, we used an open-source version of simplex noise \cite{perlin2001noise}, which is an improved open-source version of Perlin noise \cite{perlin1985image}}, one of the most common gradient noises used in procedural pattern generation. This type of noise $n(x)\in[0,1]$ generates spatial random patterns that are locally smooth but have large and diverse variations on bigger scales. We then combined it with the CNN predictions $p(x)$ in the two following ways: 
-\begin{equation}\label{eq:noise_biased_predictions}
-% \tilde{F}(x;\theta)=\begin{cases}
-% F(x;\theta)+\mathcal{K}\cdot\max\left(N(x),0\right) & \text{if merge-biased}\\
-% F(x;\theta)+\mathcal{K}\cdot\min\left(N(x),0\right) & \text{if split-biased}
-% \end{cases}
-\tilde{F}_{\pm}(x;\mathcal{K})=F(x)\pm\big|\mathcal{K}\cdot\max\left(\pm N(x),0\right)\big|,
-\end{equation}
-where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}\in \mathbb{R}^+$ is a positive factor representing the amount of added noise. $\tilde{F}_{+}(x;\mathcal{K})$ represents then a merge-biased prediction, such that the probability for two pixels to be in the same cluster is increased only if $N(x)>0$ (see Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}b}), whereas $\tilde{F}_{-}(x;\mathcal{K})$ is a split-biased prediction with decreased probabilities when $N(x)<0$ (Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}c}). In the Supplementary material (Sec. \ref{sec:details_perlin}) we provide a more detailed description of the parameters used for the noise generation.
-% \UPDATE{The plots in Fig. \ref{fig:noise_plots} represent the scores achieved by \algname{} with different update rules depending on the amount of noise $\mathcal{K}$ added to the edge weights and the probability $p_{\mathrm{long}}$ of long-range connections in the graph. Results clearly show that adding long-range edges is always beneficial for the final segmentation \TODO{Not True!}. \TODO{What about time?} The most robust version of update rule proved to be the \emph{mean}, that achieves similar scores even with significantly noisy edge weights. The \emph{absolute maximum} update rule proposed by \cite{wolf2018mutex} provides an efficient and fast option, but completely fails when too much noise is added. 
-% The \emph{sum} update rule version was the slowest option tested, but it was not as robust as the \emph{mean} version, probably due to its tendency to grow one cluster at the time (see Sec. \ref{sec:exp_first_comparison}). \TODO{Comment about MC energy}
-% On the other hand, \algname{} with \emph{mean} update rule and cannot-link constraints did not achieve high scores because of the strong over-segmentation error.}
 
 
 \begin{figure}[b]
@@ -79,12 +72,12 @@ where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}
 DWT \cite{bai2017deep} & - & 21.2 & - \\
 SGN \cite{liu2017sgn} & - & 29.2 & - \\
 Mask RCNN \cite{he2017mask} & - & 31.5 & - \\ \hline
- & Min &  0    & 0  \\
- & Sum \cite{keuper2015efficient,levinkov2017comparative} & 31.3  & 31.9  \\
-\multirow{2}{*}{GMIS Pipeline \cite{liu2018affinity}} & Abs. Max. \cite{wolf2018mutex}  & 32.1 & 32.1 \\
- & Max &   24.3  &   32.5  \\
- & GMIS \cite{liu2018affinity} & 33.0 & -  \\
  & \textbf{Average}& \textbf{34.3}  & 33.9  \\
+ & GMIS-Agglo \cite{liu2018affinity} & \UPDATE{33.0} & -  \\
+\multirow{2}{*}{GMIS Pipeline} & Max &   24.3  &   32.5  \\
+ & Abs. Max. \cite{wolf2018mutex}  & 32.1 & 32.1 \\
+ & Sum \cite{keuper2015efficient,levinkov2017comparative} & 31.3  & 31.9  \\
+ & Min &  0    & 0  \\
         \end{tabular}
     \captionof{table}{AP scores on the cityscapes validation set for the generalized algorithm and different types of linkage criteria.  }
     \label{tab:results_cityscapes_val}
