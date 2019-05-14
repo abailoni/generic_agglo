@@ -24,10 +24,12 @@
 
 
 \section{Supplementary Material}
+
+\subsection{Efficient implementation and complexity of \algname{}}
+
+
 During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
 Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, with $\tilde{V} \subseteq V$ such that node $u\in \tilde{V}$ represents the associated cluster $S_u \in \Pi$. Edges in $\tilde{E}$ are defined by adjacency-relationships between clusters and edge weights $\tilde{\cost}_{uv}$ represent inter-cluster interactions $\interact(S_u,S_v)$. 
-
-
 
 \paragraph{Update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
 An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that $\tilde{V} \subseteq V$ and each node $u\in \tilde{V}$ represents the cluster $S_u \in \Pi$ including $u\in V$. Edges in $\tilde{E}$ represent adjacency-relationships between clusters and the signed edge weights $\tilde{\cost}_e$ are given by inter-cluster interactions $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
@@ -46,7 +48,7 @@ All the update rules tested in this article are listed in Table \ref{tab:linkage
 If, on the other hand, the interaction is repulsive ($\tilde{\cost}\leq 0$) and the option \texttt{addCannotLink} of Alg. \ref{main_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
 In the Supplementary material we comment on the algorithm computational complexity (Sec. \ref{sec:complexity}).
 
-
+\subsection{\algname{} with \emph{Absolute Maximum}}
 
 \begin{itemize}
 \item Equivalence Mutex Watershed and Greedy Edge Contraction
