@@ -1,14 +1,6 @@
 % !TEX root = ../agglo_clust_review.tex
 
-\begin{figure}[t]
-\centering
-% \includegraphics[width=0.5\textwidth,trim=0.4in 1.2in 0.in 0.05in,clip]{./figs/intro_image.jpg} % left bottom right top
-\includegraphics[width=\textwidth]{./figs/comparison.pdf} % left bottom right top
-\caption{Failure cases of \algname{} with different linkage criteria highlighted on some difficult parts of the CREMI Challenge \cite{cremiChallenge} training data. Only the few wrongly segmented regions are highlighted in colors. Red arrows point to wrongly split regions. Yellow arrows point out merge errors. Green arrows indicate challenging, but correctly segmented regions. 
-% Only the involved segments are colored.
- % main ideas and contributions
-\label{fig:cremi_comparison}}
-\end{figure}
+
 \begin{figure}
         \centering
 \begin{minipage}[T]{0.48\textwidth}
@@ -16,20 +8,23 @@
     \centering
     \scriptsize
     % \begin{subtable}[t!]{0.5\textwidth}\centering
-        \begin{tabular}{l|l|c|c}
+        \begin{tabular}{l|l|c}
         % \toprule
         % & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
          % & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
-         & \algname{} Linkage & \makecell{Arand} & \makecell{VI-Merge} \\ \midrule
+         & \algname{} Linkage & \makecell{Arand-Score}  \\ \midrule \midrule
          % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
-DTWS + LMC \cite{beier2016efficient}& -& & \\
-DTWS + avgHC &-& & \\
-DTWS  & -& & \\
-THRESH &-& & \\ \hline
-\algname{} & Average& 0.936 & 0.685 \\
-Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.906 & 0.642 \\
-Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & 0.897 & 0.714 \\
-GAEC \cite{keuper2015efficient} & Sum & 0.872 & 0.539 \\
+\textbf{\algname{}} & \textbf{Average}& \textbf{0.936 $\pm$ 0.004}  \\
+Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.906 $\pm$ 0.022 \\
+DTWS + LMC (LR)& -& 0.903 $\pm$ 0.016 \\
+DTWS + MC (LR)& -& 0.903 $\pm$ 0.017 \\
+% DTWS + avgHC &-& \\
+DTWS + MC (SR)& -& 0.900 $\pm$ 0.019 \\
+DTWS + LMC (SR)& -& 0.898 $\pm$ 0.017 \\
+Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & 0.897 $\pm$ 0.012 \\
+GAEC \cite{keuper2015efficient} & Sum & 0.872 $\pm$ 0.028 \\
+THRESH &-& 0.221  $\pm$ 0.067 \\ 
+DTWS  & -& 0.010 $\pm$ 0.003\\
         \end{tabular}
     \captionof{table}{Arand-Scores and VI-Scores on CREMI challenge training data}
     \label{tab:results_cremi_train}

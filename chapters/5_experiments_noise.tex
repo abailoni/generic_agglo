@@ -14,7 +14,7 @@
         \includegraphics[width=\textwidth,trim=0.53in 0.35in 0.65in 0.80in,clip]{./figs/merge_noise_long_range.pdf}
         \caption{With long-range edges: $p_{\mathrm{long}}=0.1$} \label{fig:merge_noise_with_long_range}
     \end{subfigure}
-\caption{Performances of \algname{} with different linkage criteria on a crop of CREMI training data sample B, depending on the amount of noise (x-axis) added to the CNN predictions. \textbf{Top}: Accuracy given by Rand-Score (higher is better). Solid lines represent median values. Values between the 25th and the 75th percentile are shown in shade areas. \textbf{Bottom}: Multicut objective (Eq. \ref{eq:multicut_obj}), measuring how balanced the final clusterings are (lower is better); for a clearer comparison, an offset is added to the energy values, so that the method achieving the lowest energy is always assigned to value 1. \UPDATE{CLC}  
+\caption{Performances of \algname{} with different linkage criteria on a crop of CREMI training data sample B, depending on the amount of noise (x-axis) added to the CNN predictions. \textbf{Top}: Accuracy given by Rand-Score (higher is better). Solid lines represent median values. Values between the 25th and the 75th percentile are shown in shade areas. \textbf{Bottom}: Multicut objective (Eq. \ref{eq:multicut_obj}), measuring how balanced the final clusterings are (lower is better); for a clearer comparison, an offset is added to the energy values, so that the method achieving the lowest energy is always assigned to value zero.
 }\label{fig:noise_plots}
 \end{figure}
 
@@ -38,11 +38,12 @@
 
 
 
-\subsection{In-depth comparison of different linkage criteria for \algname{}} \label{sec:comparison_exps}
+\subsection{Results}
+% \subsection{In-depth comparison of different linkage criteria for \algname{}} \label{sec:comparison_exps}
 As shown in Table \ref{tab:results_cremi_train}, among all the signed graph algorithms included in our generalized framework, the less-known one with \emph{Average} linkage consistently outperformed all other previously proposed linkage like \emph{Sum} or \emph{Absolute Max}. This method also achieved \UPDATE{comparable} scores to other complex multi-step pipelines that usually require the user to tune several hyper-parameters, like LMC. 
 In Fig. \ref{fig:cremi_comparison}, we highlight some failure cases of \algname{} and in Appendix we provide an extended version of Table \ref{tab:results_cremi_train} including all linkage tested with \algname{} on the full CREMI training data. 
 
-In order to highlight the properties and the strengths of each linkage criteria and  perform an in-depth comparison that is as quantitative as possible, we run an additional set of experiments where we perturbed the CNN predictions with noise. In Appendix, we provide all the details about the used type of spatially correlated noise that allowed us to perturb the CNN outputs by introducing simulated additional artifacts like missing or false boundary evidences (see visual example in Fig. \ref{fig:noisy_affs}).  
+In order to highlight the properties and the strengths of each linkage criteria and  perform an in-depth comparison that is as quantitative as possible, we run an additional set of experiments where we perturbed the CNN predictions with noise. In Appendix, we provide all the details about the used type of spatially correlated noise that allowed us to perturb the CNN outputs by introducing simulated additional artifacts like missing or false boundary evidences (see example in Fig. \ref{fig:noisy_affs}).  
 
 Plots in Fig. \ref{fig:noise_plots} summarize 6000 experiments: we focused on the best performing linkage criteria, i.e. \emph{Average}, \emph{Sum} and \emph{Abs Max}, and tested them with different values of noise, both with and without use of long-range connections in the grid-graph\footnote{We tested 20 values of noise and, for each setup, we averaged the scores over 30 runs.}. In Fig. \ref{fig:noise_plots}, we used a merge-biased noise decreasing boundary evidence. See Fig. \ref{fig:noise_split} in Appendix for a split-biased version. 
 Our findings confirm that \algname{} with \emph{Average} linkage criterion represents the most robust algorithm tested and that is the one benefiting more from additional long-range edge connections. Other versions using cannot-link constraints generally lead to an over-segmentation, but are robust to ``leaks through holes'' given by missing boundary evidence. The greedy \emph{absolute maximum} linkage proposed by \cite{wolf2018mutex} is the least robust to noise, but, as we show in Table \ref{tab:full_cremi_results}, it represents an efficient and considerably faster option.   
