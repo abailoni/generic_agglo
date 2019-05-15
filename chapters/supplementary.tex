@@ -1,5 +1,7 @@
 % !TEX root = ../agglo_clust_review.tex
 
+\section{Supplementary Material}
+
 \begin{algorithm}
   \caption{\algname{} as a generalized edge contraction algorithm for signed graphs}
 \hspace*{\algorithmicindent} \textbf{Input:} $\mathcal{G}(V,E,w^+,w^-)$ with $N$ nodes and $M$ edges; boolean \texttt{{\color{blue}addCannotLinkConstraints}} \\
@@ -73,6 +75,7 @@
     \EndFunction
   \end{algorithmic}
   \label{detailed_alg}
+  % \caption{where $\alpha$ is the slowly growing inverse Ackerman function}
 \end{algorithm}
 \begin{figure}
         \centering
@@ -109,43 +112,43 @@
             Minimum:& \thead[l]{$f(\tilde{\cost}_1,\tilde{\cost}_2) = \min \{ \tilde{\cost}_1, \tilde{\cost}_2 \}  $} 
         \end{tabular}
     % \captionof{table}{}
-    \label{tab:linkage_and_update_rules}
+    % \label{tab:linkage_and_update_rules}
 \end{minipage}
 \caption{ 
-\textbf{Left:} Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (violet bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from the edge contraction are replaced by a single edge with updated interaction. \textbf{Right:} The table lists the update rules $f(\tilde{\cost}_1, \tilde{\cost}_2)$ associated to the linkage criteria of Table \ref{tab:linkage-criteria} and that are used to efficiently update the interactions between clusters. \TODO{Update figure}}
+\textbf{Left:} Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (violet bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from the edge contraction are replaced by a single edge with updated interaction. \textbf{Right:} The table lists the update rules $f(\tilde{\cost}_1, \tilde{\cost}_2)$ associated to the linkage criteria of Table \ref{tab:linkage-criteria} and that are used to efficiently update the interactions between clusters. \TODO{Update notation figure}}
 \label{fig:edge_contraction_and_contr_graph}  
 \end{figure}
 
 
-\section{Supplementary Material}
+
 \subsection{Implementation details and complexity of \algname{}}
 
 
 % During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
 % Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, with $\tilde{V} \subseteq V$ such that node $u\in \tilde{V}$ represents the associated cluster $S_u \in \Pi$. Edges in $\tilde{E}$ are defined by adjacency-relationships between clusters and edge weights $\tilde{\cost}_{uv}$ represent inter-cluster interactions $\interact(S_u,S_v)$. 
-
-\paragraph{Update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
-An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that $\tilde{V} \subseteq V$ and each node $u\in \tilde{V}$ represents the cluster $S_u \in \Pi$ including $u\in V$. Edges in $\tilde{E}$ represent adjacency-relationships between clusters and the signed edge weights $\tilde{\cost}_e$ are given by inter-cluster interactions $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
-For the linkage criteria tested in this work, when two clusters $S_u$ and $S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can easily recompute these interactions by using a simple \emph{update rule} $f$ that does not involve any loop over the edges of the original graph $\mathcal{G}$. As an example, given the single-linkage criterion defined in Eq. \ref{eq:max_linkage}, the interaction between $S_u \cup S_v$ and one of its neighbors $S_t$ is simply given by:
+\paragraph*{Update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed, as shown in Algorithm \ref{main_alg}.  % given by the linkage criterion defined in Sec. \ref{sec:notation} and
+An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that $\tilde{V} \subseteq V$ and each node $u\in \tilde{V}$ represents the cluster $S_u \in \Pi$ including $u\in V$. Edges in $\tilde{E}$ represent adjacency-relationships between clusters 
+and the signed edge weights $\tilde{\cost}_e$ are given by inter-cluster interactions $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
+For the linkage criteria tested in this work, when two clusters $S_u$ and $S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can recompute these interactions by using an \emph{update rule} $f$ that does not involve any loop over the edges of the original graph $\mathcal{G}$:
 \begin{equation}
-  \interact_{S_u \cup S_v,S_t} = f( \interact_{S_u,S_t}, \interact_{S_v,S_t}) = f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt})) = \max \{ \tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}) \}
+  \interact(S_u \cup S_v,S_t) = f\Big[ \interact(S_u,S_t), \interact(S_v,S_t) \Big] = f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt})) %= \max \{ \tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt}) \}
 \end{equation}
-All the update rules tested in this article are listed in Table \ref{tab:linkage-criteria}.
+In Fig. \ref{fig:edge_contraction_and_contr_graph} we show an example of edge contraction and we list the update rules associated to the linkage criteria we introduced in Table \ref{tab:linkage-criteria}.
+  % As an example, given the single-linkage criterion defined in Table , the interaction between $S_u \cup S_v$ and one of its neighbors $S_t$ is simply given by:
+% All the update rules tested in this article are listed in Table \ref{tab:linkage-criteria}.
 
-% \UPDATE{Every time a pair of clusters is merged, the contracted graph is updated by performing an edge contraction and merging the associated nodes. The only interactions that then need to be updated are those between nodes that after the edge contraction happen to be connected by double edges (see Fig. \ref{fig:edge_contraction_and_contr_graph}, step b). For basic linkage criteria, e.g. \emph{max} or \emph{min}, the new interaction can be formulated in terms of an \emph{update rule} $f$ depending only on the these updates can be computed with an update rule $f$ that depends only on the interactions at the previous step }
-% As a result, the merged node could be linked to some of its neighbors by double edges . , representing the fact that their interaction should be updated. This update can be easily achieved by using an \emph{update rule} depending only on the weights of the double edges. 
-% \TODO{such a mess...} ...without the need of running a loop over the edges of the original graph.
-% \UPDATE{In this way we do not need to recompute the interaction by using the linkage criterion over all the edges of the original graph, that would be computationally expensive.}
-\textbf{The proposed edge contraction algorithm } Algorithm \ref{main_alg} then proceeds as follows, similarly to the one presented in \cite{levinkov2017comparative}. It starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}$, does the following: in case of attractive interaction $\tilde{\cost}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
+% \algname{} was implemented by using a standard agglomerative clustering algorithm based on a priority queue and a union
+\paragraph{Implementation} As we show in Algorithm \ref{detailed_alg}, our implementation of \algname{} is based on a heap and a union-find data structure. The algorithm starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}_{uv}$, does the following: in case of attractive interaction $\tilde{\cost}_{uv}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
 % For every new pair of double edges in $\tilde{\mathcal{G}}_\Pi$, update their priorities according to one of the update rules listed in Table \ref{tab:linkage-criteria} together with their cannot-link relationships. 
-If, on the other hand, the interaction is repulsive ($\tilde{\cost}\leq 0$) and the option \texttt{addCannotLink} of Alg. \ref{main_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
-In the Supplementary material we comment on the algorithm computational complexity (Sec. \ref{sec:complexity}).
+If, on the other hand, the interaction is repulsive ($\tilde{\cost}_{uv}\leq 0$) and the option \texttt{addCannotLinkContraints} of Alg. \ref{detailed_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
+
+\paragraph*{Complexity} In the main loop, the algorithm iterates over all edges, but the only iterations presenting a complexity different from $\mathcal{O}(1)$ are the ones involving a merge of two clusters, which are at most $N-1$. By using a union-find data structure (with path compression and union by rank) the time complexity of \texttt{merge}$(u, v)$ and \texttt{find}($u$) operations is $\mathcal{O}(\alpha(N))$, where $\alpha$ is the slowly growing inverse Ackerman function. The algorithm then iterates over the neighbors of the merged cluster (at most $N$) and updates/deletes values in the priority queue ($\mathcal{O}(\log |E|)$). Therefore, similarly to a heap-based implementation of hierarchical agglomerative clustering, our implementation of \algname{} has a complexity of $\mathcal{O}(N^2 \log N)$. In the worst case, when the graph is dense and $|E|=N^2$, the algorithm requires $\mathcal{O}(N^2)$ memory and does not scale up well. Nevertheless, in our practical applications the graph is much sparser, so $\mathcal{O}(|E|)=\mathcal{O}(N)$ and \UPDATE{in Fig. \ref{fig:runtime_plot} we show how the empirical runtime of \algname{} is much closer to $\mathcal{O}(N \log N)$ than $\mathcal{O}(N^2 \log N)$.} With a single-linkage, corresponding to the choice of the \emph{Maximum} update rule in our framework, the algorithm can be clearly implemented by using the more efficient Kruskal's Minimum Spanning Tree algorithm with complexity $\mathcal{O}(N \log N)$. 
 
 \subsection{Equivalence between Mutex Watershed and \emph{Absolute Maximum} linkage}
 
 \begin{itemize}
-\item Equivalence Mutex Watershed and Greedy Edge Contraction
-\item Complexity: plain agglo., addition of the cannot-link constraints and then comment about efficient implementation of MWS and of single-linkage (what about single linkage+CLC...?)
+% \item Equivalence Mutex Watershed and Greedy Edge Contraction
+% \item Complexity: plain agglo., addition of the cannot-link constraints and then comment about efficient implementation of MWS and of single-linkage (what about single linkage+CLC...?)
 \item Noise: also mention details about plots (fix some long-range edges, fix noise seed and vary K)
 \item exp. setup details: enforcing local merges, MWS distinguish between repulsive-long, post-processing of small segments, loss, architecture, training parameters, offset patterns
 \item 
@@ -153,16 +156,7 @@ In the Supplementary material we comment on the algorithm computational complexi
 \end{itemize}
 
 
-\begin{figure}
-\centering
-        \includegraphics[width=0.45\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
-   
-    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the merge-biased version $\tilde{F}_{+}$ and c) the split-biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). 
-    %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
-    %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
-    }
-    \label{fig:noisy_affs}
-\end{figure}
+
 
 \subsection{Noise exps}
  % In this section we evaluate the robustness of \algname{} with different linkage criteria by adding noise to the edge weights.
@@ -182,6 +176,16 @@ Thus, we used Perlin noise\footnote{In our experiments, we used an open-source v
 \end{equation}
 where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}\in \mathbb{R}^+$ is a positive factor representing the amount of added noise. $\tilde{F}_{+}(x;\mathcal{K})$ represents then a merge-biased prediction, such that the probability for two pixels to be in the same cluster is increased only if $N(x)>0$ (see Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}b}), whereas $\tilde{F}_{-}(x;\mathcal{K})$ is a split-biased prediction with decreased probabilities when $N(x)<0$ (Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}c}). In the Supplementary material (Sec. \ref{sec:details_perlin}) we provide a more detailed description of the parameters used for the noise generation.
 
+\begin{figure}[b]
+\centering
+        \includegraphics[width=0.45\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
+   
+    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the merge-biased version $\tilde{F}_{+}$ and c) the split-biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). 
+    %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
+    %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
+    }
+    \label{fig:noisy_affs}
+\end{figure}
 
 \subsection{Cityscapes exps}
 Mention the main trick in the loss: ignore background pixels (so focus on boundaries). Same mapping defined in \ref{eq:mappings}
