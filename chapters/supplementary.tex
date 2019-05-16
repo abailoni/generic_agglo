@@ -5,7 +5,7 @@
 \begin{algorithm}
   \caption{\algname{} as a generalized edge contraction algorithm for signed graphs}
 \hspace*{\algorithmicindent} \textbf{Input:} $\mathcal{G}(V,E,w^+,w^-)$ with $N$ nodes and $M$ edges; boolean \texttt{{\color{blue}addCannotLinkConstraints}} \\
-\hspace*{\algorithmicindent} \textbf{Output:} Final clustering given by union-find data structure \\
+\hspace*{\algorithmicindent} \textbf{Output:} Final clustering \\
   \hspace*{\algorithmicindent} 
   \begin{algorithmic}[1]
     % \Procedure{GraphEdgeContr}{{\color{blue}bool \emph{addConstraints}}}
@@ -13,13 +13,13 @@
       \State $\tilde{\mathcal{G}}(\tilde{V},\tilde{E}) \gets \mathcal{G}(V,E,w^+,w^-)$  \Comment{Init. contracted graph}
       \State \texttt{UF} $\gets$ initUnionFind($V$) \Comment{Init. data structure representing clustering}
     %   \State PQ $\gets$ Sort $e\in E$ in descending order of $|w_e|$
-        \State PQ.push$(|w_e|, e) \quad \forall e \in E $  \Comment{Init. priority queue in desc. order of $|w_e|=|w_e^+ - w_e^-|$, $\mathcal{O}(M)$}
+        \State PQ.push$(|w_e|, e) \quad \forall e \in E $  \Comment{Init. priority queue in desc. order of $|w_e|=|w_e^+ - w_e^-|$, $\mathcal{O}(|E|)$}
         \State \texttt{canBeMerged}$[e] \gets$ \texttt{True} $\,\,\, \forall e\in E$ \Comment{Init. cannot-link constraints}
       % \State $E_\dagger \gets \{\}$ \Comment{Set of must-not-link edges}
     %   \State PQ.push$(e,  ) \quad \forall e \in E $  
     \State
       \While{PQ is \textbf{not} empty}
-        \State $\tilde{w}, e_{uv} \gets $ PQ.popHighest() \Comment{$\mathcal{O}(\log M)$}
+        \State $\tilde{w}, e_{uv} \gets $ PQ.popHighest() \Comment{$\mathcal{O}(\log |E|)$}
         \State \textbf{assert} \texttt{UF}.find($u$) $\neq$ \texttt{UF}.find($v$) \Comment{Edges in PQ always link nodes in different clusters}
         % \If{ $e_{uv} \notin E' $} 
         %     \State \textbf{continue}
@@ -35,7 +35,7 @@
         %   \State Propagate constrained flags of double edges;
           \State $\tilde{V} \gets \tilde{V} \setminus \{ v\}$, $\quad \tilde{E} \gets \tilde{E} \setminus \{ e_{uv}\}$ \Comment{Update contracted graph}
         %   \State $ S_u \gets S_u \cup S_v$
-          \State \texttt{UF}.merge($u,v$) \Comment{Merge clusters, $\mathcal{O}(\alpha(M))$}
+          \State \texttt{UF}.merge($u,v$) \Comment{Merge clusters, $\mathcal{O}(\alpha(|E|))$}
           % \For{every new double edge}
           %   \State Delete double edges
           %   \State Insert new one with updated cost
@@ -46,7 +46,7 @@
       \EndWhile
       \State
     %   \State
-      \Return Union-find structure \texttt{UF}
+      \Return Final clustering given by union-find data structure  \texttt{UF}
       % \State
     % \EndProcedure
   \end{algorithmic}
@@ -57,15 +57,15 @@
       % \State $\mathcal{N}_u = \{ t \in V' | e_{ut}\in E'  \}$; $\mathcal{N}_v = \{ t \in V' | e_{vt}\in E'  \}$ 
       \For{$t \in \mathcal{N}_v$ } \Comment{Loop over neighbors in $\tilde{\mathcal{G}}$ of deleted node $v$}
         \State $\tilde{E} \gets \tilde{E} \setminus \{e_{vt}\}$
-        \State $\tilde{w}_{vt} \gets$ PQ.delete($e_{vt}$) \Comment{$\mathcal{O}(\log M)$}
+        \State $\tilde{w}_{vt} \gets$ PQ.delete($e_{vt}$) \Comment{$\mathcal{O}(\log |E|)$}
         \State \texttt{canBeMerged}$[e_{ut}] \gets$ \texttt{canBeMerged}$[e_{ut}]$ \textbf{and} \texttt{canBeMerged}$[e_{vt}]$
         \If{$t \in \mathcal{N}_u$ }\Comment{$t$ is a common neighbor of $u$ and $v$}
-          \State $\tilde{w}_{ut} \gets$ PQ.delete($e_{ut}$)  \Comment{$\mathcal{O}(\log M)$}
-          \State PQ.push($ |f(\tilde{w}_{ut}, \tilde{w}_{vt})|, e_{ut}$) \Comment{$\mathcal{O}(\log M)$  }
+          \State $\tilde{w}_{ut} \gets$ PQ.delete($e_{ut}$)  \Comment{$\mathcal{O}(\log |E|)$}
+          \State PQ.push($ |f(\tilde{w}_{ut}, \tilde{w}_{vt})|, e_{ut}$) \Comment{$\mathcal{O}(\log |E|)$  }
         % \EndIf
         \Else
           \State $\tilde{E} \gets \tilde{E} \cup \{e_{ut}\}$
-          \State PQ.push($ |\tilde{w}_{vt}|, e_{ut}$) \Comment{$\mathcal{O}(\log M)$}
+          \State PQ.push($ |\tilde{w}_{vt}|, e_{ut}$) \Comment{$\mathcal{O}(\log |E|)$}
         \EndIf
       \EndFor
       \State
@@ -138,13 +138,82 @@ In Fig. \ref{fig:edge_contraction_and_contr_graph} we show an example of edge co
 % All the update rules tested in this article are listed in Table \ref{tab:linkage-criteria}.
 
 % \algname{} was implemented by using a standard agglomerative clustering algorithm based on a priority queue and a union
-\paragraph{Implementation} As we show in Algorithm \ref{detailed_alg}, our implementation of \algname{} is based on a heap and a union-find data structure. The algorithm starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}_{uv}$, does the following: in case of attractive interaction $\tilde{\cost}_{uv}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
+\paragraph{Implementation} As we show in Algorithm \ref{detailed_alg}, our implementation of \algname{} is based on an union-find data structure and a heap allowing deletion of its elements. The algorithm starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a heap/priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}_{uv}$, does the following: in case of attractive interaction $\tilde{\cost}_{uv}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
 % For every new pair of double edges in $\tilde{\mathcal{G}}_\Pi$, update their priorities according to one of the update rules listed in Table \ref{tab:linkage-criteria} together with their cannot-link relationships. 
 If, on the other hand, the interaction is repulsive ($\tilde{\cost}_{uv}\leq 0$) and the option \texttt{addCannotLinkContraints} of Alg. \ref{detailed_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
 
-\paragraph*{Complexity} In the main loop, the algorithm iterates over all edges, but the only iterations presenting a complexity different from $\mathcal{O}(1)$ are the ones involving a merge of two clusters, which are at most $N-1$. By using a union-find data structure (with path compression and union by rank) the time complexity of \texttt{merge}$(u, v)$ and \texttt{find}($u$) operations is $\mathcal{O}(\alpha(N))$, where $\alpha$ is the slowly growing inverse Ackerman function. The algorithm then iterates over the neighbors of the merged cluster (at most $N$) and updates/deletes values in the priority queue ($\mathcal{O}(\log |E|)$). Therefore, similarly to a heap-based implementation of hierarchical agglomerative clustering, our implementation of \algname{} has a complexity of $\mathcal{O}(N^2 \log N)$. In the worst case, when the graph is dense and $|E|=N^2$, the algorithm requires $\mathcal{O}(N^2)$ memory and does not scale up well. Nevertheless, in our practical applications the graph is much sparser, so $\mathcal{O}(|E|)=\mathcal{O}(N)$ and \UPDATE{in Fig. \ref{fig:runtime_plot} we show how the empirical runtime of \algname{} is much closer to $\mathcal{O}(N \log N)$ than $\mathcal{O}(N^2 \log N)$.} With a single-linkage, corresponding to the choice of the \emph{Maximum} update rule in our framework, the algorithm can be clearly implemented by using the more efficient Kruskal's Minimum Spanning Tree algorithm with complexity $\mathcal{O}(N \log N)$. 
+\paragraph*{Complexity} In the main loop, the algorithm iterates over all edges, but the only iterations presenting a complexity different from $\mathcal{O}(1)$ are the ones involving a merge of two clusters, which are at most $N-1$. By using a union-find data structure (with path compression and union by rank) the time complexity of \texttt{merge}$(u, v)$ and \texttt{find}($u$) operations is $\mathcal{O}(\alpha(N))$, where $\alpha$ is the slowly growing inverse Ackerman function. The algorithm then iterates over the neighbors of the merged cluster (at most $N$) and updates/deletes values in the priority queue ($\mathcal{O}(\log |E|)$). Therefore, similarly to a heap-based implementation of hierarchical agglomerative clustering, our implementation of \algname{} has a complexity of $\mathcal{O}(N^2 \log N)$. In the worst case, when the graph is dense and $|E|=N^2$, the algorithm requires $\mathcal{O}(N^2)$ memory and does not scale up well. Nevertheless, in our practical applications the graph is much sparser, so $\mathcal{O}(|E|)=\mathcal{O}(N)$. 
+% and \UPDATE{in Fig. \ref{fig:runtime_plot} we show how the empirical runtime of \algname{} is much closer to $\mathcal{O}(N \log N)$ than $\mathcal{O}(N^2 \log N)$.} 
+With a single-linkage, corresponding to the choice of the \emph{Maximum} update rule in our framework, the algorithm can be clearly implemented by using the more efficient Kruskal's Minimum Spanning Tree algorithm with complexity $\mathcal{O}(N \log N)$. 
+Moreover, in the next section, we present an efficient implementation of \algname{} with \emph{Absolute Maximum} update rule with empirical $\mathcal{O}(N \log N)$ complexity.
 
-\subsection{Equivalence between Mutex Watershed and \emph{Absolute Maximum} linkage}
+
+\begin{algorithm}
+  \caption{Mutex Watershed Algorithm proposed by \cite{wolf2018mutex}}
+\hspace*{\algorithmicindent} \textbf{Input:} $\mathcal{G}(V,E,w^+,w^-)$ with $N$ nodes and $M$ edges \\
+\hspace*{\algorithmicindent} \textbf{Output:} Final clustering \\
+  \hspace*{\algorithmicindent} 
+  \begin{algorithmic}[1]
+      \State \texttt{UF} $\gets$ initUnionFind($V$) 
+      % \State
+      \For{$(u,v)=e\in E$ in descending order of $|w_e|=|w_e^+ - w_e^-|$}
+        \If{\texttt{UF}.find($u$) $\neq$ \texttt{UF}.find($v$)} \Comment{Check if $u,v$ are already in the same cluster}
+          \If{({\color{ForestGreen}\textbf{$w_e > 0$}}) \textbf{and} \texttt{canBeMerged}($u,v$)}  \Comment{Check for cannot-link constraints}
+            \State \texttt{UF}.merge($u,v$) and inherit constraints of parent clusters
+          \ElsIf{({\color{red}\textbf{$w_e \leq 0$}})}
+            \State Add cannot-link constraints between parent clusters of $u,v$
+          \EndIf
+        \EndIf
+      \EndFor
+      \State
+    %   \State
+      \Return Final clustering given by union-find data structure \texttt{UF}
+      % \State
+    % \EndProcedure
+  \end{algorithmic}
+  \label{alg:mutex_watershed}
+  % \caption{where $\alpha$ is the slowly growing inverse Ackerman function}
+\end{algorithm}
+
+
+
+\subsection{Properties of \algname{} with \emph{Absolute Maximum} linkage}
+\paragraph{Remark on graph notation} The definition of a graph proposed by \cite{wolf2018mutex} makes a distinction between a set of positive edges $E^+$, associated with a set $W^+$ of positive scalar attributes representing merge affinities, and a set of negative edges $E^-$, associated with a set $W^-$ of positive scalar attributes representing split tendencies. On the other hand, in our definition $\mathcal{G}(V,E,w^+,w^-)$ each edge have both an attractive $w_e^+$ and a repulsive $w_e^-$ attribute, so we can make them equivalent by defining:
+\begin{align}
+E^+ = \{ e \in E \,\,\text{s.t.} \,\,w_e = w_e^+ - w_e^- > 0\},& \qquad E^- = \{ e \in E \,\,\text{s.t.}\,\, w_e = w_e^+ - w_e^- \leq 0\} \\
+W^+ = \{ |w_e| \,\,\text{s.t.}\,\, e \in E^+\},& \qquad W^- = \{ |w_e| \,\,\text{s.t.}\,\, e \in E^-\}
+\end{align}
+
+\begin{prop} \label{prop:equiv_MWS}
+The Mutex Watershed Algorithm \ref{alg:mutex_watershed} (MWS) with empirical $\mathcal{O}(N \log N)$ complexity introduced by \cite{wolf2018mutex} returns the same final clustering given by the \algname{} Algorithm \ref{detailed_alg} with the use of cannot-link constraints and an Absolute Maximum update rule:
+\begin{equation}\label{eq:def_abs_max}
+f_{\mathrm{Abs.Max.}}(\tilde{\cost}_1,\tilde{\cost}_2) = \begin{cases} 
+            \tilde{\cost}_1 & \text{if}\,\, |\tilde{\cost}_1|>|\tilde{\cost}_2|\\
+            \tilde{\cost}_2 & \text{otherwise}
+             \end{cases} 
+\end{equation}
+\end{prop}
+\begin{proof}
+Both algorithms sort edges in descending order of the absolute interactions $|w_e|$ and then iterate over all of them. The only difference is that MWS, after merging two clusters, does not update the interactions between the new cluster and its neighbors. 
+However, since with an Abs. Max. linkage the interaction between clusters is simply given by the edge with highest absolute weight $|w_e|$, the order by which edges are iterated over in \algname{} is never updated. Thus, both algorithms perform precisely the same steps and return the same clustering.
+\end{proof}
+\begin{prop}
+The \algname{} Algorithm \ref{detailed_alg} with the Absolute Maximum linkage defined in Eq. \ref{eq:def_abs_max} returns the same final clustering whether or not cannot-link constraints are enforced. 
+\end{prop}
+\begin{proof}
+% In Proposition \ref{prop:equiv_MWS} we observed that \algname{} with Abs. Max. linkage never updates the order by which edges are iterated over
+In the \algname{} Algorithm \ref{detailed_alg}, the clustering is updated only when two clusters are merged and the condition at line 9 is satisfied. 
+We also observe that, in the unconstrained version of \algname{}, the predicate \texttt{canBeMerged} at line 9 can never be false.
+Let us now contradict the initial hypothesis and assume by absurd that the constrained version of \algname{} introduces a cannot-link constraints between two clusters sharing a positive interaction $\tilde{w}>0$ and outputs a different clustering as compared to the unconstrained version. 
+This can happen only in the situation shown in Fig. \ref{fig:contradiction_case}, when two clusters $u$ and $v$ are merged together and share a common neighboring node $t$ having the following two properties: a) $u$ and $t$ are already constrained and share a repulsive interaction $w_{ut}\leq0$, b) $v$ and $t$ share an attractive interaction $w_{vt}>0$ that is higher in absolute value $|w_{vt}|>|w_{ut}|$. 
+Then, according to Eq. \ref{eq:def_abs_max}, the new merged cluster $uv$ and $t$ are constrained and share a positive interaction. 
+But this case can never happen, since if $|w_{vt}|>|w_{ut}|$ then clusters $v$ and $t$ are merged before clusters $u$ and $t$ are constrained.  
+\end{proof}
+
+\subsection{CREMI challenge and compared methods}
+
+
+\subsection{Noise exps}
 
 \begin{itemize}
 % \item Equivalence Mutex Watershed and Greedy Edge Contraction
@@ -152,13 +221,10 @@ If, on the other hand, the interaction is repulsive ($\tilde{\cost}_{uv}\leq 0$)
 \item Noise: also mention details about plots (fix some long-range edges, fix noise seed and vary K)
 \item exp. setup details: enforcing local merges, MWS distinguish between repulsive-long, post-processing of small segments, loss, architecture, training parameters, offset patterns
 \item 
-
 \end{itemize}
 
 
 
-
-\subsection{Noise exps}
  % In this section we evaluate the robustness of \algname{} with different linkage criteria by adding noise to the edge weights.
   %Before to present the results shown in Fig. \ref{fig:noise_plots}, we will first introduce the type of noise that was added to the edge weights.
 % In the set of experiments presented in this article, edge weights are estimated \UPDATE{by using a CNN that predicts how likely two neighboring pixels are to be part of the same cluster}. 
