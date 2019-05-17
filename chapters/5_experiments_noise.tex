@@ -40,7 +40,7 @@
 
 \subsection{Results}\label{sec:results}
 % \subsection{In-depth comparison of different linkage criteria for \algname{}} 
-The difficulty of the dataset is highlighted by the poor scores achieved by THRESH in Table \ref{tab:results_cremi_train}. Among all the signed graph algorithms included in our generalized framework, the less-known one with \emph{Average} linkage consistently outperformed all other previously proposed linkage like \emph{Sum} or \emph{Absolute Max}. This simple method also achieved remarkably superior scores to other state-of-the-art multi-step methods. \TODO{Wait for new test-scores}
+\TODO{Mention Appendix} The difficulty of the dataset is highlighted by the poor scores achieved by THRESH in Table \ref{tab:results_cremi_train}. Among all the signed graph algorithms included in our generalized framework, the less-known one with \emph{Average} linkage consistently outperformed all other previously proposed linkage like \emph{Sum} or \emph{Absolute Max}. This simple method also achieved remarkably superior scores to other state-of-the-art multi-step methods. \TODO{Wait for new test-scores}
 In Fig. \ref{fig:cremi_comparison}, we highlight some failure cases of the different agglomerative algorithms included in our framework. In Appendix we provide an extended version of Table \ref{tab:results_cremi_train} including all scores linkage tested with \algname{} on the full CREMI training data. 
 
 In order to highlight the properties and the strengths of each linkage criteria and  perform an in-depth comparison that is as quantitative as possible, we run an additional set of experiments where we perturbed the CNN predictions with noise. In Appendix, we provide all the details about the used type of spatially correlated noise that allowed us to perturb the CNN outputs by introducing simulated additional artifacts like missing or false boundary evidences (see example in Fig. \ref{fig:noisy_affs}).  
@@ -50,27 +50,26 @@ Our findings confirm that \algname{} with \emph{Average} linkage criterion repre
 The \emph{Sum} linkage generally outputs the most balanced graph partitioning according to the objective defined in Eq. \ref{eq:multicut_obj} and is then confirmed to be a good choice for initializing more complex approximations of the multicut optimization problem like \cite{beier2016efficient}. Nevertheless, in more challenging parts of the data (see Fig. \ref{fig:cremi_comparison}) or in the presence of noise, it often incorrectly merge regions together, leading to more unbalanced graph partitioning. In these cases, the use of cannot-link constraints or a more robust average linkage are preferable.  }
 \begin{figure}[b]
 \centering
-\begin{minipage}[T]{0.54\textwidth}
+\begin{minipage}[T]{0.59\textwidth}
     \centering
     \footnotesize
         \begin{tabular}{l|l|cc}
-           & \algname{}  &  \multicolumn{2}{c}{Use constraints:} \\
-           & Linkage & \textsc{No} & \textsc{Yes} \\ \midrule
+           & Agglomeration  &  \multicolumn{2}{c}{Use constraints:} \\
+          Pipeline & method & \textsc{No} & \textsc{Yes} \\ \midrule
 DWT \cite{bai2017deep} & - & 21.2 & - \\
 SGN \cite{liu2017sgn} & - & 29.2 & - \\
 Mask RCNN \cite{he2017mask} & - & 31.5 & - \\ \hline
- & \textbf{Average}& \textbf{34.3}  & 33.9  \\
- & GMIS-Agglo \cite{liu2018affinity} & \UPDATE{33.0} & -  \\
-\multirow{2}{*}{GMIS Pipeline} & Max &   24.3  &   32.5  \\
- & Abs. Max. \cite{wolf2018mutex}  & 32.1 & 32.1 \\
- & Sum \cite{keuper2015efficient,levinkov2017comparative} & 31.3  & 31.9  \\
- & Min &  0    & 0  \\
+ & \textbf{\algname{} Average}& \textbf{34.3}  & 33.9  \\
+ & MultiStepHAC \cite{liu2018affinity} & \UPDATE{33.0} & -  \\
+\multirow{2}{*}{GMIS \cite{liu2018affinity}} & \algname{} Max &   24.3  &   32.5  \\
+ & \algname{} Abs. Max. \cite{wolf2018mutex}  & 32.1 & 32.1 \\
+ & \algname{} Sum \cite{keuper2015efficient,levinkov2017comparative} & 31.3  & 31.9  \\
+ & \algname{} Min &  0    & 0  \\
         \end{tabular}
     \captionof{table}{AP scores on the cityscapes validation set for the generalized algorithm and different types of linkage criteria.  }
     \label{tab:results_cityscapes_val}
 \end{minipage}\hfill
-\begin{minipage}[T]{0.43\textwidth}
-    \centering
+\begin{minipage}[T]{0.37\textwidth}
     \centering
 \includegraphics[width=\textwidth]{./figs/cityscapes_compare_2.pdf} % left bottom right top
 \end{minipage}

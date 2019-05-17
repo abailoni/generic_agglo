@@ -255,7 +255,7 @@ Thus, we used Perlin noise\footnote{In our experiments, we used an open-source v
 % \end{cases}
 \tilde{F}_{\pm}(x;\mathcal{K})=F(x)\pm\big|\mathcal{K}\cdot\max\left(\pm N(x),0\right)\big|,
 \end{equation}
-where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}\in \mathbb{R}^+$ is a positive factor representing the amount of added noise. $\tilde{F}_{+}(x;\mathcal{K})$ represents then a merge-biased prediction, such that the probability for two pixels to be in the same cluster is increased only if $N(x)>0$ (see Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}b}), whereas $\tilde{F}_{-}(x;\mathcal{K})$ is a split-biased prediction with decreased probabilities when $N(x)<0$ (Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}c}). \TODO{Add more details}
+where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}\in \mathbb{R}^+$ is a positive factor representing the amount of added noise. $\tilde{F}_{+}(x;\mathcal{K})$ represents then a merge-biased prediction, such that the probability for two pixels to be in the same cluster is increased only if $N(x)>0$ (see Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}b}), whereas $\tilde{F}_{-}(x;\mathcal{K})$ is a split-biased prediction with decreased probabilities when $N(x)<0$ (Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}c}). \TODO{Add impl. details}
 
 \begin{figure}[b]
 \centering
@@ -269,113 +269,16 @@ where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}
 \end{figure}
 
 \subsection{Fine-tuning the GMIS pipeline on CityScapes} \label{sec:appendix_cityscapes}
-Mention the main trick in the loss: ignore background pixels (so focus on boundaries). Same mapping defined in \ref{eq:mappings}
+For our experiments, we used the model from GMIS \cite{liu2018affinity} that is publicly available. The instance-branch of the model was trained with a Binary Cross-Entropy loss, but we noticed how the short-range affinities were biased towards high probabilities, so that a strong short-range boundary evidence was never predicted by the model. In \cite{liu2018affinity}, they handle this problem by proposing a modified version of HAC that is done in stages (GMIS-Agglo): initially only short-range affinities are used to run HAC and a low threshold in the hierarchy is chosen to define a first clustering; a new HAC problem including long-range affinities is then initialized with the first clustering; in the method proposed by \cite{liu2018affinity}, these steps are repeated three times. 
 
-
-% \begin{table*}
-%     \centering
-%     \begin{subtable}[t!]{0.98\textwidth}\centering
-%         \begin{tabular}{c| c | c| c | c | c | c | c}
-% Update rule & \makecell{Use Cannot-Link\\Constraints} & Log-costs & \makecell{Multicut objective} & Runtime (s) & ARAND & VI-merge & VI-split\\ \midrule\midrule
-% mean & False & True & -93152163 & {\color{Orange} 3666 } & {\color{Orange} 0.1204 } & {\color{ForestGreen} 0.231 } & {\color{Red} 0.641 } \\
-% sum & False & True & -93142805 & {\color{Red} 16154 } & {\color{ForestGreen} 0.0893 } & {\color{Orange} 0.301 } & {\color{Orange} 0.514 } \\
-% mean & False &  & -93072127 & {\color{Orange} 3168 } & {\color{Orange} 0.1284 } & {\color{ForestGreen} 0.234 } & {\color{Red} 0.642 } \\
-% sum & True & True & -92936797 & {\color{Red} 21605 } & {\color{ForestGreen} 0.0910 } & {\color{ForestGreen} 0.293 } & {\color{Orange} 0.532 } \\
-% MutexWatershed & False &  & -92704851 & {\color{ForestGreen} 632 } & {\color{Orange} 0.1347 } & {\color{ForestGreen} 0.231 } & {\color{Red} 0.751 } \\
-% sum & True & False & -91444880 & {\color{Red} 26842 } & {\color{Red} 0.2085 } & {\color{Red} 0.572 } & {\color{Orange} 0.489 } \\
-% mean & True & True & -90660193 & {\color{Orange} 4114 } & {\color{Orange} 0.1655 } & {\color{ForestGreen} 0.213 } & {\color{Red} 1.011 } \\
-% mean & True &  & -88260595 & {\color{Orange} 4393 } & {\color{Red} 0.2017 } & {\color{ForestGreen} 0.208 } & {\color{Red} 1.155 } \\
-% max & True &  & -81432464 & {\color{Red} 7759 } & {\color{Orange} 0.1653 } & {\color{ForestGreen} 0.236 } & {\color{Red} 0.792 } \\
-% max & False &  & -37045939 & {\color{ForestGreen} 134 } & {\color{Red} 0.9150 } & {\color{Red} 5.691 } & {\color{ForestGreen} 0.013 } \\
-% min & False &  & 213670839 & {\color{ForestGreen} 600 } & {\color{Red} 0.9330 } & {\color{ForestGreen} 0.207 } & {\color{Red} 4.880 } \\
-% min & True &  & 214747429 & {\color{ForestGreen} 852 } & {\color{Red} 0.9314 } & {\color{ForestGreen} 0.202 } & {\color{Red} 4.887 } \\
-
-%         \end{tabular}
-%         % \caption{Linkage criteria}
-%     \end{subtable} 
-%     \caption{Comparison of update rules on crop of cremi sample B (sorted by multicut energy) \TODO{Reduce insane amount of numbers. Better put figures, leave numbers in the supplementary and only insert small table with MC, ARAND, Runtime. Invert ARAND to make it consistent with the plots} }
-%     \label{tab:results_cremi_crop_C}
-% \end{table*}
-
-% \begin{table*}
-%     \centering
-%     \begin{subtable}[t!]{0.98\textwidth}\centering
-%         \begin{tabular}{c| c | c| c | c | c | c | c}
-% Update rule & \makecell{Use Cannot-Link\\Constraints} & Log-costs & \makecell{Multicut objective} & Runtime (s) & ARAND & VI-merge & VI-split\\ \midrule\midrule
-% mean & False &  & -102739991 & {\color{Orange} 3797 } & {\color{ForestGreen} 0.9292 } & {\color{ForestGreen} 0.286 } & {\color{ForestGreen} 0.428 } \\
-% mean & False &  & -102730208 & {\color{Orange} 2562 } & {\color{ForestGreen} 0.9285 } & {\color{ForestGreen} 0.292 } & {\color{ForestGreen} 0.423 } \\
-% MutexWatershed & False &  & -102313957 & {\color{ForestGreen} 830 } & {\color{ForestGreen} 0.9246 } & {\color{ForestGreen} 0.291 } & {\color{Orange} 0.471 } \\
-% max & True &  & -98143342 & {\color{Red} 7153 } & {\color{ForestGreen} 0.9208 } & {\color{ForestGreen} 0.292 } & {\color{Orange} 0.496 } \\
-% mean & True &  & -100279671 & {\color{Orange} 4713 } & {\color{Orange} 0.8647 } & {\color{ForestGreen} 0.265 } & {\color{Red} 0.717 } \\
-% sum & True &  & -100745943 & {\color{Red} 13361 } & {\color{Orange} 0.8426 } & {\color{Orange} 0.410 } & {\color{Orange} 0.451 } \\
-% sum & False &  & -101846418 & {\color{Red} 12681 } & {\color{Orange} 0.8377 } & {\color{Orange} 0.427 } & {\color{ForestGreen} 0.427 } \\
-% sum & False &  & -101732952 & {\color{Red} 12287 } & {\color{Orange} 0.8376 } & {\color{Orange} 0.436 } & {\color{ForestGreen} 0.390 } \\
-% sum & True &  & -101487448 & {\color{Red} 8497 } & {\color{Orange} 0.8374 } & {\color{Orange} 0.428 } & {\color{ForestGreen} 0.414 } \\
-% mean & True &  & -99416111 & {\color{Orange} 3445 } & {\color{Orange} 0.8239 } & {\color{ForestGreen} 0.260 } & {\color{Red} 0.822 } \\
-% min & True &  & 211183545 & {\color{ForestGreen} 692 } & {\color{Red} 0.0779 } & {\color{ForestGreen} 0.232 } & {\color{Red} 4.714 } \\
-% min & False &  & 210377447 & {\color{ForestGreen} 493 } & {\color{Red} 0.0737 } & {\color{ForestGreen} 0.233 } & {\color{Red} 4.745 } \\
-% max & False &  & -48601637 & {\color{ForestGreen} 102 } & {\color{Red} 0.0611 } & {\color{Red} 5.738 } & {\color{ForestGreen} 0.035 } \\
+Since GMIS-Agglo is a rather complex post-processing method that requires to tune several hyper-parameters, we opted for a different approach. We added two 1x1 convolutional layers to the instance-branch model and trained them by using a 
 
 
 
+% Mention the main trick in the loss: ignore background pixels (so focus on boundaries). 
 
-%         \end{tabular}
-%         % \caption{Linkage criteria}
-%     \end{subtable} 
-%     \caption{Comparison of update rules on crop of cremi sample C (sorted by multicut energy) \TODO{Reduce insane amount of numbers. Better put figures, leave numbers in the supplementary and only insert small table with MC, ARAND, Runtime. Invert ARAND to make it consistent with the plots} }
-%     \label{tab:results_cremi_crop_C}
-% \end{table*}
+% Same mapping defined in \ref{eq:mappings}
 
+% Due to the unbalanced nature of the original affinities, we had to perform a parameter-search of the $\beta$ hyper-parameter. Since with a certain value of $\beta$ could be optimal for some versions of \algname{} but not others, we decide to perform a parameter search for each version of \algname{} and Table \ref{tab:results_cityscapes_val} lists the best-case performances for each of the methods.
 
-% \begin{table}
-%     \centering
-%     \begin{subtable}[t!]{0.5\textwidth}\centering
-%         \begin{tabular}{M{0.1\textwidth}| c| c| c | c }
-%         \thead{Update \\rule} & \thead{Use Cannot-Link\\ Constraints} & \thead{Bias \\factor $\beta$} & \thead{AP} & \thead{AP 50\%} \\ \midrule\midrule
-% \multirow{2}{*}{Sum} &No & 0.55  & {\color{Orange} 0.313 } & {\color{Orange} 0.511 } \\
-%  &Yes & 0.55  & {\color{Orange} 0.319 } & {\color{Orange} 0.527 } \\\midrule
-% Abs. max. &- & 0.45  & {\color{Orange} 0.321 } & {\color{ForestGreen} 0.531 } \\\midrule
-% \multirow{2}{*}{Mean} &No & 0.35  & {\color{ForestGreen} 0.343 } & {\color{ForestGreen} 0.552 } \\
-%  &Yes & 0.25  & {\color{Orange} 0.339 } & {\color{ForestGreen} 0.548 } \\\midrule
-% \multirow{2}{*}{Max} &No & 0.85 & {\color{Red} 0.243 } & {\color{Red} 0.444 } \\
-%  &Yes & 0.50  & {\color{Orange} 0.325 } & {\color{ForestGreen} 0.530 } \\\midrule
-% \multirow{2}{*}{Min} &No & 0.50  & {\color{Red} 0.000 } & {\color{Red} 0.000 } \\
-%  &Yes & 0.50  & {\color{Red} 0.000 } & {\color{Red} 0.000 } \\\midrule
-% \cite{liu2018affinity} &-  & -  & {\color{ForestGreen} 0.341 } & {\color{ForestGreen} 0.547 } \\
-%         \end{tabular}
-%         % \caption{Linkage criteria}
-%     \end{subtable} 
-%     \caption{Results on cityscapes validation set (with finetuned affinities). \TODO{Reformat in the usual form, delete colors, less digits}}
-%     \label{tab:results_cityscapes_full}
-% \end{table}
-
-% \begin{algorithm}[t]
-%   \caption{Generalized Algorithm for Signed Graphs Agglomerative Clustering}
-%    \hspace*{\algorithmicindent} \textbf{Inputs:} Graph $\mathcal{G}(V,E,w^+,w^-)$ with $N$ nodes; boolean variable {\color{blue}\texttt{addCannotLink}}  \\
-%   \hspace*{\algorithmicindent} \textbf{Outputs:} Final clustering $\Pi$\\
-%   \hspace*{\algorithmicindent} 
-%   \begin{algorithmic}[1]
-
-%       \State Init. clustering $\Pi=\{\{v_1\}, \ldots, \{v_N\}\}$ and contracted graph $\tilde{\mathcal{G}}_\Pi \gets \mathcal{G}$
-%       \State Init. \texttt{canBeMerged}$[e] \gets$ \texttt{True} $\,\,\, \forall e\in E$
-%       \State Sort edges in priority queue (PQ) in descending order of priority $|\cost_e|=|w^+_e - w^-_e|$ 
-%       \State
-%       \While{PQ is \textbf{not} empty}
-%         \State Pop edge $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ with highest absolute interaction $|\tilde{\cost}|$
-%         \If{({\color{ForestGreen}\textbf{$\tilde{\cost} > 0$}}) \textbf{and} \texttt{canBeMerged}$[e_{uv}]$}
-%           \State Contract $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and merge the two clusters $S_u,S_v \in \Pi$
-%           \For{every new pair of double edges $(e_1,e_2)$ in $\tilde{\mathcal{G}}_\Pi$}
-%             % \State Get costs $\cost_1, \cost_2$ of $e_1,e_2$
-%             \State Delete $e_2$ from $\tilde{\mathcal{G}}_\Pi$ and update priority of $e_1$ with rule $f(\tilde{\cost}_{e_1},\tilde{\cost}_{e_2})$ defined in Tab. \ref{tab:linkage-criteria} 
-%           \EndFor
-%         \EndIf
-%         \If{({\color{red}\textbf{$\tilde{\cost} \leq 0$}}) \textbf{and} {\color{blue}\texttt{addCannotLink}}}
-%           \State \texttt{canBeMerged}$[e_{uv}] \gets$ \texttt{False}
-%         \EndIf
-%       \EndWhile
-%       \State
-%       \Return $\Pi$
-%   \end{algorithmic}
-%   \label{main_alg_suppl}
-% \end{algorithm}
 
