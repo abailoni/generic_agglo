@@ -14,7 +14,8 @@
         \includegraphics[width=\textwidth,trim=0.53in 0.35in 0.65in 0.80in,clip]{./figs/merge_noise_long_range.pdf}
         \caption{With long-range edges: $p_{\mathrm{long}}=0.1$} \label{fig:merge_noise_with_long_range}
     \end{subfigure}
-\caption{Performances of \algname{} with different linkage criteria on a crop of CREMI training data sample B, depending on the amount of noise (x-axis) added to the CNN predictions. \textbf{Top}: Accuracy given by Rand-Score (higher is better). Solid lines represent median values. Values between the 25th and the 75th percentile are shown in shade areas. \textbf{Bottom}: Multicut objective (Eq. \ref{eq:multicut_obj}), measuring how balanced the final clusterings are (lower is better); for a clearer comparison, an offset is added to the energy values, so that the method achieving the lowest energy is always assigned to value zero.
+\caption{Performances of \algname{} with different linkage criteria on a crop of CREMI training data sample B, depending on the amount of noise (x-axis) added to the CNN predictions. \textbf{Top}: Accuracy given by Rand-Score (higher is better). Solid lines represent median values over 30 experiments. Values between the 25th and the 75th percentile are shown in shade areas. \TODO{Def long-range edges}
+%\textbf{Bottom}: Multicut objective (Eq. \ref{eq:multicut_obj}), measuring how balanced the final clusterings are (lower is better); for a clearer comparison, an offset is added to the energy values, so that the method achieving the lowest energy is always assigned to value zero. 
 }\label{fig:noise_plots}
 \end{figure}
 
@@ -38,16 +39,26 @@
 
 
 
-\subsection{Results}\label{sec:results}
+\subsection{Results and discussion}\label{sec:results}
 % \subsection{In-depth comparison of different linkage criteria for \algname{}} 
-\TODO{Mention Appendix} The difficulty of the dataset is highlighted by the poor scores achieved by THRESH in Table \ref{tab:results_cremi_train}. Among all the signed graph algorithms included in our generalized framework, the less-known one with \emph{Average} linkage consistently outperformed all other previously proposed linkage like \emph{Sum} or \emph{Absolute Max}. This simple method also achieved remarkably superior scores to other state-of-the-art multi-step methods. \TODO{Wait for new test-scores}
-In Fig. \ref{fig:cremi_comparison}, we highlight some failure cases of the different agglomerative algorithms included in our framework. In Appendix we provide an extended version of Table \ref{tab:results_cremi_train} including all scores linkage tested with \algname{} on the full CREMI training data. 
+\textbf{Comparison results } Table \ref{tab:results_cremi_train} shows how \algname{} compares to other tested methods on the predictions of our CNN. 
+The poor scores achieved by THRESH highlight the difficulty of the task. On the other hand, \algname{} with \emph{Average} linkage, representing one of the new algorithms introduced by our generalized framework, significantly outperformed all other previously proposed agglomerative methods like GAEC, Greedy Fixation (using \emph{Sum} linkage) or Mutex Watershed (using \emph{Abs Max} linkage). The remarkably competitive performances of this simple parameter-free agglomerative algorithm are also reported by Table \ref{tab:results_cremi_test} that represents the current leader-board of the challenge: all entries, apart from \algname{}, employ superpixel-based post-processing pipelines, several of which rely on the complex multicut problem. 
+In the comparison shown in Table \ref{tab:results_cremi_train}, \algname{} with Average linkage even achieved significantly superior scores compared to other methods based on WSDT superpixels.
+Our hypothesis to explain this superior performances it that, currently, there are not good ways of generating superpixels that can take the long-range predictions of the CNN into account. It is of course possible to make use of long-range predictions to compute the edge weights of the superpixel graph, but, in our experience, this process usually involves a lot of parameter tuning and trial and error. 
+In Appendix \ref{sec:appendix_exps_full_cremi}, we provide more details about how we scaled up \algname{} to the full datasets and present an extended version of Table \ref{tab:results_cremi_train} including all tested \algname{} algorithms.
 
-In order to highlight the properties and the strengths of each linkage criteria and  perform an in-depth comparison that is as quantitative as possible, we run an additional set of experiments where we perturbed the CNN predictions with noise. In Appendix, we provide all the details about the used type of spatially correlated noise that allowed us to perturb the CNN outputs by introducing simulated additional artifacts like missing or false boundary evidences (see example in Fig. \ref{fig:noisy_affs}).  
 
-\UPDATE{Plots in Fig. \ref{fig:noise_plots} summarize 6000 experiments: we focused on the best performing linkage criteria, i.e. \emph{Average}, \emph{Sum} and \emph{Abs Max}, and tested them with different values of noise, both with and without use of long-range connections in the grid-graph\footnote{We tested 20 values of noise and, for each setup, we averaged the scores over 30 runs.}. In Fig. \ref{fig:noise_plots}, we used a merge-biased noise decreasing boundary evidence. See Fig. \ref{fig:noise_split} in Appendix for a split-biased version. 
-Our findings confirm that \algname{} with \emph{Average} linkage criterion represents the most robust algorithm tested and that is the one benefiting more from additional long-range edge connections. Other versions using cannot-link constraints generally lead to an over-segmentation, but are robust to ``leaks through holes'' given by missing boundary evidence. The greedy \emph{absolute maximum} linkage proposed by \cite{wolf2018mutex} is the least robust to noise, but, as we show in Table \ref{tab:full_cremi_results}, it represents an efficient and considerably faster option.   
-The \emph{Sum} linkage generally outputs the most balanced graph partitioning according to the objective defined in Eq. \ref{eq:multicut_obj} and is then confirmed to be a good choice for initializing more complex approximations of the multicut optimization problem like \cite{beier2016efficient}. Nevertheless, in more challenging parts of the data (see Fig. \ref{fig:cremi_comparison}) or in the presence of noise, it often incorrectly merge regions together, leading to more unbalanced graph partitioning. In these cases, the use of cannot-link constraints or a more robust average linkage are preferable.  }
+
+
+\textbf{Noise experiments } In order to highlight the properties of each \algname{} algorithm and  perform an in-depth comparison that is as quantitative as possible, we run an additional set of experiments where we perturbed the CNN predictions with noise. Appendix \ref{sec:appendix_noise_gen} introduces the type of spatially correlated noise that allowed us to perturb the CNN outputs by introducing simulated additional artifacts like missing or false boundary evidences.  
+Fig. \ref{fig:noise_plots} summarize our 12000 noise experiments: we focused on the best performing linkage criteria, i.e. \emph{Average}, \emph{Sum} and \emph{Abs Max}, and tested them with different values of noise, both with and without use of long-range connections in the grid-graph. % In Fig. \ref{fig:noise_plots}, we used a merge-biased noise decreasing boundary evidence. See Fig. \ref{fig:noise_split} in Appendix for a split-biased version. 
+
+\textbf{Average and Abs Max linkage } Our findings confirm that \algname{} with \emph{Average} linkage criterion represents the most robust algorithm tested and that is the one benefiting more from additional long-range edge connections. Other versions using cannot-link constraints generally lead to an over-segmentation, but are robust to ``leaks through holes'' given by missing boundary evidence. The greedy \emph{absolute maximum} linkage proposed by \cite{wolf2018mutex} is the least robust to noise, but, as we show in Table \ref{tab:full_cremi_results}, it represents an efficient and considerably faster option.   
+
+\textbf{Sum linkage } The \emph{Sum} linkage generally outputs the most balanced graph partitioning according to the objective defined in Eq. \ref{eq:multicut_obj} and is then confirmed to be a good choice for initializing more complex approximations of the multicut optimization problem like \cite{beier2016efficient}. Nevertheless, in more challenging parts of the data (see Fig. \ref{fig:cremi_comparison}) or in the presence of noise, it often incorrectly merge regions together, leading to more unbalanced graph partitioning. In these cases, the use of cannot-link constraints or a more robust average linkage are preferable.  
+In Fig. \ref{fig:cremi_comparison}, we highlight some failure cases of the different agglomerative algorithms included in our framework.
+
+
 \begin{figure}[b]
 \centering
 \begin{minipage}[T]{0.59\textwidth}
@@ -60,13 +71,13 @@ DWT \cite{bai2017deep} & - & 21.2 & - \\
 SGN \cite{liu2017sgn} & - & 29.2 & - \\
 Mask RCNN \cite{he2017mask} & - & 31.5 & - \\ \hline
  & \textbf{\algname{} Average}& \textbf{34.3}  & 33.9  \\
- & MultiStepHAC \cite{liu2018affinity} & \UPDATE{33.0} & -  \\
-\multirow{2}{*}{GMIS \cite{liu2018affinity}} & \algname{} Max &   24.3  &   32.5  \\
+\multirow{2}{*}{GMIS \cite{liu2018affinity}} & MultiStepHAC \cite{liu2018affinity} & \UPDATE{33.0} & -  \\
+ % & \algname{} Max &   24.3  &   32.5  \\
  & \algname{} Abs. Max. \cite{wolf2018mutex}  & 32.1 & 32.1 \\
  & \algname{} Sum \cite{keuper2015efficient,levinkov2017comparative} & 31.3  & 31.9  \\
- & \algname{} Min &  0    & 0  \\
+ % & \algname{} Min &  0    & 0  \\
         \end{tabular}
-    \captionof{table}{AP scores on the cityscapes validation set for the generalized algorithm and different types of linkage criteria.  }
+    \captionof{table}{Average Precision (AP) scores on the cityscapes validation set achieved by the tested pipelines}
     \label{tab:results_cityscapes_val}
 \end{minipage}\hfill
 \begin{minipage}[T]{0.37\textwidth}

@@ -25,27 +25,6 @@ All the linkage criteria tested in this article are listed and defined in Table 
 % \end{equation}
 % Other common choices are \emph{minimum} (complete linkage) or \emph{average} (average linkage). %and \emph{sum}.
 
-\textbf{Multicut and correlation clustering } For any clustering $\Pi$ of $\mathcal{G}$, we define as $E^{\mathrm{internal}}_\Pi$ the set of edges linking nodes in the same cluster, and as $E_\Pi^{\mathrm{external}}$ the complementary set of edges whose incident nodes belong to distinct clusters:
-\begin{equation}
-E_\Pi^{\mathrm{internal}} \equiv \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \qquad E^{\mathrm{external}}_\Pi \equiv E \setminus E^{\mathrm{internal}}_\Pi.
-\end{equation}
-% \begin{align}
-% E_\Pi^0 &= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \\
-% E^1_\Pi &= E \setminus E^0_\Pi.
-% \end{align}
-The set of edges $E_\Pi^{\mathrm{external}}$ is known as the \emph{multicut} of $\mathcal{G}$ w.r.t. clustering $\Pi$. The instance of the NP-hard \emph{weighted correlation clustering/multicut problem} 
-% w.r.t. $\mathcal{G}(V,E,\cost)$ 
-corresponds to finding the partitioning that optimally balance attraction and repulsion in the graph and is given by the following binary integer program \cite{kappes2011globally,chopra1991multiway,andres2015lifting}:
-\begin{equation}\label{eq:multicut_obj}
-% \min_\Pi \texttt{MC}(\Pi) \equiv
- \min_\Pi \sum_{e\in E} \cost_e x_e^\Pi,  \qquad \text{where} \quad x^\Pi_e = 
- \begin{cases} 
- 1 & \text{if } e\in E^{\mathrm{external}}_\Pi \\
- 0 & \text{otherwise}.
- \end{cases}
-\end{equation}
-In the next chapters we will use this objective as measure of how balanced a clustering is.
-
 \begin{figure}
 \centering
         \begin{subfigure}[t]{0.46 \textwidth}
@@ -102,7 +81,7 @@ In the next chapters we will use this objective as measure of how balanced a clu
 
 \subsection{\algname{}: Generalized Algorithm for Signed Graph Agglomerative Clustering} \label{sec:algorithm} 
 
-The proposed \algname{} Algorithm \ref{main_alg} uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merges pairs of adjacent clusters. It starts by merging clusters with the strongest attractive interaction and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}}). After each merging iteration, the interaction between the merged cluster and its neighbors is updated according to one of the linkage criteria $\interact(S_u, S_v)$ listed in Table \ref{tab:linkage-criteria}.
+\TODO{mention detailed pseudocode} The proposed \algname{} Algorithm \ref{main_alg} uses a bottom-up approach starting with each node assigned to its own cluster and iteratively merges pairs of adjacent clusters. It starts by merging clusters with the strongest attractive interaction and it stops when the remaining clusters share only mutual repulsive interactions (see Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}}). After each merging iteration, the interaction between the merged cluster and its neighbors is updated according to one of the linkage criteria $\interact(S_u, S_v)$ listed in Table \ref{tab:linkage-criteria}.
 
 A second variant of Algorithm \ref{main_alg}, with option \texttt{addCannotLinkConstraints=True}, introduces \emph{cannot-link constraints}, which represent mutual exclusion relationships between pairs of nodes that cannot be associated with the same cluster in the final clustering. This variant 
 selects the pair of clusters with the highest absolute interaction $|\interact(S_u, S_v)|$, so that the most attractive and the most repulsive pairs are analyzed first (see example in Fig. \ref{subfig:with_constraints}). If the interaction is repulsive, then the two clusters are constrained. If it is attractive, then they are merged, provided that they were not already previously constrained. 
@@ -115,7 +94,7 @@ The algorithm stops when all the remaining clusters are constrained.
 % \end{equation}
 % All the update rules tested in this article are listed in Table \ref{tab:linkage-criteria}.
 
-In the Supplementary material we comment on the algorithm \UPDATE{computational complexity $\mathcal{O}(?)$} and present an efficient implementation based on an edge contraction algorithm combined with a priority queue (Sec. \ref{sec:complexity}).
+In Appendix \ref{sec:detailed_impl} we comment on the algorithm \UPDATE{computational complexity $\mathcal{O}(N^2 \log N)$} and present an efficient implementation based on an edge contraction algorithm combined with a priority queue.
 
 % \UPDATE{\textbf{The proposed edge contraction algorithm } Algorithm \ref{main_alg} then proceeds as follows, similarly to the one presented in \cite{levinkov2017comparative}. It starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}$, does the following: in case of attractive interaction $\tilde{\cost}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
 % % For every new pair of double edges in $\tilde{\mathcal{G}}_\Pi$, update their priorities according to one of the update rules listed in Table \ref{tab:linkage-criteria} together with their cannot-link relationships. 
@@ -140,32 +119,33 @@ In the Supplementary material we comment on the algorithm \UPDATE{computational 
     \centering
     \scriptsize
     \begin{subtable}[t!]{\textwidth}\centering
-        \begin{tabular}{c r  l ?? c | c | c}
+        \begin{tabular}{c r  l ? c | c | c}
             % \toprule\toprule
-            \multicolumn{3}{c??}{}  & \multirow{2}{*}[-0.5em]{\textbf{Unsigned Graphs}} & \multicolumn{2}{c}{\textbf{Signed Graphs}}  \\        
+            \multicolumn{3}{c?}{\multirow{2}{*}[-0.5em]{\thead{\textbf{}}}}  & \multirow{2}{*}[-0.5em]{\thead{\textbf{Unsigned Graphs}}} & \multicolumn{2}{c}{\thead{\textbf{Signed Graphs}}}  \\        
             % \cmidrule(l{.15em}){4-5}
             % \cline{4-5}
             % \multicolumn{2}{c||}{} &  &  \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\        
-            \multicolumn{3}{c??}{} &  &  \multicolumn{1}{c}{\thead{No Constraints}} & \thead{With Constraints} \\        
+            \multicolumn{3}{c?}{} &  &  \multicolumn{1}{c|}{\thead{No Constraints}} & \thead{With Constraints} \\        
       
-            % \midrule[0.15em]
-            \cmidrule[0.15em]{2-6}\morecmidrules \cmidrule[0.15em]{2-6}
+            \midrule[0.3em]
+            % \cmidrule[0.3em]{2-6}
+            % \morecmidrules \cmidrule[0.15em]{2-6}
             % \midrule \midrule
-            \multirow{5}{*}[-1.5em]{\begin{turn}{90}\thead{\textbf{Linkage criteria} $\,\,\interact(S_u ,S_v)$}\end{turn}}  & Sum: & $\displaystyle \sum_{e\in E_{uv}} \cost_e$ & \thead{Sum Linkage\\Hier. Aggl. Clust.} & \thead{GAEC \cite{keuper2015efficient}} & \thead{Greedy Fixation\\\cite{levinkov2017comparative}} \\ 
-            \cmidrule[0.07em]{2-6}
+            \multirow{5}{*}[-0.5em]{\begin{turn}{90}\thead{\textbf{Linkage criteria} $\,\,\interact(S_u ,S_v)$}\end{turn}}  & Sum: & $\displaystyle \sum_{e\in E_{uv}} \cost_e$ & \thead{Sum Linkage\\Hier. Aggl. Clust.} & \thead{GAEC \cite{keuper2015efficient}} & \thead{Greedy Fixation \cite{levinkov2017comparative}} \\ 
+            % \cmidrule[0.07em]{2-6}
             
-             &\makecell[r]{Absolute \\Max:} & 
+             &\makecell[r]{Absolute Max:} & 
             $\displaystyle \cost_e$ with $\displaystyle e = \argmax_{t\in E_{uv}} |\cost_t|$
-               & \thead{Single Linkage\\Hier. Aggl. Clust. \cite{lance1967general}} & \thead{Mutex Watershed \\\cite{wolf2018mutex}} & \thead{Mutex Watershed\\\cite{wolf2018mutex}} \\
-              \cmidrule[0.07em]{2-6}
-             & \makecell[r]{Average:} & $\displaystyle \sum_{e\in E_{uv}} \cost_e \bigg/ \big|E_{uv}\big|  $ & \thead{ Average Linkage\\ Hier. Aggl. Clust. \cite{lance1967general}} & \thead{Average Linkage\\Signed Aggl. Clust.} & \thead{\textbf{NEW}}\\ 
-            \cmidrule[0.07em]{2-6}
+               & \thead{Single Linkage\\Hier. Aggl. Clust.} & \thead{Mutex Watershed \cite{wolf2018mutex}} & \thead{Mutex Watershed \cite{wolf2018mutex}} \\
+              % \cmidrule[0.07em]{2-6}
+             & \makecell[r]{Average:} & $\displaystyle \sum_{e\in E_{uv}} \cost_e \bigg/ \big|E_{uv}\big|  $ & \thead{ Average Linkage\\ Hier. Aggl. Clust.} & \thead{\textbf{NEW}} & \thead{\textbf{NEW}}\\ 
+            % \cmidrule[0.07em]{2-6}
            % \midrule
 
-            & Max: & $\displaystyle \max_{e\in E_{uv}} \cost_e$ & \thead{Single Linkage\\Hier. Aggl. Clust. \cite{lance1967general}} & \thead{Single Linkage \\Signed Aggl. Clust.} & \thead{\textbf{NEW}}\\ 
-            \cmidrule[0.07em]{2-6}
+            & Max: & $\displaystyle \max_{e\in E_{uv}} \cost_e$ & \thead{Single Linkage\\Hier. Aggl. Clust.} & \thead{\textbf{NEW}} & \thead{\textbf{NEW}}\\ 
+            % \cmidrule[0.07em]{2-6}
 
-            & Min:& $\displaystyle \min_{e\in E_{uv}} \cost_e$ & \thead{Complete Linkage\\ Hier. Aggl. Clust. \cite{lance1967general}}  & \thead{Complete Linkage \\Signed Aggl. Clust.} & \thead{\textbf{NEW}}
+            & Min:& $\displaystyle \min_{e\in E_{uv}} \cost_e$ & \thead{Complete Linkage\\ Hier. Aggl. Clust.}  & \thead{\textbf{NEW}} & \thead{\textbf{NEW}}
 
 
 
