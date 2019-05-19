@@ -204,18 +204,11 @@ The \algname{} Algorithm \ref{detailed_alg} with the Absolute Maximum linkage de
 \begin{proof}
 % In Proposition \ref{prop:equiv_MWS} we observed that \algname{} with Abs. Max. linkage never updates the order by which edges are iterated over
 In the \algname{} Algorithm \ref{detailed_alg}, the clustering is updated only when two clusters are merged and the condition at line 9 is satisfied. 
-We also observe that, in the unconstrained version of \algname{}, the predicate \texttt{canBeMerged} at line 9 can never be false.
-<<<<<<< HEAD
+We also observe that, in the unconstrained version of \algname{}, the predicate \texttt{canBeMerged} at line 9 can never be false because cannot-link constraints are never introduced at line 14.
 Let us now contradict the initial hypothesis and assume by absurd that the constrained version of \algname{} introduces a cannot-link constraints between two clusters sharing a positive interaction $\tilde{w}>0$ and outputs a different clustering as compared to the unconstrained version. 
 This can happen only in the situation \TODO{shown in Fig. \ref{fig:contradiction_case}}, when two clusters $u$ and $v$ are merged together and share a common neighboring node $t$ having the following two properties: a) $u$ and $t$ are already constrained and share a repulsive interaction $w_{ut}\leq0$, b) $v$ and $t$ share an attractive interaction $w_{vt}>0$ that is higher in absolute value $|w_{vt}|>|w_{ut}|$. 
 Then, according to Eq. \ref{eq:def_abs_max}, the new merged cluster $uv$ and $t$ are constrained and share a positive interaction. 
 But this case can never happen, since if $|w_{vt}|>|w_{ut}|$ then clusters $v$ and $t$ are merged before clusters $u$ and $t$ are constrained.  
-=======
-Let us now contradict the initial hypothesis and assume the opposite that the constrained version of \algname{} introduces a cannot-link constraints between two clusters sharing a positive interaction $\tilde{w}>0$ and outputs a different clustering as compared to the unconstrained version. 
-This can only happen when two clusters $u$ and $v$ are merged together and share a common neighboring node $t$ having the following two properties: a) $u$ and $t$ are already constrained and share a repulsive interaction $w_{ut}\leq0$, b) $v$ and $t$ share an attractive interaction $w_{vt}>0$ that is higher in absolute value $|w_{vt}|>|w_{ut}|$. We have illustrated this event in Fig. \ref{fig:contradiction_case}. 
-According to Eq. \ref{eq:def_abs_max}, the new merged cluster $uv$ and $t$ are constrained and share a positive interaction. 
-However, this case is impossible, since $|w_{vt}|>|w_{ut}|$ implies that clusters $v$ and $t$ are merged \emph{before} clusters $u$ and $t$ are constrained. 
->>>>>>> overleaf-2019-05-19-0654
 \end{proof}
 
 \subsection{Multicut and correlation clustering } 
