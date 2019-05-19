@@ -178,7 +178,7 @@ Moreover, in the next section, we present an efficient implementation of \algnam
 
 
 
-\subsection{Properties of \algname{} with \emph{Absolute Maximum} linkage}
+\subsection{Properties of \algname{} with \emph{Absolute Maximum} linkage}\label{sec:appendix_abs_max}
 \paragraph{Remark on graph notation} The definition of a graph proposed by \cite{wolf2018mutex} makes a distinction between a set of positive edges $E^+$, associated with a set $W^+$ of positive scalar attributes representing merge affinities, and a set of negative edges $E^-$, associated with a set $W^-$ of positive attributes representing split tendencies. On the other hand, in our definition $\mathcal{G}(V,E,w^+,w^-)$ each edge have both an attractive $w_e^+$ and a repulsive $w_e^-$ attribute, so we can make them equivalent by defining:
 \begin{align}
 E^+ = \{ e \in E \,\,\text{s.t.} \,\,w_e = w_e^+ - w_e^- > 0\},& \qquad E^- = \{ e \in E \,\,\text{s.t.}\,\, w_e = w_e^+ - w_e^- \leq 0\} \\
