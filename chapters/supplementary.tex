@@ -116,7 +116,7 @@
     % \label{tab:linkage_and_update_rules}
 \end{minipage}
 \caption{ 
-\textbf{Left:} Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (violet bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from the edge contraction are replaced by a single edge with updated interaction. \textbf{Right:} The table lists the update rules $f(\tilde{\cost}_1, \tilde{\cost}_2)$ associated to the linkage criteria of Table \ref{tab:linkage-criteria} and that are used to efficiently update the interactions between clusters. \TODO{Update notation figure}}
+\textbf{Left:} Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (violet bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from the edge contraction are replaced by a single edge with updated interaction. \textbf{Right:} The table lists the update rules $f(\tilde{\cost}_1, \tilde{\cost}_2)$ associated to the linkage criteria of Table \ref{tab:linkage-criteria} and that are used to efficiently update the interactions between clusters.}
 \label{fig:edge_contraction_and_contr_graph}  
 \end{figure}
 
@@ -146,7 +146,7 @@ If, on the other hand, the interaction is repulsive ($\tilde{\cost}_{uv}\leq 0$)
 \paragraph*{Complexity} In the main loop, the algorithm iterates over all edges, but the only iterations presenting a complexity different from $\mathcal{O}(1)$ are the ones involving a merge of two clusters, which are at most $N-1$. By using a union-find data structure (with path compression and union by rank) the time complexity of \texttt{merge}$(u, v)$ and \texttt{find}($u$) operations is $\mathcal{O}(\alpha(N))$, where $\alpha$ is the slowly growing inverse Ackerman function. The algorithm then iterates over the neighbors of the merged cluster (at most $N$) and updates/deletes values in the priority queue ($\mathcal{O}(\log |E|)$). Therefore, similarly to a heap-based implementation of hierarchical agglomerative clustering, our implementation of \algname{} has a complexity of $\mathcal{O}(N^2 \log N)$. In the worst case, when the graph is dense and $|E|=N^2$, the algorithm requires $\mathcal{O}(N^2)$ memory. Nevertheless, in our practical applications the graph is much sparser, so $\mathcal{O}(|E|)=\mathcal{O}(N)$. 
 % and \UPDATE{in Fig. \ref{fig:runtime_plot} we show how the empirical runtime of \algname{} is much closer to $\mathcal{O}(N \log N)$ than $\mathcal{O}(N^2 \log N)$.} 
 With a single-linkage, corresponding to the choice of the \emph{Maximum} update rule in our framework, the algorithm can be clearly implemented by using the more efficient Kruskal's Minimum Spanning Tree algorithm with complexity $\mathcal{O}(N \log N)$. 
-Moreover, in the next section, we present an efficient implementation of \algname{} with \emph{Absolute Maximum} linkage that has empirical $\mathcal{O}(N \log N)$ complexity. \TODO{Empirical complexity plot?}
+Moreover, in the next section, we present an efficient implementation of \algname{} with \emph{Absolute Maximum} linkage that has empirical $\mathcal{O}(N \log N)$ complexity. %\TODO{Empirical complexity plot?}
 
 
 \begin{algorithm}
@@ -249,7 +249,7 @@ We train a 3D U-Net \cite{ronneberger2015u, cciccek20163d} using the same archit
 as described in \cite{lee2017superhuman}. In addition to the standard data augmentation techniques of random rotations, random flips and  elastic deformations, we simulate data artifacts.
 In more detail, we randomly zero-out slices, decrease the contrast of slices, simulate tears, introduce alignment jitter and paste artifacts extracted from the training data. Both \cite{funke2018large} and \cite{lee2017superhuman} have shown
 that these kinds of augmentations can help to alleviate issues caused by EM-imaging artifacts.
-We use L2 loss and Adam optimizer to train the network. \TODO{Field of view?}
+We use L2 loss and Adam optimizer to train the network. % \TODO{Field of view?}
 
 \paragraph{THRESH and WSDT} The basic post-processing methods we consider cannot take long-range affinities into account, so we only consider direct neighbors affinities and generate a boundary map by taking an average over the 3 directions. Based on this boundary map, we run connected components (THRESH) and we also introduce seeds at the maxima of the smoothed distance transform (WSDT). For WSDT, the degree of smoothing was optimized such that each region receives as few seeds as possible, without however causing severe under-segmentation. Due to the anisotropy of the data, we generate 2D WSDT superpixels by considering each 2D image in the stack singularly.
 
@@ -259,7 +259,8 @@ We use L2 loss and Adam optimizer to train the network. \TODO{Field of view?}
 
 \subsection{\algname{} on the full CREMI dataset} \label{sec:appendix_exps_full_cremi}
  \paragraph{Pre-merge processing} For the predictions on the full dataset from the CREMI challenge, we used  the padded volumes provided by the challenge. The crops on which we performed a prediction have a size of $1500\times1500\times127=2.86\cdot 10^8$ voxels or larger. Building a graph with $10^8$ nodes can easily incur a large use of memory, so we decided to perform a preprocessing step by initially merging some nodes together. Simply down-sampling the predictions of the CNN would have led to a loss of resolution and performances in the most difficult parts of the dataset. Thus, we decided to pre-merge the most connected components of the graph that would be anyway clustered during the first iterations of \algname{}. To do this, we used a simple approach: we generated a boundary probability map by taking for each voxel an average over affinities in all directions (both short- and long-range ones) and we run THRESH to find the connected components. With this approach, pixels are pre-clustered only when they are far away (in all directions) from all predicted boundaries. 
- To make sure that in this preprocessing step different neurons are never merged together by mistake, we intersected these segments given by the conservative THRESH with the segments given by WSDT \TODO{show figure?}. By using this method, we initialized \algname{} with a reduced graph that represents a true over-segmentation. In our experiments, the use of this preprocessing method did not impact the final scores achieved by \algname{} and significantly reduced its runtime. On the full datasets, we used only 10 \% of the long-range connections in the pixel-graph, since adding all of them did not improve the scores and only made the simulations much slower and memory inefficient. 
+ To make sure that in this preprocessing step different neurons are never merged together by mistake, we intersected these segments given by the conservative THRESH with the segments given by WSDT. %\TODO{show figure?}
+ By using this method, we initialized \algname{} with a reduced graph that represents a true over-segmentation. In our experiments, the use of this preprocessing method did not impact the final scores achieved by \algname{} and significantly reduced its runtime. On the full datasets, we used only 10 \% of the long-range connections in the pixel-graph, since adding all of them did not improve the scores and only made the simulations much slower and memory inefficient. 
  
  \paragraph{Removing small segments} After running \algname{}, we use a simple post-processing step to delete small segments on the boundaries, most of which are given by single-voxel clusters. On the neuron segmentation predictions, we deleted all regions with less than 200 voxels and used a seeded watershed algorithm to expand the bigger segments.
 
@@ -293,15 +294,51 @@ Thus, we used Perlin noise\footnote{In our experiments, we used an open-source v
 where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}\in \mathbb{R}^+$ is a positive factor representing the amount of added noise. $\tilde{F}_{+}(x;\mathcal{K})$ represents then a merge-biased prediction, such that the probability for two pixels to be in the same cluster is increased only if $N(x)>0$ (see Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}b}), whereas $\tilde{F}_{-}(x;\mathcal{K})$ is a split-biased prediction with decreased probabilities when $N(x)<0$ (Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}c}). \TODO{Add impl. details}
 
 \begin{figure}[b]
+\end{figure}
+
+% \multirow{2}{*}{Sum} &No & 0.55  & {\color{Orange} 0.313 } & {\color{Orange} 0.511 } \\
+%  &Yes & 0.55  & {\color{Orange} 0.319 } & {\color{Orange} 0.527 } \\\midrule
+% % Abs. max. &- & 0.45  & {\color{Orange} 0.321 } & {\color{ForestGreen} 0.531 } \\\midrule
+% % \multirow{2}{*}{Mean} &No & 0.35  & {\color{ForestGreen} 0.343 } & {\color{ForestGreen} 0.552 } \\
+%  % &Yes & 0.25  & {\color{Orange} 0.339 } & {\color{ForestGreen} 0.548 } \\\midrule
+% \multirow{2}{*}{Max} &No & 0.85 & {\color{Red} 0.243 } & {\color{Red} 0.444 } \\
+%  &Yes & 0.50  & {\color{Orange} 0.325 } & {\color{ForestGreen} 0.530 } \\\midrule
+% \multirow{2}{*}{Min} &No & 0.50  & {\color{Red} 0.000 } & {\color{Red} 0.000 } \\
+%  &Yes & 0.50  & {\color{Red} 0.000 } & {\color{Red} 0.000 } \\\midrule
+% \cite{liu2018affinity} &-  & -  & {\color{ForestGreen} 0.341 } & {\color{ForestGreen} 0.547 } \\
+\begin{figure}[t]
 \centering
-        \includegraphics[width=0.45\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
-   
-    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the merge-biased version $\tilde{F}_{+}$ and c) the split-biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). \TODO{Add raw-data (and GT)}
+\begin{minipage}[T]{0.35\textwidth}
+    \centering
+    \footnotesize
+        \begin{tabular}{l|c|c}
+          \algname{} linkage & AP  & Bias $\beta$ \\ \midrule
+          % Pipeline & method & \textsc{No} & \textsc{Yes} \\ 
+          Average & 34.3 & 0.35 \\
+          Average + CLC & 33.9 & 0.25\\
+          Max + CLC & 32.5 & 0.50 \\
+          Abs Max & 32.1 & 0.45\\
+          Sum + CLC & 31.9 & 0.55 \\
+          Sum & 31.3 & 0.55 \\
+          Max & 24.3 & 0.85 \\
+          Min & 0.00 & 0.50 \\
+          Min + CLC & 0.00 & 0.50 \\
+        \end{tabular}
+    \captionof{table}{Average Precision (AP) scores achieved by different versions of \algname{} and chosen bias parameters $\beta$ on the cityscapes validation set. A bias value $\beta=0$ returns one single cluster.}
+    \label{tab:extended_results_cityscapes_val}
+\end{minipage}\hfill
+\begin{minipage}[T]{0.6\textwidth}
+\centering
+        \includegraphics[width=0.88\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
+    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the merge-biased version $\tilde{F}_{+}$ and c) the split-biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). \TODO{Overlay raw-data}
     %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
     %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
     }
     \label{fig:noisy_affs}
+\end{minipage}
 \end{figure}
+
+
 
 \subsection{Fine-tuning the GMIS pipeline on CityScapes} \label{sec:appendix_cityscapes}
 For our experiments, we used the model from GMIS \cite{liu2018affinity} that is publicly available. The instance-branch of the model was trained with a Binary Cross-Entropy loss, but we noticed how the short-range affinities were biased towards high probabilities, so that a strong short-range boundary evidence was never predicted by the model. In \cite{liu2018affinity}, they handle this problem by proposing a modified version of HAC that is done in stages (MultiStepHAC): initially only short-range affinities are used to run HAC and a low threshold in the hierarchy is chosen to define a first clustering; then a new HAC problem including long-range affinities is  initialized with the first clustering; in the method proposed by \cite{liu2018affinity}, these steps are repeated three times. 
@@ -309,6 +346,6 @@ For our experiments, we used the model from GMIS \cite{liu2018affinity} that is 
 Since MultiStepHAC is a rather complex post-processing method that requires to tune several hyper-parameters, we opted for a different approach to solve the problem of the unbalanced affinities. We added two 1x1 convolutional layers to the instance-branch model and trained them by using the same loss used for example by \cite{wolf2018mutex} and is based on the S\o resen-Dice coefficient \cite{dice1945measures,sorensen1948method}. Compared to Hamming-distance based loss like Binary Cross-Entropy or Mean Squared Error, the advantage of this loss is its being robust against prediction and / or target sparsity, that is a desirable quality in this application since boundaries between instances can be sparse. 
 During training, all the affinities involving at least one pixel belonging to the background were ignored in the loss. In this way, these last two layers specialized in improving the predictions of boundary evidence between adjacent instances (especially those belonging to the same class). We then considered an average of these new fine-tuned affinities with the original unbalanced ones predicted by the model. During the fine-tuning process, only the parameters in the last two layers were updated.
 
-Before to apply \algname{}, we performed a parameter-search for the bias $\beta$ defined in \ref{eq:mappings}. Table \ref{tab:results_cityscapes_val_expanded} lists the best-case performances for each of the methods with the chosen bias $\beta$: note that depending on the version of \algname{}, it was necessary to bias more or less the predicted edge weights. \TODO{Add extended table (explain what $\beta=0$ means)}
+Before to apply \algname{}, we performed a parameter-search for the bias $\beta$ defined in \ref{eq:mappings}. Table \ref{tab:extended_results_cityscapes_val} lists the best-case performances for each of the methods with the chosen bias $\beta$: note that depending on the version of \algname{}, it was necessary to bias more or less the predicted edge weights.
 
 

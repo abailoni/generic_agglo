@@ -32,10 +32,8 @@ Our findings show that one of the new agglomerative algorithms introduced by our
 \begin{figure}[t]
 \centering
 % \includegraphics[width=0.5\textwidth,trim=0.4in 1.2in 0.in 0.05in,clip]{./figs/intro_image.jpg} % left bottom right top
-\includegraphics[width=\textwidth]{./figs/intro_image.pdf} % left bottom right top
-\caption{
- (\textbf{a}) Iterations of three different algorithms in the generalized framework on  toy graph examples with attractive (green) and repulsive (red) interactions. (\textbf{b}) Example of CREMI 2016 neuron-segmentation data \cite{cremiChallenge} overlaid with instance segmentation. (\textbf{c}) Agglomeration order, representing which pairs of neighboring pixels were merged first (white), later on (brown), or never (black).
- \TODO{re-arrange, show affinities and replace unsigned case with Abs Max}
+\includegraphics[width=0.9\textwidth]{./figs/intro_image_v2.pdf} % left bottom right top
+\caption{ \textbf{Left:} raw data from the CREMI 2016 neuron-segmentation challenge and short- / long-range predictions of a CNN. \textbf{Right:} Outputs of three different agglomerative algorithms included in the proposed generalized framework. The  agglomeration order in (a) shows which pairs of neighboring pixels were merged first (white), later on (brown), or never (black). When signed graphs are used, the final clustering / instance segmentation is shown in (b). We also illustrate some iterations of the algorithms on toy graph examples with attractive (green) and repulsive (red) interactions.
 %We note how similar linkage criteria, like \emph{Sum} (in the middle) and \emph{Average} (on the right), lead to strongly different merging orders. 
 % On the left: a single cluster is returned with only attractive interactions.
  % main ideas and contributions

@@ -8,7 +8,7 @@ In this section, we first define notation and then introduce one of our main con
 
 \subsection{Notation and graph formalism} \label{sec:notation}
 
-We consider an undirected simple edge-weighted graph $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes. In computer vision applications, the nodes can represent either pixels, superpixels or voxels. We call the set $\Pi$ a \emph{clustering} or \emph{partitioning} with $K$ clusters if $V = \cup_{S\in\Pi} S $, $\,S \cap \tilde{S} = \emptyset$ for different clusters $S, \tilde{S}\in \Pi$ and every cluster $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. We also denote as $S_u$ the cluster associated with node $u$.
+We consider an undirected simple edge-weighted graph $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes. In computer vision applications, the nodes can represent either pixels, superpixels or voxels. We call the set $\Pi$ a \emph{clustering} or \emph{partitioning} with $K$ clusters if $V = \cup_{S\in\Pi} S $, $\,S \cap S' = \emptyset$ for different clusters $S, S'\in \Pi$ and every cluster $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. We also denote as $S_u$ the cluster associated with node $u$.
 % \begin{equation}
 % S_u \equiv S \in \Pi \,\, \text{s.t.} \,\, u \in S
 % \end{equation}
@@ -17,7 +17,7 @@ The weight function $w^+: E \rightarrow \mathbb{R}^+$ associates to every edge a
 Graphs of the type $\mathcal{G}(V,E,w^+, w^-)$ are also often defined as \emph{signed graphs} $\mathcal{G}(V,E,\cost)$, featuring positive and negative edge weights $\cost_e\in \mathbb{R}$. Following the theoretical considerations in \cite{lange2018partial}, we define these signed weights as ${\cost_e = w_e^+ - w_e^-}$. Some approaches directly compute $\cost_e$, whereas others compute $w_e^+$ and $w_e^-$ separately.
 In this formalism, graphs with purely attractive interactions are a special case of $\mathcal{G}(V,E,\cost)$ with $\cost_e \geq 0, \, \forall e \in E$.
 
-\textbf{Inter-cluster interaction } We call two clusters $S_u,S_v$ \emph{adjacent} if there exists at least one edge ${e_{ts}\in E}$ connecting a node $t\in S_u$ to a node $s\in S_v$. In hierarchical agglomerative clustering, the interaction $\interact(S_u,S_v)$ between the two clusters is usually defined as a function $\interact{}:\Pi \times \Pi \rightarrow \mathbb{R}$, named \emph{linkage criterion}, depending on the weights of \emph{all} edges connecting clusters $S_u$ and $S_v$, i.e. $E_{uv}=(S_u \times S_v) \cap E$. 
+\textbf{Inter-cluster interaction } We call two clusters $S_u,S_v$ \emph{adjacent} if there exists at least one edge ${e_{ts}\in E}$ connecting a node $t\in S_u$ to a node $s\in S_v$. In hierarchical agglomerative clustering, the interaction $\interact(S_u,S_v)$ between the two clusters is usually defined as a function $\interact{}:\Pi \times \Pi \rightarrow \mathbb{R}$, named \emph{linkage criterion}, depending on the weights of \emph{all} edges connecting clusters $S_u$ and $S_v$, i.e. $(S_u \times S_v) \cap E$. 
 All the linkage criteria tested in this article are listed and defined in Table \ref{tab:linkage-criteria}.
 % For example, for a \emph{maximum} linkage criterion statistic (single-linkage), the inter-cluster interaction is given by:
 % \begin{equation}\label{eq:max_linkage}
@@ -159,12 +159,13 @@ In Appendix \ref{sec:detailed_impl}, we comment on the algorithm computational c
 \begin{figure}
 \centering
 % \includegraphics[width=0.5\textwidth,trim=0.4in 1.2in 0.in 0.05in,clip]{./figs/intro_image.jpg} % left bottom right top
-\includegraphics[width=\textwidth]{./figs/comparison.pdf} % left bottom right top
-\caption{Failure cases of \algname{} with different linkage criteria highlighted on some difficult parts of the CREMI Challenge data. Only the few \emph{wrongly} segmented regions are highlighted in colors. Note that the data is 3D, hence the same color could be assigned to parts of segments that appear disconnected in 2D.  Red arrows point to wrongly split regions. Yellow arrows point out merge errors. Green arrows indicate challenging, but correctly segmented regions. The average linkage without cannot-link constraints achieved an almost error-free segmentation.
+\includegraphics[width=\textwidth]{./figs/comparison_new.pdf} % left bottom right top
+\caption{Failure cases of \algname{} with different linkage criteria highlighted on some difficult parts of the CREMI Challenge data. The main \emph{wrongly} segmented regions are highlighted in warm colors. Note that the data is 3D, hence the same color could be assigned to parts of segments that appear disconnected in 2D.  Red arrows point to wrongly split regions. Yellow arrows point out merge errors. The average linkage without cannot-link constraints achieved an almost error-free segmentation.
 % Only the involved segments are colored.
  % main ideas and contributions
 \label{fig:cremi_comparison}}
 \end{figure}
+
 
 
 % \begin{table*}
@@ -213,7 +214,7 @@ In Appendix \ref{sec:detailed_impl}, we comment on the algorithm computational c
 %In this section, we show how the choice of different update rules for the presented generalized algorithm \algname{} leads to existing and new algorithms (see Table \ref{tab:linkage-criteria}).
 
 In the special case of an unsigned graph with only positive interactions, i.e. $w_e^-=0$ and $\cost_e \geq 0$ $\forall e\in E$, %$\mathcal{G}(V,E,W:E\rightarrow \mathbb{R}^+)$ 
- the algorithm performs a standard agglomerative hierarchical clustering by returning only a single cluster and a hierarchy of clusters defined by the order in which the clusters are merged (see left panel of Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}} and Table \ref{tab:linkage-criteria}, unsigned graphs).
+ the algorithm performs a standard agglomerative hierarchical clustering by returning only a single cluster and a hierarchy of clusters defined by the order in which the clusters are merged (see \UPDATE{left panel} of Fig. \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}} and Table \ref{tab:linkage-criteria}, unsigned graphs).
 
 Given a graph with both attractive and repulsive cues, an edge contraction algorithm with a sum update rule was already proposed in \cite{levinkov2017comparative,keuper2015efficient} (Table \ref{tab:linkage-criteria}, \emph{Sum} linkage). They present both a version with cannot-link constraints and one without, and then compare them with other greedy local-search algorithms solving the multicut optimization problem.
 The Mutex Watershed \cite{wolf2018mutex} is another signed graph partitioning algorithm that introduces dynamical cannot-link constraints. In Appendix \ref{sec:appendix_abs_max} we prove that it can be seen as an efficient implementation of \algname{} with \emph{Absolute maximum} linkage (see def. in Table \ref{tab:linkage-criteria}) and observe that in this case \algname{} returns the same clustering with or without enforcing cannot-link constraints.
