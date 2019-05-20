@@ -275,6 +275,8 @@ We use L2 loss and Adam optimizer to train the network. \TODO{Field of view?}
  % In this section we evaluate the robustness of \algname{} with different linkage criteria by adding noise to the edge weights.
   %Before to present the results shown in Fig. \ref{fig:noise_plots}, we will first introduce the type of noise that was added to the edge weights.
 % In our experiments, edge weights are estimated \UPDATE{by using a CNN that predicts how likely two neighboring pixels are to be part of the same cluster}. 
+A crop of CREMI training data sample B was used.
+
 Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}a} shows an example of uncertain CNN predictions on a part of the neuron segmentation CREMI dataset. We now present a way of modifying the CNN output to introduce additional artifacts like a missing or false boundary evidence. 
 
 In the field of image processing there are several ways of adding noise to an image, among which the most common are Gaussian noise or Poisson shot noise. 

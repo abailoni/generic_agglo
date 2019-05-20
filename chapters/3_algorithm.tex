@@ -8,7 +8,7 @@ In this section, we first define notation and then introduce one of our main con
 
 \subsection{Notation and graph formalism} \label{sec:notation}
 
-We consider an undirected simple edge-weighted graph $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes. In computer vision applications, the nodes can represent either pixels, superpixels or voxels. We call the set $\Pi$ a \emph{clustering} or \emph{partitioning} with $K$ clusters if $V = \cup_{i=1}^K S_i $, $\,S_i \cap S_j = \emptyset$ for each $i\neq j$ and every $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. We also denote as $S_u$ the cluster associated with node $u$.
+\TODO{Update inconsistent notation}We consider an undirected simple edge-weighted graph $\mathcal{G}(V,E,w^+, w^-)$ with both attractive and repulsive edge attributes. In computer vision applications, the nodes can represent either pixels, superpixels or voxels. We call the set $\Pi$ a \emph{clustering} or \emph{partitioning} with $K$ clusters if $V = \cup_{i=1}^K S_i $, $\,S_i \cap S_j = \emptyset$ for each $i\neq j$ and every $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. We also denote as $S_u$ the cluster associated with node $u$.
 % \begin{equation}
 % S_u \equiv S \in \Pi \,\, \text{s.t.} \,\, u \in S
 % \end{equation}
@@ -160,7 +160,7 @@ In Appendix \ref{sec:detailed_impl}, we comment on the algorithm computational c
 \centering
 % \includegraphics[width=0.5\textwidth,trim=0.4in 1.2in 0.in 0.05in,clip]{./figs/intro_image.jpg} % left bottom right top
 \includegraphics[width=\textwidth]{./figs/comparison.pdf} % left bottom right top
-\caption{Failure cases of \algname{} with different linkage criteria highlighted on some difficult parts of the CREMI Challenge \cite{cremiChallenge} training data. Only the few \emph{wrongly} segmented regions are highlighted in colors. Note that the data is 3D, hence the same color could be assigned to parts of segments that appear disconnected in 2D.  Red arrows point to wrongly split regions. Yellow arrows point out merge errors. Green arrows indicate challenging, but correctly segmented regions. 
+\caption{Failure cases of \algname{} with different linkage criteria highlighted on some difficult parts of the CREMI Challenge data. Only the few \emph{wrongly} segmented regions are highlighted in colors. Note that the data is 3D, hence the same color could be assigned to parts of segments that appear disconnected in 2D.  Red arrows point to wrongly split regions. Yellow arrows point out merge errors. Green arrows indicate challenging, but correctly segmented regions. The average linkage without cannot-link constraints achieved an almost error-free segmentation.
 % Only the involved segments are colored.
  % main ideas and contributions
 \label{fig:cremi_comparison}}

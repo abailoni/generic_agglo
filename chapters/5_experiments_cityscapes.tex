@@ -6,3 +6,31 @@ For our experiments, we used the state-of-the-art proposal-free pipeline propose
 Their trained model was made publicly available, so we simply replaced their final graph-merging algorithm (MultiStepHAC) with \algname{}. See Appendix \ref{sec:appendix_cityscapes} for more details on how we fine-tuned their instance branch model by using a \emph{S\o resen-Dice} loss similarly to \cite{wolf2018mutex} and obtained in this way sharper affinity-predictions.
 
 Results are summarized in Table \ref{tab:results_cityscapes_val} and confirm our findings on neuron-segmentation: \algname{} with average linkage achieves the best scores, whereas other linkage tend to introduce more false region-splits, like \emph{Abs. Max.}, or false region-merge, like \emph{Sum}. In Appendix, \TODO{Table \ref{tab:extended_results_cityscapes}} includes all other tested linkage. MultiStepHAC requires the user to tune several threshold parameters and it was probably tailored to the original affinities predicted by \cite{liu2018affinity}, so it did not generalize well to our fine-tuned model and it achieved lower scores compared to the original AP value of 34.1 reported in \cite{liu2018affinity}.  
+
+
+\begin{figure}[t]
+\centering
+\begin{minipage}[T]{0.59\textwidth}
+    \centering
+    \footnotesize
+        \begin{tabular}{l|l|cc}
+           & Agglomeration  &  \multicolumn{2}{c}{Use constraints:} \\
+          Pipeline & method & \textsc{No} & \textsc{Yes} \\ \midrule
+DWT \cite{bai2017deep} & - & 21.2 & - \\
+SGN \cite{liu2017sgn} & - & 29.2 & - \\
+Mask RCNN \cite{he2017mask} & - & 31.5 & - \\ \hline
+ & \textbf{\algname{} Average}& \textbf{34.3}  & 33.9  \\
+\multirow{2}{*}{GMIS \cite{liu2018affinity}} & MultiStepHAC \cite{liu2018affinity} & \UPDATE{33.0} & -  \\
+ % & \algname{} Max &   24.3  &   32.5  \\
+ & \algname{} Abs. Max. \cite{wolf2018mutex}  & 32.1 & 32.1 \\
+ & \algname{} Sum \cite{keuper2015efficient,levinkov2017comparative} & 31.3  & 31.9  \\
+ % & \algname{} Min &  0    & 0  \\
+        \end{tabular}
+    \captionof{table}{Average Precision (AP) scores on the cityscapes validation set achieved by the tested pipelines}
+    \label{tab:results_cityscapes_val}
+\end{minipage}\hfill
+\begin{minipage}[T]{0.37\textwidth}
+    \centering
+\includegraphics[width=\textwidth]{./figs/cityscapes_compare_2.pdf} % left bottom right top
+\end{minipage}
+\end{figure}

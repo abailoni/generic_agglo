@@ -1,52 +1,6 @@
 % !TEX root = ../agglo_clust_review.tex
 
 
-\begin{figure}
-        \centering
-\begin{minipage}[T]{0.48\textwidth}
-% \begin{table}
-    \centering
-    \scriptsize
-    % \begin{subtable}[t!]{0.5\textwidth}\centering
-        \begin{tabular}{l|l|c}
-        % \toprule
-        % & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
-         % & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
-         & \algname{} Linkage & \makecell{Arand-Score}  \\ \midrule 
-         % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
-\textbf{\algname{}} & \textbf{Average}& \textbf{0.936 $\pm$ 0.004}  \\
-Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.906 $\pm$ 0.022 \\
-DTWS + LMC & -& 0.903 $\pm$ 0.016 \\
-DTWS + MC & -& 0.903 $\pm$ 0.017 \\
-% DTWS + avgHC &-& \\
-% DTWS + MC (SR)& -& 0.900 $\pm$ 0.019 \\
-% DTWS + LMC (SR)& -& 0.898 $\pm$ 0.017 \\
-Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & 0.897 $\pm$ 0.012 \\
-GAEC \cite{keuper2015efficient} & Sum & 0.872 $\pm$ 0.028 \\
-THRESH &-& 0.221  $\pm$ 0.067 \\ 
-DTWS + \algname{} & Average& \TODO{} \\
-% DTWS  & -& 0.010 $\pm$ 0.003\\
-        \end{tabular}
-    \captionof{table}{Arand-Scores achieved by different post-processing methods on CREMI challenge training predictions}
-    \label{tab:results_cremi_train}
-\end{minipage}\hfill
-\begin{minipage}[T]{0.48\textwidth}
-    \centering
-    \scriptsize
-        \begin{tabular}{l|c|c}
-         & \makecell{CREMI \\Score} & \makecell{Arand\\Score} \\ \midrule
-Our UNet + DTWS + LMC &  \textbf{0.221} & \textbf{0.108}\\
-PNI-UNet & 0.228 & 0.116 \\
-Our UNet + \algname{} Avg-Linkage & 0.244 & 0.130 \\
-MALA-UNet + MC \cite{funke2018large} & 0.276 & 0.132 \\
-CRUNet \cite{zeng2017deepem3d} & 0.566 & 0.229 \\
-LFC \cite{parag2017anisotropic} & 0.616 & \\
-        \end{tabular}
-    \captionof{table}{Current leaderboard of the CREMI challenge \TODO{Update refs}}
-    \label{tab:results_cremi_test}
-\end{minipage}
-\end{figure}
-
 \subsection{Data: CREMI Challenge} \label{sec:cremi_challenge}
 We evaluate the algorithms in our framework on the competitive CREMI 2016 EM Segmentation Challenge \cite{cremiChallenge} that is currently the neuron segmentation challenge with the largest amount of training data available. The dataset comes from a serial section EM of \emph{Drosophila} fruit-fly tissue and consists of 6 volumes of 1250x1250x125 voxels at resolution 4x4x40nm, three of which present publicly available training ground truth. The results submitted to the leaderboard are evaluated using the CREMI score\footnote{\url{https://cremi.org/leaderboard/}}, based on the Adapted Rand-Score (Rand-Score) and the Variation of Information Score \cite{arganda2015crowdsourcing}. In Appendix \ref{sec:cremi_details}, we provide more details about the training of our CNN model, inspired by work of \cite{lee2017superhuman,funke2018large}.
 
