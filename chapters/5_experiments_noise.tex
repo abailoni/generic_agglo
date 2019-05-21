@@ -5,18 +5,19 @@
 % \subsection{In-depth comparison of different linkage criteria for \algname{}} 
 \textbf{Comparison results } Table \ref{tab:results_cremi_train} shows how \algname{} compares to other tested post-processing methods applied to the predictions of our model. 
 % The poor scores achieved by THRESH highlight the difficulty of the task. 
-\algname{} with \emph{Average} linkage, representing one of the new algorithms introduced by our generalized framework, significantly outperformed all other previously proposed agglomerative methods like GAEC, Greedy Fixation (using \emph{Sum} linkage) or Mutex Watershed (using \emph{Abs Max} linkage). The remarkably competitive performances of this simple parameter-free agglomerative algorithm are also reported by Table \ref{tab:results_cremi_test} that represents the current leader-board of the challenge: all entries, apart from \algname{}, employ superpixel-based post-processing pipelines, several of which rely on the complex multicut problem. 
-In the comparison shown in Table \ref{tab:results_cremi_train}, \algname{} with \emph{Average} linkage even achieved significantly superior scores compared to other methods based on WSDT superpixels.
+\algname{} with \emph{Average} linkage, representing one of the new algorithms introduced by our generalized framework, significantly outperformed all other previously proposed agglomerative methods like GAEC, Greedy Fixation (using \emph{Sum} linkage) or Mutex Watershed (using \emph{Abs Max} linkage). The competitive performances of this simple parameter-free agglomerative algorithm are also reported by Table \ref{tab:results_cremi_test} that represents the current leader-board of the challenge: all entries, apart from \algname{}, employ superpixel-based post-processing pipelines, several of which rely on the complex multicut problem. 
+In the comparison shown in Table \ref{tab:results_cremi_train}, \algname{} with \emph{Average} linkage even achieved superior scores compared to other methods based on WSDT superpixels.
 This shows that this method offers a simple and successful approach growing clusters starting directly from pixels and had the advantage of avoiding potential errors in the superpixel generation. In fact, generating for example good quality WSDT superpixels requires to tune several parameters.   
 %Our hypothesis to explain this superior performances is that, currently, there are not good ways of generating superpixels that can take the long-range predictions of the CNN into account. 
 %It is of course possible to make use of long-range predictions to compute the edge weights of the superpixel graph, but, in our experience, this process usually involves a lot of parameter tuning and trial and error. 
 Moreover, superpixel generation does not usually make use of the long-range predictions of the CNN and, in our experiments, using them to compute the weights of the edges in the superpixel graph did not change the final scores.
-In Appendix \ref{sec:appendix_exps_full_cremi}, we provide more details about how we scaled up \algname{} to the full datasets and present an extended version of Table \ref{tab:results_cremi_train} including all tested \algname{} linkage.
 Fig. \ref{fig:cremi_comparison} highlights some failure cases of the different agglomerative algorithms included in our framework.
+In Appendix \ref{sec:appendix_exps_full_cremi}, we provide more details about how we scaled up \algname{} to the full datasets. Appendix Table \ref{tab:extended_results_cremi} lists the performances and the run-times for all tested \algname{} linkage.
+
 
 \begin{figure}[t]
         \centering
-\begin{minipage}[t]{0.48\textwidth}
+\begin{minipage}[t]{0.56\textwidth}
 % \begin{table}
     \centering
     \scriptsize
@@ -27,13 +28,13 @@ Fig. \ref{fig:cremi_comparison} highlights some failure cases of the different a
          % & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
          & \makecell[l]{\algname{}\\ Linkage} & \makecell{Cremi-Score \\(lower is better)} \\ \midrule 
          % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
-\textbf{\algname{}} & \textbf{Average}& \textbf{0.226}  \\
-Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.282 \\
-DTWS + MC & -& 0.310 \\
-DTWS + LMC & -& 0.317 \\
-Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & 0.322 \\
-GAEC \cite{keuper2015efficient} & Sum & 0.334 \\
-THRESH &-& 1.521 \\ 
+\textbf{Our UNet + \algname{} Avg-Link} & \textbf{Average}& \textbf{0.226}  \\
+Our UNet + Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.282 \\
+Our UNet + DTWS + MC & -& 0.310 \\
+Our UNet + DTWS + LMC & -& 0.317 \\
+Our UNet + Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & 0.322 \\
+Our UNet + GAEC \cite{keuper2015efficient} & Sum & 0.334 \\
+Our UNet + THRESH &-& 1.521 \\ 
 % \textbf{\algname{}} & \textbf{Average}& \textbf{0.936 $\pm$ 0.004}  \\
 % Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.906 $\pm$ 0.022 \\
 % DTWS + LMC & -& 0.903 $\pm$ 0.016 \\
@@ -47,17 +48,17 @@ THRESH &-& 1.521 \\
 % % DTWS + \algname{} & Average& \TODO{} \\
 % % DTWS  & -& 0.010 $\pm$ 0.003\\
         \end{tabular}
-    \captionof{table}{Cremi-Scores achieved by different post-processing methods. Scores are averaged over the three CREMI training samples}
+    \captionof{table}{Cremi-Scores achieved by different post-processing methods. Scores are averaged over the three CREMI training datasets}
     \label{tab:results_cremi_train}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.48\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
     \centering
     \scriptsize
         \begin{tabular}[t]{l|c}
          & \makecell{Cremi-Score \\(lower is better)}  \\ \midrule
-\textbf{Our UNet + DTWS + LMC} &  \textbf{0.221}\\
-PNI-UNet \UPDATE{[REF?]} & 0.228 \\
-Our UNet + \algname{} Avg-Linkage & 0.241 \\
+Our UNet + DTWS + LMC &  0.221\\
+PNI-UNet \cite{lee2017superhuman} & 0.228 \\
+\textbf{Our UNet + \algname{} Avg-Link} & \textbf{0.241} \\
 MALA-UNet + MC \cite{funke2018large} & 0.276 \\
 CRUNet \cite{zeng2017deepem3d} & 0.566  \\
 LFC \cite{parag2017anisotropic} & 0.616  \\
@@ -69,7 +70,7 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
 % LFC \cite{parag2017anisotropic} & 0.616 & \\
         \end{tabular}
         \vspace*{1.1em}
-    \captionof{table}{Current leaderboard of the CREMI challenge with the Cremi-Scores averaged over the three test samples}
+    \captionof{table}{Current published entries of the CREMI challenge \cite{cremiChallenge} leaderboard on the three test datasets}
     \label{tab:results_cremi_test}
 \end{minipage}
 \end{figure}
@@ -131,7 +132,9 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
 
 
 \textbf{Noise experiments }  Additionally, we run a set of experiments where the CNN predictions are perturbed by noise, in order to highlight the properties of each \algname{} algorithm and perform an in-depth comparison that is as quantitative as possible. Appendix \ref{sec:appendix_noise_gen} introduces the type of spatially correlated noise that allowed us to perturb the CNN outputs by introducing simulated additional artifacts like missing or false boundary evidences.  
-Fig. \ref{fig:noise_plots} summarize our 12000 noise experiments: we focused on the best performing linkage criteria, i.e. \emph{Average}, \emph{Sum} and \emph{Abs Max}, and tested them with different values of noise. %, both with and without use of long-range connections in the grid-graph. % In Fig. \ref{fig:noise_plots}, we used a merge-biased noise decreasing boundary evidence. See Fig. \ref{fig:noise_split} in Appendix for a split-biased version. 
+Fig. \ref{fig:noise_plots} summarize our 12000 noise experiments: we focused on the best performing linkage criteria, i.e. \emph{Average}, \emph{Sum} and \emph{Abs Max}, and tested them with different values of noise. 
+In these experiments, we also want to test how beneficial it is to use long-range CNN predictions in the agglomeration. Thus, we perform a set of simulations without adding long-range connections to the grid-graph and another set where we introduce them with a 10\% probability\footnote{We also performed simulations adding all the long-range predictions given by CNN, but we did not note major differences with the case with only 10\% of them. Adding this small portion is usually sufficient to improve the scores.}.
+%, both with and without use of long-range connections in the grid-graph. % In Fig. \ref{fig:noise_plots}, we used a merge-biased noise decreasing boundary evidence. See Fig. \ref{fig:noise_split} in Appendix for a split-biased version. 
 
 \textbf{Average and Abs Max linkage } Our findings confirm that \algname{} with \emph{Average} linkage criterion represents the most robust algorithm tested and the one that benefits the most from using the long-range CNN predictions. On the other hand, it is not a surprise that the \emph{Abs Max} statistic proposed by \cite{wolf2018mutex} is less robust to noise than the \emph{Average} linkage, but, as we show in the Appendix Table \ref{tab:extended_results_cremi}, \emph{Abs Max} represents a valid and considerably faster option. 
 Adding long-range connections to the graph is generally helpful, but when many of them carry repulsive weights, then \algname{} with cannot-link constraints shows a clear tendency to over-cluster.    

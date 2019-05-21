@@ -211,27 +211,27 @@ Then, according to Eq. \ref{eq:def_abs_max}, the new merged cluster $uv$ and $t$
 But this case can never happen, since if $|w_{vt}|>|w_{ut}|$ then clusters $v$ and $t$ are merged before clusters $u$ and $t$ are constrained.  
 \end{proof}
 
-\subsection{Multicut and correlation clustering } 
-\TODO{Omit completely?} For any clustering $\Pi$ of $\mathcal{G}$, we define as $E^{\mathrm{internal}}_\Pi$ the set of edges linking nodes in the same cluster, and as $E_\Pi^{\mathrm{external}}$ the complementary set of edges whose incident nodes belong to distinct clusters:
-\begin{equation}
-E_\Pi^{\mathrm{internal}} \equiv \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \qquad E^{\mathrm{external}}_\Pi \equiv E \setminus E^{\mathrm{internal}}_\Pi.
-\end{equation}
-% \begin{align}
-% E_\Pi^0 &= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \\
-% E^1_\Pi &= E \setminus E^0_\Pi.
-% \end{align}
-The set of edges $E_\Pi^{\mathrm{external}}$ is known as the \emph{multicut} of $\mathcal{G}$ w.r.t. clustering $\Pi$. The instance of the NP-hard \emph{weighted correlation clustering/multicut problem} 
-% w.r.t. $\mathcal{G}(V,E,\cost)$ 
-corresponds to finding the partitioning that optimally balance attraction and repulsion in the graph and is given by the following binary integer program \cite{kappes2011globally,chopra1991multiway,andres2015lifting}:
-\begin{equation}\label{eq:multicut_obj}
-% \min_\Pi \texttt{MC}(\Pi) \equiv
- \min_\Pi \sum_{e\in E} \cost_e x_e^\Pi,  \qquad \text{where} \quad x^\Pi_e = 
- \begin{cases} 
- 1 & \text{if } e\in E^{\mathrm{external}}_\Pi \\
- 0 & \text{otherwise}.
- \end{cases}
-\end{equation}
-In the next chapters we will use this objective as measure of how balanced a clustering is.
+% \subsection{Multicut and correlation clustering } 
+% \TODO{Omit completely?} For any clustering $\Pi$ of $\mathcal{G}$, we define as $E^{\mathrm{internal}}_\Pi$ the set of edges linking nodes in the same cluster, and as $E_\Pi^{\mathrm{external}}$ the complementary set of edges whose incident nodes belong to distinct clusters:
+% \begin{equation}
+% E_\Pi^{\mathrm{internal}} \equiv \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \qquad E^{\mathrm{external}}_\Pi \equiv E \setminus E^{\mathrm{internal}}_\Pi.
+% \end{equation}
+% % \begin{align}
+% % E_\Pi^0 &= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \\
+% % E^1_\Pi &= E \setminus E^0_\Pi.
+% % \end{align}
+% The set of edges $E_\Pi^{\mathrm{external}}$ is known as the \emph{multicut} of $\mathcal{G}$ w.r.t. clustering $\Pi$. The instance of the NP-hard \emph{weighted correlation clustering/multicut problem} 
+% % w.r.t. $\mathcal{G}(V,E,\cost)$ 
+% corresponds to finding the partitioning that optimally balance attraction and repulsion in the graph and is given by the following binary integer program \cite{kappes2011globally,chopra1991multiway,andres2015lifting}:
+% \begin{equation}\label{eq:multicut_obj}
+% % \min_\Pi \texttt{MC}(\Pi) \equiv
+%  \min_\Pi \sum_{e\in E} \cost_e x_e^\Pi,  \qquad \text{where} \quad x^\Pi_e = 
+%  \begin{cases} 
+%  1 & \text{if } e\in E^{\mathrm{external}}_\Pi \\
+%  0 & \text{otherwise}.
+%  \end{cases}
+% \end{equation}
+% In the next chapters we will use this objective as measure of how balanced a clustering is.
 
 \subsection{Predicting signed edge weights with a CNN}
 Our CNN model outputs affinities in the form of pseudo-probabilities $p:E \rightarrow [0,1]$, where $p=0$ represents a boundary evidence. In order to use them as input of the algorithms in our framework, we mapped them to positive and negative values\footnote{Note that in general attractive and repulsive interactions $w^+$ and $w^-$ can be independently estimated with different classifiers.}. The most common approaches use \emph{additive} \cite{ailon2008aggregating} or \emph{logarithmic} \cite{finkel2008enforcing,andres2012globally} mappings:
@@ -267,28 +267,36 @@ We use L2 loss and Adam optimizer to train the network. % \TODO{Field of view?}
  \paragraph{Enforcing local merge} In 2D images of urban-scenes, due to partial occlusion, one object instance can be given by multiple components that are not directly connected in the image plane. This is not the case in neuron-segmentation, where each neuron should be given by a single 3D connected component in the volume. In order to enforce it, we modified the implementation of \algname{} so that two clusters are merged only when they represent two adjacent supervoxels in the 3D volume and if this condition is not satisfied, the merge is postponed until there is a direct connection. This then avoids the introduction of ``air-bridges'' between segments due to attractive long-range connections in the initial voxel grid-graph.
  This approach achieved superior performances to the one proposed in \cite{wolf2018mutex}, where all long-range connections in the grid-graph are associated to a negative repulsive edge weight.
 
-\paragraph{Extended results} For all algorithms, the chosen value of bias parameter was $\beta = 0$. \TODO{Finish}
-
 \begin{table}[t]
 \centering
     \footnotesize
 % \begin{minipage}[T]{0.85\textwidth}
 %     \centering
-        \begin{tabular}{l|c|c|c|c}
-          \algname{} linkage & \makecell{Cremi-Score\\(higher better)}  & \makecell{Rand-Score\\(higher better)} & \makecell{VI-merge\\(lower better)} & \makecell{Runtime\\(lower better)} \\ \midrule
+        \begin{tabular}{l|c|c|c|c|c}
+          \algname{} linkage & \makecell{Cremi-Score\\(higher better)}  & \makecell{Rand-Score\\(higher better)} & \makecell{VI-merge\\(lower better)} & \makecell{VI-split\\(lower better)} & \makecell{Runtime\\(lower better)} \\ \midrule
           % Pipeline & method & \textsc{No} & \textsc{Yes} \\ 
-Average & \textbf{0.226} & \textbf{0.936} & 0.315 & 3.49 $\cdot$ 10$^4$ \\
-Sum + CLC & 0.282 & 0.906 & 0.358 & 4.64 $\cdot$ 10$^4$ \\
-Abs Max & 0.322 & 0.897 & 0.286 & 1.24 $\cdot$ 10$^4$ \\
-Max + CLC & 0.324 & 0.893 & 0.292 & 6.31 $\cdot$ 10$^4$ \\
-Sum & 0.334 & 0.872 & 0.461 & 4.74 $\cdot$ 10$^4$ \\
-Average + CLC & 0.563 & 0.772 & 0.259 & 2.95 $\cdot$ 10$^4$ \\
-Min & 2.522 & 0.030 & 0.197 & 2.97 $\cdot$ 10$^3$ \\
-Min + CLC & 2.522 & 0.030 & 0.197 & 4.77 $\cdot$ 10$^3$ \\
-Max & 2.626 & 0.028 & 7.069 & \textbf{6.04 $\cdot$ 10$^\mathbf{2}$} \\
+
+% Average & 0.226 & 0.936 & 0.315 & 0.494 & 
+% Sum + CLC & 0.282 & 0.906 & 0.358 & 0.510 & 
+% Abs Max & 0.322 & 0.897 & 0.286 & 0.735 & 
+% Max + CLC & 0.324 & 0.893 & 0.292 & 0.698 & 
+% Sum & 0.334 & 0.872 & 0.461 & 0.444 & 
+% Average + CLC & 0.563 & 0.772 & 0.259 & 1.142 & 
+% Min & 2.522 & 0.030 & 0.197 & 6.365 & 
+% Min + CLC & 2.522 & 0.030 & 0.197 & 6.365 & 
+% Max & 2.626 & 0.028 & 7.069 & 0.026 & 
+Average & \textbf{0.226} & \textbf{0.936} & 0.315 & 0.494 & 3.49 $\cdot$ 10$^4$ \\
+Sum + CLC \cite{levinkov2017comparative} & 0.282 & 0.906 & 0.358 & 0.510 & 4.64 $\cdot$ 10$^4$ \\
+Abs Max \cite{wolf2018mutex} & 0.322 & 0.897 & 0.286 & 0.735 & 1.24 $\cdot$ 10$^4$ \\
+Max + CLC & 0.324 & 0.893 & 0.292 & 0.698 & 6.31 $\cdot$ 10$^4$ \\
+Sum \cite{keuper2015efficient} & 0.334 & 0.872 & 0.461 & 0.444 & 4.74 $\cdot$ 10$^4$ \\
+Average + CLC & 0.563 & 0.772 & 0.259  & 1.142 & 2.95 $\cdot$ 10$^4$ \\
+Min & 2.522 & 0.030 & \textbf{0.197} & 6.365 & 2.97 $\cdot$ 10$^3$ \\
+Min + CLC & 2.522 & 0.030 & \textbf{0.197}  & 6.365 & 4.77 $\cdot$ 10$^3$ \\
+Max & 2.626 & 0.028 & 7.069 & \textbf{0.026} & \textbf{6.04 $\cdot$ 10$^\mathbf{2}$} \\
         \end{tabular}
         \vspace*{1.1em}
-    \caption{Performances achieved by different versions of \algname{} on the CREMI 2016 training set. CLC stands for cannot-link constraints}
+    \caption{Performances achieved by different versions of \algname{} on the CREMI 2016 training set. CLC stands for cannot-link constraints. For all algorithms, the chosen value of bias parameter was $\beta = 0$.}
     \label{tab:extended_results_cremi}
 \end{table}
 % \hfill
@@ -338,7 +346,7 @@ The experiments summarized in Fig. \ref{fig:noise_plots} were performed in the f
 \begin{minipage}[T]{0.6\textwidth}
 \centering
         \includegraphics[width=0.88\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
-    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the under-clustering biased version $\tilde{F}_{+}$ and c) the over-clustering biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). \TODO{Overlay raw-data}
+    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the under-clustering biased version $\tilde{F}_{+}$ and c) the over-clustering biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). 
     %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
     %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
     }
