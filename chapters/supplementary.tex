@@ -267,7 +267,42 @@ We use L2 loss and Adam optimizer to train the network. % \TODO{Field of view?}
  \paragraph{Enforcing local merge} In 2D images of urban-scenes, due to partial occlusion, one object instance can be given by multiple components that are not directly connected in the image plane. This is not the case in neuron-segmentation, where each neuron should be given by a single 3D connected component in the volume. In order to enforce it, we modified the implementation of \algname{} so that two clusters are merged only when they represent two adjacent supervoxels in the 3D volume and if this condition is not satisfied, the merge is postponed until there is a direct connection. This then avoids the introduction of ``air-bridges'' between segments due to attractive long-range connections in the initial voxel grid-graph.
  This approach achieved superior performances to the one proposed in \cite{wolf2018mutex}, where all long-range connections in the grid-graph are associated to a negative repulsive edge weight.
 
-\paragraph{Extended results} \TODO{present extended table}
+\paragraph{Extended results} For all algorithms, the chosen value of bias parameter was $\beta = 0$. \TODO{Finish}
+
+\begin{table}[t]
+\centering
+    \footnotesize
+% \begin{minipage}[T]{0.85\textwidth}
+%     \centering
+        \begin{tabular}{l|c|c|c|c}
+          \algname{} linkage & \makecell{Cremi-Score\\(higher better)}  & \makecell{Rand-Score\\(higher better)} & \makecell{VI-merge\\(lower better)} & \makecell{Runtime\\(lower better)} \\ \midrule
+          % Pipeline & method & \textsc{No} & \textsc{Yes} \\ 
+Average & \textbf{0.226} & \textbf{0.936} & 0.315 & 3.49 $\cdot$ 10$^4$ \\
+Sum + CLC & 0.282 & 0.906 & 0.358 & 4.64 $\cdot$ 10$^4$ \\
+Abs Max & 0.322 & 0.897 & 0.286 & 1.24 $\cdot$ 10$^4$ \\
+Max + CLC & 0.324 & 0.893 & 0.292 & 6.31 $\cdot$ 10$^4$ \\
+Sum & 0.334 & 0.872 & 0.461 & 4.74 $\cdot$ 10$^4$ \\
+Average + CLC & 0.563 & 0.772 & 0.259 & 2.95 $\cdot$ 10$^4$ \\
+Min & 2.522 & 0.030 & 0.197 & 2.97 $\cdot$ 10$^3$ \\
+Min + CLC & 2.522 & 0.030 & 0.197 & 4.77 $\cdot$ 10$^3$ \\
+Max & 2.626 & 0.028 & 7.069 & \textbf{6.04 $\cdot$ 10$^\mathbf{2}$} \\
+        \end{tabular}
+        \vspace*{1.1em}
+    \caption{Performances achieved by different versions of \algname{} on the CREMI 2016 training set. CLC stands for cannot-link constraints}
+    \label{tab:extended_results_cremi}
+\end{table}
+% \hfill
+% \begin{minipage}[T]{0.6\textwidth}
+% \centering
+%         \includegraphics[width=0.88\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
+%     \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the merge-biased version $\tilde{F}_{+}$ and c) the split-biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). \TODO{Overlay raw-data}
+%     %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
+%     %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
+%     }
+%     \label{fig:noisy_affs}
+% \end{minipage}
+% \end{figure}
+
 
 \subsection{Experiments on neuron segmentation adding noise to CNN predictions} \label{sec:appendix_noise_gen}
 
@@ -292,10 +327,6 @@ Thus, we used Perlin noise\footnote{In our experiments, we used an open-source v
 \tilde{F}_{\pm}(x;\mathcal{K})=F(x)\pm\big|\mathcal{K}\cdot\max\left(\pm N(x),0\right)\big|,
 \end{equation}
 where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}\in \mathbb{R}^+$ is a positive factor representing the amount of added noise. $\tilde{F}_{+}(x;\mathcal{K})$ represents then a merge-biased prediction, such that the probability for two pixels to be in the same cluster is increased only if $N(x)>0$ (see Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}b}), whereas $\tilde{F}_{-}(x;\mathcal{K})$ is a split-biased prediction with decreased probabilities when $N(x)<0$ (Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}c}). \TODO{Add impl. details}
-
-\begin{figure}[b]
-\end{figure}
-
 % \multirow{2}{*}{Sum} &No & 0.55  & {\color{Orange} 0.313 } & {\color{Orange} 0.511 } \\
 %  &Yes & 0.55  & {\color{Orange} 0.319 } & {\color{Orange} 0.527 } \\\midrule
 % % Abs. max. &- & 0.45  & {\color{Orange} 0.321 } & {\color{ForestGreen} 0.531 } \\\midrule
@@ -308,6 +339,15 @@ where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}
 % \cite{liu2018affinity} &-  & -  & {\color{ForestGreen} 0.341 } & {\color{ForestGreen} 0.547 } \\
 \begin{figure}[t]
 \centering
+\begin{minipage}[T]{0.6\textwidth}
+\centering
+        \includegraphics[width=0.88\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
+    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the merge-biased version $\tilde{F}_{+}$ and c) the split-biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). \TODO{Overlay raw-data}
+    %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
+    %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
+    }
+    \label{fig:noisy_affs}
+\end{minipage}\hfill
 \begin{minipage}[T]{0.35\textwidth}
     \centering
     \footnotesize
@@ -324,17 +364,8 @@ where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}
           Min & 0.00 & 0.50 \\
           Min + CLC & 0.00 & 0.50 \\
         \end{tabular}
-    \captionof{table}{Average Precision (AP) scores achieved by different versions of \algname{} and chosen bias parameters $\beta$ on the cityscapes validation set. A bias value $\beta=0$ returns one single cluster.}
+    \captionof{table}{Average Precision (AP) scores achieved by different versions of \algname{} and chosen bias parameters $\beta$ on the cityscapes validation set. A bias value $\beta=0$ returns one single cluster. CLC stands for cannot-link constraints}
     \label{tab:extended_results_cityscapes_val}
-\end{minipage}\hfill
-\begin{minipage}[T]{0.6\textwidth}
-\centering
-        \includegraphics[width=0.88\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
-    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the merge-biased version $\tilde{F}_{+}$ and c) the split-biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). \TODO{Overlay raw-data}
-    %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
-    %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
-    }
-    \label{fig:noisy_affs}
 \end{minipage}
 \end{figure}
 

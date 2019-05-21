@@ -24,29 +24,36 @@ Fig. \ref{fig:cremi_comparison} highlights some failure cases of the different a
         % \toprule
         % & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
          % & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
-         & \makecell[l]{\algname{}\\ Linkage} & \makecell{Rand-Score \\(higher is better)} \\ \midrule 
+         & \makecell[l]{\algname{}\\ Linkage} & \makecell{Cremi-Score \\(lower is better)} \\ \midrule 
          % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
-\textbf{\algname{}} & \textbf{Average}& \textbf{0.936 $\pm$ 0.004}  \\
-Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.906 $\pm$ 0.022 \\
-DTWS + LMC & -& 0.903 $\pm$ 0.016 \\
-DTWS + MC & -& 0.903 $\pm$ 0.017 \\
-% DTWS + avgHC &-& \\
-% DTWS + MC (SR)& -& 0.900 $\pm$ 0.019 \\
-% DTWS + LMC (SR)& -& 0.898 $\pm$ 0.017 \\
-Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & 0.897 $\pm$ 0.012 \\
-GAEC \cite{keuper2015efficient} & Sum & 0.872 $\pm$ 0.028 \\
-THRESH &-& 0.221  $\pm$ 0.067 \\ 
-% DTWS + \algname{} & Average& \TODO{} \\
-% DTWS  & -& 0.010 $\pm$ 0.003\\
+\textbf{\algname{}} & \textbf{Average}& \textbf{0.226}  \\
+Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.282 \\
+DTWS + MC & -& 0.310 \\
+DTWS + LMC & -& 0.317 \\
+Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & 0.322 \\
+GAEC \cite{keuper2015efficient} & Sum & 0.334 \\
+THRESH &-& 1.521 \\ 
+% \textbf{\algname{}} & \textbf{Average}& \textbf{0.936 $\pm$ 0.004}  \\
+% Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.906 $\pm$ 0.022 \\
+% DTWS + LMC & -& 0.903 $\pm$ 0.016 \\
+% DTWS + MC & -& 0.903 $\pm$ 0.017 \\
+% % DTWS + avgHC &-& \\
+% % DTWS + MC (SR)& -& 0.900 $\pm$ 0.019 \\
+% % DTWS + LMC (SR)& -& 0.898 $\pm$ 0.017 \\
+% Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & 0.897 $\pm$ 0.012 \\
+% GAEC \cite{keuper2015efficient} & Sum & 0.872 $\pm$ 0.028 \\
+% THRESH &-& 0.221  $\pm$ 0.067 \\ 
+% % DTWS + \algname{} & Average& \TODO{} \\
+% % DTWS  & -& 0.010 $\pm$ 0.003\\
         \end{tabular}
-    \captionof{table}{Rand-Scores achieved by different post-processing methods on CREMI challenge training predictions}
+    \captionof{table}{Cremi-Scores achieved by different post-processing methods. Scores are averaged over the three CREMI training samples}
     \label{tab:results_cremi_train}
 \end{minipage}\hfill
 \begin{minipage}[t]{0.48\textwidth}
     \centering
     \scriptsize
         \begin{tabular}[t]{l|c}
-         & \makecell{CREMI Score \\(lower is better)}  \\ \midrule
+         & \makecell{Cremi-Score \\(lower is better)}  \\ \midrule
 Our UNet + DTWS + LMC &  \textbf{0.221}\\
 PNI-UNet & 0.228 \\
 Our UNet + \algname{} Avg-Linkage & 0.241 \\
@@ -61,7 +68,7 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
 % LFC \cite{parag2017anisotropic} & 0.616 & \\
         \end{tabular}
         \vspace*{1.1em}
-    \captionof{table}{Current leaderboard of the CREMI challenge}
+    \captionof{table}{Current leaderboard of the CREMI challenge with the Cremi-Scores averaged over the three test samples}
     \label{tab:results_cremi_test}
 \end{minipage}
 \end{figure}
@@ -125,7 +132,7 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
 \textbf{Noise experiments }  Additionally, we run a set of experiments where the CNN predictions are perturbed by noise, in order to highlight the properties of each \algname{} algorithm and perform an in-depth comparison that is as quantitative as possible. Appendix \ref{sec:appendix_noise_gen} introduces the type of spatially correlated noise that allowed us to perturb the CNN outputs by introducing simulated additional artifacts like missing or false boundary evidences.  
 Fig. \ref{fig:noise_plots} summarize our 12000 noise experiments: we focused on the best performing linkage criteria, i.e. \emph{Average}, \emph{Sum} and \emph{Abs Max}, and tested them with different values of noise. %, both with and without use of long-range connections in the grid-graph. % In Fig. \ref{fig:noise_plots}, we used a merge-biased noise decreasing boundary evidence. See Fig. \ref{fig:noise_split} in Appendix for a split-biased version. 
 
-\textbf{Average and Abs Max linkage } Our findings confirm that \algname{} with \emph{Average} linkage criterion represents the most robust algorithm tested and the one that benefits the most from using the long-range CNN predictions. On the other hand, it is not a surprise that the \emph{Abs Max} statistic proposed by \cite{wolf2018mutex} is less robust to noise than the \emph{Average} linkage, but, as we show in the Appendix \TODO{Table \ref{tab:full_cremi_results}}, \emph{Abs Max} represents a valid and considerably faster option. 
+\textbf{Average and Abs Max linkage } Our findings confirm that \algname{} with \emph{Average} linkage criterion represents the most robust algorithm tested and the one that benefits the most from using the long-range CNN predictions. On the other hand, it is not a surprise that the \emph{Abs Max} statistic proposed by \cite{wolf2018mutex} is less robust to noise than the \emph{Average} linkage, but, as we show in the Appendix Table \ref{tab:extended_results_cremi}, \emph{Abs Max} represents a valid and considerably faster option. 
 Adding long-range connections to the graph is generally helpful, but when many of them carry repulsive weights, then \algname{} with cannot-link constraints shows a clear tendency to over-cluster.    
 
 \textbf{Sum linkage } 
