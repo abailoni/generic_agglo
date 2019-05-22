@@ -70,7 +70,7 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
 % LFC \cite{parag2017anisotropic} & 0.616 & \\
         \end{tabular}
         \vspace*{1.1em}
-    \captionof{table}{Current published entries of the CREMI challenge \cite{cremiChallenge} leaderboard on the three test datasets}
+    \captionof{table}{Current published entries of the CREMI challenge leaderboard \cite{cremiChallenge} on the three test datasets}
     \label{tab:results_cremi_test}
 \end{minipage}
 \end{figure}
@@ -109,7 +109,7 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
         \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.20in,clip]{./figs/noise_plots/over_segment_plots_1.pdf}
         \caption{With long-range predictions: $p_{\mathrm{long}}=0.1$} \label{fig:merge_noise_with_long_range}
     \end{subfigure}
-\caption{\algname{} sensitivity to noise:  average linkage proved to be the most robust. Performances are given by Rand-Score (higher is better) depending on the amount of noise added to the CNN predictions.  Solid lines represent median values over 30 experiments. Values between the 25th and the 75th percentile are shown in shade areas. The two set of experiments using under- and over-clustering noise are summarized in the plots at the top and at the bottom, respectively (see Appendix \ref{sec:appendix_noise_gen} for more details). For each experiment, some of the long-range CNN predictions were randomly selected and added them to pixel grid-graph with probability $p_{\mathrm{long}}$.
+\caption{\algname{} sensitivity to noise:  average linkage proved to be the most robust. Performances are given by Rand-Score (higher is better) depending on the amount of noise added to the CNN predictions.  Solid lines represent median values over 30 experiments. Values between the 25th and the 75th percentile are shown in shade areas. The two set of experiments using under- and over-clustering noise are summarized in the plots at the top and at the bottom, respectively (see Appendix \ref{sec:appendix_noise_gen} for more details). For each experiment, some of the long-range CNN predictions were randomly selected with probability $p_{\mathrm{long}}$ and added as long-range edges in the pixel grid-graph.
 %\textbf{Bottom}: Multicut objective (Eq. \ref{eq:multicut_obj}), measuring how balanced the final clusterings are (lower is better); for a clearer comparison, an offset is added to the energy values, so that the method achieving the lowest energy is always assigned to value zero. 
 }\label{fig:noise_plots}
 \end{figure}
@@ -132,8 +132,8 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
 
 
 \textbf{Noise experiments }  Additionally, we run a set of experiments where the CNN predictions are perturbed by noise, in order to highlight the properties of each \algname{} algorithm and perform an in-depth comparison that is as quantitative as possible. Appendix \ref{sec:appendix_noise_gen} introduces the type of spatially correlated noise that allowed us to perturb the CNN outputs by introducing simulated additional artifacts like missing or false boundary evidences.  
-Fig. \ref{fig:noise_plots} summarize our 12000 noise experiments: we focused on the best performing linkage criteria, i.e. \emph{Average}, \emph{Sum} and \emph{Abs Max}, and tested them with different values of noise. 
-In these experiments, we also want to test how beneficial it is to use long-range CNN predictions in the agglomeration. Thus, we perform a set of simulations without adding long-range connections to the grid-graph and another set where we introduce them with a 10\% probability\footnote{We also performed simulations adding all the long-range predictions given by CNN, but we did not note major differences with the case with only 10\% of them. Adding this small portion is usually sufficient to improve the scores.}.
+Fig. \ref{fig:noise_plots} summarize our 12000 noise experiments: we focus on the best performing linkage criteria, i.e. \emph{Average}, \emph{Sum} and \emph{Abs Max}, and test them with different values of noise. 
+In these experiments, we also want to assess how beneficial it is to use long-range CNN predictions in the agglomeration. Thus, we perform a set of simulations without adding long-range connections to the grid-graph and another set where we introduce them with a 10\% probability\footnote{We also performed simulations adding all the long-range predictions given by the CNN model, but we did not note major differences with the case using only 10\% of them. Adding this small portion is usually sufficient to improve the scores.}.
 %, both with and without use of long-range connections in the grid-graph. % In Fig. \ref{fig:noise_plots}, we used a merge-biased noise decreasing boundary evidence. See Fig. \ref{fig:noise_split} in Appendix for a split-biased version. 
 
 \textbf{Average and Abs Max linkage } Our findings confirm that \algname{} with \emph{Average} linkage criterion represents the most robust algorithm tested and the one that benefits the most from using the long-range CNN predictions. On the other hand, it is not a surprise that the \emph{Abs Max} statistic proposed by \cite{wolf2018mutex} is less robust to noise than the \emph{Average} linkage, but, as we show in the Appendix Table \ref{tab:extended_results_cremi}, \emph{Abs Max} represents a valid and considerably faster option. 
