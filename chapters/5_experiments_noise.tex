@@ -3,15 +3,11 @@
 
 \subsection{Results and discussion}\label{sec:results}
 % \subsection{In-depth comparison of different linkage criteria for \algname{}} 
-\textbf{Comparison results } Table \ref{tab:results_cremi_train} shows how \algname{} compares to other tested post-processing methods applied to the predictions of our model. 
+\textbf{Comparison results } Table \ref{tab:results_cremi_train} shows how the agglomerative algorithms derived from our framework compare to each other. For a simple baseline, we also include a segmentation produced by thresholding the affinity predictions (THRESH).
 % The poor scores achieved by THRESH highlight the difficulty of the task. 
-\algname{} with \emph{Average} linkage, representing one of the new algorithms introduced by our generalized framework, significantly outperformed all other previously proposed agglomerative methods like GAEC, Greedy Fixation (using \emph{Sum} linkage) or Mutex Watershed (using \emph{Abs Max} linkage). The competitive performances of this simple parameter-free agglomerative algorithm are also reported by Table \ref{tab:results_cremi_test} that represents the current leader-board of the challenge: all entries, apart from \algname{}, employ superpixel-based post-processing pipelines, several of which rely on the complex multicut problem. 
-In the comparison shown in Table \ref{tab:results_cremi_train}, \algname{} with \emph{Average} linkage even achieved superior scores compared to other methods based on WSDT superpixels.
-This shows that this method offers a simple and successful approach growing clusters starting directly from pixels and had the advantage of avoiding potential errors in the superpixel generation. In fact, generating for example good quality WSDT superpixels requires to tune several parameters.   
-%Our hypothesis to explain this superior performances is that, currently, there are not good ways of generating superpixels that can take the long-range predictions of the CNN into account. 
-%It is of course possible to make use of long-range predictions to compute the edge weights of the superpixel graph, but, in our experience, this process usually involves a lot of parameter tuning and trial and error. 
-Moreover, superpixel generation does not usually make use of the long-range predictions of the CNN and, in our experiments, using them to compute the weights of the edges in the superpixel graph did not change the final scores.
-Fig. \ref{fig:cremi_comparison} highlights some failure cases of the different agglomerative algorithms included in our framework.
+\algname{} with \emph{Average} linkage, representing one of the new algorithms introduced by our generalized framework, significantly outperformed all other previously proposed agglomerative methods like GAEC, Greedy Fixation (using \emph{Sum} linkage) or Mutex Watershed (using \emph{Abs Max} linkage). The competitive performances of this simple parameter-free agglomerative algorithm are also reported by Table \ref{tab:results_cremi_test} that represents the current leader-board of the challenge: all entries, apart from \algname{}, employ superpixel-based post-processing pipelines, several of which rely on the complex multicut problem of \cite{beier2017multicut} that uses several random forests to predict graph edge weights, relying not only on information derived from affinity maps but also raw data and shape information.
+Note that the test volumes contain several imaging artifacts that make segmentation particularly challenging and might profit from more robust edge statistics of super-pixel based approaches.
+On the other hand, the fact that our algorithm can operate on pixels directly removes the parameter tuning necessary to obtain good super-pixels and can also avoid errors that result from wrong superpixels that cannot be fixed during later agglomeration.
 In Appendix \ref{sec:appendix_exps_full_cremi}, we provide more details about how we scaled up \algname{} to the full datasets. Appendix Table \ref{tab:extended_results_cremi} lists the performances and the run-times for all tested \algname{} linkage.
 
 
@@ -22,19 +18,24 @@ In Appendix \ref{sec:appendix_exps_full_cremi}, we provide more details about ho
     \centering
     \scriptsize
     % \begin{subtable}[t!]{0.5\textwidth}\centering
-        \begin{tabular}[t]{l|l|c}
+        \begin{tabular}[t]{l|c}
         % \toprule
         % & \multicolumn{2}{c}{\thead{Add Cannot-Link Constraints:}} \\
          % & \multicolumn{1}{c}{\thead{\textsc{No}}} & \multicolumn{1}{c}{\thead{\textsc{Yes}}} \\ \midrule
-         & \makecell[l]{\algname{}\\ Linkage} & \makecell{CREMI-Score \\(lower is better)} \\ \midrule 
+          & \makecell{CREMI-Score \\(lower is better)} \\ \midrule 
          % & \multicolumn{1}{c}{\thead{$\beta$}}  & \thead{AP} & \multicolumn{1}{c}{\thead{$\beta$}} & \thead{AP} \\ \midrule\midrule
-\textbf{Our UNet + \algname{} Avg-Link} & \textbf{Average}& \textbf{0.226}  \\
-Our UNet + Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.282 \\
-Our UNet + DTWS + MC & -& 0.310 \\
-Our UNet + DTWS + LMC & -& 0.317 \\
-Our UNet + Mutex Watershed \cite{wolf2018mutex} & Abs. Max.  & 0.322 \\
-Our UNet + GAEC \cite{keuper2015efficient} & Sum & 0.334 \\
-Our UNet + THRESH &-& 1.521 \\ 
+\textbf{Our UNet + \algname{}} \textbf{Average}& \textbf{0.226}  \\
+Our UNet + \algname{} Sum + Constraints \cite{levinkov2017comparative} & 0.282 \\
+% Our UNet + DTWS + MC & -& 0.310 \\
+% Our UNet + DTWS + LMC & -& 0.317 \\
+Our UNet + \algname{} Abs. Max. \cite{wolf2018mutex} & 0.322 \\
+Our UNet + \algname{} Max. + Constraints & 0.324 \\
+Our UNet + \algname{} Sum \cite{keuper2015efficient} & 0.334 \\
+Our UNet + \algname{} Average + Constraints & 0.563 \\
+Our UNet + THRESH & 1.521 \\ 
+Our UNet + \algname{} Min & 2.522 \\
+Our UNet + \algname{} Min + Constraints & 2.522 \\
+Our UNet + \algname{} Max & 2.626 \\
 % \textbf{\algname{}} & \textbf{Average}& \textbf{0.936 $\pm$ 0.004}  \\
 % Greedy Fixation \cite{levinkov2017comparative} & Sum + Constr. & 0.906 $\pm$ 0.022 \\
 % DTWS + LMC & -& 0.903 $\pm$ 0.016 \\
@@ -58,7 +59,7 @@ Our UNet + THRESH &-& 1.521 \\
          & \makecell{CREMI-Score \\(lower is better)}  \\ \midrule
 Our UNet + DTWS + LMC &  0.221\\
 PNI-UNet \cite{lee2017superhuman} & 0.228 \\
-\textbf{Our UNet + \algname{} Avg-Link} & \textbf{0.241} \\
+\textbf{Our UNet + \algname{} Average} & \textbf{0.241} \\
 MALA-UNet + MC \cite{funke2018large} & 0.276 \\
 CRUNet \cite{zeng2017deepem3d} & 0.566  \\
 LFC \cite{parag2017anisotropic} & 0.616  \\
@@ -69,7 +70,7 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
 % CRUNet \cite{zeng2017deepem3d} & 0.566 & 0.229 \\
 % LFC \cite{parag2017anisotropic} & 0.616 & \\
         \end{tabular}
-        \vspace*{1.1em}
+        % \vspace*{1.1em}
     \captionof{table}{Current published entries of the CREMI challenge leaderboard \cite{cremiChallenge} (May 2019) on the three test datasets}
     \label{tab:results_cremi_test}
 \end{minipage}
