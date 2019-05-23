@@ -1,6 +1,6 @@
 % !TEX root = ../agglo_clust_review.tex
 
-\section{Supplementary Material}
+\section{Supplementary material}
 
 \begin{algorithm}
   \caption{\algname{} as a generalized edge contraction algorithm for signed graphs}
@@ -262,7 +262,7 @@ We train a 3D U-Net \cite{ronneberger2015u, cciccek20163d} using the same archit
 as described in \cite{lee2017superhuman}. In addition to the standard data augmentation techniques of random rotations, random flips and  elastic deformations, we simulate data artifacts.
 In more detail, we randomly zero-out slices, decrease the contrast of slices, simulate tears, introduce alignment jitter and paste artifacts extracted from the training data. Both \cite{funke2018large} and \cite{lee2017superhuman} have shown
 that these kinds of augmentations can help to alleviate issues caused by EM-imaging artifacts.
-We use L2 loss and Adam optimizer to train the network. % \TODO{Field of view?}
+We use L2 loss and Adam optimizer to train the network. The model was trained on all the three samples with available ground truth labels.  
 
 \paragraph{THRESH and WSDT} The basic post-processing methods we consider cannot take long-range affinities into account, so we only consider direct neighbors affinities and generate a boundary map by taking an average over the 3 directions. Based on this boundary map, we run connected components (THRESH) and we also introduce seeds at the maxima of the smoothed distance transform (WSDT). For WSDT, the degree of smoothing was optimized such that each region receives as few seeds as possible, without however causing severe under-segmentation. Due to the anisotropy of the data, we generate 2D WSDT superpixels by considering each 2D image in the stack singularly.
 
@@ -286,7 +286,7 @@ We use L2 loss and Adam optimizer to train the network. % \TODO{Field of view?}
 % \begin{minipage}[T]{0.85\textwidth}
 %     \centering
         \begin{tabular}{l|c|c|c|c|c}
-          \algname{} linkage & \makecell{Cremi-Score\\(higher better)}  & \makecell{Rand-Score\\(higher better)} & \makecell{VI-merge\\(lower better)} & \makecell{VI-split\\(lower better)} & \makecell{Runtime\\(lower better)} \\ \midrule
+          \algname{} linkage & \makecell{CREMI-Score\\(higher better)}  & \makecell{Rand-Score\\(higher better)} & \makecell{VI-merge\\(lower better)} & \makecell{VI-split\\(lower better)} & \makecell{Runtime\\(lower better)} \\ \midrule
           % Pipeline & method & \textsc{No} & \textsc{Yes} \\ 
 
 % Average & 0.226 & 0.936 & 0.315 & 0.494 & 
@@ -309,7 +309,9 @@ Min + CLC & 2.522 & 0.030 & \textbf{0.197}  & 6.365 & 4.77 $\cdot$ 10$^3$ \\
 Max & 2.626 & 0.028 & 7.069 & \textbf{0.026} & \textbf{6.04 $\cdot$ 10$^\mathbf{2}$} \\
         \end{tabular}
         \vspace*{1.1em}
-    \caption{Performances achieved by different versions of \algname{} on the CREMI 2016 training set. CLC stands for cannot-link constraints. For all algorithms, the chosen value of bias parameter was $\beta = 0$.}
+    \caption{Performances achieved by different versions of \algname{} on the CREMI 2016 training set. 
+    CREMI-Score \cite{cremiChallenge}, is given by a combination of the Adapted Rand-Score (Rand-Score) and the Variation of Information Score for under-clustering (VI-merge) and over-clustering (VI-split) \cite{arganda2015crowdsourcing}.
+    CLC stands for cannot-link constraints. For all algorithms, the chosen value of bias parameter was $\beta = 0$. We used a machine with CPU Intel(R) Xeon(R) X5650  @ 2.67GHz for our comparison experiments.}
     \label{tab:extended_results_cremi}
 \end{table}
 % \hfill
@@ -326,7 +328,7 @@ Max & 2.626 & 0.028 & 7.069 & \textbf{0.026} & \textbf{6.04 $\cdot$ 10$^\mathbf{
 
 
 \subsection{Experiments on neuron segmentation adding noise to CNN predictions} \label{sec:appendix_noise_gen}
-Additionally to the comparison on the full training dataset, we performed additional experiments on a crop of the dataset\footnote{We chose a challenging part of CREMI training sample B}, where we perturbed the predictions of the CNN with noise and we introduced additional artifacts like missing or fictitious boundary evidences.
+Additionally to the comparison on the full training dataset, we performed additional experiments on a crop of the more challenging CREMI training sample B, where we perturbed the predictions of the CNN with noise and we introduced additional artifacts like missing or fictitious boundary evidences.
 % Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}a} shows an example of uncertain CNN predictions on a part of the neuron segmentation CREMI dataset. We now present a way of modifying the CNN output to introduce additional artifacts like a missing or false boundary evidence. 
 
 In the field of image processing there are several ways of adding noise to an image, among which the most common are Gaussian noise or Poisson shot noise. 
@@ -359,7 +361,7 @@ The experiments summarized in Fig. \ref{fig:noise_plots} were performed in the f
 \begin{minipage}[T]{0.6\textwidth}
 \centering
         \includegraphics[width=0.88\textwidth,trim=0.1in 0.0in 0.05in 0.0in,clip]{figs/noisy_affs_comparison.png}
-    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the under-clustering biased version $\tilde{F}_{+}$ and c) the over-clustering biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}) \TODO{raw overlay}. 
+    \captionof{figure}{The two figures represent the CNN predictions on a slice of the neuron segmentation CREMI challenge \cite{cremiChallenge} with and without additional noise. Blue pixels represent boundary evidence. Image a) shows the original CNN predictions, b) the under-clustering biased version $\tilde{F}_{+}$ and c) the over-clustering biased version $\tilde{F}_{-}$ (see definition \ref{eq:noise_biased_predictions}). 
     %The color of each pixel represents how probable it is for it to be in the same cluster with its neighboring pixel on the right (red: same cluster; blue: different ones). 
     %Adding merge-biased noise tends to create holes in the boundaries; split-biased noise add non-existing boundaries 
     }
