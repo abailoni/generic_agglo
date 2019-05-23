@@ -5,7 +5,7 @@
 % \subsection{In-depth comparison of different linkage criteria for \algname{}} 
 \textbf{Comparison results } Table \ref{tab:results_cremi_train} shows how the agglomerative algorithms derived from our framework compare to each other. For a simple baseline, we also include a segmentation produced by thresholding the affinity predictions (THRESH).
 % The poor scores achieved by THRESH highlight the difficulty of the task. 
-\algname{} with \emph{Average} linkage, representing one of the new algorithms introduced by our generalized framework, significantly outperformed all other previously proposed agglomerative methods like GAEC, Greedy Fixation (using \emph{Sum} linkage) or Mutex Watershed (using \emph{Abs Max} linkage). The competitive performances of this simple parameter-free agglomerative algorithm are also reported by Table \ref{tab:results_cremi_test} that represents the current leader-board of the challenge: all entries, apart from \algname{}, employ superpixel-based post-processing pipelines, several of which rely on the complex multicut problem of \cite{beier2017multicut} that uses several random forests to predict graph edge weights, relying not only on information derived from affinity maps but also raw data and shape information.
+\algname{} with \emph{Average} linkage, representing one of the new algorithms introduced by our generalized framework, significantly outperformed all other previously proposed agglomerative methods like GAEC (\algname{} Sum), Greedy Fixation (\algname{} Sum + Constraints) or Mutex Watershed (\algname{} Abs. Max.). The competitive performances of this simple parameter-free agglomerative algorithm are also reported by Table \ref{tab:results_cremi_test} that represents the current leader-board of the challenge: all entries, apart from \algname{}, employ superpixel-based post-processing pipelines, several of which rely on the complex multicut problem of \cite{beier2017multicut} that uses several random forests to predict graph edge weights, relying not only on information derived from affinity maps but also raw data and shape information.
 Note that the test volumes contain several imaging artifacts that make segmentation particularly challenging and might profit from more robust edge statistics of super-pixel based approaches.
 On the other hand, the fact that our algorithm can operate on pixels directly removes the parameter tuning necessary to obtain good super-pixels and can also avoid errors that result from wrong superpixels that cannot be fixed during later agglomeration.
 In Appendix \ref{sec:appendix_exps_full_cremi}, we provide more details about how we scaled up \algname{} to the full datasets. Appendix Table \ref{tab:extended_results_cremi} lists the performances and the run-times for all tested \algname{} linkage.
@@ -70,7 +70,7 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
 % CRUNet \cite{zeng2017deepem3d} & 0.566 & 0.229 \\
 % LFC \cite{parag2017anisotropic} & 0.616 & \\
         \end{tabular}
-        % \vspace*{1.1em}
+        \vspace*{4.5em}
     \captionof{table}{Current published entries of the CREMI challenge leaderboard \cite{cremiChallenge} (May 2019) on the three test datasets}
     \label{tab:results_cremi_test}
 \end{minipage}
