@@ -5,11 +5,11 @@
 % before loading neurips_2019
 
 % ready for submission
-\usepackage{neurips_2019}
+% \usepackage{neurips_2019}
 
 % to compile a preprint version, e.g., for submission to arXiv, add add the
 % [preprint] option:
-%     \usepackage[preprint]{neurips_2019}
+    \usepackage[preprint]{neurips_2019}
 
 % to compile a camera-ready version, add the [final] option, e.g.:
      % \usepackage[final]{neurips_2019}
@@ -119,6 +119,9 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{prop}{Proposition}[section]
 
+\usepackage{authblk}
+
+
 
 
 %%%%%%%%% TITLE
@@ -134,36 +137,57 @@
 % authors names on the first line, and the last on the second line, try using
 % \AND instead of \And before the third author name.
 
-\author{%
-  David S.~Hippocampus\thanks{Use footnote for providing further information
-    about author (webpage, alternative address)---\emph{not} for acknowledging
-    funding agencies.} \\
-  Department of Computer Science\\
-  Cranberry-Lemon University\\
-  Pittsburgh, PA 15213 \\
-  \texttt{hippo@cs.cranberry-lemon.edu} \\
-  % examples of more authors
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \AND
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-}
+\author[1]{\textbf{Alberto Bailoni}}
+\author[1,2]{\textbf{Constantin Pape}}
+\author[1]{\textbf{Steffen Wolf}}
+\author[2]{\textbf{Thorsten Beier}}
+\author[2]{\\\textbf{Anna Kreshuk}}
+\author[1]{\textbf{Fred A. Hamprecht}}
+\affil[1]{HCI/IWR, Heidelberg University, Germany}
+\affil[2]{EMBL, Heidelberg, Germany}
+% \affil[ ]{ }
+\affil[ ]{\texttt {\{alberto.bailoni, steffen.wolf, fred.hamprecht\}@iwr.uni-heidelberg.de}}
+\affil[ ]{\texttt {\{constantin.pape, thorsten.beier, anna.kreshuk\}@embl.de}}
+\renewcommand\Authands{, }
+
+
+% \author{%
+%   Alberto Bailoni \\
+%   HCI/IWR, Heidelberg University\\
+%   \texttt{alberto.bailoni@iwr.uni-heidelberg.de} \\
+%   % examples of more authors
+%   \And
+%   Constantin Pape \\
+%   EMBL Heidelberg\\
+%   \texttt{constantin.pape@embl.de} \\
+%   \And
+%   Constantin Pape \\
+%   EMBL Heidelberg\\
+%   \texttt{email} \\
+%   \And
+%   Constantin Pape \\
+%   EMBL Heidelberg\\
+%   \texttt{email} \\
+%   \And
+%   Constantin Pape \\
+%   EMBL Heidelberg\\
+%   \texttt{email} \\
+%   % \AND
+%   % Coauthor \\
+%   % Affiliation \\
+%   % Address \\
+%   % \texttt{email} \\
+%   % \And
+%   % Coauthor \\
+%   % Affiliation \\
+%   % Address \\
+%   % \texttt{email} \\
+%   % \And
+%   % Coauthor \\
+%   % Affiliation \\
+%   % Address \\
+%   % \texttt{email} \\
+% }
 \begin{document}
 
 \maketitle
