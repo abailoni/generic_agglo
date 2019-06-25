@@ -1,11 +1,8 @@
 % !TEX root = ../agglo_clust_review.tex
 \section{Experiments on CityScapes}\label{sec:cityscapes_exp}
 We also evaluate the performances of \algname{} on the CityScapes dataset \cite{cordts2016cityscapes}, which consists of 5000 street-scene images: 2975 for training, 500 for validation and 1525 for testing.
-% recorded by car-mounted cameras with resolution 1024$\times$2048: 2975 images for training, 500 for validation and 1525 for testing. Objects with instance-level annotations belong to the following classes: person, rider, car, truck, bus, train, motorcycle, bicycle. 
 See Appendix \ref{sec:appendix_cityscapes} for more details on how we fine-tuned the state-of-the-art proposal-free pipeline proposed in GMIS \cite{liu2018affinity} by using a \emph{S\o resen-Dice} loss, similarly to \cite{wolf2018mutex}.
-%that achieved superior performances compared to other proposal-based methods like Mark R-CNN and employs a similar model to the one applied by us on neuron-segmentation.
-% Their trained model was made publicly available, so we simply replaced their final graph-merging algorithm (MultiStepHAC) with \algname{}.  their instance branch model by using a \emph{S\o resen-Dice} loss similarly to \cite{wolf2018mutex} and obtained in this way sharper affinity-predictions.
-Results are summarized in Table \ref{tab:results_cityscapes_val} and Fig. \ref{fig:cityscapes}: \algname{} with \emph{Average} linkage is the proposal-free method that achieves the best scores.
+Results are summarized in Table \ref{tab:results_cityscapes_val} and Fig. \ref{fig:cityscapes}: \algname{} with \emph{Average} linkage achieves state-of-the-art results among proposal-free methods.
  Similarly to the previous experiments, other linkage criteria tend to over-cluster, like \emph{Abs Max}, or under-cluster and merge instances, like \emph{Sum}. The graph-merging algorithm proposed by \cite{liu2018affinity} (MultiStepHAC) requires the user to tune several threshold parameters and it was probably tailored to the original affinities predicted by them, so it did not generalize well to our fine-tuned model and it achieved lower scores compared to the original AP value of 34.1 reported in \cite{liu2018affinity}.  
 Appendix - Table \ref{tab:extended_results_cityscapes_val} includes the scores of all other tested \algname{} algorithms.
 \captionsetup[subtable]{labelformat=simple, labelsep=space, justification=centering, singlelinecheck=off}
@@ -16,33 +13,15 @@ Appendix - Table \ref{tab:extended_results_cityscapes_val} includes the scores o
     \centering
     \scriptsize
         \begin{tabular}{l|l|cc}
-%             & & \multicolumn{2}{c}{AP} \\
-%            & Agglomeration  &  \multicolumn{2}{c}{Use constraints:} \\
-%           Method & method & \textsc{No} & \textsc{Yes} \\ \midrule
-% % DWT \cite{bai2017deep} & - & 21.2 & - \\
-% SGN \cite{liu2017sgn} & - & 29.2 & - \\
-% Mask R-CNN \cite{he2017mask} & - & 31.5 & - \\ \hline
-%  & \textbf{\algname{} Average}& \textbf{34.3}  & 33.9  \\
-% \multirow{2}{*}{GMIS Model \cite{liu2018affinity}} & MultiStepHAC \cite{liu2018affinity} & 33.0 & -  \\
-%  % & \algname{} Max &   24.3  &   32.5  \\
-%  & \algname{} Abs. Max. \cite{wolf2018mutex}  & 32.1 & 32.1 \\
-%  & \algname{} Sum \cite{keuper2015efficient,levinkov2017comparative} & 31.3  & 31.9  \\
-
-
-Method & Agglomeration type & AP \\ \midrule
-% DWT \cite{bai2017deep} & - & 21.2 & - \\
-% SGN \cite{liu2017sgn} & - & 29.2 & - \\
-PANet \cite{liu2018path} & - & \textbf{36.5} \\
-Mask R-CNN \cite{he2017mask} & - & 31.5 \\ \hline
- & \algname{} Average& 34.3 \\
- & \algname{} Average + Constraints & 33.9 \\
-\multirow{2}{*}{GMIS Model \cite{liu2018affinity}} & MultiStepHAC \cite{liu2018affinity} & 33.0 \\
- % & \algname{} Max &   24.3  &   32.5  \\
- & \algname{} Abs. Max. \cite{wolf2018mutex}  & 32.1 \\
- & \algname{} Sum + Constraints  \cite{levinkov2017comparative} & 31.9  \\
- & \algname{} Sum \cite{keuper2015efficient} & 31.3 \\
-
- % & \algname{} Min &  0    & 0  \\
+            Method & Agglomeration type & AP \\ \midrule
+            PANet \cite{liu2018path} & - & \textbf{36.5} \\
+            Mask R-CNN \cite{he2017mask} & - & 31.5 \\ \hline
+             & \algname{} Average& 34.3 \\
+             & \algname{} Average + Constraints & 33.9 \\
+            \multirow{2}{*}{GMIS Model \cite{liu2018affinity}} & MultiStepHAC \cite{liu2018affinity} & 33.0 \\
+             & \algname{} Abs. Max. \cite{wolf2018mutex}  & 32.1 \\
+             & \algname{} Sum + Constraints  \cite{levinkov2017comparative} & 31.9  \\
+             & \algname{} Sum \cite{keuper2015efficient} & 31.3 \\
         \end{tabular}
     \caption{CityScapes \emph{validation} set}
     \label{tab:results_cityscapes_val}
@@ -59,9 +38,7 @@ Mask R-CNN \cite{he2017mask} & - & 31.5 \\ \hline
            SGN \cite{liu2017sgn} & 25.0 & 44.9 \\
            DIN \cite{arnab2017pixelwise} & 20.0 & 38.8 \\
            DWT \cite{bai2017deep} & 19.4 & 35.3 \\
-           % SIAS\cite{} & 17.4 & 36.7 \\
            InstanceCut \cite{kirillov2017instancecut} & 13.0 & 27.9 \\
-
         \end{tabular}
     \caption{CityScapes \emph{test} set}
     \label{tab:results_cityscapes_test}

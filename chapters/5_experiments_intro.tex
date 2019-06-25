@@ -5,21 +5,9 @@
 \section{Experiments on neuron segmentation}\label{sec:neuro_segm_exp}
 
 We first evaluate and compare the agglomerative clustering algorithms described in the generalized framework on the task of neuron segmentation in electron microscopy (EM) image volumes. This application is of key interest in connectomics, a field of neuro-science with the goal of reconstructing neural wiring diagrams spanning complete central nervous systems. Currently, only proof-reading or manual tracing yields sufficient accuracy for correct circuit reconstruction \cite{schlegel2017learning}, thus further progress is required in automated reconstruction methods.
-%First, we present how we predicted signed edge weights with a CNN. Then we introduce the CREMI challenge and our tested methods in Sec. \ref{sec:cremi_challenge} and finally we present our results in Sec. \ref{sec:results}.
 
-% \subsection{Experimental setup: pixel grid-graph with long-range connections} \label{sec:grid_graph}
 EM segmentation is commonly performed by first predicting 
-% which pixels belong to a cell membrane using a CNN. As described in Sec. \ref{sec:related_work}, different postprocessing methods are then used to obtain a segmentation. The CNN can either be trained to predict 
 boundary pixels \cite{beier2017multicut,ciresan2012deep} or undirected affinities \cite{wolf2018mutex,lee2017superhuman,funke2018large}, which represent how likely it is for a pair of pixels to belong to the same neuron segment. 
 The affinities do not have to be limited to immediately adjacent pixels
 Thus, similarly to \cite{lee2017superhuman}, we train a CNN to predict both short- and long-range affinities
 and use them as edge weights of a 3D grid graph, where each node represents a pixel/voxel of the volume image. 
-% In our experiments, we divided the set of edges $E$ in $E_{\mathrm{direct}}$ connecting direct neighboring voxels and $E_{\mathrm{long}}$. 
-% See Appendix \ref{sec:training_details} for more details on the chosen neighborhood structure.
-% , data augmentation and the training with L1 loss of the used 3D U-Net architecture \cite{ronneberger2015u,cciccek20163d}.
-% We evaluate how beneficial long-range connections are by adding 
-% The output layer of the CNN will then have $m_{\mathrm{direct}}+m_{\mathrm{long}}$ channels, where $m_{\mathrm{direct}}=6$ represents the direct neighbors in 3D and $m_{\mathrm{long}}$ is the number of long-range ones. 
-% The output of the CNN can be represented as a weighted 3D grid graph, such that each node represents a pixel/voxel of the volume image. Each node is connected to its neighbors by $m_{\mathrm{direct}}$ edges ($E_{\mathrm{direct}}$) and $m_{\mathrm{long}}$ long-range ones ($E_{\mathrm{long}}$).
-% In our experiments we evaluate how beneficial long-range connections are for the final segmentation and we add them to the graph with a given probability $p_{\mathrm{long}}$ (if $p_{\mathrm{long}}=0$, then $E_{\mathrm{long}}=\emptyset$).
-% We note that the post-processing presented in \cite{lee2017superhuman} did not use any predicted long-range connection, whereas \cite{wolf2018mutex} introduced them with strides of 2 in the XY-plane.
-
