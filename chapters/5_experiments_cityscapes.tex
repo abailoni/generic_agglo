@@ -1,10 +1,4 @@
 % !TEX root = ../agglo_clust_review.tex
-\section{Experiments on CityScapes}\label{sec:cityscapes_exp}
-We also evaluate the performances of \algname{} on the CityScapes dataset \cite{cordts2016cityscapes}, which consists of 5000 street-scene images: 2975 for training, 500 for validation and 1525 for testing.
-See Appendix \ref{sec:appendix_cityscapes} for more details on how we fine-tuned the state-of-the-art proposal-free pipeline proposed in GMIS \cite{liu2018affinity} by using a \emph{S\o resen-Dice} loss, similarly to \cite{wolf2018mutex}.
-Results are summarized in Table \ref{tab:results_cityscapes_val} and Fig. \ref{fig:cityscapes}: \algname{} with \emph{Average} linkage achieves state-of-the-art results among proposal-free methods.
- Similarly to the previous experiments, other linkage criteria tend to over-cluster, like \emph{Abs Max}, or under-cluster and merge instances, like \emph{Sum}. The graph-merging algorithm proposed by \cite{liu2018affinity} (MultiStepHAC) requires the user to tune several threshold parameters and it was probably tailored to the original affinities predicted by them, so it did not generalize well to our fine-tuned model and it achieved lower scores compared to the original AP value of 34.1 reported in \cite{liu2018affinity}.  
-Appendix - Table \ref{tab:extended_results_cityscapes_val} includes the scores of all other tested \algname{} algorithms.
 \captionsetup[subtable]{labelformat=simple, labelsep=space, justification=centering, singlelinecheck=off}
 \renewcommand*{\thesubtable}{(\alph{subtable})}
 \begin{table}[t]
@@ -43,9 +37,17 @@ Appendix - Table \ref{tab:extended_results_cityscapes_val} includes the scores o
     \caption{CityScapes \emph{test} set}
     \label{tab:results_cityscapes_test}
 \end{subtable}
-\caption{Average Precision scores (higher is better) on the CityScapes dataset. \algname{} with \emph{Average} linkage combined with the GMIS Model \cite{liu2018affinity} represents the proposal-free method achieving the best results (May 2019). We only compare methods that did not use external data (e.g. COCO \cite{lin2014microsoft}) for training.}
+\caption{Average Precision scores (higher is better) on the CityScapes dataset. \algname{} with \emph{Average} linkage combined with the GMIS Model \cite{liu2018affinity} represents the proposal-free method achieving the best results (May 2019). In order to have a fair comparison, we only compare methods that did not use external data (e.g. COCO \cite{lin2014microsoft}) for training. In Table (a) on the left we distinguish between proposal-based and proposal-free methods.}\label{tab:results_cityscapes}
 \end{table}
 
+
+\section{Experiments on CityScapes}\label{sec:cityscapes_exp}
+We also evaluate the performances of \algname{} on the CityScapes dataset \cite{cordts2016cityscapes}, which consists of 5000 street-scene images: 2975 for training, 500 for validation and 1525 for testing.
+We used the pipeline proposed in GMIS \cite{liu2018affinity}, representing the proposal-free method performing best on the dataset. The pipeline consists of two CNN with similar structures, one predicting pixel level semantic scores and the other predicting pixel affinities between instances. The code and the model are publicly available, so we provided its output affinities as input to \algname{}.
+In Appendix \ref{sec:appendix_cityscapes} we present how we fine-tuned the model by using a \emph{S\o resen-Dice} loss, similarly to \cite{wolf2018mutex}.
+
+Results are summarized in Table \ref{tab:results_cityscapes} and Fig. \ref{fig:cityscapes}: the best scores are achieved by PANet \cite{liu2018path}, which is a proposal-based method strongly related to Mask R-CNN. \algname{} with \emph{Average} linkage achieves competitive results and outperforms all previously proposed proposal-free methods. Similarly to the experiments on neuron segmentation, other linkage criteria tend to over-cluster, like \emph{Abs Max}, or under-cluster and merge instances, like \emph{Sum}. The graph-merging algorithm proposed by \cite{liu2018affinity} (MultiStepHAC) requires the user to tune several threshold parameters and when we applied it to the affinities predicted by our fine-tuned model it achieved an AP score of 33.0 on the validation set, which is worse than the original value 34.1 reported in \cite{liu2018affinity}. This is probably due to the fact that the agglomeration MultiStepHAC was tailored to the output affinities of the original model. 
+Table \ref{tab:extended_results_cityscapes_val} in Appendix includes the scores of all other tested \algname{} algorithms.
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{./figs/cityscapes_compare_4.pdf} % left bottom right top
