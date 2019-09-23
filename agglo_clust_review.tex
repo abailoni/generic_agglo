@@ -1,5 +1,5 @@
 \documentclass{article}
-
+\pdfoutput=1
 % if you need to pass options to natbib, use, e.g.:
 %     \PassOptionsToPackage{numbers, compress}{natbib}
 % before loading neurips_2019
@@ -45,26 +45,6 @@
 \renewcommand{\ALG@beginalgorithmic}{\small}
 \makeatother
 
-% \newcommand*{\algrule}[1][\algorithmicindent]{\makebox[#1][l]{\hspace*{.5em}\vrule height .75\baselineskip depth .25\baselineskip}}%
-
-% \newcount\ALG@printindent@tempcnta
-% \def\ALG@printindent{%
-%     \ifnum \theALG@nested>0% is there anything to print
-%         \ifx\ALG@text\ALG@x@notext% is this an end group without any text?
-%             % do nothing
-%             \addvspace{-3pt}% FUDGE for cases where no text is shown, to make the rules line up
-%         \else
-%             \unskip
-%             % draw a rule for each indent level
-%             \ALG@printindent@tempcnta=1
-%             \loop
-%                 \algrule[\csname ALG@ind@\the\ALG@printindent@tempcnta\endcsname]%
-%                 \advance \ALG@printindent@tempcnta 1
-%             \ifnum \ALG@printindent@tempcnta<\numexpr\theALG@nested+1\relax% can't do <=, so add one to RHS and use < instead
-%             \repeat
-%         \fi
-%     \fi
-%     }%
 \usepackage{etoolbox}
 % the following line injects our new indent handling code in place of the default spacing
 % \patchcmd{\ALG@doentity}{\noindent\hskip\ALG@tlm}{\ALG@printindent}{}{\errmessage{failed to patch}}
@@ -97,7 +77,7 @@
 
 % \iccvfinalcopy % *** Uncomment this line for the final submission
 
-\def\iccvPaperID{368} % *** Enter the ICCV Paper ID here
+% \def\iccvPaperID{368} % *** Enter the ICCV Paper ID here
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
 
@@ -151,67 +131,19 @@
 \renewcommand\Authands{, }
 
 
-% \author{%
-%   Alberto Bailoni \\
-%   HCI/IWR, Heidelberg University\\
-%   \texttt{alberto.bailoni@iwr.uni-heidelberg.de} \\
-%   % examples of more authors
-%   \And
-%   Constantin Pape \\
-%   EMBL Heidelberg\\
-%   \texttt{constantin.pape@embl.de} \\
-%   \And
-%   Constantin Pape \\
-%   EMBL Heidelberg\\
-%   \texttt{email} \\
-%   \And
-%   Constantin Pape \\
-%   EMBL Heidelberg\\
-%   \texttt{email} \\
-%   \And
-%   Constantin Pape \\
-%   EMBL Heidelberg\\
-%   \texttt{email} \\
-%   % \AND
-%   % Coauthor \\
-%   % Affiliation \\
-%   % Address \\
-%   % \texttt{email} \\
-%   % \And
-%   % Coauthor \\
-%   % Affiliation \\
-%   % Address \\
-%   % \texttt{email} \\
-%   % \And
-%   % Coauthor \\
-%   % Affiliation \\
-%   % Address \\
-%   % \texttt{email} \\
-% }
 \begin{document}
 
 \maketitle
-%\thispagestyle{empty}
-
-
 
 \input{chapters/0_abstract.tex}
-
 \input{chapters/1_intro.tex}
-
 \input{chapters/2_rel_work}
-
 \input{chapters/3_algorithm}
-
-% \input{chapters/4_long_range_graph_def}
-
-% \section{Experiments}
 \input{chapters/5_experiments_intro}
 \input{chapters/5_experiments_compare_rules}
 \input{chapters/5_experiments_noise}
 \input{chapters/5_experiments_cremi}
 \input{chapters/5_experiments_cityscapes}
-
 \input{chapters/6_conclusions}
 
 {\small
