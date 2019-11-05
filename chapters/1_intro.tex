@@ -16,15 +16,16 @@ We then formally prove that some of the combinations correspond to existing clus
 We evaluate and compare these algorithms on \emph{instance segmentation} - a computer vision task of assigning each pixel of an image to an object instance. 
 We use a CNN to predict the edge weights of a graph such that each node represents a pixel of the image, similarly to \cite{liu2018affinity,lee2017superhuman,wolf2018mutex}, and provide these weights as input to the algorithms in our framework (see Fig. \ref{fig:intro_figure}). 
 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.9\textwidth]{figs/intro_image_v3.pdf} % left bottom right top
+\caption{ Pipeline description: \textbf{(1)} Raw data from the CREMI 2016 neuron-segmentation challenge. \textbf{(2)} Some short- and long-range predictions of our CNN model, where white pixels represent boundary evidence. \textbf{(3)} Outputs of two agglomerative algorithms included in our proposed generalized clustering framework, with \emph{Sum} and \emph{Average} linkage criteria. The final clustering / instance segmentation is shown in 3a, overlaid with the raw image.  The  agglomeration order in 3b shows which pairs of neighboring pixels were merged first (white), later on (brown/red), or never (black). (\textbf{4}) Some iterations of \algname{} on toy graph examples with attractive/positive (green) and repulsive/negative (red) interactions. At each iteration, the yellow edge with highest interaction is contracted (orange arrows), until only negative edges are left in the graph.
+\label{fig:intro_figure}}
+\end{figure*}
+
 
 With our comparison experiments, performed both on 2D urban scenes from the CityScapes dataset and 3D electron microscopy image volumes of neurons, we evaluate the properties of the algorithms in our framework, focusing on their efficiency, robustness and tendency to over- or under-cluster.
 We show that one of the new algorithms derived from our framework, based on an average linkage criterion, outperforms the previously known agglomeration methods expressed in the framework. It also achieves competitive performance on the challenging CREMI 2016 segmentation benchmark and represents the best-performing proposal-free method on CityScapes.
 Our code is available at \url{https://github.com/abailoni/GASP}.
 
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth]{figs/intro_image_v3.pdf} % left bottom right top
-\caption{ Pipeline description: \textbf{(1)} Raw data from the CREMI 2016 neuron-segmentation challenge. \textbf{(2)} Some short- and long-range predictions of our CNN model, where white pixels represent boundary evidence. \textbf{(3)} Outputs of two agglomerative algorithms included in our proposed generalized clustering framework, with \emph{Sum} and \emph{Average} linkage criteria. The final clustering / instance segmentation is shown in 3a, overlaid with the raw image.  The  agglomeration order in 3b shows which pairs of neighboring pixels were merged first (white), later on (brown/red), or never (black). (\textbf{4}) Some iterations of \algname{} on toy graph examples with attractive/positive (green) and repulsive/negative (red) interactions. At each iteration, the yellow edge with highest interaction is contracted (orange arrows), until only negative edges are left in the graph.
-\label{fig:intro_figure}}
-\end{figure}

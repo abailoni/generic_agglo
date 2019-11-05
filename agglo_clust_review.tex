@@ -1,35 +1,27 @@
-\documentclass{article}
-\pdfoutput=1
-% if you need to pass options to natbib, use, e.g.:
-%     \PassOptionsToPackage{numbers, compress}{natbib}
-% before loading neurips_2019
+\documentclass[10pt,twocolumn,letterpaper]{article}
 
-% ready for submission
-% \usepackage{neurips_2019}
-
-% to compile a preprint version, e.g., for submission to arXiv, add add the
-% [preprint] option:
-    \usepackage[preprint]{neurips_2019}
-
-% to compile a camera-ready version, add the [final] option, e.g.:
-     % \usepackage[final]{neurips_2019}
-
-% to avoid loading the natbib package, add option nonatbib:
-%     \usepackage[nonatbib]{neurips_2019}
-
-\usepackage[utf8]{inputenc} % allow utf-8 input
-\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
-\usepackage{hyperref}       % hyperlinks
-\usepackage{url}            % simple URL typesetting
-\usepackage{booktabs}       % professional-quality tables
-\usepackage{amsfonts}       % blackboard math symbols
-\usepackage{nicefrac}       % compact symbols for 1/2, etc.
-\usepackage{microtype}      % microtypography
-
+\usepackage{cvpr}
+\usepackage{times}
 \usepackage{epsfig}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+
+% \cvprfinalcopy % *** Uncomment this line for the final submission
+
+% MODIFIED!
+
+% \usepackage{epsfig}
+% \usepackage{graphicx}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
 
 \usepackage{mathrsfs}
 \usepackage{datetime}
@@ -62,6 +54,7 @@
 \usepackage{rotating}
 \newcolumntype{?}{!{\vrule width 0.3em}}
 
+\algrenewcommand\algorithmicindent{0.8em}
 \newcommand*{\cost}{w}%
 \newcommand*{\interact}{\mathcal{W}}
 \newcommand*{\algname}{GASP}
@@ -99,42 +92,79 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{prop}{Proposition}[section]
 
-\usepackage{authblk}
+% \usepackage{authblk}
 
 
 
 
-%%%%%%%%% TITLE
-\title{A Generalized Framework for \\Agglomerative Clustering of Signed Graphs 
-\\applied to Instance Segmentation
-}
 
-% The \author macro works with any number of authors. There are two commands
-% used to separate the names and addresses of multiple authors: \And and \AND.
-%
-% Using \And between authors leaves it to LaTeX to determine where to break the
-% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
-% authors names on the first line, and the last on the second line, try using
-% \AND instead of \And before the third author name.
 
-\author[1]{\textbf{Alberto Bailoni}}
-\author[1,2]{\textbf{Constantin Pape}}
-\author[1]{\textbf{Steffen Wolf}}
-\author[2]{\textbf{Thorsten Beier}}
-\author[2]{\\\textbf{Anna Kreshuk}}
-\author[1]{\textbf{Fred A. Hamprecht}}
-\affil[1]{HCI/IWR, Heidelberg University, Germany}
-\affil[2]{EMBL, Heidelberg, Germany}
-% \affil[ ]{ }
-\affil[ ]{\texttt {\{alberto.bailoni, steffen.wolf, fred.hamprecht\}@iwr.uni-heidelberg.de}}
-\affil[ ]{\texttt {\{constantin.pape, thorsten.beier, anna.kreshuk\}@embl.de}}
-\renewcommand\Authands{, }
+
+
+
+
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+\ifcvprfinal\pagestyle{empty}\fi
 
 
 \begin{document}
+% %%%%%%%%% TITLE
+\title{A Generalized Framework for Agglomerative Clustering of Signed Graphs 
+applied to Instance Segmentation}
+
+\author{First Author\\
+Institution1\\
+Institution1 address\\
+{\tt\small firstauthor@i1.org}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Second Author\\
+Institution2\\
+First line of institution2 address\\
+{\tt\small secondauthor@i2.org}
+}
+% \author[1]{\textbf{Alberto Bailoni}}
+% \author[1,2]{\textbf{Constantin Pape}}
+% \author[1]{\textbf{Steffen Wolf}}
+% \author[2]{\textbf{Thorsten Beier}}
+% \author[2]{\\\textbf{Anna Kreshuk}}
+% \author[1]{\textbf{Fred A. Hamprecht}}
+% \affil[1]{HCI/IWR, Heidelberg University, Germany}
+% \affil[2]{EMBL, Heidelberg, Germany}
+% % \affil[ ]{ }
+% \affil[ ]{\texttt {\{alberto.bailoni, steffen.wolf, fred.hamprecht\}@iwr.uni-heidelberg.de}}
+% \affil[ ]{\texttt {\{constantin.pape, thorsten.beier, anna.kreshuk\}@embl.de}}
+% \renewcommand\Authands{, }
+
+
+
+
+% \title{\LaTeX\ Author Guidelines for CVPR Proceedings}
+% \author{First Author\\
+% Institution1\\
+% Institution1 address\\
+% {\tt\small firstauthor@i1.org}
+% % For a paper whose authors are all at the same institution,
+% % omit the following lines up until the closing ``}''.
+% % Additional authors and addresses can be added with ``\and'',
+% % just like the second author.
+% % To save space, use either the email address or home page, not both
+% \and
+% Second Author\\
+% Institution2\\
+% First line of institution2 address\\
+% {\tt\small secondauthor@i2.org}
+% }
 
 \maketitle
-
 \input{chapters/0_abstract.tex}
 \input{chapters/1_intro.tex}
 \input{chapters/2_rel_work}
@@ -147,11 +177,10 @@
 \input{chapters/6_conclusions}
 
 {\small
-\bibliographystyle{abbrv}
+\bibliographystyle{ieee_fullname}
 \bibliography{agglo_clust}
 }
 \newpage
 \input{chapters/supplementary}
-
 
 \end{document}
