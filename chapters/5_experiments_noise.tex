@@ -3,21 +3,21 @@
 \captionsetup[subfigure]{justification=centering, singlelinecheck=off}
 \begin{figure*}
 \centering
-    \begin{subfigure}[t]{0.49 \textwidth}
+    \begin{subfigure}[t]{0.46 \textwidth}
         \centering
         \includegraphics[width=\textwidth,trim=0.55in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/under_segment_plots_0.pdf}
     \end{subfigure} \hfill
-    \begin{subfigure}[t]{0.49 \textwidth}
+    \begin{subfigure}[t]{0.46 \textwidth}
         \centering
         \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/under_segment_plots_1.pdf}
     \end{subfigure}
 
-        \begin{subfigure}[t]{0.49 \textwidth}
+        \begin{subfigure}[t]{0.46 \textwidth}
         \centering
         \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/over_segment_plots_0.pdf}
         \caption{No long-range predictions: $p_{\mathrm{long}}=0$} \label{fig:merge_noise_only_direct}
     \end{subfigure} \hfill
-    \begin{subfigure}[t]{0.49 \textwidth}
+    \begin{subfigure}[t]{0.46 \textwidth}
         \centering
         \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/over_segment_plots_1.pdf}
         \caption{With long-range predictions: $p_{\mathrm{long}}=0.1$} \label{fig:merge_noise_with_long_range}
@@ -31,7 +31,7 @@
     \centering
     \scriptsize
         \begin{tabular}[t]{l|c}
-          & \makecell{CREMI-Score \\(lower is better)} \\ \midrule 
+         Method & \makecell{CREMI-Score \\(lower is better)} \\ \midrule 
 \textbf{\algname{}} \textbf{Average}& \textbf{0.226}  \\
 \algname{} Sum + Constraints \cite{levinkov2017comparative} & 0.282 \\
 \algname{} Abs. Max. \cite{wolf2018mutex} & 0.322 \\
@@ -40,14 +40,14 @@
 \algname{} Average + Constraints & 0.563 \\
 THRESH & 1.521 \\ 
         \end{tabular}
-    \captionof{table}{CREMI-Scores achieved by different linkage criteria and thresholding. All methods use the affinity predictions from our CNN as input. Scores are averages over the three CREMI training datasets.}
+    \captionof{table}{CREMI-Scores achieved by different linkage criteria and thresholding. All methods use the affinity predictions from our CNN as input. Scores are averaged over the three CREMI training datasets.}
     \label{tab:results_cremi_train}
 \end{minipage}\hfill
 \begin{minipage}[t]{0.3\textwidth}
     \centering
     \scriptsize
         \begin{tabular}[t]{l|c}
-         & \makecell{CREMI-Score \\(lower is better)}  \\ \midrule
+        Method & \makecell{CREMI-Score \\(lower is better)}  \\ \midrule
 Our CNN + DTWS + LMC &  0.221\\
 PNI CNN \cite{lee2017superhuman} & 0.228 \\
 \textbf{Our CNN + \algname{} Average} & \textbf{0.241} \\
@@ -55,33 +55,34 @@ MALA CNN + MC \cite{funke2018large} & 0.276 \\
 CRU-Net \cite{zeng2017deepem3d} & 0.566  \\
 LFC \cite{parag2017anisotropic} & 0.616  \\
         \end{tabular}
-        \vspace*{4.5em}
-    \captionof{table}{Current leading entries  in the CREMI challenge leaderboard \cite{cremiChallenge} (May 2019). The scores are averages of the three test datasets.}
+        \vspace*{0.99em}
+    \captionof{table}{Current leading entries  in the CREMI challenge leaderboard \cite{cremiChallenge} (November 2019). All entries, apart from our using \algname{}, employ superpixel-based post-processing pipelines.}
     \label{tab:results_cremi_test}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.32\textwidth}
+\begin{minipage}[t]{0.35\textwidth}
 \centering
     \scriptsize
     \vspace*{-1.5em}
 \begin{tabular}[t]{l|cc}
-            & AP  & AP 50\% \\ 
-        Method & \multicolumn{2}{c}{(higher is better)} \\ \midrule
+        \multirow{2}{*}{Method}    & AP  & AP 50\% \\ 
+         & \multicolumn{2}{c}{(higher is better)} \\ \midrule
            Panoptic-DeepLab \cite{cheng2019panopticdeeplab} & 34.6 & 57.3 \\
            UPSNet \cite{xiong2019upsnet} $\dagger$ & 33.0 & 59.6 \\
            SSAP \cite{Gao_2019_ICCV} & 32.7 & 51.8 \\
+           AdaptIS \cite{sofiiuk2019adaptis} & 32.5 & 52.5 \\
            PANet \cite{liu2018path} $\dagger$ & 31.8 & 57.1 \\
-           \textbf{GMIS Model + \algname{} Average} & \textbf{28.3} & \textbf{47.0} \\ 
+           \textbf{GMIS Model \cite{liu2018affinity} + \algname{} Average} & \textbf{28.3} & \textbf{47.0} \\ 
            JOSECB \cite{neven2019instance} & 27.7 & 50.9 \\
-           \textbf{GMIS Model} \cite{liu2018affinity} & \textbf{27.3} & \textbf{45.6} \\
+           \textbf{GMIS} \cite{liu2018affinity} & \textbf{27.3} & \textbf{45.6} \\
            Mask R-CNN \cite{he2017mask} $\dagger$ & 26.2 & 49.9 \\
            SGN \cite{liu2017sgn} & 25.0 & 44.9 \\
            % DIN \cite{arnab2017pixelwise} & 20.0 & 38.8 \\
-           DWT \cite{bai2017deep} & 19.4 & 35.3 \\
-           InstanceCut \cite{kirillov2017instancecut} & 13.0 & 27.9 \\
+           % DWT \cite{bai2017deep} & 19.4 & 35.3 \\
+           % InstanceCut \cite{kirillov2017instancecut} & 13.0 & 27.9 \\
         \end{tabular}
     % \caption{CityScapes \emph{test} set}
-    \vspace*{0.7em}
-    \captionof{table}{Average Precision scores on CityScapes test. Methods marked with $\dagger$ are \emph{proposal-based}.}\label{tab:results_cityscapes}
+    % \vspace*{0.6em}
+    \captionof{table}{Results on CityScapes test. Methods marked with~$\dagger$ are \emph{proposal-based}. Only methods that do not use external training data (e.g. MS COCO) are shown.}\label{tab:results_cityscapes}
     \label{tab:results_cityscapes_test}
 \end{minipage}
 \end{figure*}
@@ -91,17 +92,17 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
 \begin{figure*}[t]
 \begin{minipage}{0.65 \textwidth}
 \centering
-\includegraphics[width=\textwidth]{./figs/cityscapes_compare_5.eps} % left bottom right top
-\caption{Visual results given by different \algname{} linkage criteria on a crop of a CityScapes image}\label{fig:cityscapes}
+\includegraphics[width=\textwidth]{./figs/cityscapes_compare_6.pdf} % left bottom right top
+\caption{Visual results given by different \algname{} linkage criteria on a crop of a CityScapes image from the \emph{validation} set.}\label{fig:cityscapes}
 \end{minipage}\hfill
 \begin{minipage}{0.3 \textwidth}
     \centering
     \small
         \begin{tabular}[t]{l|cc}
-             Agglomeration type & AP \\ \midrule
+             Agglomeration method & AP \\ \midrule
             % PANet \cite{liu2018path} & - & \textbf{36.5} \\
             % Mask R-CNN \cite{he2017mask} & - & 31.5 \\ \hline
-              \algname{} Average& 34.3 \\
+              \textbf{\algname{} Average}& \textbf{34.3} \\
               \algname{} Average + Constraints & 33.9 \\
              MultiStepHAC \cite{liu2018affinity} & 33.0 \\
               \algname{} Abs. Max. \cite{wolf2018mutex}  & 32.1 \\
@@ -109,14 +110,14 @@ LFC \cite{parag2017anisotropic} & 0.616  \\
               \algname{} Sum \cite{keuper2015efficient} & 31.3 \\
         \end{tabular}
     \vspace*{0.6em}
-    \caption{Average Precision scores on CityScapes \emph{val} achieved by the GMIS Model \cite{liu2018affinity} and different graph agglomeration methods.}
+    \captionof{table}{Average Precision scores on CityScapes \emph{val} achieved by the GMIS Model trained in \cite{liu2018affinity} and different graph agglomeration methods.}
     \label{tab:results_cityscapes_val}
 \end{minipage}
 \end{figure*}
 
 \subsection{Results and discussion}\label{sec:results}
 \textbf{Comparison of linkage criteria} Table \ref{tab:results_cremi_train} shows how the agglomerative algorithms derived from our framework compare to each other. For a simple baseline, we also include a segmentation produced by thresholding the affinity predictions (THRESH).
-\algname{} with \emph{Average} linkage, representing one of the new algorithms derived from our generalized framework, significantly outperformed all other previously proposed agglomerative methods like GAEC (\algname{} Sum) \cite{keuper2015efficient}, Greedy Fixation (\algname{} Sum + Constraints) \cite{levinkov2017comparative} or Mutex Watershed (\algname{} Abs. Max.) \cite{wolf2018mutex}. The competitive performance of this simple parameter-free algorithm is also reported in Table \ref{tab:results_cremi_test}, showing the current leader-board of the challenge: all entries, apart from \algname{}, employ superpixel-based post-processing pipelines, several of which rely on the lifted multicut formulation of \cite{beier2017multicut} that uses several random forests to predict graph edge weights, relying not only on information derived from affinity maps but also raw data and shape information.
+\algname{} with \emph{Average} linkage, representing one of the new algorithms derived from our generalized framework, significantly outperformed all other previously proposed agglomerative methods like GAEC \cite{keuper2015efficient} (\algname{} Sum), Greedy Fixation \cite{levinkov2017comparative} (\algname{} Sum + Constraints) or Mutex Watershed \cite{wolf2018mutex} (\algname{} Abs. Max.). The competitive performance of this simple parameter-free algorithm is also reported in Table \ref{tab:results_cremi_test}, showing the current leader-board of the challenge: all entries, apart from \algname{}, employ superpixel-based post-processing pipelines, several of which rely on the lifted multicut formulation of \cite{beier2017multicut} that uses several random forests to predict graph edge weights, relying not only on information derived from affinity maps but also raw data and shape information.
 Note that the test volumes contain several imaging artifacts that make segmentation particularly challenging and might profit from more robust edge statistics of super-pixel based approaches.
 On the other hand, the fact that our algorithm can operate on pixels directly removes the parameter tuning necessary to obtain good super-pixels and can also avoid errors that result from wrong superpixels that cannot be fixed during later agglomeration.
 In Appendix \ref{sec:appendix_exps_full_cremi}, we provide more details about how we scaled up \algname{} to the full datasets. Appendix Table \ref{tab:extended_results_cremi} lists the performances and the run-times for all tested \algname{} linkage.

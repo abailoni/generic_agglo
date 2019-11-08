@@ -1,8 +1,6 @@
 % !TEX root = ../agglo_clust_review.tex
 
-\section{Supplementary material}
-
-\begin{algorithm}
+\begin{algorithm*}
   \caption{Implementation of \algname{}, generalized algorithm for signed graph partitioning}
 \hspace*{\algorithmicindent} \textbf{Input:} $\mathcal{G}(V,E,w^+,w^-)$ with $N$ nodes and $M$ edges; boolean \texttt{{\color{blue}addCannotLinkConstraints}} \\
 \hspace*{\algorithmicindent} \textbf{Output:} Final clustering \\
@@ -49,8 +47,9 @@
     \EndFunction
   \end{algorithmic}
   \label{detailed_alg}
-\end{algorithm}
-\begin{figure}
+\end{algorithm*}
+
+\begin{figure*}
         \centering
 \begin{minipage}{0.49\textwidth}
 \centering
@@ -58,7 +57,7 @@
     \end{minipage} \hfill
 \begin{minipage}[T]{0.48\textwidth}
     \centering
-    \scriptsize
+    \small
                 \begin{tabular}[b]{r | l }
             \toprule
             Linkage criteria & Update rule $f$ \\        
@@ -80,8 +79,9 @@
 \caption{ 
 \textbf{Left:} Example of edge contraction. First row: original graph $\mathcal{G}$; clustering $\Pi$ (gray shaded areas) with dashed edges on cut; cannot-link constraints (violet bars). Second row: contracted graph $\tilde{\mathcal{G}}_\Pi$. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde{\mathcal{G}}_\Pi$. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from the edge contraction are replaced by a single edge with updated interaction. \textbf{Right:} The table lists the update rules $f(\tilde{\cost}_1, \tilde{\cost}_2)$ associated to the linkage criteria of Table \ref{tab:linkage-criteria} and that are used to efficiently update the interactions between clusters.}
 \label{fig:edge_contraction_and_contr_graph}  
-\end{figure}
+\end{figure*}
 
+\section{Supplementary material}
 
 
 \subsection{Implementation details and complexity of \algname{}} \label{sec:detailed_impl}
@@ -90,9 +90,10 @@
 An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that there exists exactly one representative $|\tilde{V} \cap S| = 1$ for every cluster $S \in \Pi$ . Edges in $\tilde{E}$ represent adjacency-relationships between clusters 
 and the signed edge weights $\tilde{\cost}_e$ are given by inter-cluster interactions $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
 For the linkage criteria tested in this work, when two clusters $S_u$ and $S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can recompute these interactions by using an \emph{update rule} $f$ that does not involve any loop over the edges of the original graph $\mathcal{G}$:
-\begin{equation}
-  \interact(S_u \cup S_v,S_t) = f\Big[ \interact(S_u,S_t), \interact(S_v,S_t) \Big] = f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt})) 
-\end{equation}
+\begin{align}
+  \interact(S_u \cup S_v,S_t) =& f\Big[ \interact(S_u,S_t), \interact(S_v,S_t) \Big] \\
+  =& f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt})) 
+\end{align}
 In Fig. \ref{fig:edge_contraction_and_contr_graph} we show an example of edge contraction and we list the update rules associated to the linkage criteria we introduced in Table \ref{tab:linkage-criteria}.
 
 
@@ -104,7 +105,7 @@ With a single-linkage, corresponding to the choice of the \emph{Maximum} update 
 Moreover, in the next section, we present an efficient implementation of \algname{} with \emph{Absolute Maximum} linkage that has empirical $\mathcal{O}(N \log N)$ complexity. %\TODO{Empirical complexity plot?}
 
 
-\begin{algorithm}
+\begin{algorithm*}
   \caption{Mutex Watershed Algorithm proposed by \cite{wolf2018mutex}}
 \hspace*{\algorithmicindent} \textbf{Input:} $\mathcal{G}(V,E,w^+,w^-)$ with $N$ nodes and $M$ edges \\
 \hspace*{\algorithmicindent} \textbf{Output:} Final clustering \\
@@ -124,15 +125,17 @@ Moreover, in the next section, we present an efficient implementation of \algnam
       \Return Final clustering given by union-find data structure \texttt{UF}
   \end{algorithmic}
   \label{alg:mutex_watershed}
-\end{algorithm}
+\end{algorithm*}
 
 
 
-\subsection{Properties of \algname{} with \emph{Absolute Maximum} linkage}\label{sec:appendix_abs_max}
+\subsection{Properties of \algname{} with Absolute Maximum linkage}\label{sec:appendix_abs_max}
 \paragraph{Remark on graph notation} The definition of a graph proposed by \cite{wolf2018mutex} makes a distinction between a set of positive edges $E^+$, associated with a set $W^+$ of positive scalar attributes representing merge affinities, and a set of negative edges $E^-$, associated with a set $W^-$ of positive attributes representing split tendencies. On the other hand, in our definition $\mathcal{G}(V,E,w^+,w^-)$ each edge have both an attractive $w_e^+$ and a repulsive $w_e^-$ attribute, so we can make them equivalent by defining:
 \begin{align}
-E^+ = \{ e \in E \,\,\text{s.t.} \,\,w_e = w_e^+ - w_e^- > 0\},& \qquad E^- = \{ e \in E \,\,\text{s.t.}\,\, w_e = w_e^+ - w_e^- \leq 0\} \\
-W^+ = \{ |w_e| \,\,\text{s.t.}\,\, e \in E^+\},& \qquad W^- = \{ |w_e| \,\,\text{s.t.}\,\, e \in E^-\}
+E^+ =&\,\, \{ e \in E \,\,\text{s.t.} \,\,w_e = w_e^+ - w_e^- > 0\}, \\
+E^- =&\,\, \{ e \in E \,\,\text{s.t.}\,\, w_e = w_e^+ - w_e^- \leq 0\}, \\
+W^+ =&\,\, \{ |w_e| \,\,\text{s.t.}\,\, e \in E^+\},\\
+ W^- =&\,\, \{ |w_e| \,\,\text{s.t.}\,\, e \in E^-\}.
 \end{align}
 
 \begin{prop} \label{prop:equiv_MWS}
@@ -161,20 +164,21 @@ But this case can never happen, since if $|w_{vt}|>|w_{ut}|$ then clusters $v$ a
 \end{proof}
 
 
-\begin{figure}
+\begin{figure*}
         \centering
 
         \includegraphics[width=0.7\textwidth]{./figs/proof_abs_max_example.pdf} % left bottom right top
 \caption{\algname{} with \emph{AbsMax} linkage: Example representing the only case of edge contraction $e_{uv}$ that would introduce a positive attractive interaction between two constrained clusters. Note this can actually never happen with an \emph{AbsMax} linkage, because edge $e_{ut}$ has a lower absolute priority as compared to $e_{uv}$, so clusters $u$ and $t$ cannot have been constrained before $u$ and $v$ are merged.
 }
 \label{fig:abs_max_proof_example}  
-\end{figure}
+\end{figure*}
 
 \subsection{Predicting signed edge weights with a CNN}
 Our CNN model outputs affinities in the form of pseudo-probabilities $p:E \rightarrow [0,1]$, where $p=0$ represents a boundary evidence. In order to use them as input of the algorithms in our framework, we mapped them to positive and negative values\footnote{Note that in general attractive and repulsive interactions $w^+$ and $w^-$ can be independently estimated with different classifiers.}. The most common approaches use \emph{additive} \cite{ailon2008aggregating} or \emph{logarithmic} \cite{finkel2008enforcing,andres2012globally} mappings:
-\begin{equation} \label{eq:mappings}
-\cost_{e,\mathrm{Add}} = p_e - \beta, \qquad \quad \cost_{e,\mathrm{Log}} = \log \left( \frac{p_e}{1-p_e} \right) - \log \left( \frac{\beta}{1-\beta} \right),
-\end{equation}
+\begin{align} 
+\cost_{e,\mathrm{Add}} =&\,\, p_e - \beta, \\
+\cost_{e,\mathrm{Log}} =&\,\, \log \left( \frac{p_e}{1-p_e} \right) - \log \left( \frac{\beta}{1-\beta} \right), \label{eq:mappings}
+\end{align}
 where $\beta \in [0,1]$ is a \emph{bias} parameter that allow a tuning between over- and under-segmentation. We evaluated both of them empirically with each of the tested linkage and found that the additive mapping is the best option in all cases apart from the \emph{Sum} linkage. Note that varying the parameter $\beta$ does not usually define a hierarchy of nested clusterings, thus it is not equivalent to varying a threshold parameter in HAC. This hierarchical property is only valid for \algname{} without constraints and with \emph{Average}, \emph{Max} or \emph{Min} linkage.
 
 \subsection{Neuron segmentation and compared methods}\label{sec:cremi_details}
@@ -201,7 +205,7 @@ We use L2 loss and Adam optimizer to train the network. The model was trained on
  \paragraph{Enforcing local merge} In 2D images of urban-scenes, due to partial occlusion, one object instance can be given by multiple components that are not directly connected in the image plane. This is not the case in neuron-segmentation, where each neuron should be given by a single 3D connected component in the volume. In order to enforce it, we modified the implementation of \algname{} so that two clusters are merged only when they represent two adjacent supervoxels in the 3D volume and if this condition is not satisfied, the merge is postponed until there is a direct connection. This then avoids the introduction of ``air-bridges'' between segments due to attractive long-range connections in the initial voxel grid-graph.
  This approach achieved superior performances to the one proposed in \cite{wolf2018mutex}, where all long-range connections in the grid-graph are associated to a negative repulsive edge weight.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
     \footnotesize
         \begin{tabular}{l|c|c|c|c|c}
@@ -221,7 +225,7 @@ Max & 2.626 & 0.028 & 7.069 & \textbf{0.026} & \textbf{6.04 $\cdot$ 10$^\mathbf{
     CREMI-Score \cite{cremiChallenge}, is given by a combination of the Adapted Rand-Score (Rand-Score) and the Variation of Information Score for under-clustering (VI-merge) and over-clustering (VI-split) \cite{arganda2015crowdsourcing}.
     CLC stands for cannot-link constraints. For all algorithms, the chosen value of bias parameter was $\beta = 0$. We used a machine with CPU Intel(R) Xeon(R) E7-4870 @ 2.40GHz for our comparison experiments.}
     \label{tab:extended_results_cremi}
-\end{table}
+\end{table*}
 
 
 \subsection{\algname{} sensitivity to noise: adding artifacts to CNN predictions} \label{sec:appendix_noise_gen}
@@ -237,9 +241,9 @@ where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}
 In the implementation we used, the noise can be generated in an arbitrary number of dimensions and a smoothing factor can be specified for each direction independently. In our experiments, each pixel is represented by a node in the grid-graph and it is linked to $n_{\mathrm{nb}}$ other nodes by short- and long-range edges. Thus, the output of our CNN model has $n_{\mathrm{nb}}$ channels: for each pixel / voxel, it outputs $n_{\mathrm{nb}}$ values representing the weights of different edge connections. We then generated a 4-dimensional noise that matches the dimension of the CNN output. The data is highly anisotropic, i.e. it has a lower resolution in one of the dimensions. Due to this fact, we chose different smoothing parameters to generate the noise in different directions. 
 
 The experiments summarized in Fig. \ref{fig:noise_plots} were performed in the following way: for each value $\mathcal{K}$, 30 random noise samples were drawn, from which median and percentiles statistics were computed for each different linkage criteria. For each sample, we randomly selected some of the long-range predictions from the CNN and added them to pixel grid-graph.
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
-\begin{minipage}[T]{0.6\textwidth}
+\begin{minipage}[T]{0.61\textwidth}
 \centering
         \includegraphics[width=\textwidth,trim=0.0in -0.in -0.0in -0.4in,clip]{figs/noisy_affs_comparison.pdf}
     \captionof{figure}{CNN predictions on a slice of the CREMI neuron segmentation challenge with and without additional noise. (\textbf{a}) Raw data (\textbf{b}) Original CNN predictions $F(x)$, where blue pixels represent boundary evidence (\textbf{c}) Under-clustering biased version $\tilde{F}_{+}(x;\mathcal{K})$ of the predictions defined in Eq. \ref{eq:noise_biased_predictions} with $\mathcal{K}=8$ (\textbf{d}) Over-clustering biased version $\tilde{F}_{-}(x;\mathcal{K})$. Long-range predictions are not shown.
@@ -248,7 +252,8 @@ The experiments summarized in Fig. \ref{fig:noise_plots} were performed in the f
 \end{minipage}\hfill
 \begin{minipage}[T]{0.35\textwidth}
     \centering
-    \footnotesize
+    \small
+    \vspace*{1.6em}
         \begin{tabular}{l|c|c}
           \algname{} linkage & AP  & Bias $\beta$ \\ \midrule
           Average & 34.3 & 0.35 \\
@@ -261,10 +266,11 @@ The experiments summarized in Fig. \ref{fig:noise_plots} were performed in the f
           Min & 0.00 & 0.50 \\
           Min + CLC & 0.00 & 0.50 \\
         \end{tabular}
+    \vspace*{0.5em}
     \captionof{table}{Average Precision (AP) scores achieved by different versions of \algname{} and chosen bias parameters $\beta$ on the cityscapes validation set. A bias value $\beta=0$ returns one single cluster. CLC stands for cannot-link constraints}
     \label{tab:extended_results_cityscapes_val}
 \end{minipage}
-\end{figure}
+\end{figure*}
 
 
 

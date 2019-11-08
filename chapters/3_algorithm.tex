@@ -45,7 +45,7 @@ In the second variant, when \texttt{addCannotLinkConstraints=True}, Algorithm \r
 selects the pair of clusters with the highest absolute interaction $|\interact(S_u, S_v)|$, so that the most attractive and the most repulsive pairs are analyzed first (see example in Fig. \ref{subfig:with_constraints}). If the interaction is repulsive, then the two clusters are constrained and its members can never merge in subsequent steps. If the interaction is attractive, then the clusters are merged, provided that they were not previously constrained. 
 The algorithm terminates when all the remaining clusters are constrained.
 
-In Appendix \ref{sec:detailed_impl}, we comment on the algorithm's computational complexity $\mathcal{O}(N^2 \log N)$ and present our implementation given by the edge contraction Algorithm \ref{detailed_alg} based on a priority queue.
+In Appendix \ref{sec:detailed_impl}, we comment on the algorithm's computational complexity $\mathcal{O}(N^2 \log N)$ and present our implementation given by the edge contraction Algorithm \ref{detailed_alg} based on a priority queue. \TODO{Update}
 
 \begin{algorithm}[t]
   \begin{flushleft}
@@ -104,7 +104,7 @@ Apart from the linkage criteria defined in Table \ref{tab:linkage-criteria}, add
         \includegraphics[width=\textwidth]{figs/example_with_constr.pdf}
         \caption{With cannot-link constraints}\label{subfig:with_constraints}
     \end{subfigure}
-\caption{Some iterations of the generalized algorithm (using \emph{Sum} linkage criteria) with and without adding cannot-link constraints. The graph has both attractive (green) and repulsive (red) edges and cannot-link constraints are shown with triple violet bars on the edges. We note that when constraints are enforced, the final clustering is given by two clusters instead of only one. \TODO{Explain yellow lines}}
+\caption{Some iterations of the generalized algorithm (using \emph{Sum} linkage criteria) with and without adding cannot-link constraints. The graph has both attractive (green) and repulsive (red) edges and cannot-link constraints are shown with triple violet bars on the edges. The edge selected at each iteration is highlighted in yellow. We note that when constraints are enforced, the final clustering is given by two clusters instead of only one.}
 \label{fig:algorithm_with_without_CLC}
 \end{figure}
 
