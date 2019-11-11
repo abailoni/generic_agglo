@@ -25,8 +25,11 @@ We use a CNN to predict the edge weights of a graph such that each node represen
 
 
 With our comparison experiments, performed both on 2D urban scenes from the CityScapes dataset and 3D electron microscopy image volumes of neurons, we evaluate the properties of the algorithms in our framework, focusing on their efficiency, robustness and tendency to over- or under-cluster.
-We show that one of the new algorithms derived from our framework, based on an average linkage criterion, outperforms the previously known agglomeration methods expressed in the framework. \TODO{Update CS and spectral clustering} 
-It also achieves competitive performance on the challenging CREMI 2016 segmentation benchmark and represents the best-performing proposal-free method on CityScapes.
+We show that one of the new algorithms derived from our framework, based on an average linkage criterion, outperforms the previously known agglomeration methods expressed in the framework and 
+it achieves competitive performance on CityScapes and the challenging CREMI 2016 segmentation benchmark.
+
+In Sec. \ref{sec:spectral_clust}, we also show how \algname{} outperforms spectral clustering methods for signed graphs by testing it on synthetic graphs and neuron segmentation.
+
 % Our code is available at \url{https://github.com/abailoni/GASP}.
 
 

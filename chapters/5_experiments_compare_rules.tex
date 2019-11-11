@@ -1,5 +1,119 @@
 % !TEX root = ../agglo_clust_review.tex
 
+\captionsetup[subfigure]{justification=centering, singlelinecheck=off}
+\begin{figure*}
+\centering
+    \begin{subfigure}[t]{0.46 \textwidth}
+        \centering
+        \includegraphics[width=\textwidth,trim=0.55in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/under_segment_plots_0.pdf}
+    \end{subfigure} \hfill
+    \begin{subfigure}[t]{0.46 \textwidth}
+        \centering
+        \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/under_segment_plots_1.pdf}
+    \end{subfigure}
+
+        \begin{subfigure}[t]{0.46 \textwidth}
+        \centering
+        \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/over_segment_plots_0.pdf}
+        \caption{No long-range predictions: $p_{\mathrm{long}}=0$} \label{fig:merge_noise_only_direct}
+    \end{subfigure} \hfill
+    \begin{subfigure}[t]{0.46 \textwidth}
+        \centering
+        \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/over_segment_plots_1.pdf}
+        \caption{With long-range predictions: $p_{\mathrm{long}}=0.1$} \label{fig:merge_noise_with_long_range}
+    \end{subfigure}
+\caption{\algname{} sensitivity to noise: \emph{Average} linkage proved to be the most robust. Performances are given by Rand-Score (higher is better) depending on the amount of noise added to the CNN predictions. Solid lines represent median values over 30 experiments. Values between the 25th and the 75th percentile are shown in shaded areas. The two sets of experiments using under- and over-clustering noise are summarized in the plots at the top and at the bottom, respectively (see Appendix \ref{sec:appendix_noise_gen} for more details). For each experiment, some of the long-range CNN predictions were randomly selected with probability $p_{\mathrm{long}}$ and added as long-range edges to the pixel grid-graph. Experiments are performed on a crop of CREMI training sample B.
+}\label{fig:noise_plots}
+\end{figure*}
+\begin{figure*}[t]
+        \centering
+\begin{minipage}[t]{0.31\textwidth}
+    \centering
+    \scriptsize
+        \begin{tabular}[t]{l|c}
+         Method & \makecell{CREMI-Score \\(lower is better)} \\ \midrule 
+\textbf{\algname{}} \textbf{Average}& \textbf{0.226}  \\
+\algname{} Sum + Constraints \cite{levinkov2017comparative} & 0.282 \\
+\algname{} Abs. Max. \cite{wolf2018mutex} & 0.322 \\
+\algname{} Max. + Constraints & 0.324 \\
+\algname{} Sum \cite{keuper2015efficient} & 0.334 \\
+\algname{} Average + Constraints & 0.563 \\
+THRESH & 1.521 \\ 
+        \end{tabular}
+    \captionof{table}{CREMI-Scores achieved by different linkage criteria and thresholding. All methods use the affinity predictions from our CNN as input. Scores are averaged over the three CREMI training datasets.}
+    \label{tab:results_cremi_train}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.3\textwidth}
+    \centering
+    \scriptsize
+        \begin{tabular}[t]{l|c}
+        Method & \makecell{CREMI-Score \\(lower is better)}  \\ \midrule
+Our CNN + DTWS + LMC &  0.221\\
+PNI CNN \cite{lee2017superhuman} & 0.228 \\
+\textbf{Our CNN + \algname{} Average} & \textbf{0.241} \\
+MALA CNN + MC \cite{funke2018large} & 0.276 \\
+CRU-Net \cite{zeng2017deepem3d} & 0.566  \\
+LFC \cite{parag2017anisotropic} & 0.616  \\
+        \end{tabular}
+        \vspace*{0.99em}
+    \captionof{table}{Current leading entries  in the CREMI challenge leaderboard \cite{cremiChallenge} (November 2019). All entries, apart from our using \algname{}, employ superpixel-based post-processing pipelines.}
+    \label{tab:results_cremi_test}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.35\textwidth}
+\centering
+    \scriptsize
+    \vspace*{-1.5em}
+\begin{tabular}[t]{l|cc}
+        \multirow{2}{*}{Method}    & AP  & AP 50\% \\ 
+         & \multicolumn{2}{c}{(higher is better)} \\ \midrule
+           Panoptic-DeepLab \cite{cheng2019panopticdeeplab} & 34.6 & 57.3 \\
+           UPSNet \cite{xiong2019upsnet} $\dagger$ & 33.0 & 59.6 \\
+           SSAP \cite{Gao_2019_ICCV} & 32.7 & 51.8 \\
+           AdaptIS \cite{sofiiuk2019adaptis} & 32.5 & 52.5 \\
+           PANet \cite{liu2018path} $\dagger$ & 31.8 & 57.1 \\
+           \textbf{GMIS Model \cite{liu2018affinity} + \algname{} Average} & \textbf{28.3} & \textbf{47.0} \\ 
+           JOSECB \cite{neven2019instance} & 27.7 & 50.9 \\
+           \textbf{GMIS} \cite{liu2018affinity} & \textbf{27.3} & \textbf{45.6} \\
+           Mask R-CNN \cite{he2017mask} $\dagger$ & 26.2 & 49.9 \\
+           SGN \cite{liu2017sgn} & 25.0 & 44.9 \\
+           % DIN \cite{arnab2017pixelwise} & 20.0 & 38.8 \\
+           % DWT \cite{bai2017deep} & 19.4 & 35.3 \\
+           % InstanceCut \cite{kirillov2017instancecut} & 13.0 & 27.9 \\
+        \end{tabular}
+    % \caption{CityScapes \emph{test} set}
+    % \vspace*{0.6em}
+    \captionof{table}{Results on CityScapes test. Methods marked with~$\dagger$ are \emph{proposal-based}. Only methods that do not use external training data (e.g. MS COCO) are shown.}\label{tab:results_cityscapes}
+    \label{tab:results_cityscapes_test}
+\end{minipage}
+\end{figure*}
+
+\captionsetup[subtable]{labelformat=simple, labelsep=space, justification=centering, singlelinecheck=off}
+\renewcommand*{\thesubtable}{(\alph{subtable})}
+\begin{figure*}[t]
+\begin{minipage}{0.65 \textwidth}
+\centering
+\includegraphics[width=\textwidth]{./figs/cityscapes_compare_6.pdf} % left bottom right top
+\caption{Visual results given by different \algname{} linkage criteria on a crop of a CityScapes image from the \emph{validation} set.}\label{fig:cityscapes}
+\end{minipage}\hfill
+\begin{minipage}{0.3 \textwidth}
+    \centering
+    \small
+        \begin{tabular}[t]{l|cc}
+             Agglomeration method & AP \\ \midrule
+            % PANet \cite{liu2018path} & - & \textbf{36.5} \\
+            % Mask R-CNN \cite{he2017mask} & - & 31.5 \\ \hline
+              \textbf{\algname{} Average}& \textbf{34.3} \\
+              \algname{} Average + Constraints & 33.9 \\
+             MultiStepHAC \cite{liu2018affinity} & 33.0 \\
+              \algname{} Abs. Max. \cite{wolf2018mutex}  & 32.1 \\
+              \algname{} Sum + Constraints  \cite{levinkov2017comparative} & 31.9  \\
+              \algname{} Sum \cite{keuper2015efficient} & 31.3 \\
+        \end{tabular}
+    \vspace*{0.6em}
+    \captionof{table}{Average Precision scores on CityScapes \emph{val} achieved by the GMIS Model trained in \cite{liu2018affinity} and different graph agglomeration methods.}
+    \label{tab:results_cityscapes_val}
+\end{minipage}
+\end{figure*}
 
 \subsection{Data: CREMI challenge} \label{sec:cremi_challenge}
-We evaluate all algorithms in the proposed framework on the competitive CREMI 2016 EM Segmentation Challenge \cite{cremiChallenge} that is currently the neuron segmentation challenge with the largest amount of training data available. The dataset comes from serial section EM of \emph{Drosophila} fruit-fly tissue and consists of 6 volumes of 1250x1250x125 voxels at resolution 4x4x40nm, three of which present publicly available training ground truth. The results submitted to the leaderboard are evaluated using the CREMI score (\url{https://cremi.org/leaderboard/}), based on the Adapted Rand-Score (Rand-Score) and the Variation of Information Score \cite{arganda2015crowdsourcing}. In Appendix \ref{sec:cremi_details}, we provide more details about the training of our CNN model, inspired by work of \cite{lee2017superhuman,funke2018large}.
+We evaluate all algorithms in the proposed framework on the competitive CREMI 2016 EM Segmentation Challenge \cite{cremiChallenge} that is currently the neuron segmentation challenge with the largest amount of training data available. The dataset comes from serial section EM of \emph{Drosophila} fruit-fly tissue and consists of 6 volumes of 1250x1250x125 voxels at resolution 4x4x40nm, three of which present publicly available training ground truth. The results submitted to the leaderboard are evaluated using the CREMI score (\TODO{Fix link} https://cremi.org/leaderboard/), based on the Adapted Rand-Score (Rand-Score) and the Variation of Information Score \cite{arganda2015crowdsourcing}. In Appendix \ref{sec:cremi_details}, we provide more details about the training of our CNN model, inspired by work of \cite{lee2017superhuman,funke2018large}.
