@@ -44,7 +44,7 @@ In this section we compare \algname{} to spectral clustering methods for signed 
 Despite the fact that the true number of GT clusters was given as an input to the spectral methods, GASP significantly outperformed them on neuro-data. Spectral methods seem to have more difficulties when the graph is sparse. Moreover, they did not handle well pixels on the boundaries between segments and tended to cluster them together. Increasing $k$ did not improve their scores either.
 
 
-\begin{figure}
+\begin{figure*}
 \centering
         \includegraphics[width=0.45\textwidth,trim=0.25in 0.25in 0.68in 0.36in,clip]{./figs/SSBM_experiments.pdf}
         \caption{Performances of \algname{} compared to spectral clustering methods on SSBM synthetic graphs.}
@@ -66,3 +66,26 @@ BNC \cite{chiang2012scalable} & 0.0074 \\
     \caption{\algname{} compared to spectral clustering methods on a small crop of the CREMI dataset (sample B).}
     \label{tab:cremi_spectral_experiments}
 \end{table}
+
+% \begin{figure}
+% \centering
+%         \includegraphics[width=0.45\textwidth,trim=0.25in 0.25in 0.68in 0.36in,clip]{./figs/SSBM_experiments.pdf}
+%         \caption{Performances of \algname{} compared to spectral clustering methods on SSBM synthetic graphs.}
+%     \label{fig:SSBM_spectral_experiments}
+% \end{figure}
+% \begin{table}
+% \centering
+% \footnotesize
+% \begin{tabular}{l|c}
+%            Method & Rand-Score \\ \midrule
+%            \textbf{GASP Average} & \textbf{0.8966} \\
+% GASP Sum & 0.8965 \\
+% GASP Abs Max & 0.8932 \\
+% SPONGE$_{sym}$ \cite{Cucuringu2019SPONGEAG} & 0.5839\\
+% $L_{sym}$ \cite{kunegis2010spectral} & 0.1931 \\
+% SPONGE \cite{Cucuringu2019SPONGEAG} & 0.0789 \\
+% BNC \cite{chiang2012scalable} & 0.0074 \\
+%         \end{tabular}
+%     \caption{\algname{} compared to spectral clustering methods on a small crop of the CREMI dataset (sample B).}
+%     \label{tab:cremi_spectral_experiments}
+% \end{table}
