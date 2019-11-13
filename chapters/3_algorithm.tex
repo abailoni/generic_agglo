@@ -56,13 +56,13 @@ In Appendix \ref{sec:detailed_impl}, we comment on the algorithm's computational
   \begin{algorithmic}[1]
   \footnotesize
   % \small
-      \State Init. clustering $\Pi=\{\{v_1\}, \ldots, \{v_{|V|}\}\}$
-      \State Init. interactions between clusters with $\cost_e = w^+_e - w^-_e$
+      \State Initial clustering: $\Pi=\{\{v_1\}, \ldots, \{v_{|V|}\}\}$
+      \State Initialize interactions between clusters with $\cost_e = w^+_e - w^-_e$
       \Repeat
         \State Get $S_u,S_v\in\Pi$ with highest interaction $|\interact{}(S_u,S_v)|$
         \If{\big[{\color{ForestGreen}\textbf{$\interact{}(S_u,S_v) > 0$}}\big] \textbf{and} \big[$S_u,S_v$ \textbf{not} constrained\big]}
-          \State Merge cluster $S_u$ with $S_v$.
-          \State Update interactions \& constraints with neighboring clusters.
+          \State Merge cluster $S_u$ with $S_v$
+          \State Update interactions \& constraints with neighboring clusters
         \ElsIf{{\color{blue}addCannotLinkConstr} \textbf{and}  \big[{\color{red}\textbf{$\interact{}(S_u,S_v) \leq 0$}}\big]}
           \State Add CannotLink Constraint between $S_u$ and $S_v$
         \EndIf
