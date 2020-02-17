@@ -47,7 +47,7 @@
 % \end{table}
 
 \section{Experiments on CityScapes}\label{sec:cityscapes_exp}
-We also evaluate the performances of \algname{} on the CityScapes dataset \cite{cordts2016cityscapes}, which consists of 5000 street-scene images.
+The segmentation performance of \algname{} is evaluated on the CityScapes dataset \cite{cordts2016cityscapes}, which consists of 5000 street-scene images.
 Several of the current top instance segmentation methods on cityscapes predict affinities, e.g. SSAP \cite{Gao_2019_ICCV} and GMIS \cite{liu2018affinity}. 
 Since \cite{liu2018affinity} made the code and model publicly available, we used their pipeline consisting of two CNNs with similar architectures (one predicting semantic scores and the other pixel affinities between instances) and applied all the post-processing methods proposed by them, e.g. excluding background and resizing regions of interest. We then provided the output instance-affinities of the model as input to \algname{}. 
 In \cite{liu2018affinity} the instance-branch of the model was trained with a Binary Cross-Entropy loss, but we noticed how strong short-range boundary evidence was never predicted by the model. In Appendix \ref{sec:appendix_cityscapes} we present how we solved this problem by fine-tuning the model with \emph{S\o resen-Dice} loss, similarly to \cite{wolf2018mutex}. Finally, the semantic categories were assigned to each instance by a majority vote based on the semantic output. 
