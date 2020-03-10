@@ -31,7 +31,33 @@
 % \end{minipage}
 % \end{figure*}
 
-
+\begin{figure}[t]
+\centering
+\begin{minipage}[t]{\textwidth}
+\vspace{0pt}
+\centering
+% \footnotesize
+\begin{tabular}[t]{L{29em} M{7em}}
+           Method & Rand-Score \\ \midrule
+           \textbf{GASP Average} & \textbf{0.8966} \\
+GASP Sum & 0.8965 \\
+GASP Abs Max & 0.8932 \\
+SPONGE$_{sym}$ \cite{Cucuringu2019SPONGEAG} & 0.5839\\
+$L_{sym}$ \cite{kunegis2010spectral} & 0.1931 \\
+SPONGE \cite{Cucuringu2019SPONGEAG} & 0.0789 \\
+BNC \cite{chiang2012scalable} & 0.0074 \\
+        \end{tabular}
+    \captionof{table}{\algname{} compared to spectral clustering methods on a small crop of the CREMI dataset (sample B).}
+    \label{tab:cremi_spectral_experiments}
+\end{minipage}\\\vspace{2em}
+\begin{minipage}[t]{\textwidth}
+\vspace{0pt}
+\centering
+        \includegraphics[width=0.8\textwidth,trim=0.25in 0.25in 0.68in 0.36in,clip]{./figs/SSBM_experiments.pdf} % 0.45
+        \caption{\algname{} performances compared to spectral methods on synthetic graphs. The spectral methods were given the true number of clusters as input, in contrast to \algname{}.}
+    \label{fig:SSBM_spectral_experiments}
+\end{minipage}
+\end{figure}
 
 
 \section{Comparison with spectral clustering} \label{sec:spectral_clust}
@@ -44,25 +70,4 @@ In this section we compare \algname{} to spectral clustering (SC) methods for si
 Despite the fact that the true number of ground truth clusters was given as an input to the SC methods, GASP significantly outperformed them on neuro-data. SC methods seem to have more difficulties when the graph is sparse. Moreover, they did not handle well pixels on the boundaries between segments and tended to cluster them together. Increasing $k$ did not improve their scores either.
 
 
-\begin{figure}
-\centering
-        \includegraphics[width=0.4\textwidth,trim=0.25in 0.25in 0.68in 0.36in,clip]{./figs/SSBM_experiments.pdf} % 0.45
-        \caption{\algname{} performances compared to spectral methods on synthetic graphs. The spectral methods were given the true number of clusters as input, in contrast to \algname{}.}
-    \label{fig:SSBM_spectral_experiments}
-\end{figure}
-\begin{table}
-\centering
-\footnotesize
-\begin{tabular}{l|c}
-           Method & Rand-Score \\ \midrule
-           \textbf{GASP Average} & \textbf{0.8966} \\
-GASP Sum & 0.8965 \\
-GASP Abs Max & 0.8932 \\
-SPONGE$_{sym}$ \cite{Cucuringu2019SPONGEAG} & 0.5839\\
-$L_{sym}$ \cite{kunegis2010spectral} & 0.1931 \\
-SPONGE \cite{Cucuringu2019SPONGEAG} & 0.0789 \\
-BNC \cite{chiang2012scalable} & 0.0074 \\
-        \end{tabular}
-    \caption{\algname{} compared to spectral clustering methods on a small crop of the CREMI dataset (sample B).}
-    \label{tab:cremi_spectral_experiments}
-\end{table}
+

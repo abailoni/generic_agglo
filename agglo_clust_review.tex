@@ -1,23 +1,16 @@
-\documentclass[10pt,twocolumn,letterpaper]{article}
+% updated April 2002 by Antje Endemann
+% Based on CVPR 07 and LNCS, with modifications by DAF, AZ and elle, 2008 and AA, 2010, and CC, 2011; TT, 2014; AAS, 2016; AAS, 2020
 
-\usepackage{cvpr}
-\usepackage{times}
-\usepackage{epsfig}
+\documentclass[runningheads]{llncs}
 \usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{amssymb}
+\usepackage{comment}
+\usepackage{amsmath,amssymb} % define this before the line numbering.
+\usepackage{color}
 
-% Include other packages here, before hyperref.
-
-% If you comment hyperref and then uncomment it, you should delete
-% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
-% run, let it finish, and you should be clear).
-\usepackage[breaklinks=true,bookmarks=false]{hyperref}
-
-% \cvprfinalcopy % *** Uncomment this line for the final submission
-
-\usepackage{mathrsfs}
-\usepackage{datetime}
+% INITIAL SUBMISSION - The following two lines are NOT commented
+% CAMERA READY - Comment OUT the following two lines
+\usepackage{ruler}
+\usepackage[width=122mm,left=12mm,paperwidth=146mm,height=193mm,top=12mm,paperheight=217mm]{geometry}
 
 \usepackage{algorithm}% http://ctan.org/pkg/algorithm
 \PassOptionsToPackage{noend}{algpseudocode}% comment out if want end's to show
@@ -52,6 +45,9 @@
 \newcommand*{\interact}{\mathcal{W}}
 \newcommand*{\algname}{GASP}
 \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}} 
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}} 
+\newcolumntype{?}{!{\vrule width 0.3em}}
 % \newcolumntype{M}[1]{>{\arraybackslash}m{#1}}
 
 % Include other packages here, before hyperref.
@@ -64,7 +60,7 @@
 % \iccvfinalcopy % *** Uncomment this line for the final submission
 
 % \def\iccvPaperID{368} % *** Enter the ICCV Paper ID here
-\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+% \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
 
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -80,14 +76,15 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage[shortlabels]{enumitem}
 
-\usepackage{amsthm}
-\usepackage{thmtools,thm-restate}
-\newtheorem{theorem}{Theorem}[section]
+% \usepackage{amsthm}
+% \usepackage{thmtools,thm-restate}
+% \newtheorem{theorem}{Theorem}[section]
 \newtheorem{prop}{Proposition}[section]
 
 % \usepackage{authblk}
 
 
+\usepackage{hyperref}
 
 
 
@@ -96,68 +93,55 @@
 
 
 
-
-\def\cvprPaperID{5813} % *** Enter the CVPR Paper ID here
-\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+% \def\cvprPaperID{5813} % *** Enter the CVPR Paper ID here
+% \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
 % Pages are numbered in submission mode, and unnumbered in camera-ready
-\ifcvprfinal\pagestyle{empty}\fi
-
+% \ifcvprfinal\pagestyle{empty}\fi
 
 \begin{document}
-% %%%%%%%%% TITLE
-\title{GASP, a generalized framework for agglomerative clustering of signed graphs 
-and its application to Instance Segmentation}
+% \renewcommand\thelinenumber{\color[rgb]{0.2,0.5,0.8}\normalfont\sffamily\scriptsize\arabic{linenumber}\color[rgb]{0,0,0}}
+% \renewcommand\makeLineNumber {\hss\thelinenumber\ \hspace{6mm} \rlap{\hskip\textwidth\ \hspace{6.5mm}\thelinenumber}}
+% \linenumbers
+\pagestyle{headings}
+\mainmatter
+\def\ECCVSubNumber{5039}  % Insert your submission number here
 
-\author{First Author\\
-Institution1\\
-Institution1 address\\
-{\tt\small firstauthor@i1.org}
-% For a paper whose authors are all at the same institution,
-% omit the following lines up until the closing ``}''.
-% Additional authors and addresses can be added with ``\and'',
-% just like the second author.
-% To save space, use either the email address or home page, not both
-\and
-Second Author\\
-Institution2\\
-First line of institution2 address\\
-{\tt\small secondauthor@i2.org}
-}
-% \author[1]{\textbf{Alberto Bailoni}}
-% \author[1,2]{\textbf{Constantin Pape}}
-% \author[1]{\textbf{Steffen Wolf}}
-% \author[2]{\textbf{Thorsten Beier}}
-% \author[2]{\\\textbf{Anna Kreshuk}}
-% \author[1]{\textbf{Fred A. Hamprecht}}
-% \affil[1]{HCI/IWR, Heidelberg University, Germany}
-% \affil[2]{EMBL, Heidelberg, Germany}
-% % \affil[ ]{ }
-% \affil[ ]{\texttt {\{alberto.bailoni, steffen.wolf, fred.hamprecht\}@iwr.uni-heidelberg.de}}
-% \affil[ ]{\texttt {\{constantin.pape, thorsten.beier, anna.kreshuk\}@embl.de}}
-% \renewcommand\Authands{, }
+\title{GASP, a generalized framework for agglomerative clustering of signed graphs and its application to Instance Segmentation} % Replace with your title
 
+% INITIAL SUBMISSION 
+%\begin{comment}
+\titlerunning{ECCV-20 submission ID \ECCVSubNumber} 
+\authorrunning{ECCV-20 submission ID \ECCVSubNumber} 
+\author{Anonymous ECCV submission}
+\institute{Paper ID \ECCVSubNumber}
+%\end{comment}
+%******************
 
-
-
-% \title{\LaTeX\ Author Guidelines for CVPR Proceedings}
-% \author{First Author\\
-% Institution1\\
-% Institution1 address\\
-% {\tt\small firstauthor@i1.org}
-% % For a paper whose authors are all at the same institution,
-% % omit the following lines up until the closing ``}''.
-% % Additional authors and addresses can be added with ``\and'',
-% % just like the second author.
-% % To save space, use either the email address or home page, not both
-% \and
-% Second Author\\
-% Institution2\\
-% First line of institution2 address\\
-% {\tt\small secondauthor@i2.org}
-% }
-
+% CAMERA READY SUBMISSION
+\begin{comment}
+\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{First Author\inst{1}\orcidID{0000-1111-2222-3333} \and
+Second Author\inst{2,3}\orcidID{1111-2222-3333-4444} \and
+Third Author\inst{3}\orcidID{2222--3333-4444-5555}}
+%
+\authorrunning{F. Author et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{Princeton University, Princeton NJ 08544, USA \and
+Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
+\email{lncs@springer.com}\\
+\url{http://www.springer.com/gp/computer-science/lncs} \and
+ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
+\email{\{abc,lncs\}@uni-heidelberg.de}}
+\end{comment}
+%******************
 \maketitle
+
 \input{chapters/0_abstract.tex}
 \input{chapters/1_intro.tex}
 \input{chapters/2_rel_work}
@@ -171,7 +155,7 @@ First line of institution2 address\\
 \input{chapters/6_conclusions}
 
 {\small
-\bibliographystyle{ieee_fullname}
+\bibliographystyle{splncs04}
 \bibliography{agglo_clust}
 }
 \clearpage
