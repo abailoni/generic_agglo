@@ -1,0 +1,129 @@
+\backcite {kappes2011globally,chopra1991multiway}{{1}{1}{section.1}}
+\backcite {lange2018combinatorial,pape2017solving,beier2016efficient,yarkony2012fast}{{1}{1}{section.1}}
+\backcite {keuper2015efficient,levinkov2017comparative,wolf2018mutex,kardoostsolving}{{1}{1}{section.1}}
+\backcite {lance1967general}{{1}{1}{section.1}}
+\backcite {liu2018affinity,lee2017superhuman,wolf2018mutex}{{1}{1}{section.1}}
+\backcite {lin2014microsoft}{{2}{2}{section.2}}
+\backcite {everingham2010pascal}{{2}{2}{section.2}}
+\backcite {cordts2016cityscapes}{{2}{2}{section.2}}
+\backcite {he2017mask,porzi2019seamless,liu2018path,yang2012layered,li2017fully,ladicky2010and,hariharan2014simultaneous,chen2015multi,dai2016instance,liang2016reversible}{{2}{2}{section.2}}
+\backcite {romera2016recurrent,ren2017end}{{2}{2}{section.2}}
+\backcite {kirillov2017instancecut}{{2}{2}{section.2}}
+\backcite {bai2017deep}{{2}{2}{section.2}}
+\backcite {lee2019learning,fathi2017semantic,newell2017associative,de2017semantic}{{2}{2}{section.2}}
+\backcite {kong2018recurrentPix}{{2}{2}{section.2}}
+\backcite {neven2019instance,cheng2019panopticdeeplab}{{2}{2}{section.2}}
+\backcite {sofiiuk2019adaptis}{{2}{2}{section.2}}
+\backcite {Gao_2019_ICCV,liu2018affinity,xie2015holistically,kokkinos2015pushing}{{2}{2}{section.2}}
+\backcite {lee2017superhuman,schmidt2018cell,meirovitch2016multi,ciresan2012deep}{{2}{2}{section.2}}
+\backcite {kaynig2015large,krasowski2015improving}{{2}{2}{section.2}}
+\backcite {meirovitch2016multi,liu2016sshmt,liu2014modular,funke2015learning,uzunbas2016efficient}{{2}{2}{section.2}}
+\backcite {beier2017multicut}{{2}{2}{section.2}}
+\backcite {januszewski2018high}{{2}{2}{section.2}}
+\backcite {meirovitch2016multi}{{2}{2}{section.2}}
+\backcite {meirovitch2019cross}{{3}{2}{section.2}}
+\backcite {funke2018large,turaga2009maximin}{{3}{2}{section.2}}
+\backcite {arbelaez2011contour,ren2013image,liu2016image,salembier2000binary}{{3}{2}{section.2}}
+\backcite {malmberg2011generalized}{{3}{2}{section.2}}
+\backcite {felzenszwalb2004efficient}{{3}{2}{section.2}}
+\backcite {kiran2014global}{{3}{2}{section.2}}
+\backcite {liu2018affinity,lee2017superhuman}{{3}{2}{section.2}}
+\backcite {funke2018large}{{3}{2}{section.2}}
+\backcite {nunez2013machine,knowles2016rhoananet}{{3}{2}{section.2}}
+\backcite {grotschel1989cutting,grotschel1990facets,chopra1993partition}{{3}{2}{section.2}}
+\backcite {bansal2004correlation}{{3}{2}{section.2}}
+\backcite {demaine2006correlation}{{3}{2}{section.2}}
+\backcite {andres2012globally}{{3}{2}{section.2}}
+\backcite {pape2017solving,beier2016efficient,yarkony2012fast}{{3}{2}{section.2}}
+\backcite {levinkov2017comparative,wolf2019mutex,keuper2015efficient,kardoostsolving}{{3}{2}{section.2}}
+\backcite {lange2018partial,lange2018combinatorial}{{3}{2}{section.2}}
+\backcite {Cucuringu2019SPONGEAG,chiang2012scalable,kunegis2010spectral}{{3}{2}{section.2}}
+\backcite {rangapuram2012constrained,wang2014constrained,cucuringu2016simple}{{3}{2}{section.2}}
+\backcite {levinkov2017comparative,wolf2018mutex,keuper2015efficient}{{3}{2}{section.2}}
+\backcite {liu2018affinity,wolf2018mutex,lee2017superhuman}{{3}{2}{section.2}}
+\backcite {lange2018partial}{{3}{3.1}{subsection.3.1}}
+\backcite {levinkov2017comparative,keuper2015efficient}{{4}{3.3}{subsection.3.3}}
+\backcite {wolf2018mutex}{{4}{3.3}{subsection.3.3}}
+\backcite {nunez2013machine}{{4}{3.3}{subsection.3.3}}
+\backcite {felzenszwalb2004efficient,kardoostsolving}{{4}{3.3}{subsection.3.3}}
+\backcite {funke2018large}{{4}{3.3}{subsection.3.3}}
+\backcite {keuper2015efficient}{{5}{\caption@xref {??}{ on input line 150}}{table.caption.3}}
+\backcite {wolf2018mutex}{{5}{\caption@xref {??}{ on input line 150}}{table.caption.3}}
+\backcite {levinkov2017comparative}{{5}{\caption@xref {??}{ on input line 151}}{table.caption.3}}
+\backcite {wolf2018mutex}{{5}{\caption@xref {??}{ on input line 151}}{table.caption.3}}
+\backcite {schlegel2017learning}{{5}{4}{section.4}}
+\backcite {beier2017multicut,ciresan2012deep}{{5}{4}{section.4}}
+\backcite {wolf2018mutex,lee2017superhuman,funke2018large}{{5}{4}{section.4}}
+\backcite {lee2017superhuman}{{5}{4}{section.4}}
+\backcite {cremiChallenge}{{5}{4.1}{subsection.4.1}}
+\backcite {arganda2015crowdsourcing}{{5}{4.1}{subsection.4.1}}
+\backcite {lee2017superhuman,funke2018large}{{5}{4.1}{subsection.4.1}}
+\backcite {levinkov2017comparative}{{6}{\caption@xref {??}{ on input line 36}}{figure.caption.6}}
+\backcite {wolf2018mutex}{{6}{\caption@xref {??}{ on input line 37}}{figure.caption.6}}
+\backcite {keuper2015efficient}{{6}{\caption@xref {??}{ on input line 39}}{figure.caption.6}}
+\backcite {lee2017superhuman}{{6}{\caption@xref {??}{ on input line 52}}{figure.caption.6}}
+\backcite {funke2018large}{{6}{\caption@xref {??}{ on input line 54}}{figure.caption.6}}
+\backcite {zeng2017deepem3d}{{6}{\caption@xref {??}{ on input line 55}}{figure.caption.6}}
+\backcite {parag2017anisotropic}{{6}{\caption@xref {??}{ on input line 56}}{figure.caption.6}}
+\backcite {cremiChallenge}{{6}{3}{figure.caption.6}}
+\backcite {cheng2019panopticdeeplab}{{6}{\caption@xref {??}{ on input line 69}}{figure.caption.6}}
+\backcite {xiong2019upsnet}{{6}{\caption@xref {??}{ on input line 70}}{figure.caption.6}}
+\backcite {Gao_2019_ICCV}{{6}{\caption@xref {??}{ on input line 71}}{figure.caption.6}}
+\backcite {sofiiuk2019adaptis}{{6}{\caption@xref {??}{ on input line 72}}{figure.caption.6}}
+\backcite {liu2018path}{{6}{\caption@xref {??}{ on input line 73}}{figure.caption.6}}
+\backcite {liu2018affinity}{{6}{\caption@xref {??}{ on input line 74}}{figure.caption.6}}
+\backcite {neven2019instance}{{6}{\caption@xref {??}{ on input line 75}}{figure.caption.6}}
+\backcite {liu2018affinity}{{6}{\caption@xref {??}{ on input line 76}}{figure.caption.6}}
+\backcite {he2017mask}{{6}{\caption@xref {??}{ on input line 77}}{figure.caption.6}}
+\backcite {liu2017sgn}{{6}{\caption@xref {??}{ on input line 78}}{figure.caption.6}}
+\backcite {keuper2015efficient}{{6}{4.2}{subsection.4.2}}
+\backcite {levinkov2017comparative}{{6}{4.2}{subsection.4.2}}
+\backcite {wolf2018mutex}{{6}{4.2}{subsection.4.2}}
+\backcite {beier2017multicut}{{6}{4.2}{subsection.4.2}}
+\backcite {liu2018affinity}{{7}{\caption@xref {??}{ on input line 107}}{figure.caption.7}}
+\backcite {wolf2018mutex}{{7}{\caption@xref {??}{ on input line 108}}{figure.caption.7}}
+\backcite {levinkov2017comparative}{{7}{\caption@xref {??}{ on input line 109}}{figure.caption.7}}
+\backcite {keuper2015efficient}{{7}{\caption@xref {??}{ on input line 110}}{figure.caption.7}}
+\backcite {liu2018affinity}{{7}{5}{figure.caption.7}}
+\backcite {wolf2018mutex}{{7}{4.2}{subsection.4.2}}
+\backcite {cordts2016cityscapes}{{7}{5}{section.5}}
+\backcite {Gao_2019_ICCV}{{7}{5}{section.5}}
+\backcite {liu2018affinity}{{7}{5}{section.5}}
+\backcite {liu2018affinity}{{7}{5}{section.5}}
+\backcite {liu2018affinity}{{7}{5}{section.5}}
+\backcite {wolf2018mutex}{{7}{5}{section.5}}
+\backcite {cheng2019panopticdeeplab}{{8}{5}{section.5}}
+\backcite {Gao_2019_ICCV}{{8}{5}{section.5}}
+\backcite {liu2018affinity}{{8}{5}{section.5}}
+\backcite {liu2018affinity}{{8}{5}{section.5}}
+\backcite {liu2018affinity}{{8}{5}{section.5}}
+\backcite {liu2018affinity}{{8}{5}{section.5}}
+\backcite {wolf2018mutex}{{8}{6}{section.6}}
+\backcite {wolf2018mutex}{{12}{7.2}{section*.13}}
+\backcite {wolf2018mutex}{{12}{7.1}{prop.7.1}}
+\backcite {wolf2018mutex}{{13}{3}{algorithm.3}}
+\backcite {ailon2008aggregating}{{14}{7.3}{subsection.7.3}}
+\backcite {finkel2008enforcing,andres2012globally}{{14}{7.3}{subsection.7.3}}
+\backcite {saalfeld2012elastic}{{14}{7.4}{section*.15}}
+\backcite {ronneberger2015u, cciccek20163d}{{14}{7.4}{section*.15}}
+\backcite {funke2018large}{{14}{7.4}{section*.15}}
+\backcite {lee2017superhuman}{{14}{7.4}{section*.15}}
+\backcite {funke2018large}{{14}{7.4}{section*.15}}
+\backcite {lee2017superhuman}{{14}{7.4}{section*.15}}
+\backcite {keuper2015efficient,kernighan1970efficient}{{15}{7.4}{section*.17}}
+\backcite {beier2016efficient}{{15}{7.4}{section*.17}}
+\backcite {wolf2018mutex}{{16}{7.5}{section*.20}}
+\backcite {perlin2001noise}{{16}{4}{Hfootnote.4}}
+\backcite {perlin1985image}{{16}{4}{Hfootnote.4}}
+\backcite {liu2018affinity}{{16}{7.7}{subsection.7.7}}
+\backcite {liu2018affinity}{{16}{7.7}{subsection.7.7}}
+\backcite {liu2018affinity}{{16}{7.7}{subsection.7.7}}
+\backcite {liu2018affinity}{{16}{7.7}{subsection.7.7}}
+\backcite {wolf2018mutex}{{16}{7.7}{subsection.7.7}}
+\backcite {dice1945measures,sorensen1948method}{{16}{7.7}{subsection.7.7}}
+\backcite {levinkov2017comparative}{{17}{\caption@xref {??}{ on input line 214}}{table.caption.21}}
+\backcite {wolf2018mutex}{{17}{\caption@xref {??}{ on input line 215}}{table.caption.21}}
+\backcite {keuper2015efficient}{{17}{\caption@xref {??}{ on input line 217}}{table.caption.21}}
+\backcite {cremiChallenge}{{17}{6}{table.caption.21}}
+\backcite {arganda2015crowdsourcing}{{17}{6}{table.caption.21}}
+\backcite {liu2018affinity}{{17}{7.7}{subsection.7.7}}

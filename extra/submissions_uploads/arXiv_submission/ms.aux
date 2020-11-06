@@ -1,0 +1,383 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{kappes2011globally}
+\citation{chopra1991multiway}
+\citation{beier2016efficient}
+\citation{keuper2015efficient}
+\citation{levinkov2017comparative}
+\citation{wolf2018mutex}
+\citation{kardoostsolving}
+\citation{lance1967general}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
+\citation{liu2018affinity}
+\citation{lee2017superhuman}
+\citation{wolf2018mutex}
+\citation{lin2014microsoft}
+\citation{everingham2010pascal}
+\citation{cordts2016cityscapes}
+\citation{he2017mask}
+\citation{liu2018path}
+\citation{yang2012layered}
+\citation{li2017fully}
+\citation{ladicky2010and}
+\citation{hariharan2014simultaneous}
+\citation{chen2015multi}
+\citation{dai2016instance}
+\citation{liang2016reversible}
+\citation{ren2015faster}
+\citation{romera2016recurrent}
+\citation{ren2017end}
+\citation{kirillov2017instancecut}
+\citation{liu2017sgn}
+\citation{bai2017deep}
+\citation{uhrig2016pixel}
+\citation{fathi2017semantic}
+\citation{newell2017associative}
+\citation{de2017semantic}
+\citation{kulikov2018instance}
+\citation{kong2018recurrentPix}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Pipeline description: \textbf  {(1)} Raw data from the CREMI 2016 neuron-segmentation challenge. \textbf  {(2)} Some short- and long-range predictions of our CNN model, where white pixels represent boundary evidence. \textbf  {(3)} Outputs of two agglomerative algorithms included in our proposed generalized clustering framework, with \emph  {Sum} and \emph  {Average} linkage criteria. The final clustering / instance segmentation is shown in 3a, overlaid with the raw image. The agglomeration order in 3b shows which pairs of neighboring pixels were merged first (white), later on (brown/red), or never (black). (\textbf  {4}) Some iterations of GASP{} on toy graph examples with attractive/positive (green) and repulsive/negative (red) interactions. At each iteration, the yellow edge with highest interaction is contracted (orange arrows), until only negative edges are left in the graph. \relax }}{2}{figure.caption.2}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:intro_figure}{{1}{2}{Pipeline description: \textbf {(1)} Raw data from the CREMI 2016 neuron-segmentation challenge. \textbf {(2)} Some short- and long-range predictions of our CNN model, where white pixels represent boundary evidence. \textbf {(3)} Outputs of two agglomerative algorithms included in our proposed generalized clustering framework, with \emph {Sum} and \emph {Average} linkage criteria. The final clustering / instance segmentation is shown in 3a, overlaid with the raw image. The agglomeration order in 3b shows which pairs of neighboring pixels were merged first (white), later on (brown/red), or never (black). (\textbf {4}) Some iterations of \algname {} on toy graph examples with attractive/positive (green) and repulsive/negative (red) interactions. At each iteration, the yellow edge with highest interaction is contracted (orange arrows), until only negative edges are left in the graph. \relax }{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related work}{2}{section.2}}
+\newlabel{sec:related_work}{{2}{2}{Related work}{section.2}{}}
+\citation{xie2015holistically}
+\citation{kokkinos2015pushing}
+\citation{lee2017superhuman}
+\citation{schmidt2018cell}
+\citation{meirovitch2016multi}
+\citation{ciresan2012deep}
+\citation{kaynig2015large}
+\citation{krasowski2015improving}
+\citation{meirovitch2016multi}
+\citation{liu2016sshmt}
+\citation{liu2014modular}
+\citation{funke2015learning}
+\citation{uzunbas2016efficient}
+\citation{beier2017multicut}
+\citation{januszewski2018high}
+\citation{funke2018large}
+\citation{turaga2009maximin}
+\citation{ren2013image}
+\citation{liu2016image}
+\citation{salembier2000binary}
+\citation{malmberg2011generalized}
+\citation{arbelaez2011contour}
+\citation{felzenszwalb2004efficient}
+\citation{kiran2014global}
+\citation{liu2018affinity}
+\citation{lee2017superhuman}
+\citation{funke2018large}
+\citation{nunez2013machine}
+\citation{knowles2016rhoananet}
+\citation{grotschel1989cutting}
+\citation{grotschel1990facets}
+\citation{chopra1993partition}
+\citation{bansal2004correlation}
+\citation{demaine2006correlation}
+\citation{andres2012globally}
+\citation{pape2017solving}
+\citation{beier2016efficient}
+\citation{yarkony2012fast}
+\citation{levinkov2017comparative}
+\citation{wolf2019mutex}
+\citation{keuper2015efficient}
+\citation{kardoostsolving}
+\citation{lange2018partial}
+\citation{lange2018combinatorial}
+\citation{levinkov2017comparative}
+\citation{wolf2018mutex}
+\citation{keuper2015efficient}
+\citation{liu2018affinity}
+\citation{wolf2018mutex}
+\citation{lee2017superhuman}
+\citation{lange2018partial}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Generalized framework for agglomerative clustering of signed graphs}{3}{section.3}}
+\newlabel{sec:general_framework}{{3}{3}{Generalized framework for agglomerative clustering of signed graphs}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Notation and graph formalism}{3}{subsection.3.1}}
+\newlabel{sec:notation}{{3.1}{3}{Notation and graph formalism}{subsection.3.1}{}}
+\newlabel{subfig:no_constraints}{{2(a)}{4}{No constraints\relax }{figure.caption.3}{}}
+\newlabel{sub@subfig:no_constraints}{{(a)}{4}{No constraints\relax }{figure.caption.3}{}}
+\newlabel{subfig:with_constraints}{{2(b)}{4}{With cannot-link constraints\relax }{figure.caption.3}{}}
+\newlabel{sub@subfig:with_constraints}{{(b)}{4}{With cannot-link constraints\relax }{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Some iterations of the generalized algorithm (using \emph  {Sum} linkage criteria) with and without adding cannot-link constraints. The graph has both attractive (green) and repulsive (red) edges and cannot-link constraints are shown with triple violet bars on the edges. We note that when constraints are enforced, the final clustering is given by two clusters instead of only one.\relax }}{4}{figure.caption.3}}
+\newlabel{fig:algorithm_with_without_CLC}{{2}{4}{Some iterations of the generalized algorithm (using \emph {Sum} linkage criteria) with and without adding cannot-link constraints. The graph has both attractive (green) and repulsive (red) edges and cannot-link constraints are shown with triple violet bars on the edges. We note that when constraints are enforced, the final clustering is given by two clusters instead of only one.\relax }{figure.caption.3}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces GASP{}: generalized algorithm for signed graph partitioning\relax }}{4}{algorithm.1}}
+\newlabel{main_alg}{{1}{4}{\algname {}: generalized algorithm for signed graph partitioning\relax }{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}GASP{}: generalized algorithm for signed graph partitioning}{4}{subsection.3.2}}
+\newlabel{sec:algorithm}{{3.2}{4}{\algname {}: generalized algorithm for signed graph partitioning}{subsection.3.2}{}}
+\citation{keuper2015efficient}
+\citation{levinkov2017comparative}
+\citation{wolf2018mutex}
+\citation{wolf2018mutex}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Failure cases of GASP{} with different linkage criteria highlighted on some difficult parts of the CREMI Challenge data. The main \emph  {wrongly} segmented regions are highlighted in different warm colors. Note that the data is 3D, hence the same color could be assigned to parts of segments that appear disconnected in 2D. Red arrows point to wrongly split regions. Yellow arrows point out merge errors. The \emph  {Average} linkage without cannot-link constraints returned the best segmentation. \relax }}{5}{figure.caption.5}}
+\newlabel{fig:cremi_comparison}{{3}{5}{Failure cases of \algname {} with different linkage criteria highlighted on some difficult parts of the CREMI Challenge data. The main \emph {wrongly} segmented regions are highlighted in different warm colors. Note that the data is 3D, hence the same color could be assigned to parts of segments that appear disconnected in 2D. Red arrows point to wrongly split regions. Yellow arrows point out merge errors. The \emph {Average} linkage without cannot-link constraints returned the best segmentation. \relax }{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}GASP{} with different linkage criteria: new and existing algorithms}{5}{subsection.3.3}}
+\newlabel{sec:alg_update_rules}{{3.3}{5}{\algname {} with different linkage criteria: new and existing algorithms}{subsection.3.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Existing and new clustering algorithms that can be reformulated as special cases of the proposed generalized algorithm for signed graph partitioning GASP{}, given a linkage criterium, a type of graph (signed or unsigned) and the optional use of cannot-link constraints. The set $E_{uv}$ is defined as the set of all edges connecting cluster $S_u$ to cluster $S_v$, i.e. $E_{uv}=(S_u \times S_{v \not =u}) \cap E$.\relax }}{5}{table.caption.4}}
+\newlabel{tab:linkage-criteria}{{1}{5}{Existing and new clustering algorithms that can be reformulated as special cases of the proposed generalized algorithm for signed graph partitioning \algname {}, given a linkage criterium, a type of graph (signed or unsigned) and the optional use of cannot-link constraints. The set $E_{uv}$ is defined as the set of all edges connecting cluster $S_u$ to cluster $S_v$, i.e. $E_{uv}=(S_u \times S_{v \neq u}) \cap E$.\relax }{table.caption.4}{}}
+\citation{levinkov2017comparative}
+\citation{keuper2015efficient}
+\citation{wolf2018mutex}
+\citation{nunez2013machine}
+\citation{felzenszwalb2004efficient}
+\citation{kardoostsolving}
+\citation{funke2018large}
+\citation{schlegel2017learning}
+\citation{beier2017multicut}
+\citation{ciresan2012deep}
+\citation{wolf2018mutex}
+\citation{lee2017superhuman}
+\citation{funke2018large}
+\citation{lee2017superhuman}
+\citation{cremiChallenge}
+\citation{arganda2015crowdsourcing}
+\citation{lee2017superhuman}
+\citation{funke2018large}
+\citation{keuper2015efficient}
+\citation{levinkov2017comparative}
+\citation{wolf2018mutex}
+\citation{beier2017multicut}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments on neuron segmentation}{6}{section.4}}
+\newlabel{sec:neuro_segm_exp}{{4}{6}{Experiments on neuron segmentation}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Data: CREMI challenge}{6}{subsection.4.1}}
+\newlabel{sec:cremi_challenge}{{4.1}{6}{Data: CREMI challenge}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Results and discussion}{6}{subsection.4.2}}
+\newlabel{sec:results}{{4.2}{6}{Results and discussion}{subsection.4.2}{}}
+\citation{levinkov2017comparative}
+\citation{wolf2018mutex}
+\citation{keuper2015efficient}
+\citation{lee2017superhuman}
+\citation{funke2018large}
+\citation{zeng2017deepem3d}
+\citation{parag2017anisotropic}
+\citation{cremiChallenge}
+\citation{cremiChallenge}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces CREMI-Scores achieved by different linkage criteria and thresholding. All methods use the affinity predictions from our CNN as input. Scores are averages over the three CREMI training datasets.\relax }}{7}{figure.caption.6}}
+\newlabel{tab:results_cremi_train}{{2}{7}{CREMI-Scores achieved by different linkage criteria and thresholding. All methods use the affinity predictions from our CNN as input. Scores are averages over the three CREMI training datasets.\relax }{figure.caption.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Current leading entries in the CREMI challenge leaderboard \cite  {cremiChallenge} (May 2019). The scores are averages of the three test datasets.\relax }}{7}{figure.caption.6}}
+\newlabel{tab:results_cremi_test}{{3}{7}{Current leading entries in the CREMI challenge leaderboard \cite {cremiChallenge} (May 2019). The scores are averages of the three test datasets.\relax }{figure.caption.6}{}}
+\newlabel{fig:merge_noise_only_direct}{{4(a)}{7}{No long-range predictions: $p_{\mathrm {long}}=0$\relax }{figure.caption.7}{}}
+\newlabel{sub@fig:merge_noise_only_direct}{{(a)}{7}{No long-range predictions: $p_{\mathrm {long}}=0$\relax }{figure.caption.7}{}}
+\newlabel{fig:merge_noise_with_long_range}{{4(b)}{7}{With long-range predictions: $p_{\mathrm {long}}=0.1$\relax }{figure.caption.7}{}}
+\newlabel{sub@fig:merge_noise_with_long_range}{{(b)}{7}{With long-range predictions: $p_{\mathrm {long}}=0.1$\relax }{figure.caption.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces GASP{} sensitivity to noise: \emph  {Average} linkage proved to be the most robust. Performances are given by Rand-Score (higher is better) depending on the amount of noise added to the CNN predictions. Solid lines represent median values over 30 experiments. Values between the 25th and the 75th percentile are shown in shaded areas. The two sets of experiments using under- and over-clustering noise are summarized in the plots at the top and at the bottom, respectively (see Appendix \ref  {sec:appendix_noise_gen} for more details). For each experiment, some of the long-range CNN predictions were randomly selected with probability $p_{\mathrm  {long}}$ and added as long-range edges to the pixel grid-graph. Experiments are performed on a crop of CREMI training sample B. \relax }}{7}{figure.caption.7}}
+\newlabel{fig:noise_plots}{{4}{7}{\algname {} sensitivity to noise: \emph {Average} linkage proved to be the most robust. Performances are given by Rand-Score (higher is better) depending on the amount of noise added to the CNN predictions. Solid lines represent median values over 30 experiments. Values between the 25th and the 75th percentile are shown in shaded areas. The two sets of experiments using under- and over-clustering noise are summarized in the plots at the top and at the bottom, respectively (see Appendix \ref {sec:appendix_noise_gen} for more details). For each experiment, some of the long-range CNN predictions were randomly selected with probability $p_{\mathrm {long}}$ and added as long-range edges to the pixel grid-graph. Experiments are performed on a crop of CREMI training sample B. \relax }{figure.caption.7}{}}
+\citation{wolf2018mutex}
+\citation{liu2018path}
+\citation{he2017mask}
+\citation{liu2018affinity}
+\citation{liu2018affinity}
+\citation{wolf2018mutex}
+\citation{levinkov2017comparative}
+\citation{keuper2015efficient}
+\citation{liu2018path}
+\citation{liu2018affinity}
+\citation{he2017mask}
+\citation{liu2017sgn}
+\citation{arnab2017pixelwise}
+\citation{bai2017deep}
+\citation{kirillov2017instancecut}
+\citation{liu2018affinity}
+\citation{lin2014microsoft}
+\citation{liu2018affinity}
+\citation{lin2014microsoft}
+\citation{cordts2016cityscapes}
+\citation{liu2018affinity}
+\citation{wolf2018mutex}
+\citation{liu2018path}
+\citation{liu2018affinity}
+\citation{liu2018affinity}
+\newlabel{tab:results_cityscapes_val}{{4(a)}{8}{CityScapes \emph {validation} set\relax }{table.caption.8}{}}
+\newlabel{sub@tab:results_cityscapes_val}{{(a)}{8}{CityScapes \emph {validation} set\relax }{table.caption.8}{}}
+\newlabel{tab:results_cityscapes_test}{{4(b)}{8}{CityScapes \emph {test} set\relax }{table.caption.8}{}}
+\newlabel{sub@tab:results_cityscapes_test}{{(b)}{8}{CityScapes \emph {test} set\relax }{table.caption.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Average Precision scores (higher is better) on the CityScapes dataset. GASP{} with \emph  {Average} linkage combined with the GMIS Model \cite  {liu2018affinity} represents the proposal-free method achieving the best results (May 2019). In order to have a fair comparison, we only compare methods that did not use external data (e.g. COCO \cite  {lin2014microsoft}) for training. In Table (a) we distinguish between proposal-based and proposal-free methods.\relax }}{8}{table.caption.8}}
+\newlabel{tab:results_cityscapes}{{4}{8}{Average Precision scores (higher is better) on the CityScapes dataset. \algname {} with \emph {Average} linkage combined with the GMIS Model \cite {liu2018affinity} represents the proposal-free method achieving the best results (May 2019). In order to have a fair comparison, we only compare methods that did not use external data (e.g. COCO \cite {lin2014microsoft}) for training. In Table (a) we distinguish between proposal-based and proposal-free methods.\relax }{table.caption.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experiments on CityScapes}{8}{section.5}}
+\newlabel{sec:cityscapes_exp}{{5}{8}{Experiments on CityScapes}{section.5}{}}
+\citation{wolf2018mutex}
+\bibstyle{abbrv}
+\bibdata{ms}
+\bibcite{ailon2008aggregating}{1}
+\bibcite{andres2012globally}{2}
+\bibcite{arbelaez2011contour}{3}
+\bibcite{arganda2015crowdsourcing}{4}
+\bibcite{arnab2017pixelwise}{5}
+\bibcite{bai2017deep}{6}
+\bibcite{bansal2004correlation}{7}
+\bibcite{beier2016efficient}{8}
+\bibcite{beier2017multicut}{9}
+\bibcite{chen2015multi}{10}
+\bibcite{chopra1991multiway}{11}
+\bibcite{chopra1993partition}{12}
+\bibcite{cciccek20163d}{13}
+\bibcite{ciresan2012deep}{14}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Visual results given by different GASP{} linkage criteria on a crop of a CityScapes image\relax }}{9}{figure.caption.9}}
+\newlabel{fig:cityscapes}{{5}{9}{Visual results given by different \algname {} linkage criteria on a crop of a CityScapes image\relax }{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{9}{section.6}}
+\bibcite{cordts2016cityscapes}{15}
+\bibcite{dai2016instance}{16}
+\bibcite{de2017semantic}{17}
+\bibcite{demaine2006correlation}{18}
+\bibcite{dice1945measures}{19}
+\bibcite{everingham2010pascal}{20}
+\bibcite{fathi2017semantic}{21}
+\bibcite{felzenszwalb2004efficient}{22}
+\bibcite{finkel2008enforcing}{23}
+\bibcite{funke2015learning}{24}
+\bibcite{cremiChallenge}{25}
+\bibcite{funke2018large}{26}
+\bibcite{grotschel1989cutting}{27}
+\bibcite{grotschel1990facets}{28}
+\bibcite{hariharan2014simultaneous}{29}
+\bibcite{he2017mask}{30}
+\bibcite{januszewski2018high}{31}
+\bibcite{kappes2011globally}{32}
+\bibcite{kardoostsolving}{33}
+\bibcite{kaynig2015large}{34}
+\bibcite{kernighan1970efficient}{35}
+\bibcite{keuper2015efficient}{36}
+\bibcite{kiran2014global}{37}
+\bibcite{kirillov2017instancecut}{38}
+\bibcite{knowles2016rhoananet}{39}
+\bibcite{kokkinos2015pushing}{40}
+\bibcite{kong2018recurrentPix}{41}
+\bibcite{krasowski2015improving}{42}
+\bibcite{kulikov2018instance}{43}
+\bibcite{ladicky2010and}{44}
+\bibcite{lance1967general}{45}
+\bibcite{lange2018combinatorial}{46}
+\bibcite{lange2018partial}{47}
+\bibcite{lee2017superhuman}{48}
+\bibcite{levinkov2017comparative}{49}
+\bibcite{li2017fully}{50}
+\bibcite{liang2016reversible}{51}
+\bibcite{lin2014microsoft}{52}
+\bibcite{liu2017sgn}{53}
+\bibcite{liu2018path}{54}
+\bibcite{liu2014modular}{55}
+\bibcite{liu2016image}{56}
+\bibcite{liu2016sshmt}{57}
+\bibcite{liu2018affinity}{58}
+\bibcite{malmberg2011generalized}{59}
+\bibcite{meirovitch2016multi}{60}
+\bibcite{newell2017associative}{61}
+\bibcite{nunez2013machine}{62}
+\bibcite{pape2017solving}{63}
+\bibcite{parag2017anisotropic}{64}
+\bibcite{perlin1985image}{65}
+\bibcite{perlin2001noise}{66}
+\bibcite{ren2017end}{67}
+\bibcite{ren2015faster}{68}
+\bibcite{ren2013image}{69}
+\bibcite{romera2016recurrent}{70}
+\bibcite{ronneberger2015u}{71}
+\bibcite{saalfeld2012elastic}{72}
+\bibcite{salembier2000binary}{73}
+\bibcite{schlegel2017learning}{74}
+\bibcite{schmidt2018cell}{75}
+\bibcite{sorensen1948method}{76}
+\bibcite{turaga2009maximin}{77}
+\bibcite{uhrig2016pixel}{78}
+\bibcite{uzunbas2016efficient}{79}
+\bibcite{wolf2019mutex}{80}
+\bibcite{wolf2018mutex}{81}
+\bibcite{xie2015holistically}{82}
+\bibcite{yang2012layered}{83}
+\bibcite{yarkony2012fast}{84}
+\bibcite{zeng2017deepem3d}{85}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Supplementary material}{13}{section.7}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Implementation of GASP{}, generalized algorithm for signed graph partitioning\relax }}{13}{algorithm.2}}
+\newlabel{detailed_alg}{{2}{13}{Implementation of \algname {}, generalized algorithm for signed graph partitioning\relax }{algorithm.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Implementation details and complexity of GASP{}}{13}{subsection.7.1}}
+\newlabel{sec:detailed_impl}{{7.1}{13}{Implementation details and complexity of \algname {}}{subsection.7.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Implementation}{13}{section*.13}}
+\citation{wolf2018mutex}
+\citation{wolf2018mutex}
+\citation{wolf2018mutex}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  \textbf  {Left:} Example of edge contraction. First row: original graph $\mathcal  {G}$; clustering $\Pi $ (gray shaded areas) with dashed edges on cut; cannot-link constraints (violet bars). Second row: contracted graph $\mathaccentV {tilde}07E{\mathcal  {G}}_\Pi $. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\mathaccentV {tilde}07E{\mathcal  {G}}_\Pi $. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from the edge contraction are replaced by a single edge with updated interaction. \textbf  {Right:} The table lists the update rules $f(\mathaccentV {tilde}07E{w}_1, \mathaccentV {tilde}07E{w}_2)$ associated to the linkage criteria of Table \ref  {tab:linkage-criteria} and that are used to efficiently update the interactions between clusters.\relax }}{14}{figure.caption.11}}
+\newlabel{fig:edge_contraction_and_contr_graph}{{6}{14}{\textbf {Left:} Example of edge contraction. First row: original graph $\mathcal {G}$; clustering $\Pi $ (gray shaded areas) with dashed edges on cut; cannot-link constraints (violet bars). Second row: contracted graph $\tilde {\mathcal {G}}_\Pi $. In step ii), edge $e_{uv}$ is contracted and node $v$ deleted from $\tilde {\mathcal {G}}_\Pi $. In step iii), double edges $e_{tu}$ and $e_{tv}$ resulting from the edge contraction are replaced by a single edge with updated interaction. \textbf {Right:} The table lists the update rules $f(\tilde {\cost }_1, \tilde {\cost }_2)$ associated to the linkage criteria of Table \ref {tab:linkage-criteria} and that are used to efficiently update the interactions between clusters.\relax }{figure.caption.11}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Mutex Watershed Algorithm proposed by \cite  {wolf2018mutex}\relax }}{14}{algorithm.3}}
+\newlabel{alg:mutex_watershed}{{3}{14}{Mutex Watershed Algorithm proposed by \cite {wolf2018mutex}\relax }{algorithm.3}{}}
+\citation{wolf2018mutex}
+\citation{ailon2008aggregating}
+\citation{finkel2008enforcing}
+\citation{andres2012globally}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces GASP{} with \emph  {AbsMax} linkage: Example representing the only case of edge contraction $e_{uv}$ that would introduce a positive attractive interaction between two constrained clusters. Note this can actually never happen with an \emph  {AbsMax} linkage, because edge $e_{ut}$ has a lower absolute priority as compared to $e_{uv}$, so clusters $u$ and $t$ cannot have been constrained before $u$ and $v$ are merged. \relax }}{15}{figure.caption.16}}
+\newlabel{fig:abs_max_proof_example}{{7}{15}{\algname {} with \emph {AbsMax} linkage: Example representing the only case of edge contraction $e_{uv}$ that would introduce a positive attractive interaction between two constrained clusters. Note this can actually never happen with an \emph {AbsMax} linkage, because edge $e_{ut}$ has a lower absolute priority as compared to $e_{uv}$, so clusters $u$ and $t$ cannot have been constrained before $u$ and $v$ are merged. \relax }{figure.caption.16}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Properties of GASP{} with \emph  {Absolute Maximum} linkage}{15}{subsection.7.2}}
+\newlabel{sec:appendix_abs_max}{{7.2}{15}{Properties of \algname {} with \emph {Absolute Maximum} linkage}{subsection.7.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Remark on graph notation}{15}{section*.15}}
+\@writefile{loe}{\contentsline {prop}{\numberline {7.1}Proposition}{15}{prop.7.1}}
+\newlabel{prop:equiv_MWS}{{7.1}{15}{}{prop.7.1}{}}
+\newlabel{eq:def_abs_max}{{4}{15}{}{equation.7.4}{}}
+\@writefile{loe}{\contentsline {prop}{\numberline {7.2}Proposition}{15}{prop.7.2}}
+\newlabel{prop:abs_max_cannot_link_property}{{7.2}{15}{}{prop.7.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Predicting signed edge weights with a CNN}{15}{subsection.7.3}}
+\citation{saalfeld2012elastic}
+\citation{ronneberger2015u}
+\citation{cciccek20163d}
+\citation{funke2018large}
+\citation{lee2017superhuman}
+\citation{funke2018large}
+\citation{lee2017superhuman}
+\citation{keuper2015efficient}
+\citation{kernighan1970efficient}
+\citation{beier2016efficient}
+\newlabel{eq:mappings}{{5}{16}{Predicting signed edge weights with a CNN}{equation.7.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Neuron segmentation and compared methods}{16}{subsection.7.4}}
+\newlabel{sec:cremi_details}{{7.4}{16}{Neuron segmentation and compared methods}{subsection.7.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Training details}{16}{section*.17}}
+\@writefile{toc}{\contentsline {paragraph}{THRESH and WSDT}{16}{section*.18}}
+\@writefile{toc}{\contentsline {paragraph}{Multi-step pipelines}{16}{section*.19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}GASP{} on the full CREMI dataset}{16}{subsection.7.5}}
+\newlabel{sec:appendix_exps_full_cremi}{{7.5}{16}{\algname {} on the full CREMI dataset}{subsection.7.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Pre-merge processing}{16}{section*.20}}
+\citation{wolf2018mutex}
+\citation{levinkov2017comparative}
+\citation{wolf2018mutex}
+\citation{keuper2015efficient}
+\citation{cremiChallenge}
+\citation{arganda2015crowdsourcing}
+\citation{cremiChallenge}
+\citation{arganda2015crowdsourcing}
+\citation{perlin2001noise}
+\citation{perlin1985image}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Performances achieved by different versions of GASP{} on the CREMI 2016 training set. CREMI-Score \cite  {cremiChallenge}, is given by a combination of the Adapted Rand-Score (Rand-Score) and the Variation of Information Score for under-clustering (VI-merge) and over-clustering (VI-split) \cite  {arganda2015crowdsourcing}. CLC stands for cannot-link constraints. For all algorithms, the chosen value of bias parameter was $\beta = 0$. We used a machine with CPU Intel(R) Xeon(R) E7-4870 @ 2.40GHz for our comparison experiments.\relax }}{17}{table.caption.23}}
+\newlabel{tab:extended_results_cremi}{{5}{17}{Performances achieved by different versions of \algname {} on the CREMI 2016 training set. CREMI-Score \cite {cremiChallenge}, is given by a combination of the Adapted Rand-Score (Rand-Score) and the Variation of Information Score for under-clustering (VI-merge) and over-clustering (VI-split) \cite {arganda2015crowdsourcing}. CLC stands for cannot-link constraints. For all algorithms, the chosen value of bias parameter was $\beta = 0$. We used a machine with CPU Intel(R) Xeon(R) E7-4870 @ 2.40GHz for our comparison experiments.\relax }{table.caption.23}{}}
+\@writefile{toc}{\contentsline {paragraph}{Removing small segments}{17}{section*.21}}
+\@writefile{toc}{\contentsline {paragraph}{Enforcing local merge}{17}{section*.22}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.6}GASP{} sensitivity to noise: adding artifacts to CNN predictions}{17}{subsection.7.6}}
+\newlabel{sec:appendix_noise_gen}{{7.6}{17}{\algname {} sensitivity to noise: adding artifacts to CNN predictions}{subsection.7.6}{}}
+\citation{liu2018affinity}
+\citation{liu2018affinity}
+\citation{liu2018affinity}
+\citation{liu2018affinity}
+\citation{wolf2018mutex}
+\citation{dice1945measures}
+\citation{sorensen1948method}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces CNN predictions on a slice of the CREMI neuron segmentation challenge with and without additional noise. (\textbf  {a}) Raw data (\textbf  {b}) Original CNN predictions $F(x)$, where blue pixels represent boundary evidence (\textbf  {c}) Under-clustering biased version $\mathaccentV {tilde}07E{F}_{+}(x;\mathcal  {K})$ of the predictions defined in Eq. \ref  {eq:noise_biased_predictions} with $\mathcal  {K}=8$ (\textbf  {d}) Over-clustering biased version $\mathaccentV {tilde}07E{F}_{-}(x;\mathcal  {K})$. Long-range predictions are not shown. \relax }}{18}{figure.caption.24}}
+\newlabel{fig:noisy_affs}{{8}{18}{CNN predictions on a slice of the CREMI neuron segmentation challenge with and without additional noise. (\textbf {a}) Raw data (\textbf {b}) Original CNN predictions $F(x)$, where blue pixels represent boundary evidence (\textbf {c}) Under-clustering biased version $\tilde {F}_{+}(x;\mathcal {K})$ of the predictions defined in Eq. \ref {eq:noise_biased_predictions} with $\mathcal {K}=8$ (\textbf {d}) Over-clustering biased version $\tilde {F}_{-}(x;\mathcal {K})$. Long-range predictions are not shown. \relax }{figure.caption.24}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Average Precision (AP) scores achieved by different versions of GASP{} and chosen bias parameters $\beta $ on the cityscapes validation set. A bias value $\beta =0$ returns one single cluster. CLC stands for cannot-link constraints\relax }}{18}{figure.caption.24}}
+\newlabel{tab:extended_results_cityscapes_val}{{6}{18}{Average Precision (AP) scores achieved by different versions of \algname {} and chosen bias parameters $\beta $ on the cityscapes validation set. A bias value $\beta =0$ returns one single cluster. CLC stands for cannot-link constraints\relax }{figure.caption.24}{}}
+\newlabel{eq:noise_biased_predictions}{{6}{18}{\algname {} sensitivity to noise: adding artifacts to CNN predictions}{equation.7.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.7}Fine-tuning the GMIS pipeline on CityScapes}{18}{subsection.7.7}}
+\newlabel{sec:appendix_cityscapes}{{7.7}{18}{Fine-tuning the GMIS pipeline on CityScapes}{subsection.7.7}{}}
+\citation{liu2018affinity}

@@ -1,0 +1,185 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+
+% \cvprfinalcopy % *** Uncomment this line for the final submission
+
+% MODIFIED!
+
+% \usepackage{epsfig}
+% \usepackage{graphicx}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+
+\usepackage{mathrsfs}
+\usepackage{datetime}
+
+\usepackage{algorithm}% http://ctan.org/pkg/algorithm
+\PassOptionsToPackage{noend}{algpseudocode}% comment out if want end's to show
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+
+\makeatletter
+\newcommand*{\skipnumber}[2][1]{%
+   {\renewcommand*{\alglinenumber}[1]{}\State #2}%
+   \addtocounter{ALG@line}{-#1}}
+\renewcommand{\ALG@beginalgorithmic}{\small}
+\makeatother
+
+\usepackage{etoolbox}
+% the following line injects our new indent handling code in place of the default spacing
+% \patchcmd{\ALG@doentity}{\noindent\hskip\ALG@tlm}{\ALG@printindent}{}{\errmessage{failed to patch}}
+% \makeatother
+% end vertical rule patch for algorithmicx
+
+\usepackage{tabularx}
+\usepackage{lipsum}
+\usepackage{makecell}
+\renewcommand\theadfont{}
+\usepackage{multirow}
+\usepackage[labelformat=simple]{subcaption}
+\renewcommand\thesubfigure{(\alph{subfigure})}
+\usepackage{booktabs}
+\usepackage{rotating}
+\newcolumntype{?}{!{\vrule width 0.3em}}
+
+\newcommand*{\cost}{w}%
+\newcommand*{\interact}{\mathcal{W}}
+\newcommand*{\algname}{GASP}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+% \newcolumntype{M}[1]{>{\arraybackslash}m{#1}}
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+% \usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+
+% \iccvfinalcopy % *** Uncomment this line for the final submission
+
+% \def\iccvPaperID{368} % *** Enter the ICCV Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\usepackage{mathrsfs}
+\newcommand{\RED}[1]{#1}
+
+\newcommand\TODO[1]{{\color{red}{TODO: #1}}}
+\newcommand\UPDATE[1]{{\color{blue}{#1}}}
+\newcommand\SOURCE[1]{{\color{green}{(from: #1)}}}
+% \newcommand\CHANGED[2]{{{\color{blue}{#1}}\color{green}{#2}}}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{amsthm}
+\usepackage{thmtools,thm-restate}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{prop}{Proposition}[section]
+
+% \usepackage{authblk}
+
+
+
+
+
+
+
+
+
+
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+\ifcvprfinal\pagestyle{empty}\fi
+
+
+\begin{document}
+% %%%%%%%%% TITLE
+\title{A Generalized Framework for Agglomerative Clustering of Signed Graphs 
+applied to Instance Segmentation}
+
+\author{First Author\\
+Institution1\\
+Institution1 address\\
+{\tt\small firstauthor@i1.org}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Second Author\\
+Institution2\\
+First line of institution2 address\\
+{\tt\small secondauthor@i2.org}
+}
+% \author[1]{\textbf{Alberto Bailoni}}
+% \author[1,2]{\textbf{Constantin Pape}}
+% \author[1]{\textbf{Steffen Wolf}}
+% \author[2]{\textbf{Thorsten Beier}}
+% \author[2]{\\\textbf{Anna Kreshuk}}
+% \author[1]{\textbf{Fred A. Hamprecht}}
+% \affil[1]{HCI/IWR, Heidelberg University, Germany}
+% \affil[2]{EMBL, Heidelberg, Germany}
+% % \affil[ ]{ }
+% \affil[ ]{\texttt {\{alberto.bailoni, steffen.wolf, fred.hamprecht\}@iwr.uni-heidelberg.de}}
+% \affil[ ]{\texttt {\{constantin.pape, thorsten.beier, anna.kreshuk\}@embl.de}}
+% \renewcommand\Authands{, }
+
+
+
+
+% \title{\LaTeX\ Author Guidelines for CVPR Proceedings}
+% \author{First Author\\
+% Institution1\\
+% Institution1 address\\
+% {\tt\small firstauthor@i1.org}
+% % For a paper whose authors are all at the same institution,
+% % omit the following lines up until the closing ``}''.
+% % Additional authors and addresses can be added with ``\and'',
+% % just like the second author.
+% % To save space, use either the email address or home page, not both
+% \and
+% Second Author\\
+% Institution2\\
+% First line of institution2 address\\
+% {\tt\small secondauthor@i2.org}
+% }
+
+\maketitle
+\input{chapters/0_abstract.tex}
+\input{chapters/1_intro.tex}
+\input{chapters/2_rel_work}
+\input{chapters/3_algorithm}
+\input{chapters/5_experiments_intro}
+\input{chapters/5_experiments_compare_rules}
+\input{chapters/5_experiments_noise}
+\input{chapters/5_experiments_cremi}
+\input{chapters/5_experiments_cityscapes}
+\input{chapters/6_conclusions}
+
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{agglo_clust}
+}
+\newpage
+\input{chapters/supplementary}
+
+\end{document}

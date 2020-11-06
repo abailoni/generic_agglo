@@ -1,0 +1,100 @@
+---------------------------------------------------------
+Reviewer #1
+Questions
+
+1. Contributions: Please list three things this paper contributes (e.g., theoretical, methodological, algorithmic, empirical contributions; bridging fields; or providing an important critical analysis). For each contribution, briefly state the level of significance (i.e., how much impact will this work have on researchers and practitioners in the future?). If you cannot think of three things, please explain why. Not all good papers will have three contributions.
+(1) Algorithmic / Theoretical: A generic algorithm, special cases of which are a greedy approximate solver for the lifted multicut, and the mutex watershed. The generic formulation exposes variants that have not been considered.
+(2) Empirical: A quantitative evaluation of a number of variants of the proposed algorithm on two benchmark datasets for instance segmentation (CREMI and CityScapes). A previously unexplored variant of the generic algorithm performs best (compared to other variants of the same algorithm). 
+(3) Assessment of robustness to noise of the above variants. The same previously unexplored variant performs best on CREMI.
+2. Detailed comments: Please provide a thorough review of the submission, including its originality, quality, clarity, and significance. Hover over the "?" next to this prompt to see a brief description of these metrics.
+--- Summary ---
+The authors provide a unified view on instance segmentation algorithms that work via agglomerative clustering in signed or unsigned graphs. In particular, a unified view on an approximate solver of the (lifted) multicut, and the mutex watershed algorithm, is provided. The unified view reveals previously unexplored algorithm variants for signed graphs, namely in terms of commonly used cluster linkage criteria. 
+
+The authors present a quantitative evaluation of the variants of their algorithm on two benchmark datasets. A core empirical finding is that a previously unexplored variant (with linkage criterion "average") outperforms the abs max linkage (i.e. the Mutex Watershed) and sum linkage with and without mutex constraints (i.e. GAEC and Greedy Fixation). (This variant is competitive but does not yield an absolute new state of the art on CREMI nor CityScapes).
+
+--- Comments ---
+The paper is clearly written, theoretically sound and easy to follow. 
+The proposed unification is straightforward, yet is shown to have practical impact by revealing new and better variants of agglomerative clustering of signed graphs for instance segmentation than what had been studied previously. 
+
+Typo: line 122: "mutual by" --> mutually
+3. Please provide an "overall score" for this submission.
+8: Top 50% of accepted NeurIPS papers. A very good submission; a clear accept. I vote and argue for accepting this submission.
+4. Please provide a "confidence score" for your assessment of this submission.
+5: You are absolutely certain about your assessment. You are very familiar with the related work.
+5. Improvements: What would the authors have to do for you to increase your score?
+I don't see a straightforward way nor need to improve this manuscript. Most importantly I kindly ask the authors to please stick to their promise to release their code upon paper acceptance. 
+An evaluation on the CityScapes test dataset would be interesting but I do not consider it vital for the paper. 
+Same holds for an evaluation on the ISBI2012 EM Segmentation Challenge data, albeit this would be interesting as the Mutex Watershed achieved top performance on this data. How does average linkage perform in comparison? Should be easy to check as CNN predictions on ISBI test set were published with [79].
+
+
+---------------------------------------------------------
+Reviewer #2
+Questions
+
+1. Contributions: Please list three things this paper contributes (e.g., theoretical, methodological, algorithmic, empirical contributions; bridging fields; or providing an important critical analysis). For each contribution, briefly state the level of significance (i.e., how much impact will this work have on researchers and practitioners in the future?). If you cannot think of three things, please explain why. Not all good papers will have three contributions.
+The paper formulates a framework that distinguishes a number of edge contraction algorithms for signed graph partitioning.
+The authors show that this generalizes some known greedy algorithms and provides some new ones.
+They compare the different algorithms on two instance segmentation problems.
+The schema that the authors provide is interesting, but further analysis may be needed to gain more theoretical insight.
+The numerical experiments show some benefits of one variant of the algorithm that may support further research.
+2. Detailed comments: Please provide a thorough review of the submission, including its originality, quality, clarity, and significance. Hover over the "?" next to this prompt to see a brief description of these metrics.
+The paper is well-structured and easy to read. The main contribution is a generalized greedy edge contraction algorithm for signed graph partitioning that depends on the linkage criterion to select the next edge. Since other algorithms have been proposed that can be categorized according to their framework, this seems to be an interesting approach.
+My main concern with this framework is that it remains unclear as to which objective function the algorithms are "greedy". In each step the algorithm chooses some edge according to a linkage score. Is this score related to some objective function that is maximized greedily in each step?
+If so, then the objective function should be formulated and serve as the distinguishing criterion. Then it would also allow to develop other algorithms based on the same objective function.
+Without such an analysis I am unsure about the significance of this categorization.
+In the numerical experiments the authors compare their algorithms on neuron segmentation and instance segmentation of street scenes. The empirical evidence suggests that one variant performs better than the other ones, albeit the margins appear fairly small.
+The experimental results seem encouraging, but a better theoretical understanding may be needed to properly evaluate the potential of the different proposed linkage criteria. 
+
+Minor comments:
+line 87: the related works [61,7,82] are not approximation algorithms in an optimization sense
+Alg 1, line 9: the or-condition is wrong, it should be "all interactions are repulsive or constrained"
+line 122: the sentence contains redundant words
+Table 5: wrong heading of first column
+3. Please provide an "overall score" for this submission.
+6: Marginally above the acceptance threshold. I tend to vote for accepting this submission, but rejecting it would not be that bad.
+4. Please provide a "confidence score" for your assessment of this submission.
+4: You are confident in your assessment, but not absolutely certain. It is unlikely, but not impossible, that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work.
+5. Improvements: What would the authors have to do for you to increase your score?
+The authors should provide a more detailed analysis of their clustering algorithm and the associated optimization problem(s).
+
+
+
+---------------------------------------------------------
+Reviewer #3
+Questions
+
+1. Contributions: Please list three things this paper contributes (e.g., theoretical, methodological, algorithmic, empirical contributions; bridging fields; or providing an important critical analysis). For each contribution, briefly state the level of significance (i.e., how much impact will this work have on researchers and practitioners in the future?). If you cannot think of three things, please explain why. Not all good papers will have three contributions.
+The main contribution is of methodological and algorithmic nature - the authors propose a framework that generalizes over agglomerative algorithms for signed graphs by linking them to hierarchical agglomerative clustering on positive-weighted graphs that explore various linkage criteria and cannot-link constraints.
+
+Empirical contributions: the manuscript contains very thorough numerical experiments on challenging real-world data sets, from the imaging field.
+2. Detailed comments: Please provide a thorough review of the submission, including its originality, quality, clarity, and significance. Hover over the "?" next to this prompt to see a brief description of these metrics.
+The authors present an algorithm for agglomerative clustering on signed graphs, with a particular focus on image segmentation. 
+While the numerical results seem encouraging, the various algorithms proposed seem as a marginal extension of various existing clustering techniques, though some of the combinations of linkage criteria and cannot-link constraints are new.
+
+The authors seem to rather oblivious of the rich literature on constrained clustering, which allows for the user to specify must-link and cannot-link constraints, the latter of which play an important role in the algorithms proposed here. 
+
+Rangapuram, Hein, “Constrained 1-spectral clustering” AISTATS 2012
+Wang, Qian, Davidson, “On constrained spectral clustering and its applications”. Data Min. Knowl. Discov., 2014
+Cucuringu, Koutis, Chawla, Miller, Peng, "Simple and Scalable Constrained Clustering: A Generalized Spectral Method", AISTATS 2016
+
+the last reference of which lead to an extension to the signed clustering setting
+Cucuringu, M., Davies, P., Glielmo, A., & Tyagi, H. , "SPONGE: A generalized eigenproblem for clustering signed networks", AISTATS 2019
+by incorporating the cannot-link constraints, it seems very much in the spirit of the present submission. Other very relevant references from the signed clustering literature include 
+
+Chiang, Kai-Yang, Joyce Jiyoung Whang, and Inderjit S. Dhillon. "Scalable clustering of signed networks using balance normalized cut." Proceedings of the 21st ACM international conference on Information and knowledge management. ACM, 2012.
+and 
+Kunegis, J., Schmidt, S., Lommatzsch, A., Lerner, J., De Luca, E. W., & Albayrak, S, “Spectral analysis of signed graphs for clustering, prediction and visualization”. In Proceedings of the 2010 SIAM International conference on Data Mining
+
+Essentially, the authors propose a new algorithm for signed clustering, but no comparison has been made with existing state-of-the-art methods from the signed clustering literature. The authors do reference some work in correlation clustering, which is very closely related indeed to signed clustering, but no reference/comparison to existing standard signed clustering algorithms that are used in practice, such as the last 3 references above. 
+
+The algorithm does not have any sort of theoretical guarantees, which is somewhat expected/desirable for clustering-related work at this venue.
+
+Comparing the proposed signed clustering algorithm with state-of-the-art could make the paper stronger, and so could the addition of synthetic experiments. In their work, the authors only consider real-world data sets (albeit very challenging) from the image processing literature, but a comparison on synthetic data (some variation of the stochastic block model) where clear ground truth is available, would make the case more convincing.
+
+Given the application to instance segmentation to images, I feel that a venue closer to computer vision/image processing would be more suitable for this line of work. The numerical experiments on real data are very comprehensive.
+3. Please provide an "overall score" for this submission.
+4: An okay submission, but not good enough; a reject. I vote for rejecting this submission, although I would not be upset if it were accepted.
+4. Please provide a "confidence score" for your assessment of this submission.
+4: You are confident in your assessment, but not absolutely certain. It is unlikely, but not impossible, that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work.
+5. Improvements: What would the authors have to do for you to increase your score?
+Comparison of the proposed signed clustering algorithm with state-of-the-art on syhthetic data/ (hierarhical) stochastic block models.

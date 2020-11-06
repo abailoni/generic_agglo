@@ -1,0 +1,521 @@
+\begin{thebibliography}{10}
+
+\bibitem{ailon2008aggregating}
+N.~Ailon, M.~Charikar, and A.~Newman.
+\newblock Aggregating inconsistent information: ranking and clustering.
+\newblock {\em Journal of the ACM (JACM)}, 55(5):23, 2008.
+
+\bibitem{andres2012globally}
+B.~Andres, T.~Kroeger, K.~L. Briggman, W.~Denk, N.~Korogod, G.~Knott,
+  U.~Koethe, and F.~A. Hamprecht.
+\newblock Globally optimal closed-surface segmentation for connectomics.
+\newblock In {\em European Conference on Computer Vision}, pages 778--791.
+  Springer, 2012.
+
+\bibitem{arbelaez2011contour}
+P.~Arbelaez, M.~Maire, C.~Fowlkes, and J.~Malik.
+\newblock Contour detection and hierarchical image segmentation.
+\newblock {\em IEEE transactions on pattern analysis and machine intelligence},
+  33(5):898--916, 2011.
+
+\bibitem{arganda2015crowdsourcing}
+I.~Arganda-Carreras, S.~C. Turaga, D.~R. Berger, D.~Cire{\c{s}}an, A.~Giusti,
+  L.~M. Gambardella, J.~Schmidhuber, D.~Laptev, S.~Dwivedi, J.~M. Buhmann,
+  et~al.
+\newblock Crowdsourcing the creation of image segmentation algorithms for
+  connectomics.
+\newblock {\em Frontiers in neuroanatomy}, 9:142, 2015.
+
+\bibitem{arnab2017pixelwise}
+A.~Arnab and P.~H. Torr.
+\newblock Pixelwise instance segmentation with a dynamically instantiated
+  network.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 441--450, 2017.
+
+\bibitem{bai2017deep}
+M.~Bai and R.~Urtasun.
+\newblock Deep watershed transform for instance segmentation.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 5221--5229, 2017.
+
+\bibitem{bansal2004correlation}
+N.~Bansal, A.~Blum, and S.~Chawla.
+\newblock Correlation clustering.
+\newblock {\em Machine learning}, 56(1-3):89--113, 2004.
+
+\bibitem{beier2016efficient}
+T.~Beier, B.~Andres, U.~K{\"o}the, and F.~A. Hamprecht.
+\newblock An efficient fusion move algorithm for the minimum cost lifted
+  multicut problem.
+\newblock In {\em European Conference on Computer Vision}, pages 715--730.
+  Springer, 2016.
+
+\bibitem{beier2017multicut}
+T.~Beier, C.~Pape, N.~Rahaman, T.~Prange, S.~Berg, D.~D. Bock, A.~Cardona,
+  G.~W. Knott, S.~M. Plaza, L.~K. Scheffer, et~al.
+\newblock Multicut brings automated neurite segmentation closer to human
+  performance.
+\newblock {\em Nature Methods}, 14(2):101, 2017.
+
+\bibitem{chen2015multi}
+Y.-T. Chen, X.~Liu, and M.-H. Yang.
+\newblock Multi-instance object segmentation with occlusion handling.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 3470--3478, 2015.
+
+\bibitem{chopra1991multiway}
+S.~Chopra and M.~R. Rao.
+\newblock On the multiway cut polyhedron.
+\newblock {\em Networks}, 21(1):51--89, 1991.
+
+\bibitem{chopra1993partition}
+S.~Chopra and M.~R. Rao.
+\newblock The partition problem.
+\newblock {\em Mathematical Programming}, 59(1-3):87--115, 1993.
+
+\bibitem{cciccek20163d}
+{\"O}.~{\c{C}}i{\c{c}}ek, A.~Abdulkadir, S.~S. Lienkamp, T.~Brox, and
+  O.~Ronneberger.
+\newblock 3d u-net: learning dense volumetric segmentation from sparse
+  annotation.
+\newblock In {\em International conference on medical image computing and
+  computer-assisted intervention}, pages 424--432. Springer, 2016.
+
+\bibitem{ciresan2012deep}
+D.~Ciresan, A.~Giusti, L.~M. Gambardella, and J.~Schmidhuber.
+\newblock Deep neural networks segment neuronal membranes in electron
+  microscopy images.
+\newblock In {\em Advances in neural information processing systems}, pages
+  2843--2851, 2012.
+
+\bibitem{cordts2016cityscapes}
+M.~Cordts, M.~Omran, S.~Ramos, T.~Rehfeld, M.~Enzweiler, R.~Benenson,
+  U.~Franke, S.~Roth, and B.~Schiele.
+\newblock The cityscapes dataset for semantic urban scene understanding.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 3213--3223, 2016.
+
+\bibitem{dai2016instance}
+J.~Dai, K.~He, and J.~Sun.
+\newblock Instance-aware semantic segmentation via multi-task network cascades.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 3150--3158, 2016.
+
+\bibitem{de2017semantic}
+B.~De~Brabandere, D.~Neven, and L.~Van~Gool.
+\newblock Semantic instance segmentation with a discriminative loss function.
+\newblock {\em arXiv preprint arXiv:1708.02551}, 2017.
+
+\bibitem{demaine2006correlation}
+E.~D. Demaine, D.~Emanuel, A.~Fiat, and N.~Immorlica.
+\newblock Correlation clustering in general weighted graphs.
+\newblock {\em Theoretical Computer Science}, 361(2-3):172--187, 2006.
+
+\bibitem{dice1945measures}
+L.~R. Dice.
+\newblock Measures of the amount of ecologic association between species.
+\newblock {\em Ecology}, 26(3):297--302, 1945.
+
+\bibitem{everingham2010pascal}
+M.~Everingham, L.~Van~Gool, C.~K. Williams, J.~Winn, and A.~Zisserman.
+\newblock The pascal visual object classes (voc) challenge.
+\newblock {\em International journal of computer vision}, 88(2):303--338, 2010.
+
+\bibitem{fathi2017semantic}
+A.~Fathi, Z.~Wojna, V.~Rathod, P.~Wang, H.~O. Song, S.~Guadarrama, and K.~P.
+  Murphy.
+\newblock Semantic instance segmentation via deep metric learning.
+\newblock {\em arXiv preprint arXiv:1703.10277}, 2017.
+
+\bibitem{felzenszwalb2004efficient}
+P.~F. Felzenszwalb and D.~P. Huttenlocher.
+\newblock Efficient graph-based image segmentation.
+\newblock {\em International journal of computer vision}, 59(2):167--181, 2004.
+
+\bibitem{finkel2008enforcing}
+J.~R. Finkel and C.~D. Manning.
+\newblock Enforcing transitivity in coreference resolution.
+\newblock In {\em Proceedings of the 46th Annual Meeting of the Association for
+  Computational Linguistics on Human Language Technologies: Short Papers},
+  pages 45--48. Association for Computational Linguistics, 2008.
+
+\bibitem{funke2015learning}
+J.~Funke, F.~A. Hamprecht, and C.~Zhang.
+\newblock Learning to segment: training hierarchical segmentation under a
+  topological loss.
+\newblock In {\em International Conference on Medical Image Computing and
+  Computer-Assisted Intervention}, pages 268--275. Springer, 2015.
+
+\bibitem{cremiChallenge}
+J.~Funke, S.~Saalfeld, D.~Bock, S.~Turaga, and E.~Perlman.
+\newblock {Cremi challenge}.
+\newblock \url{https://cremi.org.}, 2016.
+\newblock Accessed: 2019-05-15.
+
+\bibitem{funke2018large}
+J.~Funke, F.~D. Tschopp, W.~Grisaitis, A.~Sheridan, C.~Singh, S.~Saalfeld, and
+  S.~C. Turaga.
+\newblock Large scale image segmentation with structured loss based deep
+  learning for connectome reconstruction.
+\newblock {\em IEEE transactions on pattern analysis and machine intelligence},
+  2018.
+
+\bibitem{grotschel1989cutting}
+M.~Gr{\"o}tschel and Y.~Wakabayashi.
+\newblock A cutting plane algorithm for a clustering problem.
+\newblock {\em Mathematical Programming}, 45(1-3):59--96, 1989.
+
+\bibitem{grotschel1990facets}
+M.~Gr{\"o}tschel and Y.~Wakabayashi.
+\newblock Facets of the clique partitioning polytope.
+\newblock {\em Mathematical Programming}, 47(1-3):367--387, 1990.
+
+\bibitem{hariharan2014simultaneous}
+B.~Hariharan, P.~Arbel{\'a}ez, R.~Girshick, and J.~Malik.
+\newblock Simultaneous detection and segmentation.
+\newblock In {\em European Conference on Computer Vision}, pages 297--312.
+  Springer, 2014.
+
+\bibitem{he2017mask}
+K.~He, G.~Gkioxari, P.~Doll{\'a}r, and R.~Girshick.
+\newblock Mask r-cnn.
+\newblock In {\em Proceedings of the IEEE international conference on computer
+  vision}, pages 2961--2969, 2017.
+
+\bibitem{januszewski2018high}
+M.~Januszewski, J.~Kornfeld, P.~H. Li, A.~Pope, T.~Blakely, L.~Lindsey,
+  J.~Maitin-Shepard, M.~Tyka, W.~Denk, and V.~Jain.
+\newblock High-precision automated reconstruction of neurons with flood-filling
+  networks.
+\newblock {\em Nature methods}, 15(8):605, 2018.
+
+\bibitem{kappes2011globally}
+J.~H. Kappes, M.~Speth, B.~Andres, G.~Reinelt, and C.~Schn.
+\newblock Globally optimal image partitioning by multicuts.
+\newblock In {\em International Workshop on Energy Minimization Methods in
+  Computer Vision and Pattern Recognition}, pages 31--44. Springer, 2011.
+
+\bibitem{kardoostsolving}
+A.~Kardoost and M.~Keuper.
+\newblock Solving minimum cost lifted multicut problems by node agglomeration.
+\newblock In {\em ACCV 2018, 14th Asian Conference on Computer Vision}, Perth,
+  Australia, 2018.
+
+\bibitem{kaynig2015large}
+V.~Kaynig, A.~Vazquez-Reina, S.~Knowles-Barley, M.~Roberts, T.~R. Jones,
+  N.~Kasthuri, E.~Miller, J.~Lichtman, and H.~Pfister.
+\newblock Large-scale automatic reconstruction of neuronal processes from
+  electron microscopy images.
+\newblock {\em Medical image analysis}, 22(1):77--88, 2015.
+
+\bibitem{kernighan1970efficient}
+B.~W. Kernighan and S.~Lin.
+\newblock An efficient heuristic procedure for partitioning graphs.
+\newblock {\em Bell system technical journal}, 49(2):291--307, 1970.
+
+\bibitem{keuper2015efficient}
+M.~Keuper, E.~Levinkov, N.~Bonneel, G.~Lavou{\'e}, T.~Brox, and B.~Andres.
+\newblock Efficient decomposition of image and mesh graphs by lifted multicuts.
+\newblock In {\em Proceedings of the IEEE International Conference on Computer
+  Vision}, pages 1751--1759, 2015.
+
+\bibitem{kiran2014global}
+B.~R. Kiran and J.~Serra.
+\newblock Global--local optimizations by hierarchical cuts and climbing
+  energies.
+\newblock {\em Pattern Recognition}, 47(1):12--24, 2014.
+
+\bibitem{kirillov2017instancecut}
+A.~Kirillov, E.~Levinkov, B.~Andres, B.~Savchynskyy, and C.~Rother.
+\newblock Instancecut: from edges to instances with multicut.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 5008--5017, 2017.
+
+\bibitem{knowles2016rhoananet}
+S.~Knowles-Barley, V.~Kaynig, T.~R. Jones, A.~Wilson, J.~Morgan, D.~Lee,
+  D.~Berger, N.~Kasthuri, J.~W. Lichtman, and H.~Pfister.
+\newblock Rhoananet pipeline: Dense automatic neural annotation.
+\newblock {\em arXiv preprint arXiv:1611.06973}, 2016.
+
+\bibitem{kokkinos2015pushing}
+I.~Kokkinos.
+\newblock Pushing the boundaries of boundary detection using deep learning.
+\newblock {\em arXiv preprint arXiv:1511.07386}, 2015.
+
+\bibitem{kong2018recurrentPix}
+S.~Kong and C.~C. Fowlkes.
+\newblock Recurrent pixel embedding for instance grouping.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 9018--9028, 2018.
+
+\bibitem{krasowski2015improving}
+N.~Krasowski, T.~Beier, G.~W. Knott, U.~Koethe, F.~A. Hamprecht, and
+  A.~Kreshuk.
+\newblock Improving 3d em data segmentation by joint optimization over boundary
+  evidence and biological priors.
+\newblock In {\em 2015 IEEE 12th International Symposium on Biomedical Imaging
+  (ISBI)}, pages 536--539. IEEE, 2015.
+
+\bibitem{kulikov2018instance}
+V.~Kulikov, V.~Yurchenko, and V.~Lempitsky.
+\newblock Instance segmentation by deep coloring.
+\newblock {\em arXiv preprint arXiv:1807.10007}, 2018.
+
+\bibitem{ladicky2010and}
+L.~Ladick{\`y}, P.~Sturgess, K.~Alahari, C.~Russell, and P.~H. Torr.
+\newblock What, where and how many? combining object detectors and crfs.
+\newblock In {\em European conference on computer vision}, pages 424--437.
+  Springer, 2010.
+
+\bibitem{lance1967general}
+G.~N. Lance and W.~T. Williams.
+\newblock A general theory of classificatory sorting strategies: 1.
+  hierarchical systems.
+\newblock {\em The computer journal}, 9(4):373--380, 1967.
+
+\bibitem{lange2018combinatorial}
+J.-H. Lange, B.~Andres, and P.~Swoboda.
+\newblock Combinatorial persistency criteria for multicut and max-cut.
+\newblock {\em arXiv preprint arXiv:1812.01426}, 2018.
+
+\bibitem{lange2018partial}
+J.-H. Lange, A.~Karrenbauer, and B.~Andres.
+\newblock Partial optimality and fast lower bounds for weighted correlation
+  clustering.
+\newblock In {\em International Conference on Machine Learning}, pages
+  2898--2907, 2018.
+
+\bibitem{lee2017superhuman}
+K.~Lee, J.~Zung, P.~Li, V.~Jain, and H.~S. Seung.
+\newblock Superhuman accuracy on the snemi3d connectomics challenge.
+\newblock {\em arXiv preprint arXiv:1706.00120}, 2017.
+
+\bibitem{levinkov2017comparative}
+E.~Levinkov, A.~Kirillov, and B.~Andres.
+\newblock A comparative study of local search algorithms for correlation
+  clustering.
+\newblock In {\em German Conference on Pattern Recognition}, pages 103--114.
+  Springer, 2017.
+
+\bibitem{li2017fully}
+Y.~Li, H.~Qi, J.~Dai, X.~Ji, and Y.~Wei.
+\newblock Fully convolutional instance-aware semantic segmentation.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 2359--2367, 2017.
+
+\bibitem{liang2016reversible}
+X.~Liang, Y.~Wei, X.~Shen, Z.~Jie, J.~Feng, L.~Lin, and S.~Yan.
+\newblock Reversible recursive instance-level object segmentation.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 633--641, 2016.
+
+\bibitem{lin2014microsoft}
+T.-Y. Lin, M.~Maire, S.~Belongie, J.~Hays, P.~Perona, D.~Ramanan,
+  P.~Doll{\'a}r, and C.~L. Zitnick.
+\newblock Microsoft coco: Common objects in context.
+\newblock In {\em European conference on computer vision}, pages 740--755.
+  Springer, 2014.
+
+\bibitem{liu2017sgn}
+S.~Liu, J.~Jia, S.~Fidler, and R.~Urtasun.
+\newblock Sgn: Sequential grouping networks for instance segmentation.
+\newblock In {\em Proceedings of the IEEE International Conference on Computer
+  Vision}, pages 3496--3504, 2017.
+
+\bibitem{liu2018path}
+S.~Liu, L.~Qi, H.~Qin, J.~Shi, and J.~Jia.
+\newblock Path aggregation network for instance segmentation.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 8759--8768, 2018.
+
+\bibitem{liu2014modular}
+T.~Liu, C.~Jones, M.~Seyedhosseini, and T.~Tasdizen.
+\newblock A modular hierarchical approach to 3d electron microscopy image
+  segmentation.
+\newblock {\em Journal of neuroscience methods}, 226:88--102, 2014.
+
+\bibitem{liu2016image}
+T.~Liu, M.~Seyedhosseini, and T.~Tasdizen.
+\newblock Image segmentation using hierarchical merge tree.
+\newblock {\em IEEE transactions on image processing}, 25(10):4596--4607, 2016.
+
+\bibitem{liu2016sshmt}
+T.~Liu, M.~Zhang, M.~Javanmardi, N.~Ramesh, and T.~Tasdizen.
+\newblock Sshmt: Semi-supervised hierarchical merge tree for electron
+  microscopy image segmentation.
+\newblock In {\em European Conference on Computer Vision}, pages 144--159.
+  Springer, 2016.
+
+\bibitem{liu2018affinity}
+Y.~Liu, S.~Yang, B.~Li, W.~Zhou, J.~Xu, H.~Li, and Y.~Lu.
+\newblock Affinity derivation and graph merge for instance segmentation.
+\newblock In {\em Proceedings of the European Conference on Computer Vision
+  (ECCV)}, pages 686--703, 2018.
+
+\bibitem{malmberg2011generalized}
+F.~Malmberg, R.~Strand, and I.~Nystr{\"o}m.
+\newblock Generalized hard constraints for graph segmentation.
+\newblock In {\em Scandinavian Conference on Image Analysis}, pages 36--47.
+  Springer, 2011.
+
+\bibitem{meirovitch2016multi}
+Y.~Meirovitch, A.~Matveev, H.~Saribekyan, D.~Budden, D.~Rolnick, G.~Odor,
+  S.~Knowles-Barley, T.~R. Jones, H.~Pfister, J.~W. Lichtman, et~al.
+\newblock A multi-pass approach to large-scale connectomics.
+\newblock {\em arXiv preprint arXiv:1612.02120}, 2016.
+
+\bibitem{newell2017associative}
+A.~Newell, Z.~Huang, and J.~Deng.
+\newblock Associative embedding: End-to-end learning for joint detection and
+  grouping.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  2277--2287, 2017.
+
+\bibitem{nunez2013machine}
+J.~Nunez-Iglesias, R.~Kennedy, T.~Parag, J.~Shi, and D.~B. Chklovskii.
+\newblock Machine learning of hierarchical clustering to segment 2d and 3d
+  images.
+\newblock {\em PloS one}, 8(8):e71715, 2013.
+
+\bibitem{pape2017solving}
+C.~Pape, T.~Beier, P.~Li, V.~Jain, D.~D. Bock, and A.~Kreshuk.
+\newblock Solving large multicut problems for connectomics via domain
+  decomposition.
+\newblock In {\em Proceedings of the IEEE International Conference on Computer
+  Vision}, pages 1--10, 2017.
+
+\bibitem{parag2017anisotropic}
+T.~Parag, F.~Tschopp, W.~Grisaitis, S.~C. Turaga, X.~Zhang, B.~Matejek,
+  L.~Kamentsky, J.~W. Lichtman, and H.~Pfister.
+\newblock Anisotropic em segmentation by 3d affinity learning and
+  agglomeration.
+\newblock {\em arXiv preprint arXiv:1707.08935}, 2017.
+
+\bibitem{perlin1985image}
+K.~Perlin.
+\newblock An image synthesizer.
+\newblock {\em ACM Siggraph Computer Graphics}, 19(3):287--296, 1985.
+
+\bibitem{perlin2001noise}
+K.~Perlin.
+\newblock Noise hardware.
+\newblock {\em Real-Time Shading SIGGRAPH Course Notes}, 2001.
+
+\bibitem{ren2017end}
+M.~Ren and R.~S. Zemel.
+\newblock End-to-end instance segmentation with recurrent attention.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 6656--6664, 2017.
+
+\bibitem{ren2015faster}
+S.~Ren, K.~He, R.~Girshick, and J.~Sun.
+\newblock Faster r-cnn: Towards real-time object detection with region proposal
+  networks.
+\newblock In {\em Advances in neural information processing systems}, pages
+  91--99, 2015.
+
+\bibitem{ren2013image}
+Z.~Ren and G.~Shakhnarovich.
+\newblock Image segmentation by cascaded region agglomeration.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 2011--2018, 2013.
+
+\bibitem{romera2016recurrent}
+B.~Romera-Paredes and P.~H.~S. Torr.
+\newblock Recurrent instance segmentation.
+\newblock In {\em European conference on computer vision}, pages 312--329.
+  Springer, 2016.
+
+\bibitem{ronneberger2015u}
+O.~Ronneberger, P.~Fischer, and T.~Brox.
+\newblock U-net: Convolutional networks for biomedical image segmentation.
+\newblock In {\em International Conference on Medical image computing and
+  computer-assisted intervention}, pages 234--241. Springer, 2015.
+
+\bibitem{saalfeld2012elastic}
+S.~Saalfeld, R.~Fetter, A.~Cardona, and P.~Tomancak.
+\newblock Elastic volume reconstruction from series of ultra-thin microscopy
+  sections.
+\newblock {\em Nature methods}, 9(7):717, 2012.
+
+\bibitem{salembier2000binary}
+P.~Salembier and L.~Garrido.
+\newblock Binary partition tree as an efficient representation for image
+  processing, segmentation, and information retrieval.
+\newblock {\em IEEE transactions on Image Processing}, 9(4):561--576, 2000.
+
+\bibitem{schlegel2017learning}
+P.~Schlegel, M.~Costa, and G.~S. Jefferis.
+\newblock Learning from connectomics on the fly.
+\newblock {\em Current opinion in insect science}, 24:96--105, 2017.
+
+\bibitem{schmidt2018cell}
+U.~Schmidt, M.~Weigert, C.~Broaddus, and G.~Myers.
+\newblock Cell detection with star-convex polygons.
+\newblock In {\em International Conference on Medical Image Computing and
+  Computer-Assisted Intervention}, pages 265--273. Springer, 2018.
+
+\bibitem{sorensen1948method}
+T.~S{\o}rensen.
+\newblock A method of establishing groups of equal amplitude in plant sociology
+  based on similarity of species and its application to analyses of the
+  vegetation on danish commons.
+\newblock {\em Biol. Skr.}, 5:1--34, 1948.
+
+\bibitem{turaga2009maximin}
+S.~C. Turaga, K.~L. Briggman, M.~Helmstaedter, W.~Denk, and H.~S. Seung.
+\newblock Maximin affinity learning of image segmentation.
+\newblock pages 1865--1873, 2009.
+
+\bibitem{uhrig2016pixel}
+J.~Uhrig, M.~Cordts, U.~Franke, and T.~Brox.
+\newblock Pixel-level encoding and depth layering for instance-level semantic
+  labeling.
+\newblock In {\em German Conference on Pattern Recognition}, pages 14--25.
+  Springer, 2016.
+
+\bibitem{uzunbas2016efficient}
+M.~G. Uzunbas, C.~Chen, and D.~Metaxas.
+\newblock An efficient conditional random field approach for automatic and
+  interactive neuron segmentation.
+\newblock {\em Medical image analysis}, 27:31--44, 2016.
+
+\bibitem{wolf2019mutex}
+S.~Wolf, A.~Bailoni, C.~Pape, N.~Rahaman, A.~Kreshuk, U.~K{\"o}the, and F.~A.
+  Hamprecht.
+\newblock The mutex watershed and its objective: Efficient, parameter-free
+  image partitioning.
+\newblock {\em arXiv preprint arXiv:1904.12654}, 2019.
+
+\bibitem{wolf2018mutex}
+S.~Wolf, C.~Pape, A.~Bailoni, N.~Rahaman, A.~Kreshuk, U.~Kothe, and
+  F.~Hamprecht.
+\newblock The mutex watershed: Efficient, parameter-free image partitioning.
+\newblock In {\em Proceedings of the European Conference on Computer Vision
+  (ECCV)}, pages 546--562, 2018.
+
+\bibitem{xie2015holistically}
+S.~Xie and Z.~Tu.
+\newblock Holistically-nested edge detection.
+\newblock In {\em Proc. ICCV'15}, pages 1395--1403, 2015.
+
+\bibitem{yang2012layered}
+Y.~Yang, S.~Hallman, D.~Ramanan, and C.~C. Fowlkes.
+\newblock Layered object models for image segmentation.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  34(9):1731--1743, 2012.
+
+\bibitem{yarkony2012fast}
+J.~Yarkony, A.~Ihler, and C.~C. Fowlkes.
+\newblock Fast planar correlation clustering for image segmentation.
+\newblock In {\em European Conference on Computer Vision}, pages 568--581.
+  Springer, 2012.
+
+\bibitem{zeng2017deepem3d}
+T.~Zeng, B.~Wu, and S.~Ji.
+\newblock Deepem3d: approaching human-level performance on 3d anisotropic em
+  image segmentation.
+\newblock {\em Bioinformatics}, 33(16):2555--2562, 2017.
+
+\end{thebibliography}

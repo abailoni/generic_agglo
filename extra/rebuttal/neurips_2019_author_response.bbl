@@ -1,0 +1,75 @@
+\begin{thebibliography}{10}
+
+\bibitem{arnab2017pixelwise}
+A.~Arnab and P.~H. Torr.
+\newblock Pixelwise instance segmentation with a dynamically instantiated
+  network.
+\newblock In {\em CVPR}, pages 441--450, 2017.
+
+\bibitem{bai2017deep}
+M.~Bai and R.~Urtasun.
+\newblock Deep watershed transform for instance segmentation.
+\newblock In {\em CVPR}, pages 5221--5229, 2017.
+
+\bibitem{chiang2012scalable}
+K.-Y. Chiang, J.~J. Whang, and I.~S. Dhillon.
+\newblock Scalable clustering of signed networks using balance normalized cut.
+\newblock pages 615--624. ACM, 2012.
+
+\bibitem{cohen2019hierarchical}
+V.~Cohen-Addad, V.~Kanade, F.~Mallmann-Trenn, and C.~Mathieu.
+\newblock Hierarchical clustering: Objective functions and algorithms.
+\newblock 2019.
+
+\bibitem{Cucuringu2019SPONGEAG}
+M.~Cucuringu, P.~Davies, A.~Glielmo, and H.~Tyagi.
+\newblock {SPONGE}: A generalized eigenproblem for clustering signed networks.
+\newblock In {\em AISTATS}, 2019.
+
+\bibitem{dasgupta2015cost}
+S.~Dasgupta.
+\newblock A cost function for similarity-based hierarchical clustering.
+\newblock {\em arXiv preprint arXiv:1510.05043}, 2015.
+
+\bibitem{keuper2015efficient}
+M.~Keuper, E.~Levinkov, N.~Bonneel, G.~Lavou{\'e}, T.~Brox, and B.~Andres.
+\newblock Efficient decomposition of image and mesh graphs by lifted multicuts.
+\newblock In {\em ICCV}, 2015.
+
+\bibitem{kunegis2010spectral}
+J.~Kunegis, S.~Schmidt, A.~Lommatzsch, J.~Lerner, E.~W. De~Luca, and
+  S.~Albayrak.
+\newblock Spectral analysis of signed graphs for clustering, prediction and
+  visualization.
+\newblock SIAM, 2010.
+
+\bibitem{lance1967general}
+G.~N. Lance and W.~T. Williams.
+\newblock A general theory of classificatory sorting strategies: 1.
+  hierarchical systems.
+\newblock {\em The computer journal}, 9(4):373--380, 1967.
+
+\bibitem{liu2017sgn}
+S.~Liu, J.~Jia, S.~Fidler, and R.~Urtasun.
+\newblock Sgn: Sequential grouping networks for instance segmentation.
+\newblock In {\em ICCV}, pages 3496--3504, 2017.
+
+\bibitem{liu2018path}
+S.~Liu, L.~Qi, H.~Qin, J.~Shi, and J.~Jia.
+\newblock Path aggregation network for instance segmentation.
+\newblock pages 8759--8768, 2018.
+
+\bibitem{moseley2017approximation}
+B.~Moseley and J.~Wang.
+\newblock Approximation bounds for hierarchical clustering: Average linkage,
+  bisecting k-means, and local search.
+\newblock In {\em NIPS}, 2017.
+
+\bibitem{wolf2019mutex}
+S.~Wolf, A.~Bailoni, C.~Pape, N.~Rahaman, A.~Kreshuk, U.~K{\"o}the, and F.~A.
+  Hamprecht.
+\newblock The mutex watershed and its objective: Efficient, parameter-free
+  image partitioning.
+\newblock {\em arXiv preprint arXiv:1904.12654}, 2019.
+
+\end{thebibliography}

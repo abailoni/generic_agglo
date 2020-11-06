@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: agglo_clust_CVPR.aux
+The style file: ieee_fullname.bst
+Database file #1: agglo_clust.bib
+Repeated entry---line 366 of file agglo_clust.bib
+ : @inproceedings{de2017semantic
+ :                              ,
+I'm skipping whatever remains of this entry
+Warning--empty booktitle in kunegis2010spectral
+Warning--empty journal in turaga2009maximin
+You've used 95 entries,
+            2120 wiz_defined-function locations,
+            992 strings with 22354 characters,
+and the built_in function-call counts, 43276 in all, are:
+= -- 4257
+> -- 2355
+< -- 49
++ -- 940
+- -- 830
+* -- 3107
+:= -- 6763
+add.period$ -- 304
+call.type$ -- 95
+change.case$ -- 697
+chr.to.int$ -- 0
+cite$ -- 97
+duplicate$ -- 1647
+empty$ -- 3111
+format.name$ -- 830
+if$ -- 9267
+int.to.chr$ -- 0
+int.to.str$ -- 95
+missing$ -- 94
+newline$ -- 479
+num.names$ -- 190
+pop$ -- 801
+preamble$ -- 1
+purify$ -- 602
+quote$ -- 0
+skip$ -- 1319
+stack$ -- 0
+substring$ -- 2771
+swap$ -- 610
+text.length$ -- 49
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 380
+warning$ -- 2
+while$ -- 386
+width$ -- 97
+write$ -- 1051
+(There was 1 error message)

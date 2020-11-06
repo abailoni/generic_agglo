@@ -1,0 +1,73 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+
+%%%%%%%%% PAPER ID  - PLEASE UPDATE
+\def\cvprPaperID{5813} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+\begin{document}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+\title{Rebuttal: GASP, a generalized framework for agglomerative clustering of signed graphs \\ and its application to Instance Segmentation}  % **** Enter the paper title here
+
+\maketitle
+\thispagestyle{empty}
+
+We thank the three reviewers for their helpful comments and for pointing out that our manuscript is very clear and well written (R1, R2, R3), is theoretically sound and provides a novel level of abstraction (R1) and is highly valuable in practice by achieving competitive accuracies on two publicly available benchmarks (R1, R3). \\
+
+
+\textbf{Novelty and main contributions (R2, R3)} --
+% Both R2 and R3 have raised questions regarding the novelty of our contribution. 
+Our main contribution is GASP, a  framework that generalizes several existing and novel algorithms for agglomerative clustering of signed graphs, providing a powerful tool to study these methods.
+R2 states that \emph{``exactly the same algorithms as GASP have been proposed''}, referring to GF [54] and GAEC [40]. 
+Indeed, GF and GAEC are special cases of GASP, as we point out in Table 1 and lines 369-371. However, they are only two out of 14 algorithms described in our framework. In this paper we prove, for the first time, that Mutex Watershed [90] is another specialization of GASP -- an insight which we claim is nontrivial -- but all other algorithms are new at all, or at least in the context of signed graph partitioning. Indeed, one of the new algorithms, which on signed graphs has not been studied before, turns out to be the best among all variants we explored.
+% Indeed, when using the sum linkage criterion, GASP is equivalent to GAEC (without cannot link constrants) or GF (with cannot link constraints) and we point out this relation in Table 1 and Section 3.3., lines 369-371. R2 also claims that \emph{``extension to include other linkage strategies is trivial''}, although, in our opinion, the fact that switching to another linkage criterion can be achieved with little changes shows one of the major strengths of our contribution: easy classification and comparison of agglomerative algorithms for signed graph clustering. Our framework can express the Mutex Watershed Algorithm [90] (so far never shown as agglomerative clustering algorithm), GAEC, and GF, as well as algorithms that, to the best of our knowledge, have not been studied systematically before, including signed graph clustering with average linkage. 
+
+R2 also states that \emph{``extension to include other linkage strategies is trivial''}. We agree wholeheartedly, and indeed consider this a great strength of the proposed framework, which allows an easy classification and comparison of agglomerative algorithms for signed graph clustering.
+
+R3 points out that the use of signed graph clustering for instance segmentation is not novel and has been applied both in the context of natural images and EM connectomics. We agree, and cite pertinent prior work [42, 2, 7, 94]. Rather, we introduce a new framework that generalizes several existing methods and yields variants that have not been studied before. We believe that our contribution generates new insights into the utility of agglomerative clustering methods for Computer Vision and show their competitive performance when combined with predictions from neural networks, despite the fact that they are simple and efficient compared to other methods for signed graph partitioning. 
+% Note that we cite important prior work, including several papers by the Hamprecht and Andres groups, who both have pioneered the use of signed graph clustering for instance segmentation.
+
+
+\textbf{Comparison to multicut solvers (R2)} -- 
+% R2 also quotes us as ``Authors say in lines 77-80 that no study has compared multicut solvers, while in fact there are plenty''. 
+In lines 75-80 we write that \emph{``Agglomerative clustering algorithms for signed graphs have clear advantages: [...]. Despite the fact that a variety of these algorithms exist, no overarching study so far has been conducted to compare their robustness [...]''}. 
+To the best of our knowledge, this claim pertaining to agglomerative algorithms is correct, and R2 does not offer references to the contrary.
+% We do not claim, as suggested by R2, that there have not been any extensive studies for comparing \emph{multicut solvers}, but for \emph{agglomerative algorithms for signed graph clustering}. 
+As R2 correctly points out, [54] contains an extensive evaluation of local search algorithms as multicut approximations, including the agglomerative methods GAEC and GF. However, [54] does not make a connection to agglomerative methods with different linkage criteria studied here. 
+% Moreover, the other local search algorithms compared in [54] would not scale up well to the size of the problems studied in our work. 
+Furthermore, R2 mentions the comparison of multicut solvers in [Beier et al., Cut, Glue \& Cut: A Fast, Approximate Solver for Multicut Partitioning]. We are aware of this work, but did not consider it sufficiently relevant in the context of our contribution, because it does not contain any comparison with agglomerative methods. Still, in the revised version we will cite it following R2.
+
+\textbf{Experiments on larger graphs (R2)} --
+R2 points out that we should conduct experiments on a broader set of problems and use graphs of larger size, referring to the experiments in [54]. We note that our experiments cover two important applications of instance segmentation from very different images (Cityscapes vs electron microscopy images) as well as clustering on random graphs, where we compare favorably to spectral methods. Regarding the problem size, note that the CREMI problem used for evaluation (Table 2) is solved on the pixel grid graph and contains $7\cdot 10^7$ nodes and $6\cdot 10^8$ edges, which is two orders of magnitude larger than the largest instance segmentation problem in [54] consisting of $10^5$ nodes and $10^7$ edges. In the revised version of the paper, we will add the specifications of the problem size on CREMI.
+
+\textbf{Relevance of the results on CREMI (R2)} --
+In the revised version, we will better define the CREMI score, which is given by the geometric mean of adapted Rand Error and Variation of Information, two commonly used metrics to evaluate clusterings. Given the small gap of 0.02 to the leading submission and the much bigger gap to other published methods, e.g. more than 0.3 gap for [95], it is fair to claim that we are competitive with state-of-the-art. In the revised version of the paper, we will comment on our standing in the CREMI leader-board. 
+
+\textbf{Clarifications about cityscapes experiments (R2)} --
+R2 asks about the difference between the agglomeration method used in GMIS [63] and GASP. GMIS uses average linkage agglomerative clustering on an \emph{unsigned graph}, whereas GASP operates on a \emph{signed graph}. 
+% As a consequence our algorithm can be applied without a hyper-parameter for the stopping criterion. 
+In addition, as we point out in lines 769-771, the agglomeration procedure in GMIS is applied in multiple stages, which creates the need for further hyper-parameters and makes it more complex than our algorithm, which achieves comparable (slightly better) accuracy. 
+
+We have fine tuned the GMIS affinity predictions using the Dice Loss, which is a common approach to improve results for sparse spatial targets like affinities, see [90].
+
+
+% {\small
+% \bibliographystyle{ieee}
+% \bibliography{egbib}
+% }
+
+\end{document}
