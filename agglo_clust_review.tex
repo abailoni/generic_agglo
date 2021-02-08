@@ -1,15 +1,11 @@
-% updated April 2002 by Antje Endemann
-% Based on CVPR 07 and LNCS, with modifications by DAF, AZ and elle, 2008 and AA, 2010, and CC, 2011; TT, 2014; AAS, 2016; AAS, 2020
+\documentclass[10pt,twocolumn,letterpaper]{article}
 
-\documentclass[rebuttal]{cvpr}
+\usepackage{iccv}
 \usepackage{times}
 \usepackage{epsfig}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
-
-\usepackage{comment}
-\usepackage{color}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,6 +44,7 @@
 \newcommand*{\cost}{w}%
 \newcommand*{\interact}{\mathcal{W}}
 \newcommand*{\algname}{GASP}
+\newcommand*{\treeHeight}{\interact{}_{T}}
 \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}} 
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}} 
@@ -65,7 +62,7 @@
 \newcommand\SOURCE[1]{{\color{green}{(from: #1)}}}
 % \newcommand\CHANGED[2]{{{\color{blue}{#1}}\color{green}{#2}}}
 
-\usepackage[dvipsnames]{xcolor}
+% \usepackage[dvipsnames]{xcolor}
 \usepackage[shortlabels]{enumitem}
 
 % \usepackage{amsthm}
@@ -81,22 +78,41 @@
 % If you comment hyperref and then uncomment it, you should delete
 % egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
 % run, let it finish, and you should be clear).
-\usepackage[pagebackref=true,breaklinks=true,colorlinks,bookmarks=false]{hyperref}
+\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
 
-%%%%%%%%% PAPER ID  - PLEASE UPDATE
-\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
-%\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+% \iccvfinalcopy % *** Uncomment this line for the final submission
 
-\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
-\def\confYear{CVPR 2021}
+\def\iccvPaperID{****} % *** Enter the ICCV Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+\ificcvfinal\pagestyle{empty}\fi
 
 \begin{document}
-%%%%%%%%% TITLE - PLEASE UPDATE
+
+%%%%%%%%% TITLE
 \title{GASP, a generalized framework for agglomerative clustering of signed graphs and its application to Instance Segmentation} % Replace with your title
 
+\author{First Author\\
+Institution1\\
+Institution1 address\\
+{\tt\small firstauthor@i1.org}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Second Author\\
+Institution2\\
+First line of institution2 address\\
+{\tt\small secondauthor@i2.org}
+}
+
 \maketitle
-\thispagestyle{empty}
+% Remove page # from the first page of camera-ready.
+\ificcvfinal\thispagestyle{empty}\fi
+
 
 
 \input{chapters/0_abstract.tex}
@@ -107,7 +123,7 @@
 \input{chapters/5_experiments_compare_rules}
 \input{chapters/5_experiments_noise}
 \input{chapters/5_experiments_cremi}
-\input{chapters/5_experiments_cityscapes}
+% \input{chapters/5_experiments_cityscapes}
 \input{chapters/5_experiments_spectral}
 \input{chapters/6_conclusions}
 
