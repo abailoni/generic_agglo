@@ -33,11 +33,11 @@
 
 \begin{figure}[t]
 \centering
-\begin{minipage}[t]{\textwidth}
+\begin{minipage}[t]{0.48\textwidth}
 \vspace{0pt}
 \centering
 % \footnotesize
-\begin{tabular}[t]{L{29em} M{7em}}
+\begin{tabular}[t]{L{9em} M{7em}}
            Method & Rand-Score \\ \midrule
            \textbf{GASP Average} & \textbf{0.8966} \\
 GASP Sum & 0.8965 \\
@@ -50,10 +50,10 @@ BNC \cite{chiang2012scalable} & 0.0074 \\
     \captionof{table}{\algname{} compared to spectral clustering methods on a small crop of the CREMI dataset (sample B).}
     \label{tab:cremi_spectral_experiments}
 \end{minipage}\\\vspace{2em}
-\begin{minipage}[t]{\textwidth}
+\begin{minipage}[t]{0.48\textwidth}
 \vspace{0pt}
 \centering
-        \includegraphics[width=0.8\textwidth,trim=0.25in 0.25in 0.68in 0.36in,clip]{./figs/SSBM_experiments.pdf} % 0.45
+        \includegraphics[width=1.\textwidth,trim=0.25in 0.25in 0.68in 0.36in,clip]{./figs/SSBM_experiments.pdf} % 0.45
         \caption{\algname{} performances compared to spectral methods on synthetic graphs. The spectral methods were given the true number of clusters as input, in contrast to \algname{}.}
     \label{fig:SSBM_spectral_experiments}
 \end{minipage}
