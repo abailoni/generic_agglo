@@ -12,16 +12,16 @@
         \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/under_segment_plots_1.pdf}
     \end{subfigure}
 
-        \begin{subfigure}[t]{0.49 \textwidth}
-        \centering
-        \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/over_segment_plots_0.pdf}
-        \caption{No long-range predictions: \\$p_{\mathrm{long}}=0$} \label{fig:merge_noise_only_direct}
-    \end{subfigure} \hfill
-    \begin{subfigure}[t]{0.49 \textwidth}
-        \centering
-        \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/over_segment_plots_1.pdf}
-        \caption{With long-range predictions: $p_{\mathrm{long}}=0.1$} \label{fig:merge_noise_with_long_range}
-    \end{subfigure}
+    %     \begin{subfigure}[t]{0.49 \textwidth}
+    %     \centering
+    %     \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/over_segment_plots_0.pdf}
+    %     \caption{No long-range predictions: \\$p_{\mathrm{long}}=0$} \label{fig:merge_noise_only_direct}
+    % \end{subfigure} \hfill
+    % \begin{subfigure}[t]{0.49 \textwidth}
+    %     \centering
+    %     \includegraphics[width=\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/over_segment_plots_1.pdf}
+    %     \caption{With long-range predictions: $p_{\mathrm{long}}=0.1$} \label{fig:merge_noise_with_long_range}
+    % \end{subfigure}
 \caption{\algname{} sensitivity to noise: \emph{Average} linkage proved to be the most robust. Performances are given by Rand-Score (higher is better) depending on the amount of noise added to the CNN predictions. Solid lines represent median values over 30 experiments. Values between the 25th and the 75th percentile are shown in shaded areas. The two sets of experiments using under- and over-clustering noise are summarized in the plots at the top and at the bottom, respectively (see Appendix \ref{sec:appendix_noise_gen} for more details). For each experiment, some of the long-range CNN predictions were randomly selected with probability $p_{\mathrm{long}}$ and added as long-range edges to the pixel grid-graph. Experiments are performed on a crop of CREMI training sample B.
 }\label{fig:noise_plots}
 \end{figure*}

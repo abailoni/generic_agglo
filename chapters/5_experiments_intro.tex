@@ -1,11 +1,32 @@
 % !TEX root = ../agglo_clust_review.tex
 
 \section{Experiments}\label{sec:neuro_segm_exp}
-\subsection{title}
+% \subsection{title}
 \begin{itemize}
-\item We test and compare the algorithms included in the proposed \algname{} framework over a large variety of signed graphs, which are listed in Table ??.
+\item We test and compare the algorithms included in the proposed \algname{} framework over a large variety of signed graphs, whose specifications are listed in Table ??.
+\item OpenGM, CREMI, and other datasets. Define rag
+\item Common approach: predict affinities with CNN and then agglomerate pixel grid graph
+\item Details on the trained model are left in appendix
+\item Only some of the studied datasets have ground truth available. Define ARAND and VI-scores. 
+Table lists the values of the multicut objective achieved by different algorithms.
+\item In the next section, before to comment the results on these real-world datasets, we apply the studied algorithms to two types of synthetically generated graphs and highlight some of their fundamental properties.
 \end{itemize}
 
+\subsection{Synthetic graphs}
+\begin{itemize}
+\item  One is obtained by perturbing the output of our trained CNN (only merge mistakes)
+
+\item SUM: It grows one at the time (show already in ?, where they proposed a size-regularized version of it, but, as compared to HC-Avg, it is then biased towards ...?)
+\item AVG: grows clusters that are similarly sized
+\item MWS: the probability to make mistakes does not decrease as clusters increase in size
+\end{itemize}
+
+\subsection{Results and discussion}
+\begin{itemize}
+\item Our GT scores confirms the findings on synthetic graphs
+\item Comment energies (GAEC always achieves the best)
+\item At the very end, talk about cremi challenge, cremi-score and report our results. So far no other method was done from pixels
+\end{itemize}
 
 We first evaluate and compare the agglomerative clustering algorithms described in the generalized framework on the task of neuron segmentation in electron microscopy (EM) image volumes. This application is of key interest in connectomics, a field of neuro-science with the goal of reconstructing neural wiring diagrams spanning complete central nervous systems. Currently, only proof-reading or manual tracing yields sufficient accuracy for correct circuit reconstruction \cite{schlegel2017learning}, thus further progress is required in automated reconstruction methods.
 
