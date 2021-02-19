@@ -15,6 +15,7 @@
 \usepackage{algorithm}% http://ctan.org/pkg/algorithm
 \PassOptionsToPackage{noend}{algpseudocode}% comment out if want end's to show
 \usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+\usepackage{marvosym}
 
 \makeatletter
 \newcommand*{\skipnumber}[2][1]{%
@@ -44,7 +45,7 @@
 \newcommand*{\cost}{w}%
 \newcommand*{\interact}{\mathcal{W}}
 \newcommand*{\algname}{GASP}
-\newcommand*{\treeHeight}{\interact{}_{T^*}}
+\newcommand*{\treeHeight}{\interact{}_{T}}
 \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}} 
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}} 
@@ -59,7 +60,7 @@
 
 \newcommand\TODO[1]{{\color{red}{TODO: #1}}}
 \newcommand\UPDATE[1]{{\color{blue}{#1}}}
-\newcommand\SOURCE[1]{{\color{green}{(from: #1)}}}
+\newcommand\OPTIONAL[1]{{\color{blue}{#1}}}
 % \newcommand\CHANGED[2]{{{\color{blue}{#1}}\color{green}{#2}}}
 
 % \usepackage[dvipsnames]{xcolor}
@@ -67,8 +68,16 @@
 
 % \usepackage{amsthm}
 % \usepackage{thmtools,thm-restate}
-% \newtheorem{theorem}{Theorem}[section]
+\newtheorem{theorem}{Theorem}[section]
 \newtheorem{prop}{Proposition}[section]
+\newtheorem{observation}{Observation}[section]
+\newtheorem{corollary}{Corollary}[prop]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
 
 % \usepackage{authblk}
 
@@ -92,6 +101,7 @@
 
 %%%%%%%%% TITLE
 \title{GASP, a generalized framework for agglomerative clustering of signed graphs and its application to Instance Segmentation} % Replace with your title
+% GASP: review of new and existing hierarchical agglomerative algorithms for signed graph partitioning
 
 \author{First Author\\
 Institution1\\

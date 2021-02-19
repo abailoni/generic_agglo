@@ -244,16 +244,16 @@ Thus, we used Perlin noise\footnote{In our experiments, we used an open-source i
 \tilde{F}_{\pm}(x;\mathcal{K})=F(x)\pm\big|\mathcal{K}\cdot\max\left(\pm N(x),0\right)\big|,
 \end{equation}
 where  $N(x)=\mathrm{Logit}[n(x)]$; $F(x)=\mathrm{Logit}[p(x)]$ and $\mathcal{K}\in \mathbb{R}^+$ is a positive factor representing the amount of added noise. $\tilde{F}_{+}(x;\mathcal{K})$ represents then a under-clustering biased prediction, such that the probability for two pixels to be in the same cluster is increased only if $N(x)>0$ (see Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}b}), whereas $\tilde{F}_{-}(x;\mathcal{K})$ is a over-clustering biased prediction with decreased probabilities when $N(x)<0$ (Fig. \hyperref[fig:noisy_affs]{\ref*{fig:noisy_affs}c}).
-In the implementation we used, the noise can be generated in an arbitrary number of dimensions and a smoothing factor can be specified for each direction independently. In our experiments, each pixel is represented by a node in the grid-graph and it is linked to $n_{\mathrm{nb}}$ other nodes by short- and long-range edges. Thus, the output of our CNN model has $n_{\mathrm{nb}}$ channels: for each pixel / voxel, it outputs $n_{\mathrm{nb}}$ values representing the weights of different edge connections. We then generated a 4-dimensional noise that matches the dimension of the CNN output. The data is highly anisotropic, i.e. it has a lower resolution in one of the dimensions. Due to this fact, we chose different smoothing parameters to generate the noise in different directions. 
+In the implementation we used, the noise can be generated in an arbitrary number of dimensions and a smoothing factor can be specified for each direction independently. In our experiments, each pixel is represented by a node in the grid-graph and it is linked to $n_{\mathrm{nb}}$ other nodes by short- and long-range edges. Thus, the output of our CNN model has $n_{\mathrm{nb}}$ channels: for each pixel / voxel, it outputs $n_{\mathrm{nb}}$ values representing the weights of different edge connections. We then generated a 4-dimensional noise that matches the dimension of the CNN output. The data is highly anisotropic, i.e. it has a lower resolution in one of the dimensions. Due to this fact, we chose different smoothing parameters to generate the noise in different directions. \TODO{Give these smoothing parameters...}
 
 The experiments summarized in Fig. \ref{fig:noise_plots} were performed in the following way: for each value $\mathcal{K}$, 30 random noise samples were drawn, from which median and percentiles statistics were computed for each different linkage criteria. For each sample, we randomly selected some of the long-range predictions from the CNN and added them to pixel grid-graph.
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
         \includegraphics[width=\textwidth,trim=0.0in -0.in -0.0in -0.4in,clip]{figs/noisy_affs_comparison.pdf}
     \caption{CNN predictions on a slice of the CREMI neuron segmentation challenge with and without additional noise. (\textbf{a}) Raw data (\textbf{b}) Original CNN predictions $F(x)$, where blue pixels represent boundary evidence (\textbf{c}) Under-clustering biased version $\tilde{F}_{+}(x;\mathcal{K})$ of the predictions defined in Eq. \ref{eq:noise_biased_predictions} with $\mathcal{K}=8$ (\textbf{d}) Over-clustering biased version $\tilde{F}_{-}(x;\mathcal{K})$. Long-range predictions are not shown.
     }
     \label{fig:noisy_affs}
-\end{figure}
+\end{figure*}
 \begin{table}
     \centering
     % \small
@@ -288,6 +288,20 @@ During training, all the affinities involving at least one pixel belonging to th
 
 Before to apply \algname{}, we performed a parameter-search for the bias $\beta$ defined in \ref{eq:mappings}. Table \ref{tab:extended_results_cityscapes_val} lists the best-case performances for each of the methods: note that depending on the \algname{} linkage criterion, it was necessary to bias more or less the predicted edge weights.
 
-The semantic categories are assigned to each instance in the same way proposed by \cite{liu2018affinity}, i.e. with a majority vote based on the semantic output of the model. 
+The semantic categories are assigned to each instance in the same way proposed by \cite{liu2018affinity}, i.e. with a majority vote based on the semantic output of the model.
+
+
+\subsection{Ultrametrics} 
+Thus, to prove that $(V, d_{T})$ is an ultrametric, we only need to prove that
+\begin{equation}
+\interact{}_{T}(u,v) \geq \min \{\interact{}_{T}(u,t), \interact{}_{T}(v,t)\}
+\end{equation}
+ for every distinct $u,v,t\in V$. In other words, given two leaves nodes $u,v\in V$, the depth $\interact{}_{T}(u,v)$ associated to their least common ancestor $i\in T$ should be both lower than the depth of any $i$-descendant node in $T$ and higher than any $i$-ancestor node in $T$:
+ % that have the most positive interaction   two clusters merged by the algorithm will always have an interaction that is more negative as compared to all clusters already merged and more positive than all clusters that will be merged at later iterations of the algorithm.
+\begin{equation}
+\interact{}_{T}(u,v) \geq \interact{}_{T}(u,t) \Leftrightarrow T[u \vee t] \subseteq T[u \vee v] 
+\end{equation}
+ This happens only if, at every iteration, Algorithm \ref{main_alg} merges pairs of clusters with lower and lower interactions, which is true for only certain choices of linkage criteria. %In the next section \ref{sec:alg_update_rules}, we will show that this happens only for certain linkages and only when constraints are not enforced
+
 
 
