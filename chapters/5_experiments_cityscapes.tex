@@ -49,6 +49,7 @@
 
 
 \section{Experiments on CityScapes}\label{sec:cityscapes_exp}
+\TODO{In case, I need to define again bias $\beta$}
 The segmentation performance of \algname{} is evaluated on the CityScapes dataset \cite{cordts2016cityscapes}, which consists of 5000 street-scene images.
 Several of the current top instance segmentation methods on cityscapes predict affinities, e.g. SSAP \cite{Gao_2019_ICCV} and GMIS \cite{liu2018affinity}. 
 Since \cite{liu2018affinity} made the code and model publicly available, we used their pipeline consisting of two CNNs with similar architectures (one predicting semantic scores and the other pixel affinities between instances) and applied all the post-processing methods proposed by them, e.g. excluding background and resizing regions of interest. We then provided the output instance-affinities of the model as input to \algname{}. 

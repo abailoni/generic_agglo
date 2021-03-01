@@ -9,14 +9,15 @@
 % In computer vision applications, the nodes can represent either pixels, superpixels or voxels.  
 The weight function $w^+: E \rightarrow \mathbb{R}^+$ associates to every edge a positive scalar attribute $w_e^+\in \mathbb{R}^+$ representing a merge affinity or a similarity measure.
 % the higher this number, the higher the inclination of the two incident vertices to be assigned to the same cluster\footnote{Note that other formalisms for positively weighted graphs associate distances to the edges, thus, the \emph{lower} the edge weight, the higher the attraction between the two linked nodes, contrary to our definition of $w^+$.}. 
-On the other hand, $w^-: E \rightarrow \mathbb{R}^+$ associates to each edge a split tendency $w_e^- \in \mathbb{R}^+$: \OPTIONAL{the higher this number, the higher the inclination of the two incident vertices to be assigned to different clusters}.
+On the other hand, $w^-: E \rightarrow \mathbb{R}^+$ associates to each edge a split tendency $w_e^- \in \mathbb{R}^+$.
+% : \OPTIONAL{the higher this number, the higher the inclination of the two incident vertices to be assigned to different clusters}.
 % the higher this weight, the more the incident vertices would like to be in different clusters. 
-Graphs of the type $\mathcal{G}(V,E,w^+, w^-)$ are often defined as \emph{signed graphs} $\mathcal{G}(V,E,\cost)$, featuring positive and negative edge weights $\cost_e\in \mathbb{R}$. Following the theoretical considerations in \cite{lange2018partial}, we define these signed weights as ${\cost_e = w_e^+ - w_e^-}$. 
+Graphs of the type $\mathcal{G}(V,E,w^+, w^-)$ are often defined as \emph{signed graphs} $\mathcal{G}(V,E,\cost)$, featuring positive and negative edge weights $\cost_e\in \mathbb{R}$. Following the theoretical considerations in \cite{lange2018partial}, we define signed weights as ${\cost_e = w_e^+ - w_e^-}$. 
 % Some approaches directly compute $\cost_e$, whereas others compute $w_e^+$ and $w_e^-$ separately.
 % In this formalism, graphs with purely attractive interactions are a special case of $\mathcal{G}(V,E,\cost)$ with $\cost_e \geq 0, \, \forall e \in E$. 
 
 \textbf{Multicut objective} -- We call the set $\Pi$ a \emph{clustering} or \emph{partitioning} with $K$ clusters if $V = \cup_{S\in\Pi} S $, $\,S \cap S' = \emptyset$ for different clusters $S, S'\in \Pi$ and every cluster $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. 
-For any clustering $\Pi$ of $\mathcal{G}$, we define as $E^0_\Pi= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u,v \in S \}$ the set of edges linking nodes in the same cluster, and as $E_\Pi^1= E \setminus E^0_\Pi$ the set of edges whose linked nodes belong to distinct clusters.
+For any clustering $\Pi$ of $\mathcal{G}$, we denote as $E^0_\Pi= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u,v \in S \}$ the set of edges linking nodes in the same cluster, and as $E_\Pi^1= E \setminus E^0_\Pi$ the set of edges whose linked nodes belong to distinct clusters, which is known as the \emph{multicut} of $\mathcal{G}$ associated to clustering $\Pi$. The instance of the NP-hard \emph{minimum cost multicut problem} w.r.t. $\mathcal{G}(V,E,w_e)$ is the task of finding a clustering that optimally balance the attraction and repulsion in the graph and is given by the following binary integer program:
 % \begin{equation}
 % E_\Pi^0 \equiv \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \qquad E^1_\Pi \equiv E \setminus E^0_\Pi.
 % \end{equation}
@@ -24,7 +25,6 @@ For any clustering $\Pi$ of $\mathcal{G}$, we define as $E^0_\Pi= \{ e_{uv} \in 
 % E_\Pi^0 &= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \\
 % E^1_\Pi &= E \setminus E^0_\Pi.
 % \end{align}
-The set of edges $E_\Pi^1$ is known as the \emph{multicut} of $\mathcal{G}$ associated to clustering $\Pi$. The instance of the NP-hard \emph{minimum cost multicut problem} w.r.t. $\mathcal{G}(V,E,w_e)$ is the task of finding a clustering that optimally balance the attraction and repulsion in the graph and is given by the following binary integer program:
 \begin{equation}\label{eq:MC_objective}
 % \min_\Pi \texttt{MC}(\Pi) \equiv
  \min_\Pi \sum_{e\in E} \cost_e x_e^\Pi,  \qquad \text{where} \quad x^\Pi_e = 
@@ -41,12 +41,12 @@ The set of edges $E_\Pi^1$ is known as the \emph{multicut} of $\mathcal{G}$ asso
 % We call two clusters $S,S'$ \emph{adjacent} if there exists at least one edge ${e_{ts}\in E}$ connecting a node $t\in S_u$ to a node $s\in S_v$. 
 Let the interaction $\interact(S,S')$ between two clusters $S,S'$ be defined as a function $\interact{}:2^{V} \times 2^{V} \rightarrow \mathbb{R}$, named \emph{linkage criterion}, depending on the weights of \emph{all} edges connecting clusters $S$ and $S'$, i.e. ${(S \times S') \cap E}$. 
 The linkage criteria tested in this article are listed and defined in Table \ref{tab:linkage-criteria}.
-In hierarchical clustering (HC) literature,  a \emph{dendrogram} $T$ is a rooted binary tree\footnote{In general, one could look at trees that are not binary. However, the algorithms discussed in this paper always generate binary hierarchical trees, so nothing would be gained by this generalization.} representing the merging order of an agglomerative algorithm, such that the leaves of the tree are in one-to-one correspondence with $V$. 
+A \emph{dendrogram} $T$ is a rooted binary tree\footnote{In general, one could look at trees that are not binary. However, the algorithms discussed in this paper always generate binary hierarchical trees, so nothing would be gained by this generalization.} representing the merging order of an agglomerative algorithm, such that the leaves of the tree are in one-to-one correspondence with $V$. 
 Let $T_{\mathrm{R}},T_{\mathrm{L}}\subset T$ denote the subtrees rooted at the two children of the root node in $T$.
-For any two leaves $u,v \in V$, let $T[u \vee v]$ be the subtree rooted at the least common ancestor $u \vee v\in T$ of nodes $u$ and $v$ (furthest from the root), and let \texttt{leaves}$(T[u \vee v])\subseteq V$ be the set of leaves of this subtree. 
+For any two leaves $u,v \in V$, let $T[u \vee v]$ be the subtree rooted at the least common ancestor $(u \vee v)\in T$ of nodes $u$ and $v$ (furthest from the root), and let \texttt{leaves}$(T[u \vee v])\subseteq V$ be the set of leaves of this subtree. 
 % \TODO{Here we talk about the algorithm already, so we could move it to next section and the flow could be better. But we need a tree in the alg. So we better do this later}
 % Algorithm \ref{main_alg} returns a binary tree denoted by $T^*$.
-Given an agglomerative algorithm with merging tree $T$, let $h_T:T \rightarrow \mathbb{N}$ denote the \emph{dendrogram-height} of each $(u\vee v)\in T$, which is defined as the iteration number at which nodes $u,v\in V$ were merged (\TODO{Fig.~1}). We also define the interaction $\treeHeight(u,v)$ as the interaction $\interact{}(S,S')$ between the two clusters $S,S'$ that were merged at iteration $h_T(u\vee v)$: 
+Given an agglomerative algorithm with merging tree $T$, let $h_T:T \rightarrow \mathbb{N}$ denote the \emph{dendrogram-height} of each $(u\vee v)\in T$, which is defined as the iteration number at which nodes $u,v\in V$ were merged by the algorithm (\TODO{Fig.~1}). We also define $\treeHeight(u,v)$ as the signed interaction $\interact{}(S,S')$ between the two clusters $S,S'$ that were merged at iteration $h_T(u\vee v)$: 
 % Then, given a binary tree $T$ and a linkage criterion $\interact$, we can associate a \emph{signed similarity} function $\treeHeight$ to each pair of distinct original nodes $u\neq v$, with $u, v \in V$:
 \begin{equation}\label{eq:def_dendr_interact}
 \treeHeight(u,v) \equiv \interact{} \big( \text{\texttt{leaves}}(T_{\mathrm{R}}[u \vee v]), \text{\texttt{leaves}}(T_{\mathrm{L}}[u \vee v]) \big)
@@ -80,7 +80,8 @@ Given an agglomerative algorithm with merging tree $T$, let $h_T:T \rightarrow \
 
 
 
-\subsection{\algname{}: generalized agglomerative algorithm for signed graph partitioning} \label{sec:algorithm} 
+\subsection{The \algname{} algorithm} \label{sec:algorithm} 
+% : generalized agglomerative algorithm for signed graph partitioning
 
 Our main contribution is a generalized agglomerative algorithm for signed graph partitioning (GASP) that generalizes hierarchical clustering (HC) to signed graphs. 
 The framework, defined in the following, encompasses several known and new agglomerative algorithms on display in Table \ref{tab:linkage-criteria}, which are differentiated by the linkage criterion employed, similarly to HC.
@@ -88,13 +89,13 @@ The framework, defined in the following, encompasses several known and new agglo
 In Algorithm \ref{main_alg}, we provide simplified pseudo-code for the proposed \algname{} algorithm. \algname{} implements a bottom-up approach that starts by assigning each node to its own cluster and then iteratively merges pairs of adjacent clusters. The algorithm proceeds in three phases. 
 
 In \emph{Phase~One}, \algname{} selects the pair of clusters with the highest absolute interaction $|\interact(S, S')|$, so that the most attractive and the most repulsive pairs are analyzed first. If the interaction is repulsive and the algorithm option \emph{addCannotLinkConstraints} is \texttt{True}, then the two clusters are constrained so that their members can never merge in subsequent steps of \emph{Phase~One}. If the interaction is attractive, then the clusters are merged, provided that they were not previously constrained. 
-After each merging iteration, the interaction between the merged cluster and its neighbors is updated according to one of the linkage criteria $\interact(S, S')$ listed in Table \ref{tab:linkage-criteria}. \emph{Phase~One} terminates when all the remaining clusters are either constrained or share repulsive interactions.
+After each merge, the interaction between the merged cluster and its neighbors is updated according to one of the linkage criteria $\interact(S, S')$ listed in Table \ref{tab:linkage-criteria}. \emph{Phase~One} terminates when all the remaining clusters are either constrained or share repulsive interactions.
 
-In \emph{Phase~Two}, the algorithm removes all the constraints previously introduced in \emph{Phase~One} and merges the remaining clusters that share an attractive interaction, starting from those with the most attractive ones\footnote{Note that in the version of \algname{} with \emph{addCannotLinkConstraints} set to \texttt{False}, nothing happens in \emph{Phase~Two}.}. The final \algname{} clustering $\Pi^*$ is returned at the end of \emph{Phase~Two} and it will then be composed of clusters sharing only mutual repulsive interactions. 
+\emph{Phase Two:} Now that the clusters have grown in size, the algorithm removes the constraints previously introduced in \emph{Phase~One} and merges all the clusters that still share an attractive interaction, merging the most attractive one first\footnote{Note that in the version of \algname{} with \emph{addCannotLinkConstraints} set to \texttt{False}, nothing happens in \emph{Phase~Two}.}. The final clustering $\Pi^*$ returned by \algname{} is found at the end of \emph{Phase~Two} and it is then composed of clusters sharing only mutual repulsive interactions. 
 
-Finally, in \emph{Phase~3}, the algorithm keeps merging all clusters until only a single one is left, so that the full sequence of merging steps is also returned in the form of a hierarchical tree $T^*$.
+Finally, in \emph{Phase~3}, the algorithm keeps merging all clusters until only a single one is left and then returns the hierarchical tree $T^*$ representing the full sequence of merging steps.
 The algorithm was implemented using a standard HC implementation with computational complexity $\mathcal{O}(N^2 \log N)$ (see Appendix \ref{sec:detailed_impl} for more details). 
-\TODO{mention fact that constraints make algorithm slower?}
+
 
 % , we comment on the algorithm's computational complexity $\mathcal{O}(N^2 \log N)$ and present our implementation given by the edge contraction Algorithm \ref{detailed_alg} based on a \emph{disjoint set data structure} and a \emph{priority queue}.
 
@@ -165,22 +166,22 @@ The algorithm was implemented using a standard HC implementation with computatio
 %              \end{cases} 
 % \end{equation}
 % \end{prop}
-In this paper we focus on five linkage criteria (see columns of Table~\ref{tab:linkage-criteria}). Many more linkage criteria have been applied to unsigned graphs \cite{nunez2013machine,felzenszwalb2004efficient,funke2018large}, but we decided to focus our experiments on those five because they represent the most common choices.  
+In this paper we focus on five linkage methods (see columns of Table~\ref{tab:linkage-criteria}). Many more linkage criteria have been applied to unsigned graphs \cite{nunez2013machine,felzenszwalb2004efficient,funke2018large}, involving median-based or size-regularized methods, but we decided to focus this paper on those five criteria because they represent the most known choices.  
 
 \paragraph{Sum Linkage} -- 
 An agglomerative algorithm with sum linkage does only make sense for graphs with signed edge weights, because only for these graphs the sum of two attractive (or repulsive) interactions is still attractive (repulsive). On positive weighted graphs, on the other hand, a strong attractive interaction could be obtained by summing many weak interactions, which is not desirable. Such an algorithm was pioneered in \cite{levinkov2017comparative,keuper2015efficient} and was named Greedy Agglomerative Edge Contraction (GAEC)\footnote{An algorithm equivalent to GAEC was recently independently re-proposed in \cite{chehreghani2020hierarchical}.}. All variations of \algname{} decrease the multicut objective defined in Eq.~\ref{eq:MC_objective} each time two clusters with positive interaction are merged. But only GAEC always makes the \emph{greedy-choice} that will mostly decrease the multicut objective at every step. The authors of \cite{levinkov2017comparative} also proposed a version of GAEC with cannot-link constraints named \emph{GreedyFixation}, but the constrained sum-link version of \algname{} proposed here (named \emph{HCC-Sum} in Table~\ref{tab:linkage-criteria}) did perform better in our experiments.
 
-\paragraph{AbsMax Linkage} -- This linkage method is also specific to signed graphs, since on positive-weighted graphs it would be equivalent to single linkage. Here, we prove that the AbsMax-version of \algname{} was already introduced in the literature (see proof in Appendix):
+\paragraph{AbsMax Linkage} -- This linkage method is also specific to signed graphs, since on positive-weighted graphs it would be equivalent to single linkage. Here, we prove that the Mutex Watershed Algorithm \cite{wolf2018mutex} can be seen as an agglomerative algorithm with AbsMax linkage (see proof in Appendix):
 \begin{prop} 
-The \algname{} Algorithm \ref{main_alg} with AbsMax linkage (see def. in Table \ref{tab:linkage-criteria}) returns the same final clustering $\Pi^*_{\mathrm{AbsMax}}$ whether or not cannot-link constraints are introduced. In particular, $\Pi^*_{\mathrm{AbsMax}}$ is equal to the clustering returned by the Mutex Watershed Algorithm (MWS) introduced by \cite{wolf2018mutex}, which has empirical complexity $\mathcal{O}(N \log N)$. 
+The \algname{} Algorithm \ref{main_alg} with AbsMax linkage (see def. in Table \ref{tab:linkage-criteria}) returns the same final clustering $\Pi^*_{\mathrm{AbsMax}}$ whether or not cannot-link constraints are introduced. In particular, $\Pi^*_{\mathrm{AbsMax}}$ is equal to the clustering returned by the Mutex Watershed Algorithm (MWS) \cite{wolf2018mutex}, which has empirical complexity $\mathcal{O}(N \log N)$. 
 \end{prop}
 
 
-\paragraph{Average, Single, and Complete Linkage} -- These three linkage criteria have been throughly studied on positive-weighted graphs. In \cite{chehreghani2020hierarchical}, the authors proved that applying these three linkage methods to a signed graph is equivalent to applying them to the positive-weighted graph obtained by shifting all edge weights of a constant.  Here, we prove which of the algorithms included in our generalized framework show this invariance-property: (proof in Appendix)
-\begin{prop} 
-We call an agglomerative algorithm ``weight-shift invariant'' if the structure of the merging tree $T$ returned by such algorithm is invariant w.r.t. a shift of all edge weights $w_e$  by a constant $\alpha\in \mathbb{R}$. Among all versions of \algname{} studied in this paper, only those using Average, Single, and Complete linkage criteria without cannotLinkConstraints are weight-shift-invariant (see algorithms highlighted in bold in Table~\ref{tab:linkage-criteria}).
+\paragraph{Average, Single, and Complete Linkage} -- These three linkage criteria have been throughly studied on positive-weighted graphs. In \cite{chehreghani2020hierarchical}, the authors proved that applying these three linkage methods to a signed graph is equivalent to applying them to the positive-weighted graph obtained by shifting all edge weights by a constant.  Here, we prove which of the algorithms included in our generalized framework have this invariance-property: (proof in Appendix)
+\begin{prop} \label{prop:weight_shift_invariant}
+We call an agglomerative algorithm ``weight-shift invariant'' if the structure of the merging tree $T$ returned by such algorithm is invariant w.r.t. a shift of all edge weights $w_e$  by a constant $\alpha\in \mathbb{R}$. Among the versions of \algname{} studied in this paper, only those using Average, Single, and Complete linkage criteria without cannotLinkConstraints are weight-shift-invariant (see algorithms typeset in bold font in Table~\ref{tab:linkage-criteria}).
 \end{prop}
-\noindent To our knowledge, Avg, Single, and Complete linkage methods have never been combined with cannot-link constraints on signed graphs, so the algorithms named \emph{HCC-Avg}, \emph{HCC-Single}, and \emph{HCC-Complete} in Table~\ref{tab:linkage-criteria} are new.
+\noindent To our knowledge, Avg, Single, and Complete linkage methods have never been combined with cannot-link constraints on signed graphs, so the algorithms that in Table~\ref{tab:linkage-criteria} are named \emph{HCC-Avg}, \emph{HCC-Single}, and \emph{HCC-Complete} are new.
 
 
 % \textbf{Weight-shift hierarchical algorithms} -- Given an algorithm that outputs a clustering $\Pi$ for a signed graph $\mathcal{G}(V,E,w_e)$, we call the algorithm \emph{weight-shift hierarchical} if, by adding a constant $\alpha \in \mathbb{R}$ to all edge weights $w_e$, the algorithm outputs a clustering $\Pi'$ which is a coarsening of $\Pi$ when $\alpha>0$ and a refinement of $\Pi$ when $\alpha<0$\footnote{A clustering $\Pi'$ is a coarsening of $\Pi$ when every $S' \in \Pi'$ is the union of one or more clusters in $\Pi$. Similarly, $\Pi'$ is a refinement of $\Pi$ when every $S \in \Pi$ is given by the union of one or more clusters in $\Pi'$}.
@@ -225,7 +226,8 @@ Consider a graph $\mathcal{G}(V,E,w_e)$, a linkage criteria $\interact{}$, and a
 In words, $(V, d_{T})$ is an ultrametric iff the interaction $\interact{}_{T}(u, v)$ associated to the least common ancestor ${(u\vee v)\in T}$ is both lower than any other $(u\vee v)$-descendant node and higher than any other $(u\vee v)$-ancestor node in the tree $T$.
 \end{prop}
 \begin{prop}
-Consider the binary rooted tree $T^*$ returned by the \algname{} Algorithm~\ref{main_alg}, given a choice of linkage criteria $\interact{}$ and the use (or not) of CannotLinkConstraints. Then, the quantity $(V, d_{T^*})$ defined in Eq.~\ref{eq:UM_def} is an ultrametric only for the combinations of linkage and CannotLinkConstraints reported in italic font in Table~\ref{tab:linkage-criteria}.
+% Consider the binary rooted tree $T^*$ returned by the \TODO{all variants in Table 1} \algname{} Algorithm~\ref{main_alg}, given a choice of linkage criteria $\interact{}$ and the use (or not) of CannotLinkConstraints. 
+Among the algorithms listed in Table \ref{tab:linkage-criteria} and included in the \algname{} framework, only Mutex Watershed and hierarchical clustering with Average (HC-Avg), Single (HC-Single) and Complete linkage (HC-Complete) define an ultrametric given by the quantity $(V, d_{T^*})$ defined in Eq.~\ref{eq:UM_def}, where $T^*$ is the tree returned by Algorithm~\ref{main_alg}.
 \end{prop}
 
 
@@ -279,93 +281,10 @@ Consider the binary rooted tree $T^*$ returned by the \algname{} Algorithm~\ref{
 %     \label{tab:linkage-criteria}
 % \end{table*}
 
-\begin{table*}[t]
-    \centering
-    \footnotesize
-    \begin{subtable}[t!]{\textwidth}\centering
-        \begin{tabular}{l |c  c  c  c  c}
-        % \multicolumn{1}{c}{}
-        % \multirow{2}{*}[-0.5em]{\thead{\textbf{\algname{} linkage criteria} \\ $\,\,\interact(S_u ,S_v)$}}  
-        & \thead{Sum\\Linkage} & \thead{Absolute Maximum\\Linkage} & \thead{Average\\Linkage} & \thead{Single\\Linkage} & \thead{Complete\\Linkage} \\
- % \multicolumn{1}{c}{} 
- & $\displaystyle \sum_{e\in E_{uv}} \cost_e$  & $\displaystyle \cost_e$ with $\displaystyle e = \argmax_{t\in E_{uv}} |\cost_t|$ & $\displaystyle \sum_{e\in E_{uv}} \cost_e \bigg/ \big|E_{uv}\big| $ &  $\displaystyle \max_{e\in E_{uv}} \cost_e$ & $\displaystyle \min_{e\in E_{uv}} \cost_e$ \\ \midrule
- % \cmidrule{2-6}
-
-            \thead[r]{GASP on positive-weighted graphs} & \thead{-} &\thead{\emph{\textbf{HC-Single}}} &\thead{\emph{\textbf{HC-Avg}}} &\thead{\emph{\textbf{HC-Single}}} &\thead{\emph{\textbf{HC-Complete}}} \\
-            \thead[r]{GASP on signed graphs} & \thead{GAEC \cite{keuper2015efficient}} & \thead{\emph{Mutex Watershed} \cite{wolf2018mutex}}& \thead{\emph{\textbf{HC-Avg}}} &\thead{\emph{\textbf{HC-Single}}} &\thead{\emph{\textbf{HC-Complete}}} \\
-            \thead[r]{GASP on signed graphs + constraints} & \thead{\colorbox{yellow}{HCC-Sum}} % \thead{Greedy Fixation \cite{levinkov2017comparative}} 
-            & \thead{\emph{Mutex Watershed} \cite{wolf2018mutex}}& \thead{\colorbox{yellow}{HCC-Avg}} &  \thead{\colorbox{yellow}{HCC-Single}} &  \thead{\colorbox{yellow}{HCC-Complete}} \\
-            % \multicolumn{2}{c|}{\multirow{2}{*}[-0.5em]{\thead{\textbf{\algname{} linkage criteria} $\,\,\interact(S_u ,S_v)$}}}  & \multirow{2}{*}[-0.5em]{\thead{\textbf{Unsigned Graphs}}} & \multicolumn{2}{c}{\thead{\textbf{Signed Graphs}}}  \\        
-            % \multicolumn{2}{c|}{} &  &  \multicolumn{1}{c}{\thead{No Constraints}} & \thead{With Constraints} \\ \midrule
-             
-
-            %  Sum: & $\displaystyle \sum_{e\in E_{uv}} \cost_e$ & \thead{Sum Linkage\\Hier. Aggl. Clust.} & \thead{GAEC \cite{keuper2015efficient}} & \thead{Greedy\\Fixation \cite{levinkov2017comparative}} \\ 
-            
-             
-
-
-            %  \makecell[r]{Abs. Max:} & 
-            % $\displaystyle \cost_e$ with $\displaystyle e = \argmax_{t\in E_{uv}} |\cost_t|$
-            %    & \thead{Single Linkage\\Hier. Aggl. Clust.} & \thead{Mutex\\Watershed \cite{wolf2018mutex}} & \thead{Mutex\\Watershed \cite{wolf2018mutex}} \\
-             
-
-
-            %  \makecell[r]{Average:} & $\displaystyle \sum_{e\in E_{uv}} \cost_e \bigg/ \big|E_{uv}\big|  $ & \thead{ Average Linkage\\ Hier. Aggl. Clust.} & \thead{\textbf{NEW}} & \thead{\textbf{NEW}}\\ 
-
-            % Max: & $\displaystyle \max_{e\in E_{uv}} \cost_e$ & \thead{Single Linkage\\Hier. Aggl. Clust.} & \thead{\textbf{NEW}} & \thead{\textbf{NEW}}\\ 
-
-            % Min:& $\displaystyle \min_{e\in E_{uv}} \cost_e$ & \thead{Complete Linkage\\ Hier. Aggl. Clust.}  & \thead{\textbf{NEW}} & \thead{\textbf{NEW}}
 
 
 
-            
-        \end{tabular}
-    \end{subtable} 
-    \caption{Existing and new (highlighted in yellow) clustering algorithms that can be reformulated as special cases of the proposed generalized agglomerative algorithm for signed graph partitioning, \algname{}, given a linkage criterion, a type of graph (signed or unsigned) and the optional use of cannot-link constraints. Given two clusters $S_i$ and $S_j$, the set $E_{ij}$ is defined as the set of all edges connecting the two cluster, i.e. $E_{ij}=(S_i \times S_{j}) \cap E$. \TODO{Algorithm in italic define an ultrametric; algorithms in bold are weight-shift hierarchical; new ones are highlighted in yellow} } 
-    \label{tab:linkage-criteria}
-\end{table*}
 
-\begin{figure*}
-\centering
-\includegraphics[width=\textwidth]{./figs/comparison_new.pdf} % left bottom right top
-\caption{Failure cases of \algname{} with different linkage criteria highlighted on some difficult parts of the CREMI Challenge data. Only the \emph{wrongly} segmented regions are highlighted in different warm colors. Note that the data is 3D, hence the same color could be assigned to parts of segments that appear disconnected in 2D.  Red arrows point to wrongly split regions. Yellow arrows point out merge errors. The \emph{Average} linkage without cannot-link constraints returned the best segmentation.
-\label{fig:cremi_comparison}}
-\end{figure*}
-
-
-
-\begin{table*}[t]
-    \centering
-    % \scriptsize
-    \tiny
-    \begin{subtable}[t!]{\textwidth}\centering
-        \begin{tabular}{l  c  c  c  c  c c c c c c c c c}
-        \toprule
-        Dataset & Graph-Type & $\#I$ & $|V|$ & $\bar{\text{deg}}(v)$ & GT & GAEC & MWS & HC-AvgL & HC-SingleL & HC-CompleteL & Constr-SumL & Constr-AvgL & Constr-SingleL \\ \midrule
-        \emph{Image Seg.} & \emph{rag} & 100 & 156-3764 &   & \HollowBox\\
-        \emph{Knott-3D (150-300-450)} & \emph{rag-3D} & 24 & 572-17k &  & \HollowBox\\
-        % \emph{Knott-3D-300} & \emph{rag-3D} & 8& & & \HollowBox\\
-        % \emph{Knott-3D-450}& \emph{rag-3D} & 8 & & & \HollowBox\\  
-        \emph{CREMI-OurUNet} & \emph{rag-3D} & 3&  & & \CrossedBox\\ 
-        \emph{Fruit-Fly Level 1-4} & \emph{rag-3D} & 4& 5m-11m &  & \HollowBox\\
-        \emph{Fruit-Fly Level Global} & \emph{rag-3D} & 1& 90m &  & \HollowBox\\ \midrule
-                \emph{CREMI-pixGrid-OurUNet} & \emph{gridGraph} & 12& $\sim$30m & 4 & \CrossedBox\\
-        % \emph{(CREMI-pixGrid-LSIMasksUNet)} & \emph{gridGraph} & 1 & & 4 & \CrossedBox\\
-        \emph{(CityScapesValidation-pixGrid)} & \emph{gridGraph} &  &  & & \CrossedBox\\\midrule
-        % \emph{CREMI-test....}\\\midrule
-        \emph{Stochastic Block Model (synthetic)} & \emph{non-planar} &-&- & - & \CrossedBox \\
-        \emph{Mod. Clustering} & \emph{complete} & 6& 34-115 & 33-114 & \HollowBox\\ 
-        \emph{(epinions and slashdot?)} & \emph{dense?} &  & & & \HollowBox\\ 
-        
-        
-
-
-            
-        \end{tabular}
-    \end{subtable} 
-    \caption{List of used datasets and MC objectives achieved by different algorithms} 
-    \label{tab:datasets_and_energies}
-\end{table*}
 
 
 % \begin{table}[t]

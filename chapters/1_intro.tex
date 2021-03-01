@@ -16,10 +16,54 @@ We use a CNN to predict the edge weights of a graph such that each node represen
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=\textwidth]{figs/intro_image_v4.pdf} % left bottom right top
-\caption{\algname{} example. \textbf{(1)} Raw data from the CREMI 2016 neuron-segmentation challenge. \textbf{(2)} Some short- and long-range predictions of our CNN model, where white pixels represent boundary evidence. \textbf{(3)} Outputs of two agglomerative algorithms included in our proposed generalized clustering framework, with \emph{Sum} and \emph{Average} linkage criteria. The final clustering / instance segmentation is shown in 3a, overlaid with the raw image.  The  agglomeration order in 3b shows which pairs of neighboring pixels were merged first (white), later on (brown/red), or never (black). (\textbf{4}) Some iterations of \algname{} on toy graph examples with attractive/positive (green) and repulsive/negative (red) interactions. At each iteration, the yellow edge with highest interaction is contracted (orange arrows), until only negative edges are left in the graph. \TODO{Check if avg is correct}
+\includegraphics[width=0.5\textwidth]{figs/intro_image_v4.pdf} % left bottom right top
+\caption{\TODO{Redo figure}\algname{} example. \textbf{(1)} Raw data from the CREMI 2016 neuron-segmentation challenge. \textbf{(2)} Some short- and long-range predictions of our CNN model, where white pixels represent boundary evidence. \textbf{(3)} Outputs of two agglomerative algorithms included in our proposed generalized clustering framework, with \emph{Sum} and \emph{Average} linkage criteria. The final clustering / instance segmentation is shown in 3a, overlaid with the raw image.  The  agglomeration order in 3b shows which pairs of neighboring pixels were merged first (white), later on (brown/red), or never (black). (\textbf{4}) Some iterations of \algname{} on toy graph examples with attractive/positive (green) and repulsive/negative (red) interactions. At each iteration, the yellow edge with highest interaction is contracted (orange arrows), until only negative edges are left in the graph. \TODO{Check if avg is correct}
 \label{fig:intro_figure}}
 \end{figure*}
+
+\begin{table*}[t]
+    \centering
+    \footnotesize
+    \begin{subtable}[t!]{\textwidth}\centering
+        \begin{tabular}{l |c  c  c  c  c}
+        % \multicolumn{1}{c}{}
+        % \multirow{2}{*}[-0.5em]{\thead{\textbf{\algname{} linkage criteria} \\ $\,\,\interact(S_u ,S_v)$}}  
+        & \thead{Sum\\Linkage} & \thead{Absolute Maximum\\Linkage} & \thead{Average\\Linkage} & \thead{Single\\Linkage} & \thead{Complete\\Linkage} \\
+ % \multicolumn{1}{c}{} 
+ & $\displaystyle \sum_{e\in E_{ij}} \cost_e$  & $\displaystyle \cost_e$ with $\displaystyle e = \argmax_{t\in E_{ij}} |\cost_t|$ & $\displaystyle \sum_{e\in E_{ij}} \cost_e \bigg/ \big|E_{ij}\big| $ &  $\displaystyle \max_{e\in E_{ij}} \cost_e$ & $\displaystyle \min_{e\in E_{ij}} \cost_e$ \\ \midrule
+ % \cmidrule{2-6}
+
+            \thead[r]{GASP on positive-weighted graphs} & \thead{-} &\thead{\textbf{HC-Single}} &\thead{\textbf{HC-Avg}} &\thead{\textbf{HC-Single}} &\thead{\textbf{HC-Complete}} \\
+            \thead[r]{GASP on signed graphs} & \thead{GAEC \cite{keuper2015efficient}} & \thead{\textbf{Mutex Watershed} \cite{wolf2018mutex}}& \thead{\textbf{HC-Avg}} &\thead{\textbf{HC-Single}} &\thead{\textbf{HC-Complete}} \\
+            \thead[r]{GASP on signed graphs + constraints} & \thead{\colorbox{yellow}{HCC-Sum}} % \thead{Greedy Fixation \cite{levinkov2017comparative}} 
+            & \thead{\textbf{Mutex Watershed} \cite{wolf2018mutex}}& \thead{\colorbox{yellow}{HCC-Avg}} &  \thead{\colorbox{yellow}{HCC-Single}} &  \thead{\colorbox{yellow}{HCC-Complete}} \\
+            % \multicolumn{2}{c|}{\multirow{2}{*}[-0.5em]{\thead{\textbf{\algname{} linkage criteria} $\,\,\interact(S_u ,S_v)$}}}  & \multirow{2}{*}[-0.5em]{\thead{\textbf{Unsigned Graphs}}} & \multicolumn{2}{c}{\thead{\textbf{Signed Graphs}}}  \\        
+            % \multicolumn{2}{c|}{} &  &  \multicolumn{1}{c}{\thead{No Constraints}} & \thead{With Constraints} \\ \midrule
+             
+
+            %  Sum: & $\displaystyle \sum_{e\in E_{uv}} \cost_e$ & \thead{Sum Linkage\\Hier. Aggl. Clust.} & \thead{GAEC \cite{keuper2015efficient}} & \thead{Greedy\\Fixation \cite{levinkov2017comparative}} \\ 
+            
+             
+
+
+            %  \makecell[r]{Abs. Max:} & 
+            % $\displaystyle \cost_e$ with $\displaystyle e = \argmax_{t\in E_{uv}} |\cost_t|$
+            %    & \thead{Single Linkage\\Hier. Aggl. Clust.} & \thead{Mutex\\Watershed \cite{wolf2018mutex}} & \thead{Mutex\\Watershed \cite{wolf2018mutex}} \\
+             
+
+
+            %  \makecell[r]{Average:} & $\displaystyle \sum_{e\in E_{uv}} \cost_e \bigg/ \big|E_{uv}\big|  $ & \thead{ Average Linkage\\ Hier. Aggl. Clust.} & \thead{\textbf{NEW}} & \thead{\textbf{NEW}}\\ 
+
+            % Max: & $\displaystyle \max_{e\in E_{uv}} \cost_e$ & \thead{Single Linkage\\Hier. Aggl. Clust.} & \thead{\textbf{NEW}} & \thead{\textbf{NEW}}\\ 
+
+            % Min:& $\displaystyle \min_{e\in E_{uv}} \cost_e$ & \thead{Complete Linkage\\ Hier. Aggl. Clust.}  & \thead{\textbf{NEW}} & \thead{\textbf{NEW}}
+
+        \end{tabular}
+    \end{subtable} 
+    \caption{Clustering algorithms included in the proposed \algname{} framework, given a linkage criterion, a type of graph (signed or unsigned) and the optional use of cannot-link constraints. New algorithms are highlighted in yellow. Algorithms typeset in bold font define an ultrametric on the graph (see Eq.~\ref{eq:UM_def}). Algorithms included in the green box, are weight-shift invariant (see Prop.~\ref{prop:weight_shift_invariant}). 
+    We denote as $E_{ij}=(S_i \times S_{j}) \cap E$ the set of edges connecting two cluster $S_i, S_j$. } 
+    \label{tab:linkage-criteria}
+\end{table*}
 
 
 With our comparison experiments, performed both on 2D urban scenes from the CityScapes dataset and 3D electron microscopy image volumes of neurons, we benchmark all algorithms in our framework, focusing on their efficiency, robustness and tendency to over- or under-cluster.
