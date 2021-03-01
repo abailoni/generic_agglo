@@ -11,8 +11,10 @@ We evaluate the agglomerative clustering algorithms included in our framework on
 
 \textbf{Grid-graphs from CNN predictions} -- We also evaluate the clustering methods on the task of neuron segmentation in EM image volumes using training data from the CREMI 2016 EM Segmentation Challenge \cite{cremiChallenge}.
 We train a 3D U-Net \cite{ronneberger2015u,cciccek20163d} using the same architecture as \cite{funke2018large} and predict long-and-short range affinities 
-as described in \cite{lee2017superhuman}\footnote{See Appendix \ref{sec:cremi_details} for all details about training and data augmentation.}. The predicted affinities $a_e\in[0,1]$, which represent how likely it is for a pair of pixels to belong to the same neuron segment, are then mapped to signed edge weights $w_e=a_e-0.5$, resulting in a 3D grid-graph having a node for each pixel/voxel of the  image\footnote{To map affinities to signed weights, we also tested the \emph{logarithmic mapping} proposed in \cite{finkel2008enforcing,andres2012globally}, but it performed worse in our experiments.}. We divided the three training samples of the CREMI challenge, which consists of approximately 196 million voxels each, into five sub-blocks for a total of 15 graph clustering problems (named \emph{CREMI-gridGraph} in Table~\ref{tab:datasets_and_energies}). 
-% \TODO{long-range probs}
+as described in \cite{lee2017superhuman}\footnote{See Appendix \ref{sec:cremi_details} for all details about training and data augmentation.}. The predicted affinities $a_e\in[0,1]$, which represent how likely it is for a pair of pixels to belong to the same neuron segment, are then mapped to signed edge weights $w_e=a_e-0.5$, resulting in a 3D grid-graph having a node for each pixel/voxel of the  image\footnote{To map affinities to signed weights, we also tested the \emph{logarithmic mapping} proposed in \cite{finkel2008enforcing,andres2012globally}, but it performed worse in our experiments.}. 
+\TODO{long-range 10\%} 
+% Adding long-range connections to the graph is generally helpful, but when many of them carry repulsive weights. Long-range connections are more noisy. 10\% represents a good compromise.
+We divided the three training samples of the CREMI challenge, which consists of approximately 196 million voxels each, into five sub-blocks for a total of 15 graph clustering problems (named \emph{CREMI-gridGraph} in Table~\ref{tab:datasets_and_energies}). 
 
 \textbf{3D-rag from CNN-predictions} -- Lastly, we use the predictions of our CNN model to generate three graph instances (one for each CREMI training sample, named \emph{CREMI-3D-rag} in Table~\ref{tab:datasets_and_energies}), which have very similar structure to the \emph{Knott-3D} and \emph{Fruit-Fly} instances.  We obtain them by first computing 2D supervoxels from the CNN predictions (using a watershed algorithm seeded at the maxima of the smoothed boundary distance transform) and then building a 3D region-adjacency graph, whose edge weights are given by the CNN affinities averaged over the boundaries of adjacent supervoxels.
 
@@ -51,18 +53,26 @@ as described in \cite{lee2017superhuman}\footnote{See Appendix \ref{sec:cremi_de
     \begin{subtable}[t!]{\textwidth}
     \centering
 
-        \begin{tabular}{l  c  r  c  c  c r r r r r r}
-        \toprule
-        Clustering problem & \makecell{Graph Type} & $\#I$ & $|V|$ & $|E|$ & GT & GAEC \cite{keuper2015efficient} & HCC-Sum & MWS \cite{wolf2018mutex} & HC-Avg & HCC-Avg \\ \midrule
-        \emph{Modularity Clustering} \cite{brandes2007modularity} & \emph{complete} & 6& 34-115 & 561-6555 & \HollowBox & -0.457 & -0.453 & -0.073 & \textbf{-0.467} & \textbf{-0.467} \\ 
-        \emph{Image Segmentation} \cite{andres2011probabilistic} & \emph{rag} & 100 & 156-3764 &  439-10970  & \HollowBox & \textbf{-2,955} & -2,953 & -2,901 & -2,903 & -2,896\\
-        \emph{Knott-3D (150-300-450)} \cite{andres2012globally} & \emph{3D-rag} & 24 & 572-17k & 3381-107k & \HollowBox & \textbf{-36,667} & -36,652 & -35,200 & -35,957 & -35,631\\
+        \begin{tabular}{l  c  r  c  c  | r r r r r r}
+        % \toprule
+        &&&&\multicolumn{1}{c}{}&\multicolumn{5}{c}{Multicut objective values associated to final clusterings:} \\
+        Clustering problem & \makecell{Graph Type} & $\#I$ & $|V|$ & $|E|$  & \multicolumn{1}{r}{GAEC \cite{keuper2015efficient}} & HCC-Sum & MWS \cite{wolf2018mutex} & HC-Avg & HCC-Avg \\ \midrule
+        \emph{Modularity Clustering} \cite{brandes2007modularity} & \emph{complete} & 6& 34-115 & 561-6555 & % \HollowBox & 
+        -0.457 & -0.453 & -0.073 & \textbf{-0.467} & \textbf{-0.467} \\ 
+        \emph{Image Segmentation} \cite{andres2011probabilistic} & \emph{rag} & 100 & 156-3764 &  439-10970  & % \HollowBox 
+        \textbf{-2,955} & -2,953 & -2,901 & -2,903 & -2,896\\
+        \emph{Knott-3D (150-300-450)} \cite{andres2012globally} & \emph{3D-rag} & 24 & 572-17k & 3381-107k & % \HollowBox & 
+        \textbf{-36,667} & -36,652 & -35,200 & -35,957 & -35,631\\
         % \emph{Knott-3D-300} & \emph{3D-rag} & 8& & & \HollowBox\\
         % \emph{Knott-3D-450}& \emph{3D-rag} & 8 & & & \HollowBox\\  
-        \emph{CREMI-3D-rag (OurCNN)}  & \emph{3D-rag} & 3& 134k-157k & 928k-1065k & \CrossedBox & \textbf{-1,112,287} & -1,112,286& -1,109,731 & -1,112,177 & -1,112,100\\ 
-        \emph{Fruit-Fly Level 1-4} \cite{pape2017solving} & \emph{3D-rag} & 4& 5m-11m & 28m-72m & \HollowBox & \textbf{-151,022} & -151,017 & -150,879 & -150,909 & -150,876\\
-        \emph{CREMI-gridGraph (OurCNN)} & \emph{gridGraph} & 15& 39m & 140m & \CrossedBox & -73,317,601 & -73,328,867 & -73,330,568 & \textbf{-73,502,947} & -73,474,856\\
-        \emph{Fruit-Fly Level Global} \cite{pape2017solving} & \emph{3D-rag} & 1& 90m & 650m & \HollowBox & \textbf{-151,688} & -151,596 & -146,315 & -150,466 & -150,171 \\
+        \emph{CREMI-3D-rag (OurCNN)}  & \emph{3D-rag} & 3& 134k-157k & 928k-1065k % & \CrossedBox 
+        & \textbf{-1,112,287} & -1,112,286& -1,109,731 & -1,112,177 & -1,112,100\\ 
+        \emph{Fruit-Fly Level 1-4} \cite{pape2017solving} & \emph{3D-rag} & 4& 5m-11m & 28m-72m %& \HollowBox 
+        & \textbf{-151,022} & -151,017 & -150,879 & -150,909 & -150,876\\
+        \emph{CREMI-gridGraph (OurCNN)} & \emph{gridGraph} & 15& 39m & 140m %& \CrossedBox 
+        & -73,317,601 & -73,328,867 & -73,330,568 & \textbf{-73,502,947} & -73,474,856\\
+        \emph{Fruit-Fly Level Global} \cite{pape2017solving} & \emph{3D-rag} & 1& 90m & 650m % & \HollowBox 
+        & \textbf{-151,688} & -151,596 & -146,315 & -150,466 & -150,171 \\
         % \emph{(CREMI-pixGrid-LSIMasksUNet)} & \emph{gridGraph} & 1 & & 4 & \CrossedBox\\
         % \emph{(CityScapesValidation-pixGrid)} & \emph{gridGraph} &  &  & & \CrossedBox\\
         % \emph{CREMI-test....}\\\midrule
@@ -86,7 +96,7 @@ as described in \cite{lee2017superhuman}\footnote{See Appendix \ref{sec:cremi_de
 
         \end{tabular}
     \end{subtable} 
-    \caption{List of compared signed graph clustering problems: for each, we specify the number of instances $\# I$, nodes $|V|$, edges $|E|$, and whether a ground truth clustering is available. We compare algorithms in the \algname{} framework by evaluating which of the obtained clusterings is associated to the lowest value of the multicut objective defined in Eq.~\ref{eq:MC_objective} (\textbf{lower is better}).} 
+    \caption{List of compared signed graph clustering problems: for each, we specify the number of instances $\# I$, number of nodes $|V|$, and number of edges $|E|$. We compare algorithms in the \algname{} framework by evaluating which of the obtained clusterings is associated to the lowest value of the multicut objective defined in Eq.~\ref{eq:MC_objective} (\textbf{lower is better}).} 
     \label{tab:datasets_and_energies}
 \end{table*}
 \begin{table*}[t]
@@ -98,7 +108,7 @@ as described in \cite{lee2017superhuman}\footnote{See Appendix \ref{sec:cremi_de
         \centering
         \begin{tabular}[t]{lcccc}
         \toprule
-          & \makecell{ARAND\\Score} & \makecell{VOI\\split} & \makecell{VOI\\merge}&  \makecell{Runtime\\(s)} \\ \midrule 
+          & \makecell{ARAND\\error} & \makecell{VOI\\split} & \makecell{VOI\\merge}&  \makecell{Runtime\\(s)} \\ \midrule 
 \textbf{HC-Avg} & \textbf{0.0487} & 0.387 & 0.258 & 2344 \\
 HCC-Avg & 0.0492 & 0.389 & 0.259 & 2892 \\
 MWS \cite{wolf2018mutex} & 0.0554 & 0.440 & 0.249 & 688 \\
@@ -128,7 +138,7 @@ HCC-Single & 0.9264 & \textbf{0.060} & 4.887 & 6440 \\
 \centering
         \begin{tabular}[t]{lcccc}
         \toprule
-          & \makecell{ARAND\\Score} & \makecell{VOI\\split} & \makecell{VOI\\merge}&  \makecell{Runtime\\(s)} \\ \midrule 
+          & \makecell{ARAND\\error} & \makecell{VOI\\split} & \makecell{VOI\\merge}&  \makecell{Runtime\\(s)} \\ \midrule 
 \textbf{HC-Avg} & \textbf{0.0896} & 0.603 & 0.323 & 86 \\
 HCC-Avg & 0.0898 & 0.600 & 0.325 & 87 \\
 GAEC \cite{keuper2015efficient} & 0.0905 & 0.606 & 0.323 & 89 \\
@@ -151,7 +161,7 @@ HC-Complete & 0.5654 & 2.253 & \textbf{0.249} & 86 \\
     \tiny
         \begin{tabular}[t]{lcccc}
         \toprule
-          & \makecell{CREMI\\Score} & \makecell{ARAND\\Score} & \makecell{VOI\\split} & \makecell{VOI\\merge}    \\ \midrule 
+          & \makecell{CREMI\\Score} & \makecell{ARAND\\error} & \makecell{VOI\\split} & \makecell{VOI\\merge}    \\ \midrule 
 \emph{OurCNN: 3D-rag + LMC} & \textbf{0.221} & \textbf{0.108} & \textbf{0.339} & 0.115 \\
 \textbf{\emph{OurCNN: gridGraph + HCC-Avg}} & 0.224 & 0.113 & 0.361 & 0.085  \\
 \emph{OurCNN: gridGraph + HC-Avg}  & 0.224 & 0.114 &  0.364 & 0.083 \\
@@ -170,7 +180,7 @@ LFC \cite{parag2017anisotropic} & 0.616 & 0.313 & 1.085 & 0.140     \\
         % \vspace*{0.99em}
     % \captionof{table}{Current leading entries  in the CREMI challenge leaderboard \cite{cremiChallenge} (March 2021)}
     % \label{tab:results_cremi_test}
-    \caption{... We evaluate the algorithms by computing the Adapted Rand-Score (ARAND) and the Variation of Information Score (VI) \cite{arganda2015crowdsourcing}. And runtimes (\textbf{lower is better})}
+    \caption{\textbf{(a-b)} Scores and run times of algorithms in the \algname{} framework on the \emph{CREMI-gridGraph} and \emph{CREMI-3D-rag} clustering problems: average linkage methods performed best. Measures shown are Adapted-Rand error (ARAND, lower is better), Variation of Information \cite{arganda2015crowdsourcing} (VOI-merge for under-clustering error, VOI-split for over-clustering error, lower is better). \textbf{(c)} Current leading entries in the CREMI challenge leaderboard (March 2021). CREMI-score is given by geometric mean of (VOI-split + VOI-merge)  and adapted RAND error (lower is better).}
     \label{tab:scores}
 % \end{minipage}
 \end{table*}
@@ -183,7 +193,7 @@ LFC \cite{parag2017anisotropic} & 0.616 & 0.313 & 1.085 & 0.140     \\
 \begin{figure}
 \centering
 \includegraphics[width=0.48\textwidth,trim=300 100 300 100, clip]{./figs/dendrograms/new_agglo_order.png} % left bottom right top
-\caption{Dendograms built by GAEC, MWS, and HC-Avg on a small SSBM (two ground truth communities represented by colors). The dendrograms are truncated at the level of the clustering $\Pi^*$ returned by the algorithms.   \label{fig:dendrograms}}
+\caption{Dendograms built by GAEC, MWS, and HC-Avg on a small SSBM (two ground truth communities represented by colors). The dendrograms are truncated at the level of the clustering $\Pi^*$ returned by the algorithms. \TODO{Update}  \label{fig:dendrograms}}
 \end{figure}
 
 
@@ -215,24 +225,23 @@ In SSBM graphs, the number of edges $E_{ij}\equiv(S_i\times S_j)\cap E$ connecti
 
 \textbf{Scores on CREMI instance-segmentation} -- 
 SSBM graphs are \emph{non-planar} graphs, where every edge has the same probability to be present in the graph. On the other hand, the \emph{gridGraph} and \emph{3D-rag} graphs of Table~\ref{tab:datasets_and_energies} are sparse and have a very regular structure: weather a node represents a pixel or a superpixel, it will only have edge connections with its neighbors in the image (up to a certain hop distance). 
-Tables~\ref{tab:scores_3drag}-\ref{tab:scores_gridGraph} show that average linkage methods (HC-Avg, HCC-Avg) strongly outperforms other methods on \emph{CREMI-gridGraph} instances and also achieves the best scores on \emph{CREMI-3D-rag} graphs. Sum-based linkage methods (GAEC, HCC-Sum) do not perform well on grid-graphs and often return under-clustered segments (see failure cases in Fig.~\ref{fig:failure_cases}). This suggests that the \emph{flooding strategy} observed previously in the sum-linkage methods does not work well on grid-graphs, because of the sparse local edge connections with strongly spatially-correlated noise (given that edge weights are predicted by a CNN)\footnote{This effect is not as strong on \emph{3D-rag} graphs, because edge weights are computed by averaging CNN predictions (and noise) over the boundaries of adjacent supervoxels.}.
+Tables~\ref{tab:scores_3drag}-\ref{tab:scores_gridGraph} show that average linkage methods (\emph{HC-Avg}, \emph{HCC-Avg}) strongly outperforms other methods on \emph{CREMI-gridGraph} instances and also achieves the best scores on \emph{CREMI-3D-rag} graphs. Sum-based linkage methods (\emph{GAEC}, \emph{HCC-Sum}) do not perform well on grid-graphs and often return under-clustered segments (see failure cases in Fig.~\ref{fig:failure_cases}). This suggests that the \emph{flooding strategy} observed previously in the sum-linkage methods does not work well on grid-graphs, because of the sparse local edge connections with strongly spatially-correlated noise (given that edge weights are predicted by a CNN)\footnote{This effect is not as strong on \emph{3D-rag} graphs, because edge weights are computed by averaging CNN predictions (and noise) over the boundaries of adjacent supervoxels.}.
 To fully test this hypothesis, we conduct a set of experiments where the CNN predictions are perturbed by adding structured noise and simulating additional artifacts like ``holes'' in the boundary evidence\footnote{See Appendix \ref{sec:appendix_noise_gen} for details about how we perturbed the \emph{CREMI-gridGraph} problems by using Perlin noise \cite{perlin2001noise,perlin1985image}, which is one of the most common gradient noises used in procedural pattern generation.}. 
-The plot in Fig.~\ref{fig:noise_plots} confirms that HC-Avg and HCC-Avg perform well even in the presence of strong structured noise, followed by Sum-linkage algorithms and the Mutex Watershed algorithm (MWS). It is not a surprise that the AbsMax linkage used by MWS is not robust to this type of structured noise. However, the scores and runtimes in Table~\ref{tab:scores_gridGraph} proves how MWS can achieve competitive performances with considerably lower runtimes. 
+The plot in Fig.~\ref{fig:noise_plots} confirms that \emph{HC-Avg} and \emph{HCC-Avg} perform well even in the presence of strong structured noise, followed by Sum-linkage algorithms and the Mutex Watershed algorithm (\emph{MWS}). It is not a surprise that the AbsMax linkage used by \emph{MWS} is not robust to this type of structured noise. However, the scores and runtimes in Table~\ref{tab:scores_gridGraph} proves how \emph{MWS} can achieve competitive performances with considerably lower runtimes. 
 
 
 \textbf{Results on CREMI challenge} -- 
 Table~\ref{tab:cremi_leaderboard} shows how the \emph{HCC-Avg} and \emph{HC-Avg} clustering algorithms included in the proposed \algname{} framework achieve state-of-the-art performances on the CREMI challenge, when combined to the predictions of our CNN.
 Most of other entries (apart from \emph{LSI-Masks} \cite{bailoni2020proposal}) employ super-pixels based post-processing pipelines and cluster 3D-region-adjacency graphs. As we also showed in Table ~\ref{tab:scores_3drag}, this approach considerably reduces the size of the clustering problem and, consequently, the post-processing time. 
-On the other hand, our method achieves better performances by operating directly on pixels and removing in this way the parameter tuning necessary to obtain good super-pixels, which are usually highly dataset dependent.
-
+On the other hand, our method achieves better performances by operating directly on pixels (\emph{gridGraph+HCC-Avg}) and removes in this way the parameter tuning necessary to obtain good super-pixels, which are usually highly dataset dependent.
+To scale up the clustering algorithms to the pixel-based problem given by the full test-volumes, we divided each volume into four sub-blocks, and then combined the resulting clusterings by running the clustering algorithms again on the combined graph.
 % Note that the test volumes of the challenge contain several imaging artifacts that make segmentation particularly challenging.
 % However: handcrafted and dataset dependent, performs better, no
 
 % Given By building a grid-graph from our CNN predictions  and solving a clustering problem with the \emph{HCC-Avg} and \emph{HC-Avg} algorithms, representing the best performing algorithms included in the proposed \algname{} framework, we achieve state-of-the-art performances on the competitive CREMI challenge (see Table~\ref{tab:cremi_leaderboard}). 
 
-Specify that we divided samples into four blocks and then run the agglomeration again (moreover, run seeded WS to get rid of small segments).
-Adding long-range connections to the graph is generally helpful, but when many of them carry repulsive weights. 
-Long-range connections are more noisy. 10\% represents a good compromise.
+% To scale up the pixel-based aggSpecify that we divided samples into four blocks and then run the agglomeration again (moreover, run seeded WS to get rid of small segments).
+
 % then \algname{} with cannot-link constraints shows a clear tendency to over-cluster. \\
 
 % Superpixels are nice because they reduce runtime and represents the standard choices for connectomics (all bug LSI-Masks use some kind of similar form). But method is very dataset-dependent and require the user to set a series of parameters
