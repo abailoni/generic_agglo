@@ -1,8 +1,11 @@
 % !TEX root = ../agglo_clust_review.tex
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-\TODO{Update} We propose a new theoretical framework that generalizes algorithms for hierarchical agglomerative clustering to weighted graphs with both attractive and repulsive interactions between the nodes. This framework defines GASP, a Generalized Algorithm for Signed graph Partitioning, and allows us to explore many combinations of different linkage criteria and cannot-link constraints. We prove the equivalence of existing clustering methods to some of those combinations, and introduce new algorithms for combinations which have not been studied before. 
-On stochastic block model problems, GASP compares favorably to spectral clustering. More importantly, we conduct a systematic comparison of various instantiations of GASP in image instance segmentation problems, in terms of accuracy but also efficiency and robustness to noise. 
-We find that one of the new algorithms proposed in our framework outperforms all previously known agglomerative methods for signed graphs, both on the competitive CREMI 2016 EM segmentation benchmark and on the CityScapes dataset.
+We propose a new simple theoretical framework that generalizes algorithms for hierarchical agglomerative clustering to weighted graphs with both attractive and repulsive interactions between the nodes. This framework defines GASP, a Generalized Algorithm for Signed graph Partitioning, and allows us to explore many combinations of different linkage criteria and cannot-link constraints. 
+We prove the equivalence of existing clustering methods to some of those combinations, and introduce new algorithms for combinations which have not been studied before. 
+We also study theoretical properties of these combinations and prove which one of them define ultrametrics on the graph.
+% On stochastic block model problems, GASP compares favorably to spectral clustering. 
+We conduct a systematic comparison of various instantiations of GASP on a large variety of both synthetic and existing signed clustering problems, in terms of accuracy but also efficiency and robustness to noise. 
+More importantly, we find that some of the algorithms proposed in our framework, when combined to the predictions from a CNN model, result in a simple instance segmentation pipeline that achieves state-of-the-art performances on the competitive CREMI 2016 EM segmentation benchmark.
 % \keywords{Partitioning of Signed Graphs, Generalized Framework, Agglomerative Clustering, Instance Segmentation}
 \end{abstract}

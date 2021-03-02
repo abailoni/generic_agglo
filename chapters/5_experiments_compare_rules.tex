@@ -1,14 +1,14 @@
 % !TEX root = ../agglo_clust_review.tex
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.47\textwidth,trim=0.25in 0.in 0.5in 0.in,clip]{./figs/SSBM_experiments.pdf}
-        \caption{Scores on SSBM graphs}
-\end{figure}
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.47\textwidth,trim=0.53in 0.1in 0.65in 0.45in,clip]{./figs/noise_plots/under_segment_plots_1.pdf}
-        \caption{Scores on \emph{CREMI-gridGraph} perturbed with noise}
+        \caption{
+ARAND errors (lower is better) on \emph{CREMI-gridGraph} clustering problems perturbed with structured noise. Average-linkage algorithms proved to be the most robust.
+We report median, 25th, and the 75th percentile values over \TODO{30} experiments.
+% \algname{} performances compared to spectral methods on synthetic graphs. The spectral methods were given the true number of clusters as input, in contrast to \algname{}. \TODO{Define paramters SSB; explain percentile stuff (for both noise experiments), user ARAND-error}
+}\label{fig:scores_structured_noise}
 \end{figure}
 
 % \captionsetup[subfigure]{justification=centering, singlelinecheck=off}
