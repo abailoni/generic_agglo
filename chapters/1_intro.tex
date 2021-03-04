@@ -65,9 +65,9 @@ In this paper, we propose a simple theoretical framework that generalizes over a
 We then formally prove that some of the combinations correspond to existing clustering algorithms, and introduce new algorithms for combinations which have not been explored before. By analyzing their theoretical properties, we also show which one of them define ultrametrics on the graph.
 
 We evaluate the algorithms on a large variety of existing and synthetic signed graph clustering problems. 
-Our experiments show that the choice of a linkage criteria strongly influence the way how clusters are grown by the agglomerative algorithms, making some linkage methods more suited for certain types of clustering problems.
-% We focus our comparison on three of the best-performing algorithms included in our framework, which are based on average, sum, and absolute maximum linkage criteria (see Table~\ref{tab:linkage-criteria}). We highlight their empirical properties by showing how clusters are grown differently depending on the algorithm.
 Moreover, we evaluate all algorithms on \emph{instance segmentation} -- a computer vision task consisting in assigning each pixel of an image to an object instance -- by predicting graph edge weights with a CNN (see Fig.~\ref{fig:intro_figure}).
+Our experiments show that the choice of a linkage criterion strongly influences the way how clusters are grown by the agglomerative algorithms, making some linkage methods more suited for certain types of clustering problems.
+% We focus our comparison on three of the best-performing algorithms included in our framework, which are based on average, sum, and absolute maximum linkage criteria (see Table~\ref{tab:linkage-criteria}). We highlight their empirical properties by showing how clusters are grown differently depending on the algorithm.
 We benchmark the clustering algorithms by focusing on their efficiency, robustness and tendency to over- or under-cluster. 
 First, we observe that the tested agglomerative algorithms strongly outperform recently proposed spectral clustering methods. Then,  we also show that average-linkage based agglomerative algorithms achieve state of the art results on the competitive CREMI 2016 challenge for neuron segmentation of 3D electron microscopy image volumes of brain tissue. 
 

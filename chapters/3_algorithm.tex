@@ -16,8 +16,8 @@ Graphs of the type $\mathcal{G}(V,E,w^+, w^-)$ are often defined as \emph{signed
 % Some approaches directly compute $\cost_e$, whereas others compute $w_e^+$ and $w_e^-$ separately.
 % In this formalism, graphs with purely attractive interactions are a special case of $\mathcal{G}(V,E,\cost)$ with $\cost_e \geq 0, \, \forall e \in E$. 
 
-\textbf{Multicut objective} -- We call the set $\Pi$ a \emph{clustering} or \emph{partitioning} with $K$ clusters if $V = \cup_{S\in\Pi} S $, $\,S \cap S' = \emptyset$ for different clusters $S, S'\in \Pi$ and every cluster $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. 
-For any clustering $\Pi$ of $\mathcal{G}$, we denote as $E^0_\Pi= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u,v \in S \}$ the set of edges linking nodes in the same cluster, and as $E_\Pi^1= E \setminus E^0_\Pi$ the set of edges whose linked nodes belong to distinct clusters, which is known as the \emph{multicut} of $\mathcal{G}$ associated to clustering $\Pi$. The instance of the NP-hard \emph{minimum cost multicut problem} w.r.t. $\mathcal{G}(V,E,w_e)$ is the task of finding a clustering that optimally balance the attraction and repulsion in the graph and is given by the following binary integer program:
+\textbf{Multicut objective} -- We call the set $\Pi=\{S_1,\ldots,S_K\}$ a \emph{clustering} or \emph{partitioning} if $V = \cup_{S\in\Pi} S $, $\,S \cap S' = \emptyset$ for different clusters $S, S'\in \Pi$ and every cluster $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. 
+For any clustering $\Pi$ of $\mathcal{G}$, we denote as $E^0_\Pi= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u,v \in S \}$ the set of edges linking nodes in the same cluster. The set of edges whose linked nodes belong to distinct clusters, denoted as $E_\Pi^1= E \setminus E^0_\Pi$, is known as the \emph{multicut} of $\mathcal{G}$ associated to clustering $\Pi$. The instance of the NP-hard \emph{minimum cost multicut problem} w.r.t. $\mathcal{G}(V,E,w_e)$ is the task of finding a clustering that optimally balance the attraction and repulsion in the graph and is given by the following binary integer program:
 % \begin{equation}
 % E_\Pi^0 \equiv \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \qquad E^1_\Pi \equiv E \setminus E^0_\Pi.
 % \end{equation}
@@ -209,7 +209,7 @@ We call an agglomerative algorithm ``weight-shift invariant'' if the structure o
 % On the other hand, to our knowledge, \emph{Average}, \emph{Max} or \emph{Min} linkage criteria have never been used for signed graph agglomerative algorithms or been combined with cannot-link constraints.
 
 
-\paragraph{Algorithms defining an ultrametric} -- The connection between agglomerative algorithms and ultrametrics\footnote{A metric space $(X,d)$ is an \emph{ultrametric} if for every $x,y,z \in X$, $d(x,y)\leq \max \{d(x,z), d(y,z)\}$.} is well known \cite{johnson1967hierarchical,milligan1979ultrametric}. Usually, ultrametrics are associated to strictly positive \emph{similarity} or \emph{dissimilarity} measures on a graph. Here, we generalize this concept to signed graphs. To do so, we first map the signed interaction $\treeHeight{}$ defined in Eq.~\ref{eq:def_dendr_interact} to positive ``distances'' $d_{T}:V \times V \rightarrow \mathbb{R}^{+}$:
+\paragraph{Algorithms defining an ultrametric} -- The connection between agglomerative algorithms and ultrametrics\footnote{A metric space $(X,d)$ is an \emph{ultrametric} if for every $x,y,z \in X$, $d(x,y)\leq \max \{d(x,z), d(y,z)\}$.} is well known \cite{johnson1967hierarchical,milligan1979ultrametric}. Usually, ultrametrics are associated to strictly positive \emph{similarity} or \emph{dissimilarity} measures on a graph. Here, we generalize this concept to signed graphs. To do so, we first map the signed interaction $\treeHeight{}$ defined in Eq.~\ref{eq:def_dendr_interact} to positive ``pseudo-distances'' $d_{T}:V \times V \rightarrow \mathbb{R}^{+}$:
 \begin{align}\label{eq:UM_def}
 d_{T}(u,v)\equiv &\begin{cases}
 0 & \text{if}\,\, u=v\\
@@ -219,7 +219,7 @@ M-\treeHeight(u,v) & \text{if}\,\, u\neq v
 \end{align}
 and where $\epsilon > 0$. By definition, we have that $d_{T}(u,v)=d_{T}(v,u)$ and $d_{T}(u,u)= 0$. We then prove the following two propositions (proofs are left in Appendix):
 \begin{prop}
-Consider a graph $\mathcal{G}(V,E,w_e)$, a linkage criteria $\interact{}$, and an AC algorithm returning a binary rooted tree $T$ with height $h_T$. The quantity $(V, d_{T})$ defined in Eq.~\ref{eq:UM_def} is an ultrametric iff, $\forall u,v,t \in V$:
+Consider a graph $\mathcal{G}(V,E,w_e)$, a linkage criterion $\interact{}$, and an AC algorithm returning a binary rooted tree $T$ with height $h_T$. The quantity $(V, d_{T})$ defined in Eq.~\ref{eq:UM_def} is an ultrametric iff, $\forall u,v,t \in V$:
 \begin{equation}
 \interact{}_{T}(u,v) > \interact{}_{T}(u,t) \Leftrightarrow h_T(u \vee v) < h_T[u \vee t] 
 \end{equation}
