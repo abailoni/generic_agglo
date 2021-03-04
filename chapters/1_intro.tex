@@ -2,8 +2,8 @@
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.5\textwidth]{figs/intro_image_v4.pdf} % left bottom right top
-\caption{\TODO{Redo figure}\algname{} example. \textbf{(1)} Raw data from the CREMI 2016 neuron-segmentation challenge. \textbf{(2)} Some short- and long-range predictions of our CNN model, where white pixels represent boundary evidence. \textbf{(3)} Outputs of two agglomerative algorithms included in our proposed generalized clustering framework, with \emph{Sum} and \emph{Average} linkage criteria. The final clustering / instance segmentation is shown in 3a, overlaid with the raw image.  The  agglomeration order in 3b shows which pairs of neighboring pixels were merged first (white), later on (brown/red), or never (black). (\textbf{4}) Some iterations of \algname{} on toy graph examples with attractive/positive (green) and repulsive/negative (red) interactions. At each iteration, the yellow edge with highest interaction is contracted (orange arrows), until only negative edges are left in the graph. \TODO{Check if avg is correct}
+\includegraphics[width=0.98\textwidth]{figs/intro_image_v5.pdf} % left bottom right top
+\caption{\textbf{(a)} Some iterations of \algname{}, the proposed Generalized Agglomerative Algorithm for Signed Graph Partitioning, on a toy graph with attractive/positive (green) and repulsive/negative (red) interactions. At each iteration, the yellow edge with highest interaction is contracted (average and sum linkage methods are shown). \textbf{(b)} List of linkage criteria used in this paper (see definitions in Table~\ref{tab:linkage-criteria} below), demonstrated on two small clusters.  \textbf{(c)} Application of \algname{} to instance segmentation: we show raw data from the CREMI 2016 neuron-segmentation challenge and some predictions of our CNN model, where white pixels represent boundary evidence. \textbf{(d)} \algname{} agglomeration order for sum and average linkage: we show which pairs of neighboring pixels were merged first (white), later on (brown/red), or never (black).
 \label{fig:intro_figure}}
 \end{figure*}
 
@@ -46,7 +46,7 @@
 
         \end{tabular}
     \end{subtable} 
-    \caption{Clustering algorithms included in the proposed \algname{} framework, given a linkage criterion, a type of graph (signed or unsigned) and the optional use of cannot-link constraints. New algorithms are highlighted in yellow (hierarchical clustering with constraints, HCC). Algorithms typeset in bold font define an ultrametric on the graph (see Eq.~\ref{eq:UM_def}). Algorithms included in the green box, are weight-shift invariant (see Prop.~\ref{prop:weight_shift_invariant}). 
+    \caption{Clustering algorithms included in the proposed \algname{} framework, given a linkage criterion, a type of graph (signed or unsigned) and the optional use of cannot-link constraints. New algorithms are highlighted in yellow (hierarchical clustering with constraints, HCC). Algorithms typeset in bold font define an ultrametric on the graph (see Eq.~\ref{eq:UM_def}). Algorithms included in the \TODO{green box}, are weight-shift invariant (see Prop.~\ref{prop:weight_shift_invariant}). 
     We denote as $E_{ij}=(S_i \times S_{j}) \cap E$ the set of edges connecting two clusters $S_i, S_j$. } 
     \label{tab:linkage-criteria}
 \end{table*}
@@ -61,7 +61,7 @@ Other graph clustering methods work with so-called \emph{signed graphs}, which i
 Agglomerative clustering algorithms for signed graphs have clear advantages: they are parameter-free and efficient. Despite the fact that a variety of these algorithms exist, no overarching study has so far been conducted to compare their robustness and efficiency or to provide guidelines for matching an algorithm to the partitioning problem at hand. 
 
 
-In this paper, we propose a simple theoretical framework that generalizes over agglomerative algorithms for signed graphs by linking them to hierarchical clustering (HC) on positive-weighted graphs \cite{lance1967general}. This framework defines an underlying basic algorithm and allows us to explore its combinations with different linkage criteria and \emph{cannot-link constraints} (see Table~\ref{tab:linkage-criteria}). 
+In this paper, we propose a simple theoretical framework that generalizes over agglomerative algorithms for signed graphs by linking them to hierarchical clustering (HC) on positive-weighted graphs \cite{lance1967general}. This framework defines an underlying basic algorithm and allows us to explore its combinations with different linkage criteria and \emph{cannot-link constraints} (see Fig.~\ref{fig:intro_figure}a-b and Table~\ref{tab:linkage-criteria}). 
 We then formally prove that some of the combinations correspond to existing clustering algorithms, and introduce new algorithms for combinations which have not been explored before. By analyzing their theoretical properties, we also show which one of them define ultrametrics on the graph.
 
 We evaluate the algorithms on a large variety of existing and synthetic signed graph clustering problems. 
