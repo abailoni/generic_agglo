@@ -101,18 +101,6 @@ We divided the three CREMI training samples, consisting of $\sim$196 million vox
 
 
 
-
-
-\subsection{Comparison results and discussion}
-% Before to evaluate the clustering algorithms on real-world graphs, we compare them on two types of synthetically generated graphs and highlight some of their fundamental properties.
-
-\textbf{Comparison to spectral clustering} -- 
-First, we compare \algname{} to spectral clustering methods for signed graphs. 
-In Fig.~\ref{fig:SSBM_scores}, we see that SPONGE$_{sym}$ and SPONGE proposed by \cite{Cucuringu2019SPONGEAG} perform particularly well on synthetic graphs generated with a SSBM. However, these methods do not scale up to the large graph instances considered here and they also require the user to specify the true number of clusters in advance, which is not known for most of other graph instances tested in this paper. In Appendix, Table \ref{tab:cremi_spectral_experiments}, we report the scores achieved by these methods on a much smaller sub-instance of the \emph{CREMI-gridGraph} problem: even when the true number of clusters is specified in advance for the spectral methods, they perform much worse than other \algname{} algorithms, with performance drop of almost 50\%. For these reasons, we exclude them from our other comparison experiments.  
-
-\textbf{Complete and Single Linkage} -- In our experiments, we included these two linkage methods as baselines to highlight the difficulty of the considered graph clustering problems. Scores in Tables~\ref{tab:scores_gridGraph}-\ref{tab:scores_3drag} show the poor performances of these two linkage methods: Single linkage hierarchical clustering (HC-Single), which here is equivalent to thresholding the edge weights at $w_e=0$ and computing connected components in the graph, often returned few big under-segmented clusters. HC-Complete and HCC-Complete returned instead a lot of over-segmented clusters. 
-% These algorithms are excluded from our next comparison experiments.
-
 \begin{table*}[t]
         \centering
 % \begin{minipage}[t]{0.6\textwidth}
@@ -198,6 +186,41 @@ CRU-Net \cite{zeng2017deepem3d} & 0.566 & 0.229 & 1.081 &  0.389    \\
     \label{tab:scores}
 % \end{minipage}
 \end{table*}
+
+\subsection{Comparison results and discussion}
+% Before to evaluate the clustering algorithms on real-world graphs, we compare them on two types of synthetically generated graphs and highlight some of their fundamental properties.
+
+\textbf{Multicut objective values} -- In Table~\ref{tab:datasets_and_energies}, we report the values of the multicut objective associated to the clusterings obtained with different \algname{} algorithms\footnote{Objective values achieved by Single and Complete linkage methods are much worse compared to other algorithms and are reported in Table \ref{tab:extended_results_cremi}, in Appendix.}. Although a lot of heuristics were proposed to better optimize this objective \cite{beier2016efficient,beier2014cut,kernighan1970efficient}, these methods are out of the scope of this paper, since they do not scale up to the largest graph instances considered here. By looking at results in Table~\ref{tab:datasets_and_energies}, we observe that GAEC almost always achieves the lowest objective values, apart from the \emph{CREMI-gridGraph} instances. Despite this, on graphs where a GT clustering is known, GAEC does not achieve the best ARAND scores (see Tables~\ref{tab:scores_gridGraph} and \ref{tab:scores_3drag}). 
+% To better understand these empirical results, we now make the following important observation.
+% This can also be observed in our experiments on synthetic graphs (Fig. ? and ?), where the clustering with minimum multicut energy become very different from the ground truth clustering when the flip noise parameter $\eta$ is increased.
+
+\textbf{Size of growing clusters: Sum vs Avg linkage} --
+In all the studied clustering problems, we empirically observe that sum-linkage algorithms like GAEC tend to grow clusters one after the other, as shown in Fig.\ \ref{fig:intro_figure} and \ref{fig:dendrograms} by the unique agglomeration order of GAEC\footnote{This \emph{flooding agglomeration-strategy} of GAEC was also observed in \cite{kardoostsolving}.}. This is intuitively explained by the  following: initially, many of the most attractive edge weights have very similar values; when the two nodes $u,v$ with the highest attraction are merged, there is a high chance that they will have a common neighboring node $t$ belonging to the same cluster; thus, the interaction between the merged nodes $uv$ and $t$ is likely assigned to the highest priority, because it is given by the sum of two highly attractive edge weights. This will then start a ``chain reaction'' where only a single cluster is agglomerated at the time. 
+% This \emph{flooding strategy} in the agglomeration is not observed with other linkage methods, e.g. Average, which grow clusters of similar sizes in parallel.
+In the following, we will show how this unique \emph{flooding strategy} of the sum-linkage methods can be both an advantage or a disadvantage, depending on the type of clustering problem. 
+
+\textbf{Comparison to spectral clustering} -- 
+The spectral clustering methods for signed graphs SPONGE$_{sym}$ and SPONGE proposed by \cite{Cucuringu2019SPONGEAG} achieved state of the art performances on SSBM synthetic graphs. Their competitive performances are also confirmed by our experiments in Fig.~\ref{fig:SSBM_scores}.
+% First, we compare \algname{} to spectral clustering methods for signed graphs. 
+% In Fig.~\ref{fig:SSBM_scores}, we see that SPONGE$_{sym}$ and SPONGE proposed by \cite{Cucuringu2019SPONGEAG} perform particularly well on synthetic graphs generated with a SSBM. 
+However, these methods do not scale up to the large graph instances considered here and they also require the user to specify the true number of clusters in advance, which is not known for other graph instances tested in this paper. In Appendix, Table \ref{tab:cremi_spectral_experiments}, we report the scores achieved by these methods on a much smaller sub-instance of the \emph{CREMI-gridGraph} problem: even when the true number of clusters is specified in advance for the spectral methods, they perform much worse than other \algname{} algorithms, with performance drop of almost 50\%. For these reasons, we exclude them from our other comparison experiments.  
+
+\textbf{GASP on synthetic SSBM graphs}  -- 
+% can be connected to any  that, depending on the edge-probability parameter $p$, are also \emph{dense}. 
+\algname{} algorithms using cannotLinkConstraints are not expected to perform well on these graphs, because of the type of employed flip noise, so we focus our comparison only on the GAEC, HC-Avg and MWS algorithms (using Sum, Average, and AbsMax linkage methods, respectively).
+Empirically, we observe that GAEC is the agglomerative algorithm performing best on SSBM graphs, almost as good as the spectral method SPONGE$_{sym}$ (see Fig.~\ref{fig:SSBM_scores}). Given the simple properties of SSBM graphs, we will now give a specific explanation of these empirical results. 
+In SSBM graphs, the number of edges $E_{ij}\equiv(S_i\times S_j)\cap E$ connecting two clusters $S_i,S_j$ is  proportional to the product $|S_i|\cdot|S_j|$ of cluster sizes. 
+With Sum or Avg linkage methods, due to the law of large numbers, the flipping noise is ``averaged out'' as soon as the set $E_{ij}$ becomes larger and clusters grow in size.
+On the other hand, when clusters are small, it is more likely that several of the edges in $E_{ij}$ are flipped and the algorithm makes a mistake by merging two clusters belonging to different ground truth communities. From this observation, it follows that the \emph{flooding strategy} of the sum-linkage algorithm GAEC is a very good strategy on these types of graphs, because clusters are immediately grown in size (see dendrograms in Fig.~\ref{fig:dendrograms}). Average linkage method HC-Avg instead performs much worse on these graphs because it grows small equally-sized clusters and makes several wrong merge-decisions at the beginning. 
+% This observation also explains the empirical results of \cite{chehreghani2020hierarchical}, which involved graph instances with very similar structure to the ones considered here. 
+Lastly, the MWS algorithm is not expected to perform well on these graphs because of the high sensitivity of the AbsMax linkage to flipping noise. In Propositions \ref{prop:MWS_SSBM_1} and \ref{prop:MWS_SSBM_2} (see Appendix), we prove that on SSBM graphs the merging steps of the MWS algorithm are given by a sequence of ``coin flip'' decisions with a probability proportional to the noise parameter $\eta$, independently on the cluster sizes.
+
+\textbf{Complete and Single Linkage} -- We use these two linkage methods as baselines to highlight the difficulty of the studied graph clustering problems listed in Table~\ref{tab:datasets_and_energies}. Scores in Tables~\ref{tab:scores_gridGraph}-\ref{tab:scores_3drag} show their poor performances: Single linkage hierarchical clustering (HC-Single), which here is equivalent to thresholding the edge weights at $w_e=0$ and computing connected components in the graph, often returned few big under-segmented clusters. HC-Complete and HCC-Complete returned instead a lot of over-segmented clusters. 
+% These algorithms are excluded from our next comparison experiments.
+
+
+
+
 \begin{figure}[t]
 \begin{subfigure}[t]{0.23\textwidth}
 \centering
@@ -222,37 +245,7 @@ ARAND errors (median values over 20 experiments, lower is better) on synthetic g
 
 
 
-\begin{figure}
-\centering
-% \includegraphics[width=0.48\textwidth,trim=300 100 300 100, clip]{./figs/dendrograms/new_agglo_order_OLD.png} % left bottom right top
-\includegraphics[width=0.48\textwidth,trim=80 10 60 0, clip]{./figs/dendrograms/new_agglo_order.png} % left bottom right top
-\caption{Dendrograms built by three versions of \algname{} (GAEC, MWS, and HC-Avg) on a synthetic graph generated with SSBM ($N=250$, $p=0.05$, $\eta=0.1$, and $k=2$ communities of equal size).  Red and blue colors represent the true community of each initial node. At the top, dendrograms are truncated at the level of the final clustering $\Pi^*$ returned by \algname{} (y-axis shows the iteration number). \label{fig:dendrograms}}
-\end{figure}
 
-
-\textbf{Multicut objective values} -- In Table~\ref{tab:datasets_and_energies}, we report the values of the multicut objective associated to the clusterings obtained with different \algname{} algorithms\footnote{Objective values achieved by Single and Complete linkage methods are much worse compared to other algorithms and are reported in Table \ref{tab:extended_results_cremi}, in Appendix.}. Although a lot of heuristics were proposed to better optimize this objective \cite{beier2016efficient,beier2014cut,kernighan1970efficient}, these methods are out of the scope of this paper, since they do not scale up to the largest graph instances considered here. By looking at results in Table~\ref{tab:datasets_and_energies}, we observe that GAEC almost always achieves the lowest objective values, apart from the \emph{CREMI-gridGraph} instances. Despite this, on graphs where a GT clustering is known, GAEC does not achieve the best ARAND scores (see Tables~\ref{tab:scores_gridGraph} and \ref{tab:scores_3drag}). 
-% To better understand these empirical results, we now make the following important observation.
-% This can also be observed in our experiments on synthetic graphs (Fig. ? and ?), where the clustering with minimum multicut energy become very different from the ground truth clustering when the flip noise parameter $\eta$ is increased.
-
-\textbf{Size of growing clusters: Sum vs Avg linkage} -- \TODO{Dendrogram}
-In all the studied clustering problems, we empirically observe that sum-linkage algorithms like GAEC tend to grow clusters one after the other, as shown in Fig.\ \ref{fig:intro_figure} by the unique agglomeration order of GAEC\footnote{This \emph{flooding agglomeration-strategy} of GAEC was also observed in \cite{kardoostsolving}.}. This is intuitively explained by the  following: initially, many of the most attractive edge weights have very similar values; when the two nodes $u,v$ with the highest attraction are merged, there is a high chance that they will have a common neighboring node $t$ belonging to the same cluster; thus, the interaction between the merged nodes $uv$ and $t$ is likely assigned to the highest priority, because it is given by the sum of two highly attractive edge weights. This will then start a ``chain reaction'' where only a single cluster is agglomerated at the time. 
-% This \emph{flooding strategy} in the agglomeration is not observed with other linkage methods, e.g. Average, which grow clusters of similar sizes in parallel.
-In the following, we will show how this unique \emph{flooding strategy} of the sum-linkage methods can be both an advantage or a disadvantage, depending on the type of clustering problem. 
-
-\begin{figure}
-\centering
-\includegraphics[width=0.48\textwidth,trim=90 10 60 0, clip]{./figs/comparison_GAEC_MWS_Avg.png} % left bottom right top
-\caption{Failure cases of three versions of \algname{} on challenging parts of the CREMI dataset. \emph{Wrongly} segmented regions are highlighted in different warm colors. Red arrows point to wrongly split regions; yellow ones to merge errors. HC-Avg returned the best segmentation. Data is 3D, hence the same color could be assigned to parts of segments that appear disconnected in 2D.  
-\label{fig:failure_cases}}
-\end{figure}
-
-\textbf{Scores on synthetic SSBM graphs}  -- 
-% can be connected to any  that, depending on the edge-probability parameter $p$, are also \emph{dense}. 
-\algname{} algorithms using cannotLinkConstraints are not expected to perform well on these graphs, because of the type of employed flip noise, so we focus our comparison only on the GAEC, HC-Avg and MWS algorithms (using Sum, Average, and AbsMax linkage methods, respectively).
-Empirically, we observe that GAEC is the agglomerative algorithm performing best on SSBM graphs, almost as good as the spectral method SPONGE$_{sym}$ (see Fig.~\ref{fig:SSBM_scores}). Given the simple properties of SSBM graphs, we will now give a specific explanation of these empirical results. 
-In SSBM graphs, the number of edges $E_{ij}\equiv(S_i\times S_j)\cap E$ connecting two clusters $S_i,S_j$ is  proportional to the product $|S_i|\cdot|S_j|$ of cluster sizes. 
-With Sum or Avg linkage methods, due to the law of large numbers, the flipping noise is ``averaged out'' as soon as the set $E_{ij}$ becomes larger and clusters grow in size.
-On the other hand, when clusters are small, it is more likely that several of the edges in $E_{ij}$ are flipped and the algorithm makes a mistake by merging two clusters belonging to different ground truth communities. From this observation, it follows that the \emph{flooding strategy} of the sum-linkage algorithm GAEC is a very good strategy on these types of graphs, because clusters are immediately grown in size (as compared to the avg-linkage method HC-Avg that grows small clusters and merge them only at the very end). This observation also explains the empirical results of \cite{chehreghani2020hierarchical}, which involved graph instances with very similar structure to the ones considered here. On the other hand, the MWS algorithm is not expected to perform well on these graphs because of the high sensitivity of the AbsMax linkage to flipping noise. In Propositions \ref{prop:MWS_SSBM_1} and \ref{prop:MWS_SSBM_2} (see Appendix), we prove that on SSBM graphs the merging steps of the MWS algorithm are given by a sequence of ``coin flip'' decisions with a probability proportional to the noise parameter $\eta$, independently on the cluster sizes.
  
 
 
@@ -263,9 +256,20 @@ Tables~\ref{tab:scores_3drag}-\ref{tab:scores_gridGraph} show that average linka
 To fully test this hypothesis, we conduct a set of experiments where the CNN predictions are perturbed by adding structured noise and simulating additional artifacts like ``holes'' in the boundary evidence\footnote{See Appendix \ref{sec:appendix_noise_gen} for details about how we perturbed the \emph{CREMI-gridGraph} problems by using Perlin noise \cite{perlin2001noise,perlin1985image}, which is one of the most common gradient noises used in procedural pattern generation.}. 
 The plot in Fig.~\ref{fig:scores_structured_noise} confirms that \emph{HC-Avg} and \emph{HCC-Avg} perform well even in the presence of strong structured noise, followed by Sum-linkage algorithms and the Mutex Watershed algorithm (\emph{MWS}). It is not a surprise that the AbsMax linkage used by \emph{MWS} is not robust to this type of structured noise. However, the scores and runtimes in Table~\ref{tab:scores_gridGraph} prove how \emph{MWS} can achieve competitive performances with considerably lower runtimes. 
 
+\begin{figure}
+\centering
+% \includegraphics[width=0.48\textwidth,trim=300 100 300 100, clip]{./figs/dendrograms/new_agglo_order_OLD.png} % left bottom right top
+\includegraphics[width=0.48\textwidth,trim=80 10 60 0, clip]{./figs/dendrograms/new_agglo_order.png} % left bottom right top
+\caption{Dendrograms built by three versions of \algname{} (GAEC, MWS, and HC-Avg) on a synthetic graph generated with SSBM ($N=250$, $p=0.05$, $\eta=0.1$, and $k=2$ communities of equal size).  Red and blue colors represent the true community of each initial node. At the top, dendrograms are truncated at the level of the final clustering $\Pi^*$ returned by \algname{} (y-axis shows the iteration number). \label{fig:dendrograms}}
+\end{figure}
+
+
+
+
+
 
 \textbf{Results on CREMI challenge} -- 
-Table~\ref{tab:cremi_leaderboard} shows that the \emph{HCC-Avg} and \emph{HC-Avg} clustering algorithms included in the proposed \algname{} framework achieve state-of-the-art performances on the CREMI challenge, when combined to the predictions of our CNN.
+Table~\ref{tab:cremi_leaderboard} shows that the \emph{HCC-Avg} and \emph{HC-Avg} clustering algorithms achieve state-of-the-art performances on the CREMI challenge, when combined to the predictions of our CNN.
 Most of the other entries (apart from \emph{LSI-Masks} \cite{bailoni2020proposal}) employ super-pixels based post-processing pipelines and cluster 3D-region-adjacency graphs. As we show in Table ~\ref{tab:scores_3drag}, using super-pixels considerably reduces the size of the clustering problem and, consequently, the post-processing time. 
 However, our method operating directly on pixels (\emph{gridGraph+HCC-Avg}) achieves better performances than superpixel-based methods (\emph{3D-rag+HCC-Avg}) and does not require the parameter tuning necessary to obtain good super-pixels, which is usually highly dataset dependent.
 The method \emph{3D-rag+LiftedMulticut} based on the lifted multicut formulation of \cite{beier2017multicut} (see details in Appendix) achieves the best scores overall, but it takes into account different information through the lifted edge weights that also depend on additional raw-data and super-pixel shape information. 
@@ -284,6 +288,12 @@ To scale up our method operating on pixels, we divided each test-volume into fou
 % So far no other method was done from pixels
 
 
+\begin{figure}
+\centering
+\includegraphics[width=0.48\textwidth,trim=90 10 60 0, clip]{./figs/comparison_GAEC_MWS_Avg.png} % left bottom right top
+\caption{Failure cases of three versions of \algname{} on challenging parts of the CREMI dataset. \emph{Wrongly} segmented regions are highlighted in different warm colors. Red arrows point to wrongly split regions; yellow ones to merge errors. HC-Avg returned the best segmentation. Data is 3D, hence the same color could be assigned to parts of segments that appear disconnected in 2D.  
+\label{fig:failure_cases}}
+\end{figure}
 
 
 
