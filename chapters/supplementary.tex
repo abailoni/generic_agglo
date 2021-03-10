@@ -334,6 +334,33 @@ Finally, the remaining not constrained versions of \algname{} (HC-Avg, HC-Single
 % \end{align}
 % where $\beta \in [0,1]$ is a \emph{bias} parameter that allow a tuning between over- and under-segmentation. We evaluated both of them empirically with each of the tested linkage and found that the additive mapping is the best option in all cases apart from the \emph{Sum} linkage. Note that varying the parameter $\beta$ does not usually define a hierarchy of nested clusterings, thus it is not equivalent to varying a threshold parameter in HAC. This hierarchical property is only valid for \algname{} without constraints and with \emph{Average}, \emph{Max} or \emph{Min} linkage.
 
+\subsection{Mutex Watershed on SSBM graphs}
+\TODO{}
+
+% \begin{prop}\label{prop:MWS_SSBM_1}
+% Consider a graph $\mathcal{G}(V,E)$ generated with a SSBM with parameters $N,p,k,\sigma$ and an associated ground truth (GT) clustering $\hat{\Pi}=\{\hat{S}_1, \ldots, \hat{S}_k\}$. Then, assume that after some merging-iterations of the MWS algorithm the clustering $\Pi$ is found. Then, any two clusters $S_i,S_j\in \Pi$ have probability $|E_{ij}| / |E_{\Pi}^1|$ to be selected in the next iteration of the algorithm, where $E_{\Pi}^1$ is the multicut associated to $\Pi$ and $E_{ij}\equiv(S_i\times S_j)\cap E$ is the set of edges connecting the two clusters. 
+% \end{prop}
+
+% \begin{prop}\label{prop:MWS_SSBM_2}
+% Given the assumptions of Prop.~\ref{prop:MWS_SSBM_1}, let $E_{ij}^+=\{(u,v) \in E_{ij} | \exists \hat{S}\in \hat{\Pi} \, \mathrm{s.t.} \, u\in \hat{S} \wedge v\in \hat{S} \}$ denote the set of true attractive GT edges connecting two clusters $S_i,S_j$
+% \begin{equation}
+% \sum_{ij} \frac{|E_ij^+|}{||}
+% \end{equation}
+% \end{prop}
+
+% Then, the MWS algorithm will assign highest priority to 
+% Among these edges, we define the set of true attractive GT edges as . Finally, let $f^+=|E_{ij}^+| / |E_{ij}|$ denote the fraction of true attractive edges. Then, the Mutex Watershed algorithm 
+
+
+% \begin{itemize}
+% \item each pair of clusters $S_i,S_j$ has probability $|E_{ij}| / |E_{\Pi}^1|$ to have the interaction with highest priority 
+% \item if the pair of clusters $S_i,S_j$ is given the highest priority by the MWS Algorithm, then they have has a probability $p^+=f^+(1-\eta) + f^+ \eta$ to be merged and $p^-=1-p^+$ to be constrained.
+% \end{itemize}
+% will assign a positive interaction to clusters $S_i,S_j$ with probability $f^+(1-\eta) + f^+ \eta$. 
+% Remarks: this quantity does not depend on the size of $|E_{ij}|$ (so it won't change when clusters grow in size); if $f^+=1$ (i.e. $S_i,S_j$ are subclusters of the same GT cluster), then MWS will merge them with probability $1-\eta$; if $f^+=0$ (i.e. $S_i,S_j$ are subclusters of two different GT clusters), then MWS will merge them with probability $\eta$.
+% \TODO{Assumption about $\sigma$?}
+
+
 \subsection{Application to neuron segmentation}\label{sec:cremi_details}
 \paragraph{Training and data augmentation} The data from the CREMI challenge is highly anisotropic and contains artifacts like missing sections, staining precipitations and support film folds. 
 To alleviate difficulties stemming from misalignment, we use a version of the data that was elastically realigned by the challenge organizers with the method of \cite{saalfeld2012elastic}.
@@ -581,29 +608,5 @@ BNC \cite{chiang2012scalable} & 0.9926 \\
 % Despite the fact that the true number of ground truth clusters was given as an input to the SC methods, GASP significantly outperformed them on neuro-data. SC methods seem to have more difficulties when the graph is sparse. Moreover, they did not handle well pixels on the boundaries between segments and tended to cluster them together. Increasing $k$ did not improve their scores either.
 
 
-\subsection{MWS on SSBM graphs}
 
-
-\begin{prop}\label{prop:MWS_SSBM_1}
-Consider a graph $\mathcal{G}(V,E)$ generated with a SSBM with parameters $N,p,k,\sigma$ and an associated ground truth (GT) clustering $\hat{\Pi}=\{\hat{S}_1, \ldots, \hat{S}_k\}$. Then, assume that after some merging-iterations of the MWS algorithm the clustering $\Pi$ is found. Then, any two clusters $S_i,S_j\in \Pi$ have probability $|E_{ij}| / |E_{\Pi}^1|$ to be selected in the next iteration of the algorithm, where $E_{\Pi}^1$ is the multicut associated to $\Pi$ and $E_{ij}\equiv(S_i\times S_j)\cap E$ is the set of edges connecting the two clusters. 
-\end{prop}
-
-\begin{prop}\label{prop:MWS_SSBM_2}
-Given the assumptions of Prop.~\ref{prop:MWS_SSBM_1}, let $E_{ij}^+=\{(u,v) \in E_{ij} | \exists \hat{S}\in \hat{\Pi} \, \mathrm{s.t.} \, u\in \hat{S} \wedge v\in \hat{S} \}$ denote the set of true attractive GT edges connecting two clusters $S_i,S_j$
-\begin{equation}
-\sum_{ij} \frac{|E_ij^+|}{||}
-\end{equation}
-\end{prop}
-
-Then, the MWS algorithm will assign highest priority to 
-Among these edges, we define the set of true attractive GT edges as . Finally, let $f^+=|E_{ij}^+| / |E_{ij}|$ denote the fraction of true attractive edges. Then, the Mutex Watershed algorithm 
-
-
-\begin{itemize}
-\item each pair of clusters $S_i,S_j$ has probability $|E_{ij}| / |E_{\Pi}^1|$ to have the interaction with highest priority 
-\item if the pair of clusters $S_i,S_j$ is given the highest priority by the MWS Algorithm, then they have has a probability $p^+=f^+(1-\eta) + f^+ \eta$ to be merged and $p^-=1-p^+$ to be constrained.
-\end{itemize}
-will assign a positive interaction to clusters $S_i,S_j$ with probability $f^+(1-\eta) + f^+ \eta$. 
-Remarks: this quantity does not depend on the size of $|E_{ij}|$ (so it won't change when clusters grow in size); if $f^+=1$ (i.e. $S_i,S_j$ are subclusters of the same GT cluster), then MWS will merge them with probability $1-\eta$; if $f^+=0$ (i.e. $S_i,S_j$ are subclusters of two different GT clusters), then MWS will merge them with probability $\eta$.
-\TODO{Assumption about $\sigma$?}
 
