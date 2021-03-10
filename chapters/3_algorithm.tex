@@ -169,19 +169,23 @@ The algorithm was implemented using a standard HC implementation with computatio
 In this paper we focus on five linkage methods (see columns of Table~\ref{tab:linkage-criteria}). Many more linkage criteria have been applied to unsigned graphs \cite{nunez2013machine,felzenszwalb2004efficient,funke2018large}, involving median-based or size-regularized methods, but we decided to focus this paper on those five criteria because they represent the most known choices.  
 
 \paragraph{Sum Linkage} -- 
-An agglomerative algorithm with sum linkage does only make sense for graphs with signed edge weights, because only for these graphs the sum of two attractive (or repulsive) interactions is still attractive (repulsive). On positive weighted graphs, on the other hand, a strong attractive interaction could be obtained by summing many weak interactions, which is not desirable. Such an algorithm was pioneered in \cite{levinkov2017comparative,keuper2015efficient} and was named Greedy Agglomerative Edge Contraction (GAEC)\footnote{An algorithm equivalent to GAEC was recently independently re-proposed in \cite{chehreghani2020hierarchical}.}. All variations of \algname{} decrease the multicut objective defined in Eq.~\ref{eq:MC_objective} each time two clusters with positive interaction are merged. But only GAEC always makes the \emph{greedy-choice} that will mostly decrease the multicut objective at every step. The authors of \cite{levinkov2017comparative} also proposed a version of GAEC with cannot-link constraints named \emph{GreedyFixation}, but the constrained sum-link version of \algname{} proposed here (named \emph{HCC-Sum} in Table~\ref{tab:linkage-criteria}) did perform better in our experiments.
+On signed graphs, the sum of two attractive (or repulsive) interactions is still attractive (repulsive). On the other hand, on positive weighted graphs, a strong attractive interaction could be obtained by summing many weak interactions, which is often not desirable. This explains why, to our knowledge, an agglomerative algorithm with sum linkage has never been used on positive weighted graphs. On signed graphs, such an algorithm was pioneered in \cite{levinkov2017comparative,keuper2015efficient} and was named Greedy Agglomerative Edge Contraction (GAEC)\footnote{An algorithm equivalent to GAEC was recently independently re-proposed in \cite{chehreghani2020hierarchical}.}. All variations of \algname{} decrease the multicut objective defined in Eq.~\ref{eq:MC_objective} each time two clusters with positive interaction are merged. But only GAEC always makes the \emph{greedy-choice} that will mostly decrease the multicut objective at every step. The authors of \cite{levinkov2017comparative} also proposed a version of GAEC with cannot-link constraints named \emph{GreedyFixation}, but the constrained sum-link version of \algname{} proposed here (named \emph{HCC-Sum} in Table~\ref{tab:linkage-criteria}) did perform better in our experiments.
 
-\paragraph{AbsMax Linkage} -- This linkage method is also specific to signed graphs, since on positive-weighted graphs it would be equivalent to single linkage. Here, we prove that the Mutex Watershed Algorithm \cite{wolf2018mutex} can be seen as an agglomerative algorithm with AbsMax linkage (see proof in Appendix):
-\begin{prop} 
+\paragraph{AbsMax Linkage} -- This linkage method is also specific to signed graphs, since on positive-weighted graphs it would be equivalent to single linkage. Here, we prove that the Mutex Watershed Algorithm \cite{wolf2018mutex} can be seen as an agglomerative algorithm with AbsMax linkage (proofs of the following propositions are given in Appendix \ref{sec:proposition_proofs}):
+\begin{restatable}{prop}{absmaxmutex}
+\label{prop:absmax_mutex}
 The \algname{} Algorithm \ref{main_alg} with AbsMax linkage (see def. in Table \ref{tab:linkage-criteria}) returns the same final clustering $\Pi^*_{\mathrm{AbsMax}}$ whether or not cannot-link constraints are introduced. In particular, $\Pi^*_{\mathrm{AbsMax}}$ is equal to the clustering returned by the Mutex Watershed Algorithm (MWS) \cite{wolf2018mutex}, which has empirical complexity $\mathcal{O}(N \log N)$. 
-\end{prop}
+\end{restatable}
+% \begin{prop} 
+% \end{prop}
 
 
-\paragraph{Average, Single, and Complete Linkage} -- These three linkage criteria have been throughly studied on positive-weighted graphs, but never on signed graphs. In the recent related work \cite{chehreghani2020hierarchical}, the authors prove that applying these three linkage methods to a signed graph is equivalent to applying them to the positive-weighted graph obtained by shifting all edge weights by a constant.  Here, we prove which of the algorithms included in our generalized framework have this invariance-property: (proof in Appendix)
-\begin{prop} \label{prop:weight_shift_invariant}
-We call an agglomerative algorithm ``weight-shift invariant'' if the structure of the merging tree $T$ returned by such algorithm is invariant w.r.t. a shift of all edge weights $w_e$  by a constant $\alpha\in \mathbb{R}$. Among the versions of \algname{} studied in this paper, only those using Average, Single, and Complete linkage criteria without cannotLinkConstraints are weight-shift-invariant (see algorithms typeset in bold font in Table~\ref{tab:linkage-criteria}).
-\end{prop}
-\noindent To our knowledge, Avg, Single, and Complete linkage methods have never been combined with cannot-link constraints on signed graphs, so the algorithms that in Table~\ref{tab:linkage-criteria} are named \emph{HCC-Avg}, \emph{HCC-Single}, and \emph{HCC-Complete} are new.
+\paragraph{Average, Single, and Complete Linkage} -- These three linkage criteria have been throughly studied on positive-weighted graphs, but never on signed graphs. In the recent related work \cite{chehreghani2020hierarchical}, the authors prove that applying these three linkage methods to a signed graph is equivalent to applying them to the positive-weighted graph obtained by shifting all edge weights by a constant.  Here, we prove which of the algorithms included in our generalized framework have this invariance-property:
+\begin{restatable}{prop}{invariantAlgs}
+\label{prop:weight_shift_invariant}
+We call an agglomerative algorithm ``weight-shift invariant'' if the structure of the merging tree $T$ returned by such algorithm is invariant w.r.t. a shift of all edge weights $w_e$  by a constant $\alpha\in \mathbb{R}$. Among the versions of \algname{} studied in this paper, only hierarchical clustering using Average (HC-Avg), Single (HC-Single), and Complete linkage (HC-Complete) are weight-shift-invariant (see algorithms included in the green box in Table~\ref{tab:linkage-criteria}).
+\end{restatable}
+\noindent To our knowledge, Average and Single linkage methods have never been combined with cannot-link constraints on signed graphs, so the constrained hierarchical clustering algorithms that in Table~\ref{tab:linkage-criteria} are named \emph{HCC-Avg} and \emph{HCC-Single} are new. In Lemma \ref{lemma:absMax_and_complete_property} (Appendix \ref{sec:proposition_proofs}), we prove that with a Complete linkage the agglomeration order does not change whether constraints are introduced or not.
 
 
 % \textbf{Weight-shift hierarchical algorithms} -- Given an algorithm that outputs a clustering $\Pi$ for a signed graph $\mathcal{G}(V,E,w_e)$, we call the algorithm \emph{weight-shift hierarchical} if, by adding a constant $\alpha \in \mathbb{R}$ to all edge weights $w_e$, the algorithm outputs a clustering $\Pi'$ which is a coarsening of $\Pi$ when $\alpha>0$ and a refinement of $\Pi$ when $\alpha<0$\footnote{A clustering $\Pi'$ is a coarsening of $\Pi$ when every $S' \in \Pi'$ is the union of one or more clusters in $\Pi$. Similarly, $\Pi'$ is a refinement of $\Pi$ when every $S \in \Pi$ is given by the union of one or more clusters in $\Pi'$}.
@@ -217,18 +221,23 @@ M-\treeHeight(u,v) & \text{if}\,\, u\neq v
 \end{cases}\quad \forall u,v\in V\\
 \mathrm{where}& \quad  M \equiv  \epsilon + \max_{u',v'\in V,\,u'\neq v'}\treeHeight(u',v')
 \end{align}
-and where $\epsilon > 0$. By definition, we have that $d_{T}(u,v)=d_{T}(v,u)$ and $d_{T}(u,u)= 0$. We then prove the following two propositions (proofs are left in Appendix):
-\begin{prop}
-Consider a graph $\mathcal{G}(V,E,w_e)$, a linkage criterion $\interact{}$, and an AC algorithm returning a binary rooted tree $T$ with height $h_T$. The quantity $(V, d_{T})$ defined in Eq.~\ref{eq:UM_def} is an ultrametric iff, $\forall u,v,t \in V$:
-\begin{equation}
-\interact{}_{T}(u,v) > \interact{}_{T}(u,t) \Leftrightarrow h_T(u \vee v) < h_T[u \vee t] 
+and where $\epsilon > 0$. By definition, we have that $d_{T}(u,v)=d_{T}(v,u)$ and $d_{T}(u,u)= 0$. We then prove the following two propositions:
+\begin{restatable}{prop}{firstUltraMetricProperty}
+\label{prop:ultraMetric1}
+Consider a graph $\mathcal{G}(V,E,w_e)$, a linkage criterion $\interact{}$, and an agglomerative algorithm returning a binary rooted tree $T$ with height $h_T$. Then, $(V, d_{T})$ defined in Eq.~\ref{eq:UM_def} is an ultrametric if and only if the following is true
+ % iff the interaction $\interact{}_{T}(u, v)$ associated to the least common ancestor ${(u\vee v)\in T}$ is both lower than the interaction of any other $(u\vee v)$-descendant node and higher than the interaction of any other $(u\vee v)$-ancestor node in the tree $T$. In formulae, this is equivalent to saying that, $\forall u,v,t \in V$:
+\begin{equation}\label{eq:UM_assumption}
+ h_T(u \vee v) < h_T(u \vee t) \Rightarrow \interact{}_{T}(u,v) \geq \interact{}_{T}(u,t),
+ % h_T(u \vee v) < h_T(u \vee t) \Leftrightarrow \interact{}_{T}(u,v) > \interact{}_{T}(u,t). 
 \end{equation}
-In words, $(V, d_{T})$ is an ultrametric iff the interaction $\interact{}_{T}(u, v)$ associated to the least common ancestor ${(u\vee v)\in T}$ is both lower than any other $(u\vee v)$-descendant node and higher than any other $(u\vee v)$-ancestor node in the tree $T$.
-\end{prop}
-\begin{prop}
+which in words means: if the algorithm merges nodes $u,v$ before to merge nodes $u,t$, then the signed interaction $\interact{}_{T}(u,v)$ between $u$ and $v$ has to be higher or equal than $\interact{}_{T}(u,t)$.
+% In words, $(V, d_{T})$ is an ultrametric iff the interaction $\interact{}_{T}(u, v)$ associated to the least common ancestor ${(u\vee v)\in T}$ is both lower than any other $(u\vee v)$-descendant node and higher than any other $(u\vee v)$-ancestor node in the tree $T$.
+\end{restatable}
+\begin{restatable}{prop}{secondUltraMetricProperty}
+\label{prop:ultraMetric2}
 % Consider the binary rooted tree $T^*$ returned by the \TODO{all variants in Table 1} \algname{} Algorithm~\ref{main_alg}, given a choice of linkage criteria $\interact{}$ and the use (or not) of CannotLinkConstraints. 
-Among the algorithms listed in Table \ref{tab:linkage-criteria} and included in the \algname{} framework, only Mutex Watershed and hierarchical clustering with Average (HC-Avg), Single (HC-Single) and Complete linkage (HC-Complete) define an ultrametric given by the quantity $(V, d_{T^*})$ defined in Eq.~\ref{eq:UM_def}, where $T^*$ is the tree returned by Algorithm~\ref{main_alg}.
-\end{prop}
+Among the algorithms included in the \algname{} framework (see Table \ref{tab:linkage-criteria}), only Mutex Watershed and hierarchical clustering with Average (HC-Avg), Single (HC-Single) and Complete linkage (HC-Complete) define an ultrametric $(V, d_{T^*})$, where $d_{T^*}$ is defined in Eq.~\ref{eq:UM_def} and $T^*$ is the tree returned by the \algname{} Algorithm~\ref{main_alg}.
+\end{restatable}
 
 
 

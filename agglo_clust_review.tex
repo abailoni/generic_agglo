@@ -10,7 +10,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Include other packages here, before hyperref.
+\usepackage{afterpage}
+\usepackage{tikz}
+\usetikzlibrary{matrix,positioning,calc}
+\tikzset{line/.style ={draw, rounded corners=2pt, line width=1pt}}
 
+\newcommand\tikzmark[1]{%
+\tikz[remember picture]  \node[inner sep=0,outer sep=0] (#1){};%
+}
 
 \usepackage{amsthm}
 \usepackage{algorithm}% http://ctan.org/pkg/algorithm
@@ -74,6 +81,9 @@
 % \usepackage[dvipsnames]{xcolor}
 \usepackage[shortlabels]{enumitem}
 
+
+\usepackage{thmtools}
+\usepackage{thm-restate}
 % \usepackage{amsthm}
 % \usepackage{thmtools,thm-restate}
 \newtheorem{theorem}{Theorem}[section]
@@ -97,9 +107,11 @@
 % run, let it finish, and you should be clear).
 \usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
 
+\usepackage{cleveref}
+
 % \iccvfinalcopy % *** Uncomment this line for the final submission
 
-\def\iccvPaperID{****} % *** Enter the ICCV Paper ID here
+\def\iccvPaperID{7522} % *** Enter the ICCV Paper ID here
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
 % Pages are numbered in submission mode, and unnumbered in camera-ready
