@@ -46,8 +46,8 @@
 
         \end{tabular}
     \end{subtable} 
-    \caption{Clustering algorithms included in the proposed \algname{} framework, given a linkage criterion, a type of graph (signed or unsigned) and the optional use of cannot-link constraints. New constrained hierarchical clustering algorithms (HCC) are highlighted in yellow. Algorithms typeset in bold-font define an ultrametric on the graph (Eq.~\ref{eq:UM_def}). Algorithms included in the green box, are weight-shift invariant (Prop.~\ref{prop:weight_shift_invariant}). 
-    Given a graph $\mathcal{G}(V,E)$, we denote as $E_{ij}=(S_i \times S_{j}) \cap E$ the set of edges connecting two clusters $S_i \subseteq V$, $S_j \subseteq V$. } 
+    \caption{Clustering algorithms included in the proposed \algname{} framework, given a linkage criterion, a type of graph (signed or unsigned) and the optional use of cannot-link constraints. New constrained hierarchical clustering algorithms (HCC) proposed in this paper are highlighted in yellow. Algorithms typeset in bold-font define an ultrametric on the graph (Eq.~\ref{eq:UM_def}). Algorithms included in the green box, are weight-shift invariant (Prop.~\ref{prop:weight_shift_invariant}). 
+    Given a signed graph $\mathcal{G}(V,E, w_e)$, we denote as $E_{ij}=(S_i \times S_{j}) \cap E$ the set of edges connecting two clusters $S_i \subseteq V$, $S_j \subseteq V$. } 
     \label{tab:linkage-criteria}
 \end{table*}
 
@@ -61,7 +61,7 @@ Other graph clustering methods work with so-called \emph{signed graphs}, which i
 Agglomerative clustering algorithms for signed graphs have clear advantages: they are parameter-free and efficient. Despite the fact that a variety of these algorithms exist, no overarching study has so far been conducted to compare their robustness and efficiency or to provide guidelines for matching an algorithm to the partitioning problem at hand. 
 
 
-In this paper, we propose a simple theoretical framework that generalizes over agglomerative algorithms for signed graphs by linking them to hierarchical clustering (HC) on positive-weighted graphs \cite{lance1967general}. This framework defines an underlying basic algorithm and allows us to explore its combinations with different linkage criteria and \emph{cannot-link constraints} (see Fig.~\hyperref[fig:intro_figure]{\ref*{fig:intro_figure}a}, \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b}, and Table~\ref{tab:linkage-criteria}). 
+Our first main contribution is a simple theoretical framework that generalizes over agglomerative algorithms for signed graphs by linking them to hierarchical clustering (HC) on positive-weighted graphs \cite{lance1967general}. This framework defines an underlying basic algorithm and allows us to explore its combinations with different linkage criteria and \emph{cannot-link constraints} (see Fig.~\hyperref[fig:intro_figure]{\ref*{fig:intro_figure}a}, \hyperref[fig:intro_figure]{\ref*{fig:intro_figure}b}, and Table~\ref{tab:linkage-criteria}). 
 We then formally prove that some of the combinations correspond to existing clustering algorithms, and introduce new algorithms for combinations which have not been explored before. By analyzing their theoretical properties, we also show which one of them define an ultrametric on the graph.
 
 We evaluate the algorithms on a large variety of both existing and synthetically generated signed graph clustering problems. 

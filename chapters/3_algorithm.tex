@@ -94,7 +94,7 @@ After each merge, the interaction between the merged cluster and its neighbors i
 \emph{Phase Two:} Now that the clusters have grown in size, the algorithm removes the constraints previously introduced in \emph{Phase~One} and merges all the clusters that still share an attractive interaction, merging the most attractive one first\footnote{Note that in the version of \algname{} with \emph{addCannotLinkConstraints} set to \texttt{False}, nothing happens in \emph{Phase~Two}.}. The final clustering $\Pi^*$ returned by \algname{} is found at the end of \emph{Phase~Two} and it is then composed of clusters sharing only mutual repulsive interactions. 
 
 Finally, in \emph{Phase~3}, the algorithm keeps merging all clusters until only a single one is left and then returns the hierarchical tree $T^*$ representing the full sequence of merging steps.
-The algorithm was implemented using a standard HC implementation with computational complexity $\mathcal{O}(N^2 \log N)$ (see Appendix \ref{sec:detailed_impl} for more details). 
+The algorithm was implemented using a standard HC implementation with computational complexity $\mathcal{O}(N^2 \log N)$ (see extended details in Appendix \ref{sec:detailed_impl}). 
 
 
 % , we comment on the algorithm's computational complexity $\mathcal{O}(N^2 \log N)$ and present our implementation given by the edge contraction Algorithm \ref{detailed_alg} based on a \emph{disjoint set data structure} and a \emph{priority queue}.
