@@ -11,9 +11,9 @@
 \subsection{Implementation and complexity of \algname{}} \label{sec:detailed_impl}
 
 \paragraph*{Update rules} During the agglomerative process, the interaction between adjacent clusters has to be properly updated and recomputed, as shown in Algorithm \ref{main_alg}.  
-An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that there exists exactly one representative $|\tilde{V} \cap S| = 1$ for every cluster $S \in \Pi$ . Edges in $\tilde{E}$ represent adjacency-relationships between clusters 
-and the signed edge weights $\tilde{\cost}_e$ are given by inter-cluster interactions $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$. 
-For the linkage criteria tested in this work, when two clusters $S_u$ and $S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can recompute these interactions by using an \emph{update rule} $f$ that does not involve any loop over the edges of the original graph $\mathcal{G}$:
+An efficient way of implementing these updates can be achieved by representing the agglomeration as a sequence of \emph{edge contractions} in the graph. Given a graph $\mathcal{G}(V,E,\cost)$ and a clustering $\Pi$, we define the associated \emph{contracted graph} $\tilde{\mathcal{G}}_\Pi(\tilde{V}, \tilde{E}, \tilde{\cost})$, such that there exists exactly one representative node $|\tilde{V} \cap S| = 1$ for every cluster $S \in \Pi$ . Edges in $\tilde{E}$ represent adjacency-relationships between clusters 
+and the signed edge weights $\tilde{\cost}_e$ are given by inter-cluster interactions $\tilde{\cost}(e_{uv})=\interact_{S_u,S_v}$, where $S_u$ denotes the clustering including node $u$. 
+For the linkage criteria tested in this article, when two clusters $S_u$ and $S_v$ are merged, the interactions between the new cluster $S_u \cup S_v$ and each of its neighbors depend only on the previous interactions involving $S_u$ and $S_v$. Thus, we can recompute these interactions by using an \emph{update rule} $f$ that does not involve any loop over the edges of the original graph $\mathcal{G}$:
 \begin{align}
   \interact(S_u \cup S_v,S_t) =& f\Big[ \interact(S_u,S_t), \interact(S_v,S_t) \Big] \\
   =& f(\tilde{\cost}(e_{ut}), \tilde{\cost}(e_{vt})) 
@@ -101,7 +101,7 @@ In Fig. \ref{fig:edge_contraction_and_contr_graph} we show an example of edge co
 }
 
 \paragraph{Implementation} Our implementation of \algname{} is based on an union-find data structure and a heap allowing deletion of its elements. 
-In Phases 2 and 3, \algname{} is equivalent to a standard hierarchical agglomerative clustering algorithm for unsigned graphs. In Algorithm \ref{detailed_alg}, we show our implementation of Phase 1, involving cannot-link constraints.
+In Phases 2 and 3, \algname{} is equivalent to a standard hierarchical agglomerative clustering algorithm with complexity $\mathcal{O}(N^2 \log N)$. In Algorithm \ref{detailed_alg}, we show our implementation of Phase 1, involving cannot-link constraints.
 In phase 1, the algorithm starts with each node assigned to its own cluster and sorts all edges $e\in E$ in a heap/priority queue (PQ) by their absolute weight $|\cost_e|=|w_e^+ - w_e^-|$ in descending order, so that the most attractive and the most repulsive interactions are processed first. It then iteratively pops one edge $e_{uv}$ from PQ and, depending on the priority $\tilde{\cost}_{uv}$, does the following: in case of attractive interaction $\tilde{\cost}_{uv}>0$, provided that $e_{uv}$ was not flagged as a cannot-link constraint, then merge the connected clusters, perform an edge contraction of $e_{uv}$ in $\tilde{\mathcal{G}}_\Pi$ and update the priorities of new double edges as explained in Fig. \ref{fig:edge_contraction_and_contr_graph}. 
 If, on the other hand, the interaction is repulsive ($\tilde{\cost}_{uv}\leq 0$) and the option \texttt{addCannotLinkContraints} of Alg. \ref{detailed_alg} is \texttt{True}, then the edge $e_{uv}$ is flagged as cannot-link constraint.
 
@@ -142,8 +142,8 @@ If, on the other hand, the interaction is repulsive ($\tilde{\cost}_{uv}\leq 0$)
 \paragraph*{Complexity} 
 In the main loop of Phase 1, the algorithm iterates over all edges, but the only iterations presenting a complexity different from $\mathcal{O}(1)$ are the ones involving a merge of two clusters, which are at most $N-1$. By using a union-find data structure (with path compression and union by rank) the time complexity of \texttt{merge}$(u, v)$ and \texttt{find}($u$) operations is $\mathcal{O}(\alpha(N))$, where $\alpha$ is the slowly growing inverse Ackerman function. The algorithm then iterates over the neighbors of the merged cluster (at most $N$) and updates/deletes values in the priority queue ($\mathcal{O}(\log |E|)$). 
 Therefore, 
-similarly to a heap-based implementation of hierarchical agglomerative clustering, our implementation of \algname{} has a complexity of $\mathcal{O}(N^2 \log N)$. In the worst case, when the graph is dense and $|E|=N^2$, the algorithm requires $\mathcal{O}(N^2)$ memory. Nevertheless, in our practical applications the graph is much sparser, so $\mathcal{O}(|E|)=\mathcal{O}(N)$. 
-With a single-linkage, corresponding to the choice of the \emph{Maximum} update rule in our framework, the algorithm can be clearly implemented by using the more efficient Kruskal's Minimum Spanning Tree algorithm with complexity $\mathcal{O}(N \log N)$. 
+similarly to a heap-based implementation of hierarchical agglomerative clustering, our implementation of \algname{} - Phase 1 has a complexity of $\mathcal{O}(N^2 \log N)$. In the worst case, when the graph is dense and $|E|=N^2$, the algorithm requires $\mathcal{O}(N^2)$ memory. Nevertheless, in our practical applications the graph is much sparser, so $\mathcal{O}(|E|)=\mathcal{O}(N)$. 
+With a single-linkage, corresponding to the choice of the \emph{Maximum} update rule in our framework, the algorithm can be implemented by using the more efficient Kruskal's Minimum Spanning Tree algorithm with complexity $\mathcal{O}(N \log N)$, but only when cannotLinkConstraints are not used. 
 Moreover, \algname{} with \emph{Absolute Maximum} linkage can be implemented more efficiently (see next section). %\TODO{Empirical complexity plot?}
 
 
@@ -159,10 +159,10 @@ Let us consider the \algname{} Algorithm \ref{main_alg} with AbsMax or Complete 
 \begin{proof}
 First, we note that two clusters are constrained in \emph{Phase 1} only if their interaction is repulsive. We then also observe that with complete linkage (see Table~\ref{tab:linkage_criteria_explicit}) the signed interaction between two clusters can only decrease over the course of the agglomeration. Thus, if two clusters are constrained by the algorithm, their negative interaction cannot increase and become positive later on in the agglomeration process.
 
-If, on the other hand, we consider \algname{} with a Absolute Maximum linkage (see Table~\ref{tab:linkage_criteria_explicit}), during the agglomeration the interaction between two clusters can only increase in absolute value. Thus, the negative interaction $\interact{}(S_i,S_j)<0$ between two constrained clusters can possibly become positive over the course of next agglomeration steps only if there is at least another pair of clusters with positive interaction $\interact{}(S_l,S_t)>0$ higher in absolute value: $|\interact{}(S_l,S_t)| > |\interact{}(S_i,S_j)|$.
-If such clusters $S_l, S_t$ with positive interaction exist, we note that they must also be constrained (in the opposite case, the algorithm would have already merged them before to constrain $S_i$ and $S_j$, because their priority was higher). In other words, a constrained negative interaction can become positive only if there is already another positive constrained interaction: but this can never be the case because initially all constrained interactions are negative.
+If, on the other hand, we consider \algname{} with a Absolute Maximum linkage (see Table~\ref{tab:linkage_criteria_explicit}), during the agglomeration the interaction between two clusters can only increase in absolute value. Thus, the negative interaction $\interact{}(S_i,S_j)<0$ between two constrained clusters can possibly become positive over the course of next agglomeration steps only if there is at least another pair of clusters in the graph that has a positive interaction $\interact{}(S_l,S_t)>0$ higher in absolute value: $|\interact{}(S_l,S_t)| > |\interact{}(S_i,S_j)|$.
+If such clusters $S_l, S_t$ with positive interaction exist, we note that they must also be constrained (in the opposite case, the algorithm would have already merged them before to constrain $S_i$ and $S_j$, because their priority is higher). In other words, a constrained negative interaction can become positive only if there is already another positive constrained interaction: but this can never be the case because initially all constrained interactions are negative.
 
-Finally, we prove that \algname{} with either AbsMax or Complete linkage returns the same final clustering whether or not cannot-link constraints are enforced. In Algorithm \ref{detailed_alg}, the interactions between clusters are updated only when two clusters are merged and the condition at line 9 is satisfied (i.e. when an interaction is both positive and not constrained). However, we have just shown that with these two linkage methods an interaction can never be both positive and constrained at the same time, so we directly conclude that the constrained and unconstrained versions of the algorithm will perform precisely the same agglomeration steps.
+Finally, we prove that \algname{} with either AbsMax or Complete linkage returns the same final clustering whether or not cannot-link constraints are enforced. In Algorithm \ref{detailed_alg}, two clusters are merged only if the condition at line 9 is satisfied (i.e. when an interaction is both positive and not constrained). However, we have just shown that with these two linkage methods an interaction can never be both positive and constrained at the same time, so we directly conclude that the constrained and unconstrained versions of the algorithm will perform precisely the same agglomeration steps.
 \end{proof}
 
 % We now prove Proposition \ref{prop:absmax_mutex}:
@@ -189,7 +189,7 @@ Finally, we prove that \algname{} with either AbsMax or Complete linkage returns
 
 
 \begin{proof}%[Proof of Proposition \ref{prop:absmax_mutex}]
-From Lemma~\ref{lemma:absMax_and_complete_property} it directly follows that \algname{} with AbsMax linkage criterion returns the same final clustering whether or not cannot-link constraints are enforced. In the following, we prove that MWS and the constrained AbsMax version of \algname{} also return the same clustering.
+From Lemma~\ref{lemma:absMax_and_complete_property} it directly follows that \algname{} with AbsMax linkage criterion returns the same final clustering whether or not cannot-link constraints are enforced. In the following, we prove that MWS (see pseudocode \ref{alg:mutex_watershed}) and the constrained AbsMax version of \algname{} also return the same clustering.
 Both algorithms sort edges in descending order of the absolute interactions $|w_e|$ and then iterate over all of them. The only difference is that MWS, after merging two clusters, does not update the interactions between the new cluster and its neighbors. 
 However, since with an Abs. Max. linkage the interaction between clusters is simply given by the edge with highest absolute weight $|w_e|$, the order by which edges are iterated over in \algname{} is never updated. Thus, both algorithms perform precisely the same steps and return the same clustering.
 % Next, we prove that \algname{} with AbsMax linkage method returns the same final clustering whether or not cannot-link constraints are enforced. In the \algname{} Algorithm \ref{detailed_alg}, the interactions between clusters are updated only when two clusters are merged and the condition at line 9 is satisfied (an interaction is both positive and not constrained). 
@@ -214,7 +214,7 @@ The same is not true for \algname{} with Sum linkage criteria (GAEC and HCC-Sum)
 
 
 The constrained versions of \algname{} (HCC-Avg and HCC-Single) are also not weight-shift invariant: here, the algorithm merges or constrains clusters in a given order, depending on the absolute interactions $|\interact{}(S_i, S_j)|$ between clusters; so, when edge weights are shifted by a constant $\alpha$, the sorting by absolute value can change arbitrarily together with the agglomeration order, as we show in the counter-example of \TODO{FIG}.
-The same reasoning can also be applied to the Mutex Watershed algorithm (\algname{} with AbsMax linkage), which is clearly not weight-shift invariant (see again counter-example in \TODO{FIG}).
+Similarly, the Mutex Watershed algorithm is not weight-shift invariant because it uses a linkage criterion that compares weights by their absolute values (see again counter-example in \TODO{FIG}).
 \end{proof}
 
 % \subsubsection{Ultrametrics defined by \algname{}} 
@@ -252,7 +252,7 @@ Thus, to show that $(V, d_{T})$ is an ultrametric, we only need to prove the ult
 \begin{equation}\label{eq:UM_property_original}
 d_T(u,v) \leq \max \{d_T(u,t), d_T(v,t)\} \quad \forall u,v,t \in V.
 \end{equation}
-When at least two of the three nodes $u,v,t \in V$ are the same, this property follows from Eq.~\ref{eq:dist_1} and Eq.~\ref{eq:dist_2}. When nodes $u,v,t\in V$ are distinct, then Eq.~\ref{eq:UM_property_original} is equivalent to:
+When at least two of the three nodes $u,v,t \in V$ are the same, this property follows from Eq.~\ref{eq:dist_1} and Eq.~\ref{eq:dist_2}. When nodes $u,v,t\in V$ are distinct, from the definition of $d_{T}$ it follows that Eq.~\ref{eq:UM_property_original} is equivalent to:
 \begin{equation}\label{eq:UM_property}
 \interact{}_{T}(u,v) \geq \min \{\interact{}_{T}(u,t), \interact{}_{T}(v,t)\}.
 \end{equation}
@@ -264,7 +264,7 @@ h_T(u \vee t) < h_T(u \vee v) = h_T(v \vee t).
 \end{equation}
 Thus, from assumption \ref{eq:UM_assumption} we have that
 \begin{equation}
-\interact{}_{T}(u \vee t) \geq \interact{}_{T}(v \vee t) \quad  \wedge \quad \interact{}_{T}(u \vee v) = \interact{}_{T}(v \vee t)
+\interact{}_{T}(u \vee t) \geq \interact{}_{T}(v \vee t) \quad  \text{and} \quad \interact{}_{T}(u \vee v) = \interact{}_{T}(v \vee t)
 \end{equation}
 and Eq.~\ref{eq:UM_property} follows (becoming an equality in this case).
 
@@ -274,9 +274,9 @@ h_T(u \vee v) < h_T(u \vee t) = h_T(v \vee t).
 \end{equation}
 Thus, from assumption \ref{eq:UM_assumption} we have that
 \begin{equation}
-\interact{}_{T}(u \vee v) \geq \interact{}_{T}(u \vee t) \quad  \wedge \quad \interact{}_{T}(u \vee v) \geq \interact{}_{T}(v \vee t)
+\interact{}_{T}(u \vee v) \geq \interact{}_{T}(u \vee t) \quad  \text{and} \quad \interact{}_{T}(u \vee v) \geq \interact{}_{T}(v \vee t),
 \end{equation}
-and also in this case Eq.~\ref{eq:UM_property} follows.
+so also in this case Eq.~\ref{eq:UM_property} follows.
 % for every distinct $u,v,t\in V$. In other words, given two leaves nodes $u,v\in V$, the depth $\interact{}_{T}(u,v)$ associated to their least common ancestor $i\in T$ should be both lower than the depth of any $i$-descendant node in $T$ and higher than any $i$-ancestor node in $T$:
 %  % that have the most positive interaction   two clusters merged by the algorithm will always have an interaction that is more negative as compared to all clusters already merged and more positive than all clusters that will be merged at later iterations of the algorithm.
 % \begin{equation}
@@ -310,14 +310,14 @@ In other words, we need to prove in which cases \algname{} merges clusters accor
 & \forall S_i \in \Pi \setminus \{S_1, S_2\}, \nonumber \\
 \interact{}(S_1 \cup S_2, S_i) &\leq \max \{ \interact{}(S_1, S_i), \interact{}(S_2, S_i)\} 
 \end{align}
-where $\Pi$ is a clustering, $\interact{}$ is a linkage criteria, and $S_1,S_2\in \Pi$ are two clusters merged by the algorithm at a given iteration. If this condition is true then, in the following iterations, \algname{} can only merge clusters with lower (or equal) interaction values. 
+where $\Pi$ is a clustering, $\interact{}$ is a linkage criteria, and $S_1,S_2\in \Pi$ are two clusters merged by the algorithm at a given iteration. If this condition is true then, in the following iterations, \algname{} will only merge clusters with lower (or equal) interaction values. 
 \item Condition 2: Positive and constrained interactions are never skipped in Phase 1 (condition at line 8 of Algorithm \ref{main_alg}) and ``delayed'' to Phase 2. If this is the case, then \algname{} is not assured to merge clusters according to a monotonously decreasing order of interactions. 
 \end{itemize}
 Condition 1 always holds for Average, Single, Complete, and Absolute Maximum linkage criteria, but not for a Sum linkage criteria, because the sum of two positive numbers $a,b$ is always higher than $\max\{a,b\}$. This is also demonstrated in the toy example of Fig.~\hyperref[fig:intro_figure]{\ref*{fig:intro_figure}a}, proving that, in general, Sum-linkage algorithms like GAEC or HCC-Sum do not define an ultrametric on the graph.
 
 Thanks to Lemma \ref{lemma:absMax_and_complete_property}, we have that condition 2 always holds for algorithms based on AbsMax and Complete linkage, proving that the Mutex Watershed and HC-Complete algorithms define an ultra-metric (whether or not cannot-link-constraints are enforced). On the other hand, condition 2 does not hold for other variations of \algname{} involving cannot-link-constraints (HCC-Sum, HCC-Avg, and HCC-Single), which do not then define an ultrametric. 
 
-Finally, the remaining not constrained versions of \algname{} (HC-Avg, HC-Single, and HC-Complete) satisfy both conditions, so they define a ultrametric, confirming the well-known results of related work in hierarchical clustering on positive weighted graphs \cite{johnson1967hierarchical,milligan1979ultrametric}.
+Finally, the remaining not constrained versions of \algname{} (HC-Avg, HC-Single, and HC-Complete) satisfy both conditions, so they define a ultrametric, confirming the well-known results of related work in hierarchical clustering on unsigned graphs \cite{johnson1967hierarchical,milligan1979ultrametric}.
 
 % In formulae, this can be formulated as following. Assume that at iteration $i$ \algname{} merges clusters $S_i\in \Pi$ and $S_j\Pi$ resulting in a new clustering $\Pi'=\Pi \cup \{S_i\cup S_j\} \setminus \{S_i, S_j\}$ 
 
@@ -345,7 +345,31 @@ Finally, the remaining not constrained versions of \algname{} (HC-Avg, HC-Single
 % where $\beta \in [0,1]$ is a \emph{bias} parameter that allow a tuning between over- and under-segmentation. We evaluated both of them empirically with each of the tested linkage and found that the additive mapping is the best option in all cases apart from the \emph{Sum} linkage. Note that varying the parameter $\beta$ does not usually define a hierarchy of nested clusterings, thus it is not equivalent to varying a threshold parameter in HAC. This hierarchical property is only valid for \algname{} without constraints and with \emph{Average}, \emph{Max} or \emph{Min} linkage.
 
 \subsection{Mutex Watershed on SSBM graphs}
-\TODO{}
+\textbf{Proposition} \\
+Consider a graph generated by an Erd\H os-R\'enyi signed stochastic block model as described in section 4 and let $S, S'$ be two clusters occurring during the agglomeration of this graph using the MWS algorithm. The expected probability that the MWS assigns a positive interaction to the boundary between those clusters is bounded by $\eta \leq P\big(\interact(S,S')>0\big) \leq 1-\eta$ where $\eta$ is the sign flip probability of the SSBM.
+
+
+\textbf{Proof} \\
+Let us write the two clusters as $S=(s_1, ..., s_k)$ and $S'=(s'_1, ..., s'_k)$ where $s_i$ indicates the number of nodes in cluster S belonging to GT-colour i. In the MWS algorithm the interaction $\interact(S,S')$ between the two clusters is determined only by the one edge with the highest absolute weight. By construction of the SSBM, every single edge in the boundary has the identical probability of having the highest absolute weight. The probability that the MWS assigns a positive interaction to the boundary between those cluster is therefore simply the fraction of positive weighted edges in the boundary. 
+The expected total number of edges in the boundary is $E_{SS'}=p|S||S'|=p\sum_{i=1}^{k}s_i \sum_{i=1}^{k}s'_i$ where p is the probability for each individual edge to be present in the graph. An edge in this boundary is positive if it either connects two nodes of the same GT-colour and did not have its sign flipped or if it connects two nodes of different GT-colors and did have its sign flipped. We can write the expected number of positive edges as $P_{SS'}=p\big(\sum_{i=1}^{k}s_is'_i\big)(1-\eta)+p\big(\sum_{i=1}^{k}s_i \sum_{i=1}^{k}s'_i - \sum_{i=1}^{k}s_is'_i\big)\eta$. The expected probability can then be written as 
+\begin{equation}
+    P\big(\interact(S,S')>0\big)=\eta +  \frac{\big(\sum_{i=1}^{k}s_is'_i\big)(1-2\eta)}{\sum_{i=1}^{k}s_i \sum_{i=1}^{k}s'_i}
+\end{equation}
+For $\eta <0.5$ this probability is bounded by $\eta \leq P\big(\interact(S,S')>0\big) \leq 1-\eta$. \\
+So weather we consider a merge or a split of the two clusters as the correct decision, in both cases we do not make that decision with a probability of at least $\eta$. Notably while the exact probabilities depend on the cluster sizes, the lower and upper bound do not. This confirms the intuition that the MWS, unlike Sum or Avg linkage methods, cannot properly correct for sign flip noise by agglomerating larger boundaries and profiting from the law of large numbers. 
+
+\subsection{Mutex Watershed on SSBM graphs}
+\textbf{Proposition} \\
+Consider a graph generated by an Erd\H os-R\'enyi signed stochastic block model as described in section 4. When using the MWS algorithm, the expected probability to make a wrong decision is at least $\eta $ at every iteration, independent of the size of the considered boundary.  
+
+\textbf{Proof} \\
+At any given iteration, the MWS considers the boundary between two clusters $S$ and $S'$ and either merges or splits these clusters, based on the sign of the interaction $\interact(S,S')$. The algorithm employs an absolute maximum linkage criterion, the interaction $\interact(S,S')$ between the two clusters is determined only by the one edge with the highest absolute weight. By construction of the SSBM, every single edge in the boundary has the identical probability of having the highest absolute weight. The probability that the MWS assigns a positive interaction to the boundary between those cluster is therefore simply the fraction of positive weighted edges in the boundary. \\
+Let us write the two clusters as $S=(s_1, ..., s_k)$ and $S'=(s'_1, ..., s'_k)$ where $s_i$ indicates the number of nodes in cluster S belonging to GT-colour i. The expected total number of edges in the boundary is $E_{SS'}=p|S||S'|=p\sum_{i=1}^{k}s_i \sum_{i=1}^{k}s'_i$ where p is the probability for each individual edge to be present in the graph. An edge in this boundary is positive if it either connects two nodes of the same GT-colour and did not have its sign flipped or if it connects two nodes of different GT-colors and did have its sign flipped. We can write the expected number of positive edges as $P_{SS'}=p\big(\sum_{i=1}^{k}s_is'_i\big)(1-\eta)+p\big(\sum_{i=1}^{k}s_i \sum_{i=1}^{k}s'_i - \sum_{i=1}^{k}s_is'_i\big)\eta$. The expected probability can then be written as 
+\begin{equation}
+    P\big(\interact(S,S')>0\big)=\eta +  \frac{\big(\sum_{i=1}^{k}s_is'_i\big)(1-2\eta)}{\sum_{i=1}^{k}s_i \sum_{i=1}^{k}s'_i}
+\end{equation}
+For $\eta <0.5$ this probability is bounded by $\eta \leq P\big(\interact(S,S')>0\big) \leq 1-\eta$. \\
+So weather we consider a merge or a split of the two clusters as the correct decision, in both cases the expected probability to not make that decision is at least $\eta$. Notably while the exact probabilities depend on the cluster sizes, the lower bound does not. This confirms the intuition that the MWS, unlike Sum or Avg linkage methods, cannot properly correct for sign flip noise by agglomerating larger boundaries and profiting from the law of large numbers. 
 
 % \begin{prop}\label{prop:MWS_SSBM_1}
 % Consider a graph $\mathcal{G}(V,E)$ generated with a SSBM with parameters $N,p,k,\sigma$ and an associated ground truth (GT) clustering $\hat{\Pi}=\{\hat{S}_1, \ldots, \hat{S}_k\}$. Then, assume that after some merging-iterations of the MWS algorithm the clustering $\Pi$ is found. Then, any two clusters $S_i,S_j\in \Pi$ have probability $|E_{ij}| / |E_{\Pi}^1|$ to be selected in the next iteration of the algorithm, where $E_{\Pi}^1$ is the multicut associated to $\Pi$ and $E_{ij}\equiv(S_i\times S_j)\cap E$ is the set of edges connecting the two clusters. 
