@@ -176,8 +176,8 @@ OurCNN: 3D-RAG + LiftedMulticut & \CrossedBox & \textbf{0.221} & \textbf{0.108} 
 \emph{GASP: OurCNN + gridGraph + HC-Avg}  & \HollowBox &0.224 & 0.114 &  0.364 & 0.083 \\
 PNI CNN \cite{lee2017superhuman} & \CrossedBox &0.228 & 0.116 & 0.345 & 0.106 \\
 LSI-Masks \cite{bailoni2020proposal}  & \HollowBox &0.246 & 0.125 & 0.383 & 0.107  \\
-\emph{GASP: OurCNN + 3D-RAG + HCC-Avg} & \HollowBox &0.257 & 0.132 & 0.438& \textbf{0.063} \\  
-\emph{GASP: OurCNN + 3D-RAG + HC-Avg} & \HollowBox &0.262 & 0.135 & 0.448 & \textbf{0.063}   \\  
+\emph{GASP: OurCNN + 3D-RAG + HCC-Avg} & \CrossedBox &0.257 & 0.132 & 0.438& \textbf{0.063} \\  
+\emph{GASP: OurCNN + 3D-RAG + HC-Avg} & \CrossedBox &0.262 & 0.135 & 0.448 & \textbf{0.063}   \\  
 % \textbf{Our CNN + \algname{} Average} & \textbf{0.241 \\
 MALA CNN + MC \cite{funke2018large} & \CrossedBox & 0.276  & 0.132 &0.490  & 0.089  \\
 CRU-Net \cite{zeng2017deepem3d} & \CrossedBox &0.566 & 0.229 & 1.081 &  0.389    \\
@@ -202,7 +202,7 @@ CRU-Net \cite{zeng2017deepem3d} & \CrossedBox &0.566 & 0.229 & 1.081 &  0.389   
 % This can also be observed in our experiments on synthetic graphs (Fig. ? and ?), where the clustering with minimum multicut energy become very different from the ground truth clustering when the flip noise parameter $\eta$ is increased.
 
 \textbf{Size of growing clusters: Sum vs Avg linkage} --
-In all the studied clustering problems, we empirically observe that sum-linkage algorithms like GAEC tend to grow clusters one after the other, as shown in Fig.~\hyperref[fig:intro_figure]{\ref*{fig:intro_figure}d} and Fig.~\ref{fig:dendrograms} by the unique agglomeration order of GAEC\footnote{This \emph{flooding agglomeration-strategy} of GAEC was also observed in \cite{kardoostsolving}.}. This is intuitively explained by the  following: initially, many of the most attractive edge weights have very similar values; when the two nodes $u,v$ with the highest attraction are merged, there is a high chance that they will have a common neighboring node $t$ belonging to the same cluster; thus, the interaction between the merged nodes $uv$ and $t$ is likely assigned to the highest priority, because it is given by the sum of two highly attractive edge weights. This will then start a ``chain reaction'' where only a single cluster is agglomerated at the time. 
+In all the studied clustering problems, we empirically observe that sum-linkage algorithms like GAEC grow clusters one after the other, as shown in Fig.~\hyperref[fig:intro_figure]{\ref*{fig:intro_figure}d} and Fig.~\ref{fig:dendrograms} by the agglomeration order of GAEC\footnote{This \emph{flooding agglomeration-strategy} of GAEC was also observed in \cite{kardoostsolving}.}. This is intuitively explained by the  following: initially, many of the most attractive edge weights have very similar values; when the two nodes $u,v$ with the highest attraction are merged, there is a high chance that they will have a common neighboring node $t$ belonging to the same cluster; thus, the interaction between the merged nodes $uv$ and $t$ is likely assigned to the highest priority, because it is given by the sum of two highly attractive edge weights. This will then start a ``chain reaction'' where only a single cluster is agglomerated at the time. 
 % This \emph{flooding strategy} in the agglomeration is not observed with other linkage methods, e.g. Average, which grow clusters of similar sizes in parallel.
 In the following, we will show how this unique \emph{flooding strategy} of the sum-linkage methods can be both an advantage or a disadvantage, depending on the type of clustering problem. 
 
@@ -259,7 +259,7 @@ ARAND errors (median values over 20 experiments, lower is better) on synthetic g
 SSBM graphs are \emph{non-planar}, and every edge has the same probability to be present in the graph. On the other hand, the \emph{gridGraph} and \emph{3D-RAG} graphs of Table~\ref{tab:datasets_and_energies} are sparse and have a very regular structure: regardless of whether a node represents a pixel or a superpixel, it will only have edge connections with its neighbors in the image (up to a certain hop distance). 
 Tables~\ref{tab:scores_gridGraph}-\ref{tab:scores_3drag} show that average linkage methods (HC-Avg, HCC-Avg) strongly outperform other methods on \emph{CREMI-gridGraph} instances and also achieve the best scores on \emph{CREMI-3D-rag} graphs. Sum-based linkage methods (GAEC, HCC-Sum) have a two times higher ARAND error on grid-graphs and often return under-clustered segments (see failure cases in Fig.~\ref{fig:failure_cases}). This suggests that the \emph{flooding strategy} observed previously in the sum-linkage methods does not work on grid-graphs, because in this setup edge weights are predicted by a CNN and noise is strongly spatially-correlated \footnote{This effect is not as strong on \emph{3D-RAG} graphs, because edge weights are computed by averaging CNN predictions (and noise) over the boundaries of adjacent supervoxels.}.
 To fully test this hypothesis, we conduct a set of experiments where the CNN predictions are perturbed by adding structured noise and simulating additional artifacts like ``holes'' in the boundary evidence\footnote{See Appendix \ref{sec:appendix_noise_gen} for details about how we perturbed the \emph{CREMI-gridGraph} problems by using Perlin noise \cite{perlin2001noise,perlin1985image}, which is one of the most common gradient noises used in procedural pattern generation.}. 
-The plot in Fig.~\ref{fig:scores_structured_noise} confirms that HC-Avg and HCC-Avg perform well even in the presence of strong structured noise, followed by Sum-linkage algorithms and the Mutex Watershed algorithm (MWS). It is not a surprise that the AbsMax linkage used by MWS is not robust to this type of structured noise. However, the scores and runtimes in Table~\ref{tab:scores_gridGraph} prove how MWS can achieve high accuracy with considerably lower runtimes. 
+The plot in Fig.~\ref{fig:scores_structured_noise} confirms that HC-Avg and HCC-Avg are very robust algorihtms on this data, followed by Sum-linkage algorithms and the Mutex Watershed algorithm (MWS). It is not a surprise that the AbsMax linkage used by MWS is not robust to this type of structured noise. However, the scores and runtimes in Table~\ref{tab:scores_gridGraph} prove how MWS can achieve high accuracy with considerably lower runtimes. 
 
 \textbf{Complete and Single Linkage} -- We use these two linkage methods as baselines to highlight the difficulty of the studied graph clustering problems listed in Table~\ref{tab:datasets_and_energies}. Scores in Tables~\ref{tab:scores_gridGraph}-\ref{tab:scores_3drag} show their poor performance: Single linkage hierarchical clustering (HC-Single), which here is equivalent to thresholding the edge weights at $w_e=0$ and computing connected components in the graph, often returned few big under-segmented clusters. HC-Complete returned instead a lot of over-segmented clusters. 
 % These algorithms are excluded from our next comparison experiments.
@@ -267,7 +267,7 @@ The plot in Fig.~\ref{fig:scores_structured_noise} confirms that HC-Avg and HCC-
 \begin{figure}
 \centering
 % \includegraphics[width=0.48\textwidth,trim=300 100 300 100, clip]{./figs/dendrograms/new_agglo_order_OLD.png} % left bottom right top
-\includegraphics[width=0.48\textwidth,trim=80 10 60 0, clip]{./figs/dendrograms/new_agglo_order.png} % left bottom right top
+\includegraphics[width=0.48\textwidth,trim=0 10 60 0, clip]{./figs/dendrograms/new_agglo_order.png} % left bottom right top
 \caption{Clustering dynamics and accuracy of GASP variations on stochastic block models. The dendrograms result from three versions of \algname{} on a synthetic graph generated with SSBM ($250$ nodes, edge probability $p=0.05$, flipping probability $\eta=0.1$).  Red and blue colors show which of the two equal-sized ground-truth communities each node belongs to. At the top, dendrograms are truncated at the level of the final clustering $\Pi^*$ returned by \algname{}. \label{fig:dendrograms}}
 \end{figure}
 
@@ -298,7 +298,7 @@ The method \emph{3D-RAG + LiftedMulticut} based on the lifted multicut approxima
 
 \begin{figure}
 \centering
-\includegraphics[width=0.48\textwidth,trim=90 10 60 0, clip]{./figs/comparison_GAEC_MWS_Avg.png} % left bottom right top
+\includegraphics[width=0.48\textwidth,trim=0 10 60 0, clip]{./figs/comparison_GAEC_MWS_Avg.png} % left bottom right top
 \caption{Failure cases of three versions of \algname{} applied to neuron segmentation. Only \emph{wrongly} segmented regions are highlighted in different warm colors. Red arrows point to wrongly split regions; yellow arrows point to false merge errors. HC-Avg returned the best segmentation. Data is 3D, hence the same color could be assigned to parts of segments that appear disconnected in 2D.  
 \label{fig:failure_cases}}
 \end{figure}

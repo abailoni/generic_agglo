@@ -216,6 +216,39 @@ However, since with an Abs. Max. linkage the interaction between clusters is sim
 % \end{proof}
 
 % \subsubsection{Weight-shift invariance of \algname{} algorithms}
+\begin{figure}[t]
+% \begin{subfigure}[t]{0.48\textwidth}
+\centering
+\includegraphics[width=0.48\textwidth,trim=0in 0in 0in 0in,clip]{./figs/counter-examples/counter-example-GAEC.pdf}
+% \caption{Original graph and dendrogram}
+% \end{subfigure}
+
+% \vspace{2em}
+% \begin{subfigure}[t]{0.48\textwidth}
+% \centering
+% \includegraphics[width=\textwidth,trim=0in 0in 0in 0in,clip]{./figs/counter-examples/counter-example-GAEC-shifted.pdf}
+% \caption{Graph with shifted edge-weights ($\alpha=-3$) and GAEC dendrogram}
+% \end{subfigure}
+        \caption{ Counter-example showing that GAEC is not weight-shift invariant.
+        } \label{fig:counter_examples_shift_inv_GAEC}
+\end{figure}
+\begin{figure}[t!]
+% \begin{subfigure}[t]{0.48\textwidth}
+\centering
+\includegraphics[width=0.48\textwidth,trim=0in 0in 0in 0in,clip]{./figs/counter-examples/counter-example.pdf}
+% \caption{Original graph and dendrogram}
+% \end{subfigure}
+
+% \vspace{2em}
+% \begin{subfigure}[t]{0.48\textwidth}
+% \centering
+% \includegraphics[width=\textwidth,trim=0in 0in 0in 0in,clip]{./figs/counter-examples/counter-example-shifted.pdf}
+% \caption{Graph with shifted edge-weights ($\alpha=+2$) and dendrogram}
+% \end{subfigure}
+        \caption{ Counter-example showing that HCC-Sum, MWS, HCC-Avg, and HCC-Single are not weight-shift invariant.
+        } \label{fig:counter_examples_shift_inv}
+\end{figure}
+
 \invariantAlgs*
 \begin{proof}
 Theorem 1 in \cite{chehreghani2020hierarchical} proves that hierarchical clustering with Average (HC-Avg), Single (HC-Single), and Complete linkage (HC-Complete) are weight-shift invariant.
@@ -229,14 +262,16 @@ Similarly, the Mutex Watershed algorithm is not weight-shift invariant because i
 
 % \subsubsection{Ultrametrics defined by \algname{}} 
 
+
+
 \begin{restatable}{prop}{firstUltraMetricProperty}
 \label{prop:ultraMetric1}
 Consider a graph $\mathcal{G}(V,E,w_e)$, a linkage criterion $\interact{}$, and an agglomerative algorithm returning a binary rooted tree $T$ with height $h_T$. Then, $(V, d_{T})$ defined in Eq.~\ref{eq:UM_def} is an ultrametric if and only if the following is true:
  % iff the interaction $\interact{}_{T}(u, v)$ associated to the least common ancestor ${(u\vee v)\in T}$ is both lower than the interaction of any other $(u\vee v)$-descendant node and higher than the interaction of any other $(u\vee v)$-ancestor node in the tree $T$. In formulae, this is equivalent to saying that, $\forall u,v,t \in V$:
 \begin{gather}
 \forall u,v,t \in V \nonumber \\
- h_T(u \vee v) < h_T(u \vee t) \Rightarrow \interact{}_{T}(u,v) \geq \interact{}_{T}(u,t) \label{eq:UM_assumption}
- % h_T(u \vee v) < h_T(u \vee t) \Leftrightarrow \interact{}_{T}(u,v) > \interact{}_{T}(u,t). 
+ h_T(u, v) < h_T(u, t) \Rightarrow \interact{}_{T}(u,v) \geq \interact{}_{T}(u,t) \label{eq:UM_assumption}
+ % h_T(u, v) < h_T(u, t) \Leftrightarrow \interact{}_{T}(u,v) > \interact{}_{T}(u,t). 
 \end{gather}
 In words, condition \ref{eq:UM_assumption} means: if the algorithm merges nodes $u,v$ before to merge nodes $u,t$, then the signed interaction $\interact{}_{T}(u,v)$ between $u$ and $v$ has to be higher or equal than $\interact{}_{T}(u,t)$.
 % In words, $(V, d_{T})$ is an ultrametric iff the interaction $\interact{}_{T}(u, v)$ associated to the least common ancestor ${(u\vee v)\in T}$ is both lower than any other $(u\vee v)$-descendant node and higher than any other $(u\vee v)$-ancestor node in the tree $T$.
@@ -271,21 +306,21 @@ In the following, we prove both sides of the \emph{if and only if} statement in 
 
 Case 1: in Eq.~\ref{eq:UM_property}, $t\in V$ is part of the sub-tree ${T[u \vee v]}$. In other words, the algorithm first merges node $t$ with either node $u$ or $v$, and then $u$ and $v$ are merged together. Let us assume that $t$ is first merged with $u$ (the following proof also holds for the opposite case in which $t$ is first merged with $v$):
 \begin{equation}\label{eq:case_1}
-h_T(u \vee t) < h_T(u \vee v) = h_T(v \vee t).
+h_T(u, t) < h_T(u, v) = h_T(v, t).
 \end{equation}
 Thus, by combining the last equation with assumption (\ref{eq:UM_assumption}), it follows that
 \begin{equation}
-\interact{}_{T}(u \vee t) \geq \interact{}_{T}(v \vee t) \quad  \text{and} \quad \interact{}_{T}(u \vee v) = \interact{}_{T}(v \vee t)
+\interact{}_{T}(u, t) \geq \interact{}_{T}(v, t) \quad  \text{and} \quad \interact{}_{T}(u, v) = \interact{}_{T}(v, t)
 \end{equation}
 and Eq.~\ref{eq:UM_property} follows (becoming an equality in this case).
 
 Case 2: in Eq.~\ref{eq:UM_property}, $t\in V$ is \emph{not} part of the sub-tree ${T[u \vee v]}$. Thus, the algorithm first merges nodes $u$ and $v$, and then it merges node $t$ together with the cluster containing $u$ and $v$:
 \begin{equation}
-h_T(u \vee v) < h_T(u \vee t) = h_T(v \vee t).
+h_T(u, v) < h_T(u, t) = h_T(v, t).
 \end{equation}
 Thus, from assumption \ref{eq:UM_assumption} we have that
 \begin{equation}
-\interact{}_{T}(u \vee v) \geq \interact{}_{T}(u \vee t) \quad  \text{and} \quad \interact{}_{T}(u \vee v) \geq \interact{}_{T}(v \vee t),
+\interact{}_{T}(u, v) \geq \interact{}_{T}(u, t) \quad  \text{and} \quad \interact{}_{T}(u, v) \geq \interact{}_{T}(v, t),
 \end{equation}
 so also in this case Eq.~\ref{eq:UM_property} follows.
 % for every distinct $u,v,t\in V$. In other words, given two leaves nodes $u,v\in V$, the depth $\interact{}_{T}(u,v)$ associated to their least common ancestor $i\in T$ should be both lower than the depth of any $i$-descendant node in $T$ and higher than any $i$-ancestor node in $T$:
@@ -298,15 +333,15 @@ so also in this case Eq.~\ref{eq:UM_property} follows.
 Next, we are left to prove the $(\Rightarrow)$ side of the \emph{if and only if} statement: if $(V, d_{T})$ is an ultrametric, then assumption \ref{eq:UM_assumption} holds.
 To prove this statement, we first rephrase it in the following equivalent form: if assumption \ref{eq:UM_assumption} does not hold, then $(V, d_{T})$ is not an ultrametric and \ref{eq:UM_property} does not hold. If we negate assumption \ref{eq:UM_assumption}, there must be at least three $u,v,t \in V$ such that: 
 \begin{equation}
-h_T(u \vee v) < h_T(u \vee t) \quad \text{and} \quad  \interact{}_{T}(u,v) < \interact{}_{T}(u,t).
+h_T(u, v) < h_T(u, t) \quad \text{and} \quad  \interact{}_{T}(u,v) < \interact{}_{T}(u,t).
 \end{equation}
 The first condition, in words, is again assuming that the algorithm first merges nodes $u$ and $v$, and later it also merges node $t$ with the cluster containing $u$ and $v$. Thus, we can rephrase this assumption as:
 \begin{equation}
-\interact{}_{T}(u \vee v) < \interact{}_{T}(u \vee t) = \interact{}_{T}(v \vee t).
+\interact{}_{T}(u, v) < \interact{}_{T}(u, t) = \interact{}_{T}(v, t).
 \end{equation}
 From this, it follows that
 \begin{equation}
-\interact{}_{T}(u \vee v) < \min \{\interact{}_{T}(u \vee t), \interact{}_{T}(v \vee t)\},
+\interact{}_{T}(u, v) < \min \{\interact{}_{T}(u, t), \interact{}_{T}(v, t)\},
 \end{equation}
 which is exactly the negation of the ultrametric property \ref{eq:UM_property}.
 \end{proof}
@@ -356,38 +391,7 @@ Finally, the remaining not constrained versions of \algname{} (HC-Avg, HC-Single
 % where $\beta \in [0,1]$ is a \emph{bias} parameter that allow a tuning between over- and under-segmentation. We evaluated both of them empirically with each of the tested linkage and found that the additive mapping is the best option in all cases apart from the \emph{Sum} linkage. Note that varying the parameter $\beta$ does not usually define a hierarchy of nested clusterings, thus it is not equivalent to varying a threshold parameter in HAC. This hierarchical property is only valid for \algname{} without constraints and with \emph{Average}, \emph{Max} or \emph{Min} linkage.
 
 
-\begin{figure}[t]
-% \begin{subfigure}[t]{0.48\textwidth}
-\centering
-\includegraphics[width=0.48\textwidth,trim=0in 0in 0in 0in,clip]{./figs/counter-examples/counter-example-GAEC.pdf}
-% \caption{Original graph and dendrogram}
-% \end{subfigure}
 
-% \vspace{2em}
-% \begin{subfigure}[t]{0.48\textwidth}
-% \centering
-% \includegraphics[width=\textwidth,trim=0in 0in 0in 0in,clip]{./figs/counter-examples/counter-example-GAEC-shifted.pdf}
-% \caption{Graph with shifted edge-weights ($\alpha=-3$) and GAEC dendrogram}
-% \end{subfigure}
-        \caption{ Counter-example showing that GAEC is not weight-shift invariant.
-        } \label{fig:counter_examples_shift_inv_GAEC}
-\end{figure}
-\begin{figure}[t!]
-% \begin{subfigure}[t]{0.48\textwidth}
-\centering
-\includegraphics[width=0.48\textwidth,trim=0in 0in 0in 0in,clip]{./figs/counter-examples/counter-example.pdf}
-% \caption{Original graph and dendrogram}
-% \end{subfigure}
-
-% \vspace{2em}
-% \begin{subfigure}[t]{0.48\textwidth}
-% \centering
-% \includegraphics[width=\textwidth,trim=0in 0in 0in 0in,clip]{./figs/counter-examples/counter-example-shifted.pdf}
-% \caption{Graph with shifted edge-weights ($\alpha=+2$) and dendrogram}
-% \end{subfigure}
-        \caption{ Counter-example showing that HCC-Sum, MWS, HCC-Avg, and HCC-Single are not weight-shift invariant.
-        } \label{fig:counter_examples_shift_inv}
-\end{figure}
 
 
 
