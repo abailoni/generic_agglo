@@ -17,7 +17,7 @@ Graphs of the type $\mathcal{G}(V,E,w^+, w^-)$ are often defined as \emph{signed
 % In this formalism, graphs with purely attractive interactions are a special case of $\mathcal{G}(V,E,\cost)$ with $\cost_e \geq 0, \, \forall e \in E$. 
 
 \textbf{Multicut objective} -- We call the set $\Pi=\{S_1,\ldots,S_K\}$ a \emph{clustering} or \emph{partitioning} if $V = \cup_{S\in\Pi} S $, $\,S \cap S' = \emptyset$ for different clusters $S, S'$ and every cluster $S \in \Pi$ induces a connected subgraph of $\mathcal{G}$. 
-For any clustering $\Pi$ of $\mathcal{G}$, we denote as $E^0_\Pi= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u,v \in S \}$ the set of edges linking nodes in the same cluster. Its complementary set $E_\Pi^1= E \setminus E^0_\Pi$ of edges linking nodes belonging to distinct clusters, is known as the \emph{multicut} of $\mathcal{G}$ associated to clustering $\Pi$. The instance of the NP-hard \emph{minimum cost multicut problem} w.r.t. $\mathcal{G}(V,E,w_e)$ is the task of finding a clustering that optimally balance the attraction and repulsion in the graph and is given by the following binary integer program:
+For any clustering $\Pi$ of $\mathcal{G}$, we denote as $E^0_\Pi= \{ e_{uv} \in E \,|\, \exists S \in \Pi : u,v \in S \}$ the set of edges linking nodes in the same cluster. Its complementary set $E_\Pi^1= E \setminus E^0_\Pi$ of edges linking nodes belonging to distinct clusters, is known as the \emph{multicut} of $\mathcal{G}$ associated to clustering $\Pi$. The instance of the NP-hard \emph{minimum cost multicut problem} w.r.t. $\mathcal{G}(V,E,w_e)$ is the task of finding a clustering that optimally balances the attraction and repulsion in the graph and is given by the following binary integer program:
 % \begin{equation}
 % E_\Pi^0 \equiv \{ e_{uv} \in E \,|\, \exists S \in \Pi : u \in S \, \text{and} \, v \in S \}, \qquad E^1_\Pi \equiv E \setminus E^0_\Pi.
 % \end{equation}
@@ -116,9 +116,9 @@ The algorithm was implemented using a standard HC implementation with computatio
       \State Initialize hierarchical tree $T^*$ with leaf nodes  $V=\{v_1,\ldots,v_{|V|}\}$
       \State Initialize  cluster interactions with $\cost_e = w^+_e - w^-_e$, $\forall e\in E$
       \State \emph{// Phase 1: Merge positive interactions (possibly using constraints)}
-      \State For all edges $e\in E$, push incident nodes of $e$ to PQ with priority $|w_e|$
+      \State Push incident nodes of every edge $e\in E$ to priority queue (PQ) with priority $|w_e|$
       \Repeat 
-        \State Pop $S,S'\in\Pi$ from $PQ$ with highest interaction $|\interact{}(S,S')|$
+        \State Pop $S,S'\in\Pi$ with highest interaction $|\interact{}(S,S')|$ from PQ
         \If{\big[{\color{green}\textbf{$\interact{}(S,S') > 0$}}\big] \textbf{and} \big[$S,S'$ \textbf{not} constrained\big]}
           \State Merge clusters $S$, $S'$ and update hierarchical tree $T^*$
           \State Update interactions \& constraints with neighboring clusters
@@ -131,7 +131,7 @@ The algorithm was implemented using a standard HC implementation with computatio
       \State \emph{// Phase 2: Remove constraints \& merge all positive interactions}
       \State Push signed interactions $\interact{}(S,S')$ to PQ, $\forall S, S' \in \Pi$
       \Repeat 
-        \State Pop $S,S'\in\Pi$ from $PQ$ with highest interaction $\interact{}(S,S')$
+        \State Pop $S,S'\in\Pi$ with highest interaction $\interact{}(S,S')$ from PQ
         \If{\big[{\color{green}\textbf{$\interact{}(S,S') > 0$}}\big]}
           \State Merge clusters $S$, $S'$ and update hierarchical tree $T^*$
           \State Update interactions with neighboring clusters
@@ -140,7 +140,7 @@ The algorithm was implemented using a standard HC implementation with computatio
       \State Save the final clustering $\Pi^* \gets \Pi$ 
       \State \emph{// Phase 3: Merge negative interactions until one single cluster is left}
       \Repeat
-        \State Pop $S,S'\in\Pi$ from $PQ$ with highest interaction $\interact{}(S,S')$
+        \State Pop $S,S'\in\Pi$ with highest interaction $\interact{}(S,S')$ from PQ 
         \State Merge clusters $S$, $S'$ and update hierarchical tree $T^*$
         \State Update interactions with neighboring clusters
       \Until{\big[Only one cluster is left in $\Pi$\big]} 
@@ -166,10 +166,10 @@ The algorithm was implemented using a standard HC implementation with computatio
 %              \end{cases} 
 % \end{equation}
 % \end{prop}
-In this paper we focus on five linkage methods (see columns of Table~\ref{tab:linkage-criteria}). Many more linkage criteria have been applied to unsigned graphs \cite{nunez2013machine,felzenszwalb2004efficient,funke2018large}, involving median-based or size-regularized methods, but we decided to focus this paper on those five criteria because they represent the most known choices.  
+In this paper we focus on five linkage methods (see columns of Table~\ref{tab:linkage-criteria}). Many more linkage criteria have been applied to unsigned graphs \cite{nunez2013machine,felzenszwalb2004efficient,funke2018large}, involving median-based or size-regularized methods, but we decided to focus this paper on those five criteria because they represent the most popular choices.  
 
 \paragraph{Sum Linkage} -- 
-On signed graphs, the sum of two attractive (or repulsive) interactions is still attractive (repulsive). On the other hand, on unsigned graphs, a strong attractive interaction could be obtained by summing many weak interactions, which depending on the application could be undesirable. This explains why, to our knowledge, an agglomerative algorithm with sum linkage has never been used on unsigned graphs. On signed graphs, such an algorithm was pioneered in \cite{levinkov2017comparative,keuper2015efficient} and was named Greedy Agglomerative Edge Contraction (GAEC)\footnote{An algorithm equivalent to GAEC was recently independently re-proposed in \cite{chehreghani2020hierarchical}.}. All variations of \algname{} decrease the multicut objective defined in Eq.~\ref{eq:MC_objective} each time two clusters with positive interaction are merged. But only GAEC always makes the \emph{greedy-choice} that mostly decreases the multicut objective at each iteration. The authors of \cite{levinkov2017comparative} propose an algorithm named \emph{GreedyFixation}, which, in our framework, is equivalent to phase one of \algname{} using cannot-link-constraints and a sum linkage. However, running both phase one and two of \algname{} with sum linkage (algorithm named HCC-Sum in this paper) performed better than GreedyFixation in our experiments.
+On signed graphs, the sum of two attractive (or repulsive) interactions is still attractive (repulsive). On the other hand, on unsigned graphs, a strong attractive interaction could be obtained by summing many weak interactions, which depending on the application could be undesirable. This explains why, to our knowledge, an agglomerative algorithm with sum linkage has never been used on unsigned graphs. On signed graphs, such an algorithm was pioneered in \cite{levinkov2017comparative,keuper2015efficient} and was named Greedy Agglomerative Edge Contraction (GAEC)\footnote{An algorithm equivalent to GAEC was recently independently re-proposed in \cite{chehreghani2020hierarchical}.}. All variations of \algname{} decrease the multicut objective defined in Eq.~\ref{eq:MC_objective} each time two clusters with positive interaction are merged. But only GAEC always makes the \emph{greedy choice} that most decreases the multicut objective at each iteration. The authors of \cite{levinkov2017comparative} propose an algorithm named \emph{GreedyFixation}, which, in our framework, is equivalent to phase one of \algname{} using cannot-link-constraints and a sum linkage. However, running both phase one and two of \algname{} with sum linkage (algorithm named HCC-Sum in this paper) performed better than GreedyFixation in our experiments.
 % , because some clusters are wrongly constrained in phase one and only merged in phase two. 
 % removing constraints in phase two   However, in our experiments, we noted that constrained sum-link version of \algname{} proposed here (named \emph{HCC-Sum} in Table~\ref{tab:linkage-criteria}) .
 
@@ -232,6 +232,7 @@ We then prove the following proposition:
 Among the algorithms included in the \algname{} framework (see Table \ref{tab:linkage-criteria}), only Mutex Watershed and hierarchical clustering with Average (HC-Avg), Single (HC-Single) and Complete linkage (HC-Complete) define an ultrametric $(V, d_{T^*})$, where $d_{T^*}$ is defined in Eq.~\ref{eq:UM_def} and $T^*$ is the tree returned by the \algname{} Algorithm~\ref{main_alg}.
 \end{restatable}
 
+Now that we have defined the algorithms and managed to characterize them from a theoretical point of view, we move to empirical evaluation. 
 
 
 
