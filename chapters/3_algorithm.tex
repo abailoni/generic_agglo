@@ -176,13 +176,13 @@ On signed graphs, the sum of two attractive (or repulsive) interactions is still
 \paragraph{AbsMax Linkage} -- This linkage method is also specific to signed graphs, since on unsigned graphs it would be equivalent to single linkage. Here, we prove that the Mutex Watershed Algorithm \cite{wolf2018mutex} can be seen as an agglomerative algorithm with AbsMax linkage (proofs of the following three propositions are given in Appendix \ref{sec:proposition_proofs}):
 \begin{restatable}{prop}{absmaxmutex}
 \label{prop:absmax_mutex}
-The \algname{} Algorithm \ref{main_alg} with AbsMax linkage, regardless of whether constraints are enforced or not, returns the same final clustering $\Pi^*_{\mathrm{AbsMax}}$ also returned by the Mutex Watershed Algorithm (MWS) \cite{wolf2018mutex}, which has empirical complexity $\mathcal{O}(N \log N)$.
+The \algname{} Algorithm \ref{main_alg} with AbsMax linkage, with or without cannot link constraints, returns the same final clustering $\Pi^*_{\mathrm{AbsMax}}$ also returned by the Mutex Watershed Algorithm (MWS) \cite{wolf2018mutex}, which has empirical complexity $\mathcal{O}(N \log N)$.
 \end{restatable}
 % \begin{prop} 
 % \end{prop}
 
 
-\paragraph{Average, Single, and Complete Linkage} -- These three linkage criteria have been thoroughly studied on unsigned graphs, but never on signed graphs. In recent independent related work \cite{chehreghani2020hierarchical}, the authors prove that applying these three linkage methods to a signed graph is equivalent to applying them to the unsigned graph obtained by shifting all edge weights by a constant.  Here, we prove which of the algorithms studied here is ``intrinsically signed'' and do not have this invariance-property:
+\paragraph{Average, Single, and Complete Linkage} -- These three linkage criteria have been thoroughly studied on unsigned graphs, but never - until very recently - on signed graphs. In concurrent independent related work \cite{chehreghani2020hierarchical}, the authors prove that applying these three linkage methods to a signed graph is equivalent to applying them to the unsigned graph obtained by shifting all edge weights by a constant.  Here, we prove which of the algorithms studied here are ``intrinsically signed'' and do not have this invariance-property:
 \begin{restatable}{prop}{invariantAlgs}
 \label{prop:weight_shift_invariant}
 We call an agglomerative algorithm ``weight-shift invariant'' if the dendrogram $T$ returned by the algorithm is invariant w.r.t. a shift of all edge weights $w_e$  by a constant $\alpha\in \mathbb{R}$. Among the variations of \algname{}, only hierarchical clustering with Average (HC-Avg), Single (HC-Single), and Complete linkage (HC-Complete) are weight-shift-invariant (see green box in Table~\ref{tab:linkage-criteria}).
@@ -233,7 +233,7 @@ We then prove the following proposition:
 % Consider the binary rooted tree $T^*$ returned by the \TODO{all variants in Table 1} \algname{} Algorithm~\ref{main_alg}, given a choice of linkage criteria $\interact{}$ and the use (or not) of CannotLinkConstraints. 
 Among the algorithms included in the \algname{} framework (see Table \ref{tab:linkage-criteria}), only Mutex Watershed and hierarchical clustering with Average (HC-Avg), Single (HC-Single) and Complete linkage (HC-Complete) define an ultrametric $(V, d_{T^*})$, where $d_{T^*}$ is defined in Eq.~\ref{eq:UM_def} and $T^*$ is the tree returned by the \algname{} Algorithm~\ref{main_alg}.
 \end{restatable}
-Now that we have extended the family of HC algorithms \cite{johnson1967hierarchical,milligan1979ultrametric} with ``weight-based ultrametrics'' to signed graphs, we move on to their empirical evaluation. 
+\noindent In summary, in this section we have extended the family of HC algorithms \cite{johnson1967hierarchical,milligan1979ultrametric} with ``weight-based ultrametrics'' to signed graphs. Next, we move to their empirical evaluation. 
 
 
 
