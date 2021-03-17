@@ -182,12 +182,13 @@ The \algname{} Algorithm \ref{main_alg} with AbsMax linkage, regardless of wheth
 % \end{prop}
 
 
-\paragraph{Average, Single, and Complete Linkage} -- These three linkage criteria have been throughly studied on unsigned graphs, but never on signed graphs. In recent independent related work \cite{chehreghani2020hierarchical}, the authors prove that applying these three linkage methods to a signed graph is equivalent to applying them to the unsigned graph obtained by shifting all edge weights by a constant.  Here, we prove which of the algorithms studied here is ``intrinsically'' signed and do not have this invariance-property:
+\paragraph{Average, Single, and Complete Linkage} -- These three linkage criteria have been thoroughly studied on unsigned graphs, but never on signed graphs. In recent independent related work \cite{chehreghani2020hierarchical}, the authors prove that applying these three linkage methods to a signed graph is equivalent to applying them to the unsigned graph obtained by shifting all edge weights by a constant.  Here, we prove which of the algorithms studied here is ``intrinsically signed'' and do not have this invariance-property:
 \begin{restatable}{prop}{invariantAlgs}
 \label{prop:weight_shift_invariant}
 We call an agglomerative algorithm ``weight-shift invariant'' if the dendrogram $T$ returned by the algorithm is invariant w.r.t. a shift of all edge weights $w_e$  by a constant $\alpha\in \mathbb{R}$. Among the variations of \algname{}, only hierarchical clustering with Average (HC-Avg), Single (HC-Single), and Complete linkage (HC-Complete) are weight-shift-invariant (see green box in Table~\ref{tab:linkage-criteria}).
 \end{restatable}
-\noindent To our knowledge, Average and Single linkage methods have never been combined with cannot-link constraints on signed graphs, so we name these algorithms \emph{HCC-Avg} and \emph{HCC-Single}. On the other hand, we prove that an agglomerative algorithm with Complete linkage (HC-Complete) returns the same clustering whether cannot-link-constraints are enforced or not (Lemma \ref{lemma:absMax_and_complete_property}, in Appendix).
+\noindent Although average and single linkage methods have been largely studied on unsigned graphs, to our knowledge, they have never been combined with cannot-link constraints on signed graphs\footnote{Note that Complete linkage methods return the same clustering whether constraints are enforced or not (proof in Lemma \ref{lemma:absMax_and_complete_property}, in Appendix).}, so we name these algorithms \emph{HCC-Avg} and \emph{HCC-Single}. 
+% On the other hand, we prove that an agglomerative algorithm with Complete linkage (HC-Complete) returns the same clustering whether cannot-link-constraints are enforced or not (Lemma \ref{lemma:absMax_and_complete_property}, in Appendix).
 % , we prove that with Complete linkage the agglomeration order does not change whether constraints are introduced or not.
 
 
@@ -216,7 +217,7 @@ We call an agglomerative algorithm ``weight-shift invariant'' if the dendrogram 
 % On the other hand, to our knowledge, \emph{Average}, \emph{Max} or \emph{Min} linkage criteria have never been used for signed graph agglomerative algorithms or been combined with cannot-link constraints.
 
 
-\paragraph{Algorithms defining an ultrametric} -- The connection between agglomerative algorithms and ultrametrics\footnote{A metric space $(X,d)$ is an \emph{ultrametric} if for every $x,y,z \in X$, $d(x,y)\leq \max \{d(x,z), d(y,z)\}$.} is well known. Usually, ultrametrics are associated to strictly positive \emph{similarity} or \emph{dissimilarity} measures on a graph. In our framework, a trivial ultrametric is always given by the height $h_T$ of the dendrogram. However, we now prove that, similarly to what has been done for HC on unsigned graphs \cite{johnson1967hierarchical,milligan1979ultrametric}, for some of the \algname{} variations we can define an ultrametric based on the edge weights and the interactions between clusters. To define this measure, we first map the signed interaction $\treeHeight{}$ defined in Eq.~\ref{eq:def_dendr_interact} to positive ``pseudo-distances'' $d_{T}:V \times V \rightarrow \mathbb{R}^{+}$:
+\paragraph{Algorithms defining an ultrametric} -- The connection between agglomerative algorithms and ultrametrics\footnote{A metric space $(X,d)$ is an \emph{ultrametric} if, for every $x,y,z \in X$, $d(x,y)\leq \max \{d(x,z), d(y,z)\}$.} is well known. Usually, ultrametrics are associated to strictly positive \emph{similarity} or \emph{dissimilarity} measures on a graph. In our framework, a trivial ultrametric is always given by the height $h_T$ of the dendrogram. However, for some of the \algname{} variations, we now define an ultrametric based on the edge weights and the signed interactions between clusters, generalizing what has been done for HC on unsigned graphs \cite{johnson1967hierarchical,milligan1979ultrametric}. To define this measure and prove its ultrametric property, we first map the signed interaction $\treeHeight{}$ defined in Eq.~\ref{eq:def_dendr_interact} to positive ``pseudo-distances'' $d_{T}:V \times V \rightarrow \mathbb{R}^{+}$:
 \begin{align}\label{eq:UM_def}
 d_{T}(u,v)\equiv &\begin{cases}
 0 & \text{if}\,\, u=v\\
@@ -232,7 +233,7 @@ We then prove the following proposition:
 % Consider the binary rooted tree $T^*$ returned by the \TODO{all variants in Table 1} \algname{} Algorithm~\ref{main_alg}, given a choice of linkage criteria $\interact{}$ and the use (or not) of CannotLinkConstraints. 
 Among the algorithms included in the \algname{} framework (see Table \ref{tab:linkage-criteria}), only Mutex Watershed and hierarchical clustering with Average (HC-Avg), Single (HC-Single) and Complete linkage (HC-Complete) define an ultrametric $(V, d_{T^*})$, where $d_{T^*}$ is defined in Eq.~\ref{eq:UM_def} and $T^*$ is the tree returned by the \algname{} Algorithm~\ref{main_alg}.
 \end{restatable}
-Now that we have defined the algorithms and characterized them from a theoretical point of view, we move to empirical evaluation in the next section. 
+Now that we have extended the family of HC algorithms \cite{johnson1967hierarchical,milligan1979ultrametric} with ``weight-based ultrametrics'' to signed graphs, we move on to their empirical evaluation. 
 
 
 

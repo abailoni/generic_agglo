@@ -53,9 +53,9 @@ In Fig. \ref{fig:edge_contraction_and_contr_graph} we show an example of edge co
         \State $\mathcal{N}_v = \{ t \in \tilde{V} | e_{vt}\in \tilde{E}  \}$ 
         \For{$t \in \mathcal{N}_v$ } \Comment{Loop over neighbors in $\tilde{\mathcal{G}}$ of deleted node $v$}
           \State $\tilde{E} \gets \tilde{E} \setminus \{e_{vt}\}$
-          \State $\tilde{w}_{vt} \gets$ PQ.delete($e_{vt}$) \Comment{$\mathcal{O}(\log |E|)$}
+          \State $\tilde{w}_{vt} \gets$ PQ.delete($e_{vt}$) \Comment{Delete edge $e_{vt}$ from PQ and get the old edge weight, $\mathcal{O}(\log |E|)$}
           \State \texttt{canBeMerged}$[e_{ut}] \gets$ \texttt{canBeMerged}$[e_{ut}]$ \textbf{and} \texttt{canBeMerged}$[e_{vt}]$
-          \If{$t \in \mathcal{N}_u$ }\Comment{$t$ is a common neighbor of $u$ and $v$}
+          \If{$t \in \mathcal{N}_u$ }\Comment{Check if $t$ is a common neighbor of $u$ and $v$}
             \State $\tilde{w}_{ut} \gets$ PQ.delete($e_{ut}$)  \Comment{$\mathcal{O}(\log |E|)$}
             \State PQ.push($ |f(\tilde{w}_{ut}, \tilde{w}_{vt})|, e_{ut}$) \Comment{$\mathcal{O}(\log |E|)$  }
           \Else
@@ -349,17 +349,20 @@ which is exactly the negation of the ultrametric property \ref{eq:UM_property}.
 \secondUltraMetricProperty*
 \begin{proof}
 Thanks to Prop.~\ref{prop:ultraMetric1}, we know that $(V, d_{T^*})$ is an ultrametric if and only if assumption \ref{eq:UM_assumption} holds. Thus, in the following, we will prove which variations of the \algname{} Algorithm \ref{main_alg} satisfy assumption \ref{eq:UM_assumption}. 
-In other words, we need to prove in which cases \algname{} merges clusters according to a monotonously decreasing order of signed interactions $\interact{}$. This happens only if both of the following conditions are true:
-\begin{itemize}
-\item Condition 1: Updated interactions involving a merged cluster are always lower or equal than previous interactions:
+In other words, we need to prove in which cases \algname{} merges clusters according to a monotonously decreasing order of signed interactions $\interact{}$.
+
+\algname{} puts clusters in a priority queue (Algorithm \ref{main_alg}, lines 5 and 15) and merges them starting from those with the highest interaction (lines 9, 19, and 26). However, the priority queue is updated each time two clusters are merged (lines 10, 20, and 27). Thus, to ensure a monotonously decreasing merging order, updated interactions involving a merged cluster should always be lower or equal than previously existing interactions (\textbf{condition 1}):
 \begin{align}\label{eq:condition1}
 & \forall S_i \in \Pi \setminus \{S_1, S_2\}, \nonumber \\
 \interact{}(S_1 \cup S_2, S_i) &\leq \max \{ \interact{}(S_1, S_i), \interact{}(S_2, S_i)\} 
 \end{align}
-where $\Pi$ is a clustering, $\interact{}$ is a linkage criteria, and $S_1,S_2\in \Pi$ are two clusters merged by the algorithm at a given iteration. If this condition is true then, in the following iterations, \algname{} will only merge clusters with lower (or equal) interaction values. 
-\item Condition 2: Positive and constrained interactions are never skipped in Phase 1 (condition at line 8 of Algorithm \ref{main_alg}) and ``delayed'' to Phase 2. If this is the case, then \algname{} is not assured to merge clusters according to a monotonously decreasing order of interactions. 
-\end{itemize}
-Condition 1 always holds for Average, Single, Complete, and Absolute Maximum linkage criteria, but not for a Sum linkage criteria, because the sum of two positive numbers $a,b$ is always higher than $\max\{a,b\}$. This is also demonstrated in the toy example of Fig.~\hyperref[fig:intro_figure]{\ref*{fig:intro_figure}a}, proving that, in general, Sum-linkage algorithms like GAEC or HCC-Sum do not define an ultrametric on the graph.
+where $\Pi$ is a clustering, $\interact{}$ is a linkage criteria, and $S_1,S_2\in \Pi$ are two clusters merged by the algorithm at a given iteration. If this condition is true then, in the following iterations, \algname{} can only merge clusters with lower (or equal) interaction values. 
+
+We also note that, in phase 1, the algorithm skips interactions that are both positive and constraint (condition at line 8 in Algorithm \ref{main_alg}) and merges them only later in phase 2 (line 19), when constraints are removed.
+Clearly, whenever this happens, a decreasing merging order is no longer ensured. 
+Thus, on top of condition 1, we also have that no merging decisions should be ``delayed'' from phase 1 to phase 2 (\textbf{condition 2}). 
+
+Condition 1 always holds for Average, Single, Complete, and AbsMax linkage criteria, but not for a Sum linkage criteria, because the sum of two positive numbers $a,b$ is always higher than $\max\{a,b\}$. This is also demonstrated in the toy example of Fig.~\hyperref[fig:intro_figure]{\ref*{fig:intro_figure}a}, proving that, in general, Sum-linkage algorithms like GAEC or HCC-Sum do not define an ultrametric on the graph.
 
 Thanks to Lemma \ref{lemma:absMax_and_complete_property}, we have that condition 2 always holds for algorithms based on AbsMax and Complete linkage, proving that the Mutex Watershed and HC-Complete algorithms define an ultra-metric (whether or not cannot-link-constraints are enforced). On the other hand, condition 2 does not hold for other variations of \algname{} involving cannot-link-constraints (HCC-Sum, HCC-Avg, and HCC-Single), which do not then define an ultrametric. 
 
@@ -426,7 +429,7 @@ Putting everything together, given two clusters with $\nBE^+$ true attractive in
 \begin{align}\label{eq:mws_prob}
  \mathbb{P}[\interact_{\mathrm{AbsMax}}&(S_\alpha,S_\beta)>0;\nBE^+,\nBE^-] = \nonumber \\
 =&\sum_{\nBE^+_{\mathrm{nf}}=0}^{\nBE^+}\sum_{\nBE^-_{\mathrm{f}}=0}^{\nBE^-} 
-\mathcal{B}(\nBE^-_{\mathrm{f}};\nBE^-,\eta) \mathcal{B}(\nBE^+_{\mathrm{nf}};\nBE^-,1-\eta)\cdot  \nonumber\\
+\mathcal{B}(\nBE^-_{\mathrm{f}};\nBE^-,\eta) \mathcal{B}(\nBE^+_{\mathrm{nf}};\nBE^+,1-\eta)\cdot  \nonumber\\
 & \qquad \qquad  \cdot \left(\frac{\nBE^+_{\mathrm{nf}}+\nBE^-_{\mathrm{f}}}{\nBE^+ + \nBE^-} \right) \nonumber\\
 \stackrel{(*)}{=}&\frac{\nBE^+(1-\eta)+\nBE^-\eta}{\nBE^+ + \nBE^-}
 \end{align}  
