@@ -39,17 +39,18 @@ For any clustering $\Pi$ of $\mathcal{G}$, we denote as $E^0_\Pi= \{ e_{uv} \in 
 \textbf{Linkage criteria and hierarchical trees} -- 
 % We also denote as $S_u$ the cluster associated with node $u$ \TODO{Needed?}.
 % We call two clusters $S,S'$ \emph{adjacent} if there exists at least one edge ${e_{ts}\in E}$ connecting a node $t\in S_u$ to a node $s\in S_v$. 
-Let the interaction $\interact(S,S')\in\mathbb{R}$ between two clusters $S,S'$ be defined as a function, named \emph{linkage criterion}, depending on the weights of \emph{all} edges connecting clusters $S$ and $S'$, i.e. ${(S \times S') \cap E}$ where $\times$ denotes the outer product. 
+Let the interaction $\interact(S \cup S')\in\mathbb{R}$ between two clusters $S,S'$ be defined as a function, named \emph{linkage criterion}, depending on the weights of \emph{all} edges connecting clusters $S$ and $S'$.
+% , i.e. ${(S \times S') \cap E}$ where $\times$ denotes the outer product. 
 The linkage criteria tested in this article are listed and defined in Table \ref{tab:linkage-criteria}.
 A \emph{dendrogram} $T$ is a rooted binary tree\footnote{In general, one could look at trees that are not binary. However, the algorithms discussed in this paper always generate binary hierarchical trees, so nothing would be gained by this generalization.} representing the merging order of an agglomerative algorithm, such that the leaves of the tree are in one-to-one correspondence with $V$ and each node of the tree represents a merge between two clusters. 
 Let $T_{\mathrm{R}},T_{\mathrm{L}}\subset T$ denote the subtrees rooted at the two children of the root node in $T$.
 For any two leaves $u,v \in V$, let $T[u \vee v]$ be the subtree rooted at the least common ancestor $(u \vee v)\in T$ of nodes $u$ and $v$ (furthest from the root), and let \texttt{leaves}$(T[u \vee v])\subseteq V$ be the set of leaves of this subtree. 
 % \TODO{Here we talk about the algorithm already, so we could move it to next section and the flow could be better. But we need a tree in the alg. So we better do this later}
 % Algorithm \ref{main_alg} returns a binary tree denoted by $T^*$.
-Given an agglomerative algorithm with merging tree $T$, let $h_T:V \times V \rightarrow \mathbb{N}$ denote the \emph{dendrogram-height} of each $(u\vee v)\in T$, which is defined as the iteration number at which nodes $u,v\in V$ were merged by the algorithm (see example in Fig.~\ref{fig:intro_figure}a). We also define $\treeHeight(u,v)$ as the signed interaction $\interact{}(S,S')$ between the two clusters $S,S'$ that were merged at iteration $h_T(u, v)$: 
+Given an agglomerative algorithm with merging tree $T$, let $h_T:V \times V \rightarrow \mathbb{N}$ denote the \emph{dendrogram-height} of each $(u\vee v)\in T$, which is defined as the iteration number at which nodes $u,v\in V$ were merged by the algorithm (see example in Fig.~\ref{fig:intro_figure}a). We also define $\treeHeight(u,v)$ as the signed interaction $\interact{}(S \cup S')$ between the two clusters $S,S'$ that were merged at iteration $h_T(u, v)$: 
 % Then, given a binary tree $T$ and a linkage criterion $\interact$, we can associate a \emph{signed similarity} function $\treeHeight$ to each pair of distinct original nodes $u\neq v$, with $u, v \in V$:
 \begin{equation}\label{eq:def_dendr_interact}
-\treeHeight(u,v) \equiv \interact{} \big( \text{\texttt{leaves}}(T_{\mathrm{R}}[u \vee v]), \text{\texttt{leaves}}(T_{\mathrm{L}}[u \vee v]) \big)
+\treeHeight(u,v) \equiv \interact{} \big( \text{\texttt{leaves}}(T_{\mathrm{R}}[u \vee v])  \cup  \text{\texttt{leaves}}(T_{\mathrm{L}}[u \vee v]) \big)
 \end{equation}
 % \OPTIONAL{In other words, $h_T(u,v)$ and $\treeHeight(u,v)$ represent the \emph{dendrogram-height} and \emph{signed-interaction} associated to each $u \vee v$ node in the tree $T$ (see toy example in \TODO{Fig.~1}).}
 
@@ -88,8 +89,8 @@ The framework, defined in the following, encompasses several known and new agglo
 
 In Algorithm \ref{main_alg}, we provide simplified pseudo-code for the proposed \algname{} algorithm. \algname{} implements a bottom-up approach that starts by assigning each node to its own cluster and then iteratively merges pairs of adjacent clusters. The algorithm proceeds in three phases. 
 
-In phase one, \algname{} selects the pair of clusters with the highest absolute interaction $|\interact(S, S')|$, so that the most attractive and the most repulsive pairs are analyzed first. If the interaction is repulsive and the algorithm option \emph{addCannotLinkConstraints} is \texttt{True}, then the two clusters are constrained so that their members can never merge in subsequent steps of phase one. If the interaction is attractive, then the clusters are merged, provided that they were not previously constrained. 
-After each merge, the interaction between the merged cluster and its neighbors is updated according to one of the linkage criteria $\interact(S, S')$ listed in Table \ref{tab:linkage-criteria}. Phase one terminates when all the remaining clusters are either constrained or share repulsive interactions. Note that, on unsigned graphs, in phase one all nodes are merged into a single cluster and \algname{} is then equivalent to a standard hierarchical clustering algorithm.
+In phase one, \algname{} selects the pair of clusters with the highest absolute interaction $|\interact(S  \cup  S')|$, so that the most attractive and the most repulsive pairs are analyzed first. If the interaction is repulsive and the algorithm option \emph{addCannotLinkConstraints} is \texttt{True}, then the two clusters are constrained so that their members can never merge in subsequent steps of phase one. If the interaction is attractive, then the clusters are merged, provided that they were not previously constrained. 
+After each merge, the interaction between the merged cluster and its neighbors is updated according to one of the linkage criteria $\interact(S \cup  S')$ listed in Table \ref{tab:linkage-criteria}. Phase one terminates when all the remaining clusters are either constrained or share repulsive interactions. Note that, on unsigned graphs, in phase one all nodes are merged into a single cluster and \algname{} is then equivalent to a standard hierarchical clustering algorithm.
 
 Phase two: Now that the clusters have grown in size, the algorithm removes the constraints previously introduced in phase one and merges all the clusters that still share an attractive interaction, merging the most attractive one first\footnote{Note that in the version of \algname{} without \emph{cannotLinkConstraints}, nothing happens in phase two because all remaining interactions are repulsive.}. The final clustering $\Pi^*$ returned by \algname{} is found at the end of phase two and it is then composed of clusters sharing only mutual repulsive interactions. 
 
@@ -118,29 +119,29 @@ The algorithm was implemented using a standard HC implementation with computatio
       \State \emph{// Phase 1: Merge positive interactions (possibly using constraints)}
       \State Push incident nodes of every edge $e\in E$ to priority queue (PQ) with priority $|w_e|$
       \Repeat 
-        \State Pop $S,S'\in\Pi$ with highest interaction $|\interact{}(S,S')|$ from PQ
-        \If{\big[{\color{green}\textbf{$\interact{}(S,S') > 0$}}\big] \textbf{and} \big[$S,S'$ \textbf{not} constrained\big]}
+        \State Pop $S,S'\in\Pi$ with highest interaction $|\interact{}(S  \cup  S')|$ from PQ
+        \If{\big[{\color{green}\textbf{$\interact{}(S \cup S') > 0$}}\big] \textbf{and} \big[$S,S'$ \textbf{not} constrained\big]}
           \State Merge clusters $S$, $S'$ and update hierarchical tree $T^*$
           \State Update interactions \& constraints with neighboring clusters
-        \ElsIf{{\color{blue}addCannotLinkConstr} \textbf{and}  \big[{\color{red}\textbf{$\interact{}(S,S') \leq 0$}}\big]}
+        \ElsIf{{\color{blue}addCannotLinkConstr} \textbf{and}  \big[{\color{red}\textbf{$\interact{}(S \cup  S') \leq 0$}}\big]}
           \State Add CannotLink Constraint between $S$ and $S'$
         \EndIf
       \Until{\big[$PQ$ is empty\big]}
       % \State
       % \If{{\color{blue}addCannotLinkConstr}} % \Comment{Step 2: release constraints}
       \State \emph{// Phase 2: Remove constraints \& merge all positive interactions}
-      \State Push signed interactions $\interact{}(S,S')$ to PQ, $\forall S, S' \in \Pi$
+      \State Push signed interactions $\interact{}(S \cup S')$ to PQ, $\forall S, S' \in \Pi$
       \Repeat 
-        \State Pop $S,S'\in\Pi$ with highest interaction $\interact{}(S,S')$ from PQ
-        \If{\big[{\color{green}\textbf{$\interact{}(S,S') > 0$}}\big]}
+        \State Pop $S,S'\in\Pi$ with highest interaction $\interact{}(S \cup S')$ from PQ
+        \If{\big[{\color{green}\textbf{$\interact{}(S \cup S') > 0$}}\big]}
           \State Merge clusters $S$, $S'$ and update hierarchical tree $T^*$
           \State Update interactions with neighboring clusters
         \EndIf
-      \Until{\big[{\color{red}\textbf{$\interact{}(S,S') \leq 0$}}\big]} 
+      \Until{\big[{\color{red}\textbf{$\interact{}(S \cup S') \leq 0$}}\big]} 
       \State Save the final clustering $\Pi^* \gets \Pi$ 
       \State \emph{// Phase 3: Merge negative interactions until one single cluster is left}
       \Repeat
-        \State Pop $S,S'\in\Pi$ with highest interaction $\interact{}(S,S')$ from PQ 
+        \State Pop $S,S'\in\Pi$ with highest interaction $\interact{}(S \cup S')$ from PQ 
         \State Merge clusters $S$, $S'$ and update hierarchical tree $T^*$
         \State Update interactions with neighboring clusters
       \Until{\big[Only one cluster is left in $\Pi$\big]} 
@@ -190,10 +191,13 @@ We call an agglomerative algorithm ``weight-shift invariant'' if the dendrogram 
 \noindent Although average and single linkage methods have been largely studied on unsigned graphs, to our knowledge, they have never been combined with cannot-link constraints on signed graphs\footnote{Note that Complete linkage methods return the same clustering whether constraints are enforced or not (proof in Lemma \ref{lemma:absMax_and_complete_property}, in Appendix).}, so we name these algorithms \emph{HCC-Avg} and \emph{HCC-Single}. 
 % On the other hand, we prove that an agglomerative algorithm with Complete linkage (HC-Complete) returns the same clustering whether cannot-link-constraints are enforced or not (Lemma \ref{lemma:absMax_and_complete_property}, in Appendix).
 % , we prove that with Complete linkage the agglomeration order does not change whether constraints are introduced or not.
+% \TODO{} in terms of scores, the advantage of one linkage over the other seems to be application dependent, but the median linkage has higher runtime.
+
+% Minor objection: in section 3.1, the input graph is undirected, i.e., E \subseteq {V\choose 2}. Therefore, (S\times S')\cap E should be {{S\cup S'}\choose 2} \cap E. Note, this are edges of the subgraph induced by nodes S\cup S'. In fact, writing W(S,S') is confusing because W depends only on S\cup S', so I'd rather write W(S\cup S').
+
 
 
 % \textbf{Weight-shift hierarchical algorithms} -- Given an algorithm that outputs a clustering $\Pi$ for a signed graph $\mathcal{G}(V,E,w_e)$, we call the algorithm \emph{weight-shift hierarchical} if, by adding a constant $\alpha \in \mathbb{R}$ to all edge weights $w_e$, the algorithm outputs a clustering $\Pi'$ which is a coarsening of $\Pi$ when $\alpha>0$ and a refinement of $\Pi$ when $\alpha<0$\footnote{A clustering $\Pi'$ is a coarsening of $\Pi$ when every $S' \in \Pi'$ is the union of one or more clusters in $\Pi$. Similarly, $\Pi'$ is a refinement of $\Pi$ when every $S \in \Pi$ is given by the union of one or more clusters in $\Pi'$}.
-
 
 
 
@@ -217,7 +221,9 @@ We call an agglomerative algorithm ``weight-shift invariant'' if the dendrogram 
 % On the other hand, to our knowledge, \emph{Average}, \emph{Max} or \emph{Min} linkage criteria have never been used for signed graph agglomerative algorithms or been combined with cannot-link constraints.
 
 
-\paragraph{Algorithms defining an ultrametric} -- The connection between agglomerative algorithms and ultrametrics\footnote{A metric space $(X,d)$ is an \emph{ultrametric} if, for every $x,y,z \in X$, $d(x,y)\leq \max \{d(x,z), d(y,z)\}$.} is well known. Usually, ultrametrics are associated to strictly positive \emph{similarity} or \emph{dissimilarity} measures on a graph. In our framework, a trivial ultrametric is always given by the height $h_T$ of the dendrogram. However, for some of the \algname{} variations, we now define an ultrametric based on the edge weights and the signed interactions between clusters, generalizing what has been done for HC on unsigned graphs \cite{johnson1967hierarchical,milligan1979ultrametric}. To define this measure and prove its ultrametric property, we first map the signed interaction $\treeHeight{}$ defined in Eq.~\ref{eq:def_dendr_interact} to positive ``pseudo-distances'' $d_{T}:V \times V \rightarrow \mathbb{R}^{+}$:
+\paragraph{Algorithms defining an ultrametric} -- 
+GASP cannot be seen as a local search algorithm of the multicut optimization problem \ref{eq:MC_objective} (see more details in Appendix \ref{sec:relation_to_multicut}).
+However, the connection between agglomerative algorithms and ultrametrics\footnote{A metric space $(X,d)$ is an \emph{ultrametric} if, for every $x,y,z \in X$, $d(x,y)\leq \max \{d(x,z), d(y,z)\}$.} is well known. Usually, ultrametrics are associated to strictly positive \emph{similarity} or \emph{dissimilarity} measures on a graph. In our framework, a trivial ultrametric is always given by the height $h_T$ of the dendrogram. However, for some of the \algname{} variations, we now define an ultrametric based on the edge weights and the signed interactions between clusters, generalizing what has been done for HC on unsigned graphs \cite{johnson1967hierarchical,milligan1979ultrametric}. To define this measure and prove its ultrametric property, we first map the signed interaction $\treeHeight{}$ defined in Eq.~\ref{eq:def_dendr_interact} to positive ``pseudo-distances'' $d_{T}:V \times V \rightarrow \mathbb{R}^{+}$:
 \begin{align}\label{eq:UM_def}
 d_{T}(u,v)\equiv &\begin{cases}
 0 & \text{if}\,\, u=v\\

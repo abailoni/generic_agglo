@@ -6,9 +6,11 @@
 \documentclass[10pt,twocolumn,letterpaper]{article}
 
 
+% \usepackage{authblk}
+
 %%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
-\usepackage[review]{cvpr}      % To produce the REVIEW version
-%\usepackage{cvpr}              % To produce the CAMERA-READY version
+% \usepackage[review]{cvpr}      % To produce the REVIEW version
+\usepackage{cvpr}              % To produce the CAMERA-READY version
 %\usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
 
 % THis fixes a problem of the CVPR style when trying to include tikz:
@@ -22,6 +24,7 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
+
 
 
 
@@ -122,7 +125,6 @@
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
 
-% \usepackage{authblk}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -154,7 +156,7 @@
 
 
 %%%%%%%%% PAPER ID  - PLEASE UPDATE
-\def\cvprPaperID{*****} % *** Enter the CVPR Paper ID here
+\def\cvprPaperID{2544} % *** Enter the CVPR Paper ID here
 \def\confName{CVPR}
 \def\confYear{2022}
 
@@ -196,21 +198,46 @@
 % \affil[ ]{\tt\small nathan.huetsch@gmail.com, derthorstenbeier@gmail.com}
 % \renewcommand\Authands{, }
 
-\author{First Author\\
-Institution1\\
-Institution1 address\\
-{\tt\small firstauthor@i1.org}
+% \author{Alberto Bailoni\thanks{HCI/IWR, Heidelberg University, Germany}\thanks{EMBL, Heidelberg, Germany}}
+% \author{Constantin Pape \footnotemark[2]\footnotemark[3]}
+% \author{Nathan H\"utsch \footnotemark[2]}
+% \author{Steffen Wolf}
+% \author{Thorsten Beier}
+% \author{\\Anna Kreshuk \footnotemark[3]}
+% \author{Fred A. Hamprecht \footnotemark[2]}
+% \affil[1]{HCI/IWR, Heidelberg University, Germany}
+% \affil[2]{EMBL, Heidelberg, Germany}
+% \affil[ ]{ }
+% \affil[ ]{\tt\small \{alberto.bailoni, steffen.wolf, fred.hamprecht\}@iwr.uni-heidelberg.de}
+% \affil[ ]{\tt\small \{constantin.pape, anna.kreshuk\}@embl.de}
+% \affil[ ]{\tt\small nathan.huetsch@gmail.com, derthorstenbeier@gmail.com}
+% \renewcommand\Authands{, }
+
+
+\author{Alberto Bailoni \thanks{Heidelberg Collaboratory for Image Processing (HCI/IWR), Heidelberg, Germany. {\tt \{name.surname\}@iwr.uni-heidelberg.de}}~~\thanks{EMBL, Heidelberg, Germany. {\tt \{name.surname\}@embl.de}}
+\and Constantin Pape \footnotemark[1]~~\footnotemark[2]
+\and Nathan H\"utsch \footnotemark[1]
+\and Steffen Wolf \thanks{MRC Laboratory of Molecular Biology, Cambridge, UK.  {\tt swolf@mrc-lmb.cam.ac.uk}}
+\and Thorsten Beier \thanks{{\tt derthorstenbeier@gmail.com}}
+\and Anna Kreshuk \footnotemark[2]
+\and Fred A. Hamprecht \footnotemark[1]~~\thanks{Corresponding author}
+% \\
+% HCI/IWR, Heidelberg University, Germany \and Check\\
+% {\tt\small firstauthor@i1.org}
 % For a paper whose authors are all at the same institution,
 % omit the following lines up until the closing ``}''.
 % Additional authors and addresses can be added with ``\and'',
 % just like the second author.
 % To save space, use either the email address or home page, not both
-\and
-Second Author\\
-Institution2\\
-First line of institution2 address\\
-{\tt\small secondauthor@i2.org}
+% \and
+% Second Author\\
+% Institution2\\
+% First line of institution2 address\\
+% {\tt\small secondauthor@i2.org}
 }
+% \author{A. U. Thor}
+% \author{C. O. Respondent}
+% \affiliation{\institute{North Pole Institute}}
 
 
 \maketitle
